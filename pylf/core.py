@@ -101,7 +101,7 @@ def _handwrite(text, template: dict, worker: int):
     with multiprocess.Pool(worker) as p:
         images = p.map(_perturb_factory(**template), images)
         images = p.map(_merge_factory(**template), images)
-    return list(images)
+    return images
 
 
 def _sketch(text,
