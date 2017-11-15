@@ -1,0 +1,7 @@
+.idea/
+build/
+demo/fonts/
+dist/
+pylf.egg-info/
+pylf/__pycache__/
+tests/data/fonts/
