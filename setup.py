@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import pylf
-classifiers=[
+classifiers = [
     'Intended Audience :: Developers',
     'Intended Audience :: Science/Research',
     'Topic :: Software Development :: Build Tools',
@@ -13,7 +13,7 @@ classifiers=[
 ]
 setup(
     name='pylf',
-    version='0.1.1',
+    version='0.1.2',
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
