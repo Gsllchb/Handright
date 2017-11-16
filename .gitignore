@@ -5,3 +5,4 @@ dist/
 pylf.egg-info/
 pylf/__pycache__/
 tests/data/fonts/
+/release.sh
