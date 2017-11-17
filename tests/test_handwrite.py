@@ -12,7 +12,7 @@ def main():
         'background': Image.open("./data/pictures/design.jpg"),
         'box': (100, 400, 1500, 2000),
         'color': (0, 0, 0),
-        'font': ImageFont.truetype("./data/fonts/HYYiNingLiJ.ttf"),
+        'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
         'font_size': 40,
         'font_size_sigma': 2,
         'line_spacing': 40,
