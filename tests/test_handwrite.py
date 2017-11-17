@@ -17,10 +17,10 @@ def main():
         'font_size_sigma': 2,
         'line_spacing': 40,
         'line_spacing_sigma': 1,
-        'word_spacing': 20,
+        'word_spacing': 0,
         'word_spacing_sigma': 2,
-        'is_half_char': lambda c: c.isalpha() or c.isdigit() or c in (',', '.'),
-        'is_end_char': lambda c: c in ('!', '.', '?')
+        'is_half_char': lambda c: c.isdigit() or c in ('!', '.', '?', ',', '，', '。'),
+        'is_end_char': lambda c: c in ('!', '.', '?', ',', '，', '。')
     }
     dir_path, dir_names, file_names = list(os.walk("./data/texts"))[0]
     for filename in file_names:

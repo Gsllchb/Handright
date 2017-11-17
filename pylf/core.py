@@ -242,7 +242,3 @@ def _merge_factory(background, **kwargs):
         bg.paste(image, mask=image)
         return bg
     return _merge
-
-
-if __name__ == '__main__':
-    print(__doc__)

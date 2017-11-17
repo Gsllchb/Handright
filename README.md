@@ -39,19 +39,17 @@ randomness in the process of Chinese handwriting to simulate the uncertainty of 
         # 绝对值越大字间距大小的随机性越强  
         'word_spacing_sigma': 0.1,
         # 判断一个字符是否仅占用正常水平位置的一半
-        'is_half_char': lambda c: c.isalpha() or c.isdigit(),
+        'is_half_char': lambda c: c.isdigit() or c in ('！', '.', '？', ',', '，', '。', ' '),
         # 判断一个字符是否不能放在写在行首
-        'is_end_char': lambda c: c in ('!', '.', '?')
+        'is_end_char': lambda c: c in ('！', '.', '？', ',' , '，', '。')
     }
-    # 读取需要“手写”的文本
-    with open("something.txt") as f:
-        text = f.read()
+    # 需要“手写”的文本
+    text = """your context"""
     # 开始“手写”
     images = handwrite(text, template)
     # 显示每一张生成的图片
     for image in images:
         image.show()
-    
 
 ## Demo
 ![](./demo/out/I_can_eat_glass.jpg)

@@ -13,9 +13,9 @@ def main():
         'font_size_sigma': 1,
         'line_spacing': 50,
         'line_spacing_sigma': 1,
-        'word_spacing': 15,
+        'word_spacing': 0,
         'word_spacing_sigma': 1,
-        'is_half_char': lambda c: c.isalpha() or c.isdigit() or c in (',', '.', ' '),
+        'is_half_char': lambda c: c.isdigit() or c in (',', '.', ' '),
         'is_end_char': lambda c: c in ('!', '.', '?')
     }
     text = """彼黍离离 彼稷之苗 行迈靡靡 中心摇摇 知我者 谓我心忧 不知我者 谓我何求 悠悠苍天 此何人哉
