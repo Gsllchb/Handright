@@ -51,9 +51,9 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         Advanced:
         If you do NOT fully understand the algorithm, please leave these value default.
         'x_amplitude': <float>
-            default: 0.05 * font_size.
+            default: 0.06 * font_size.
         'y_amplitude': <float>
-            default: 0.05 * font_size.
+            default: 0.06 * font_size.
         'x_wavelength': <float>
             default: 2 * font_size.
         'y_wavelength': <float>
@@ -71,9 +71,9 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     """
     font_size = template['font_size']
     if 'x_amplitude' not in template:
-        template['x_amplitude'] = 0.05 * font_size
+        template['x_amplitude'] = 0.06 * font_size
     if 'y_amplitude' not in template:
-        template['y_amplitude'] = 0.05 * font_size
+        template['y_amplitude'] = 0.06 * font_size
     if 'x_wavelength' not in template:
         template['x_wavelength'] = 2 * font_size
     if 'y_wavelength' not in template:
@@ -218,7 +218,7 @@ def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lam
                 start = y + random.expovariate(y_lambd)
             if y <= start:
                 continue
-            offset = int(y_amplitude * (sin(2 * pi *(y - start) / y_wavelength) + 1))
+            offset = int(y_amplitude * (sin(2 * pi *(y - start) / y_wavelength - pi / 2) + 1))
             for x in range(width - offset):
                 px[x, y] = px[x + offset, y]
             for x in range(width - offset, width):
