@@ -37,7 +37,7 @@ def main():
 """)
     images = handwrite(text, template)
     for i, im in enumerate(images):
-        im.save("./out/荷塘月色{}.jpg".format(i))
+        im.save("./out/荷塘月色/{}.jpg".format(i))
 
 
 if __name__ == '__main__':

@@ -55,5 +55,5 @@ randomness in the process of Chinese handwriting to simulate the uncertainty of 
 * 我能吞下玻璃而不伤身体 <br>
 ![I_can_eat_glass](./demo/out/I_can_eat_glass.jpg)
 * 《荷塘月色》 <br>
-![荷塘月色0](./demo/out/荷塘月色0.jpg)
-![荷塘月色1](./demo/out/荷塘月色1.jpg)
+![荷塘月色0](./demo/out/荷塘月色/0.jpg)
+![荷塘月色1](./demo/out/荷塘月色/1.jpg)
