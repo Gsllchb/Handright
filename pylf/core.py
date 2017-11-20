@@ -86,21 +86,13 @@ def handwrite(text, template: dict, worker: int=0) -> list:
 
 
 def _handwrite(text, template: dict, worker: int):
-    """
-    The helper function of handwrite().
-    See also handwrite().
-    
-    :param text:
-    :param template:
-    :param worker:
-    :return: a list of drawn images
-    """
     outlines = _sketch(text, **template)
     # Because the FreeTypeFont object is NOT pickle-able, we can not accelerate _draw_chars() with multiprocess.
     images = map(_draw_chars_factory(**template), outlines)
     with multiprocess.Pool(worker) as p:
         images = p.map(_perturb_factory(**template), images)
         images = p.map(_merge_factory(**template), images)
+        images = p.map(_antialiasing_factory(**template), images)
     return images
 
 
@@ -116,24 +108,9 @@ def _sketch(text,
             is_half_char,
             **kwargs) -> list:
     """
-    Draw the outline for further processes.
-    It is a significant process for later parallel computation.
-    See also handwrite(), _draw_strokes_factory().
-
-    :param text:
-    :param box:
-    :param font_size:
-    :param font_size_sigma:
-    :param line_spacing:
-    :param line_spacing_sigma:
-    :param word_spacing:
-    :param word_spacing_sigma:
-    :param is_end_char:
-    :param is_half_char:
-    :param kwargs:
+    Draw the outlines for later parallel computation.
     :return: outlines
-        outlines is a list of lists containing tuples that contain the needed information in the process of drawing a
-        single char. To be more specific, these tuples respectively contain (x, y), char, actual_font_size in order.
+        outlines is a list of lists containing tuples that respectively contain (x, y), char, actual_font_size in order.
     """
     length = len(text)
     outlines = []
@@ -164,16 +141,11 @@ def _sketch(text,
 def _draw_chars_factory(background, font, color: tuple, **kwargs):
     """
     The factory of the function that draw chars on the foreground depending on the 'outline' provided by _sketch().
-    See also handwrite(), _handwrite(), _sketch().
-
-    :param background:
-    :param font:
-    :param color:
-    :return: a function
     """
     def _draw_chars(outline):
         image = PIL.Image.new('RGBA', background.size, color=(0, 0, 0, 0))
         draw = PIL.ImageDraw.Draw(image)
+        draw.fontmode = '1'  # turn off the anti-aliasing
         for xy, char, font_size in outline:
             draw.text(xy, char, fill=(*color, 255), font=font.font_variant(size=font_size))
         return image
@@ -183,16 +155,6 @@ def _draw_chars_factory(background, font, color: tuple, **kwargs):
 def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lambd, y_lambd,  **kwargs):
     """
     The factory of the function that 'perturb' the foreground image.
-    See also handwrite(), _handwrite().
-
-    :param x_amplitude:
-    :param y_amplitude:
-    :param x_wavelength:
-    :param y_wavelength:
-    :param x_lambd:
-    :param y_lambd:
-    :param kwargs:
-    :return: a function
     """
     def _perturb(image):
         from math import sin, pi
@@ -228,14 +190,19 @@ def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lam
     return _perturb
 
 
+def _antialiasing_factory(**kwargs):
+    """
+    The factory of the function that render the images with anti-aliasing.
+    """
+    def _antialiasing(image):
+        # TODO: fill here
+        return image
+    return _antialiasing
+
+
 def _merge_factory(background, **kwargs):
     """
     The factory of the function that merge the image with the background.
-    See also handwrite(), _handwrite().
-
-    :param background:
-    :param kwargs:
-    :return: a function
     """
     def _merge(image):
         bg = background.copy()
