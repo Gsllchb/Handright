@@ -13,7 +13,7 @@ classifiers = [
 ]
 setup(
     name='pylf',
-    version='0.1.4',
+    version=pylf.__version__,
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),

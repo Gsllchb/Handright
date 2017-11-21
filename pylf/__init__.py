@@ -3,3 +3,4 @@ PyLf is a lightweight and fast Python library for simulating Chinese handwriting
 randomness in the process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
 """
 from .core import handwrite
+__version__ = '0.2.0'
