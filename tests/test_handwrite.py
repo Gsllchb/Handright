@@ -8,9 +8,10 @@ import os
 
 
 def main():
+    im = Image.open("./data/pictures/design.jpg")
     template = {
-        'background': Image.open("./data/pictures/design.jpg"),
-        'box': (100, 400, 1500, 2000),
+        'background': im,
+        'box': (100, 400, im.width-100, im.height-100),
         'color': (0, 0, 0),
         'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
         'font_size': 40,
@@ -31,6 +32,13 @@ def main():
             image.show()
         input("""{} has been written.
         press ENTER to continues""".format(filename))
+
+    template['box'] = (-100, -100, im.width+100, im.height+100)
+    with open("./data/texts/荷塘月色.txt") as f:
+        text = f.read()
+    images = handwrite(text, template)
+    for image in images:
+        image.show()
 
 
 if __name__ == '__main__':
