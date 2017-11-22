@@ -5,10 +5,16 @@ randomness in the process of Chinese handwriting to simulate the uncertainty of 
 ## For Windows users
 * [Windows用户必读！](https://github.com/Gsllchb/PyLf/wiki/Windows%E7%94%A8%E6%88%B7%E5%BF%85%E8%AF%BB%EF%BC%81)
 ## Installation
-由于PyLf在[Pillow](https://python-pillow.org/)之上进行开发，故PyLf在安装过程中会自动安装[Pillow](https://python-pillow.org/)（如
-若您的电脑尚未安装此库的话）。但是，由于[Pillow](https://python-pillow.org/)会与[PIL](http://www.pythonware.com/products/pil/)发
-生冲突，所以您要是已经安装[PIL](http://www.pythonware.com/products/pil/)，请先**手动卸载**
-[PIL](http://www.pythonware.com/products/pil/)。安装PyLf:
+由于PyLf的依赖项[Pillow](https://python-pillow.org/)会与[PIL](http://www.pythonware.com/products/pil/)发生冲突，
+如若您已安装[PIL](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
+
+    pip uninstall PIL
+
+此外如若您并未安装[setuptools](https://pypi.python.org/pypi/setuptools),请先**手动安装**：
+
+    pip install setuptools
+
+安装PyLf：
 
     pip install pylf
 
@@ -21,7 +27,7 @@ randomness in the process of Chinese handwriting to simulate the uncertainty of 
         # 选择背景图片（图片的大小应大于‘box’所限定的范围）
         'background': Image.open("./something.png"),  
         # 限定“手写”的范围的左、上、右、下边界的坐标（以左上角为坐标原点）
-        'box': (0, 0, 1000, 1000),
+        'box': (0, 0, 100, 100),
         # RGB（取值0~255）
         'color': (0, 0, 0),  
         # 选择字体
