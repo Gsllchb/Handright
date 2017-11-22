@@ -195,7 +195,7 @@ def _antialiasing_factory(**kwargs):
     The factory of the function that render the images with anti-aliasing.
     """
     def _antialiasing(image):
-        # TODO: fill here
+        # TODO: implement FXAA here
         return image
     return _antialiasing
 

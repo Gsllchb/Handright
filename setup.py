@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     install_requires=['pillow>=4.3.0', 'multiprocess>=0.70.5', 'dill>=0.2.7'],
     python_requires='>=3.5',
-    description="A lightweight and fast Python library for simulating Chinese handwriting.",
+    description="A lightweight Python library for simulating Chinese handwriting.",
     long_description=pylf.__doc__,
     license="bsd-3-clause",
     keywords="simulating Chinese handwriting",
