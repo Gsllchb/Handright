@@ -5,7 +5,7 @@ from PIL import Image, ImageFont
 from pylf import handwrite
 from multiprocessing import freeze_support
 import os
-
+import time
 
 def main():
     im = Image.open("./data/pictures/design.jpg")
@@ -30,8 +30,8 @@ def main():
         images = handwrite(text, template)
         for image in images:
             image.show()
-        input("""{} has been written.
-        press ENTER to continues""".format(filename))
+        # input("""{} has been written.
+        # press ENTER to continues""".format(filename))
 
     template['box'] = (-100, -100, im.width+100, im.height+100)
     with open("./data/texts/荷塘月色.txt") as f:
@@ -43,4 +43,6 @@ def main():
 
 if __name__ == '__main__':
     freeze_support()
+    start = time.clock()
     main()
+    print(time.clock() - start)
