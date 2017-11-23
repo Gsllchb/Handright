@@ -36,10 +36,7 @@ def main():
     for image in images:
         image.show()
 
-    text = """测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
-    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
-    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
-    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。"""
+    text = "测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。" * 100
     template['box'] = (-100, -100, im.width+100, im.height+100)
     images = handwrite(text, template)
     for image in images:
