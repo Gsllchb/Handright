@@ -64,7 +64,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             default: 1 / font_size.
 
     :param anti_aliasing: whether or not turn on the anti-aliasing.
-        It will do the anti-aliasing with using 2X SSAA. Generally, to turn off this anti-aliasing option would
+        It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the computational cost.
         default True.
 
@@ -222,7 +222,7 @@ def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lam
 
 def _downsample(image):
     """
-    Downsample for 2X SSAA.
+    Downsampling for 4X SSAA.
     """
     width, height = image.size[0] // 2, image.size[1] // 2
     sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
