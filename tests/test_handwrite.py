@@ -5,12 +5,13 @@ from PIL import Image, ImageFont
 from pylf import handwrite
 from multiprocessing import freeze_support
 import os
-
+import time
 
 def main():
+    im = Image.open("./data/pictures/design.jpg")
     template = {
-        'background': Image.open("./data/pictures/design.jpg"),
-        'box': (100, 400, 1500, 2000),
+        'background': im,
+        'box': (100, 400, im.width-100, im.height-100),
         'color': (0, 0, 0),
         'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
         'font_size': 40,
@@ -29,10 +30,24 @@ def main():
         images = handwrite(text, template)
         for image in images:
             image.show()
-        input("""{} has been written.
-        press ENTER to continues""".format(filename))
+
+    text = "测试关闭SSAA抗锯齿的效果"
+    images = handwrite(text, template, anti_aliasing=False)
+    for image in images:
+        image.show()
+
+    text = """测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。"""
+    template['box'] = (-100, -100, im.width+100, im.height+100)
+    images = handwrite(text, template)
+    for image in images:
+        image.show()
 
 
 if __name__ == '__main__':
     freeze_support()
+    start = time.clock()
     main()
+    print(time.clock() - start)

@@ -7,7 +7,7 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-def handwrite(text, template: dict, worker: int=0) -> list:
+def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process. The function is mainly
     developed on the top of Pillow Module and take advantage of the power of Multiprocess Module to accelerate the
@@ -63,44 +63,67 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         'y_lambd': <float>
             default: 1 / font_size.
 
-    :param worker: the number of worker
+    :param anti_aliasing: whether or not turn on the anti-aliasing.
+        It will do the anti-aliasing with using 2X SSAA. Generally, to turn off this anti-aliasing option would
+        significantly reduce the computational cost.
+        default True.
+
+    :param worker: the number of worker.
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default 0 (use all available CPU in the computer).
 
     :return: a list of drawn images.
     """
-    font_size = template['font_size']
-    if 'x_amplitude' not in template:
-        template['x_amplitude'] = 0.06 * font_size
-    if 'y_amplitude' not in template:
-        template['y_amplitude'] = 0.06 * font_size
-    if 'x_wavelength' not in template:
-        template['x_wavelength'] = 2 * font_size
-    if 'y_wavelength' not in template:
-        template['y_wavelength'] = 2 * font_size
-    if 'x_lambd' not in template:
-        template['x_lambd'] = 1 / font_size
-    if 'y_lambd' not in template:
-        template['y_lambd'] = 1 / font_size
-    return _handwrite(text, template, worker if worker > 0 else multiprocess.cpu_count() + worker)
+    worker = worker if worker > 0 else multiprocess.cpu_count() + worker
+    settings = _get_settings(template, anti_aliasing)
+    return _handwrite(text, settings, anti_aliasing, worker)
 
 
-def _handwrite(text, template: dict, worker: int):
+def _get_settings(template: dict, anti_aliasing: bool):
     """
-    The helper function of handwrite().
-    See also handwrite().
-    
-    :param text:
-    :param template:
-    :param worker:
-    :return: a list of drawn images
+    Construct a dict to replace template for later processes.
+    :return: a dict containing settings.
     """
-    outlines = _sketch(text, **template)
+    settings = dict(template)
+    if anti_aliasing:
+        settings['box'] = tuple(2 * i for i in settings['box'])
+        settings['font_size'] *= 2
+        settings['font_size_sigma'] *= 2
+        settings['line_spacing'] *= 2
+        settings['line_spacing_sigma'] *= 2
+        settings['word_spacing'] *= 2
+        settings['word_spacing_sigma'] *= 2
+
+    if anti_aliasing:
+        settings['size'] = tuple(2 * i for i in settings['background'].size)
+    else:
+        settings['size'] = settings['background'].size
+
+    font_size = settings['font_size']
+    if 'x_amplitude' not in settings:
+        settings['x_amplitude'] = 0.06 * font_size
+    if 'y_amplitude' not in settings:
+        settings['y_amplitude'] = 0.06 * font_size
+    if 'x_wavelength' not in settings:
+        settings['x_wavelength'] = 2 * font_size
+    if 'y_wavelength' not in settings:
+        settings['y_wavelength'] = 2 * font_size
+    if 'x_lambd' not in settings:
+        settings['x_lambd'] = 1 / font_size
+    if 'y_lambd' not in settings:
+        settings['y_lambd'] = 1 / font_size
+    return settings
+
+
+def _handwrite(text, settings: dict, anti_aliasing: bool, worker: int):
+    outlines = _sketch(text, **settings)
     # Because the FreeTypeFont object is NOT pickle-able, we can not accelerate _draw_chars() with multiprocess.
-    images = map(_draw_chars_factory(**template), outlines)
+    images = map(_draw_chars_factory(**settings), outlines)
     with multiprocess.Pool(worker) as p:
-        images = p.map(_perturb_factory(**template), images)
-        images = p.map(_merge_factory(**template), images)
+        images = p.map(_perturb_factory(**settings), images)
+        if anti_aliasing:
+            images = p.map(_downsample, images)
+        images = p.map(_merge_factory(**settings), images)
     return images
 
 
@@ -116,24 +139,9 @@ def _sketch(text,
             is_half_char,
             **kwargs) -> list:
     """
-    Draw the outline for further processes.
-    It is a significant process for later parallel computation.
-    See also handwrite(), _draw_strokes_factory().
-
-    :param text:
-    :param box:
-    :param font_size:
-    :param font_size_sigma:
-    :param line_spacing:
-    :param line_spacing_sigma:
-    :param word_spacing:
-    :param word_spacing_sigma:
-    :param is_end_char:
-    :param is_half_char:
-    :param kwargs:
+    Draw the outlines for later parallel computation.
     :return: outlines
-        outlines is a list of lists containing tuples that contain the needed information in the process of drawing a
-        single char. To be more specific, these tuples respectively contain (x, y), char, actual_font_size in order.
+        outlines is a list of lists containing tuples that respectively contain (x, y), char, actual_font_size in order.
     """
     length = len(text)
     outlines = []
@@ -161,18 +169,12 @@ def _sketch(text,
     return outlines
 
 
-def _draw_chars_factory(background, font, color: tuple, **kwargs):
+def _draw_chars_factory(size, font, color: tuple, **kwargs):
     """
     The factory of the function that draw chars on the foreground depending on the 'outline' provided by _sketch().
-    See also handwrite(), _handwrite(), _sketch().
-
-    :param background:
-    :param font:
-    :param color:
-    :return: a function
     """
     def _draw_chars(outline):
-        image = PIL.Image.new('RGBA', background.size, color=(0, 0, 0, 0))
+        image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
         draw = PIL.ImageDraw.Draw(image)
         for xy, char, font_size in outline:
             draw.text(xy, char, fill=(*color, 255), font=font.font_variant(size=font_size))
@@ -183,16 +185,6 @@ def _draw_chars_factory(background, font, color: tuple, **kwargs):
 def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lambd, y_lambd,  **kwargs):
     """
     The factory of the function that 'perturb' the foreground image.
-    See also handwrite(), _handwrite().
-
-    :param x_amplitude:
-    :param y_amplitude:
-    :param x_wavelength:
-    :param y_wavelength:
-    :param x_lambd:
-    :param y_lambd:
-    :param kwargs:
-    :return: a function
     """
     def _perturb(image):
         from math import sin, pi
@@ -228,14 +220,22 @@ def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lam
     return _perturb
 
 
+def _downsample(image):
+    """
+    Downsample for 2X SSAA.
+    """
+    width, height = image.size[0] // 2, image.size[1] // 2
+    sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
+    spx, px = sampled_image.load(), image.load()
+    for x in range(width):
+        for y in range(height):
+            spx[x, y] = tuple(sum(i)//4 for i in zip(px[2*x, 2*y], px[2*x+1, 2*y], px[2*x, 2*y+1], px[2*x+1, 2*y+1]))
+    return sampled_image
+
+
 def _merge_factory(background, **kwargs):
     """
     The factory of the function that merge the image with the background.
-    See also handwrite(), _handwrite().
-
-    :param background:
-    :param kwargs:
-    :return: a function
     """
     def _merge(image):
         bg = background.copy()
