@@ -1,7 +1,7 @@
 # PyLf
 ![](./demo/out/I_can_eat_glass.jpg) <br>
-PyLf is a lightweight and fast Python library for simulating Chinese handwriting. It introduces a great deal of 
-randomness in the process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
+PyLf is a lightweight Python library for simulating Chinese handwriting. It introduces a great deal of randomness in the 
+process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
 ## For Windows users
 * [Windows用户必读！](https://github.com/Gsllchb/PyLf/wiki/Windows%E7%94%A8%E6%88%B7%E5%BF%85%E8%AF%BB%EF%BC%81)
 ## Installation
