@@ -65,8 +65,9 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
 
     :param anti_aliasing: whether or not turn on the anti-aliasing.
         It will do the anti-aliasing with using 2X SSAA. Generally, to turn off this anti-aliasing option would
-        significantly reduce the calculation.
+        significantly reduce the computational cost.
         default True.
+
     :param worker: the number of worker.
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default 0 (use all available CPU in the computer).
@@ -220,13 +221,15 @@ def _perturb_factory(x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lam
 
 
 def _downsample(image):
-    width, height = image.size
-    sampled_image = PIL.Image.new('RGBA', (width//2, height//2), color=(0, 0, 0, 0))
-    spx = sampled_image.load()
-    px = image.load()
-    for x in range(0, width, 2):
-        for y in range(0, height, 2):
-            spx[x//2, y//2] = tuple(sum(i)//4 for i in zip(px[x, y], px[x+1, y], px[x, y+1], px[x+1, y+1]))
+    """
+    Downsample for 2X SSAA.
+    """
+    width, height = image.size[0] // 2, image.size[1] // 2
+    sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
+    spx, px = sampled_image.load(), image.load()
+    for x in range(width):
+        for y in range(height):
+            spx[x, y] = tuple(sum(i)//4 for i in zip(px[2*x, 2*y], px[2*x+1, 2*y], px[2*x, 2*y+1], px[2*x+1, 2*y+1]))
     return sampled_image
 
 

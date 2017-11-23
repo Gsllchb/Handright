@@ -30,12 +30,17 @@ def main():
         images = handwrite(text, template)
         for image in images:
             image.show()
-        # input("""{} has been written.
-        # press ENTER to continues""".format(filename))
 
+    text = "测试关闭SSAA抗锯齿的效果"
+    images = handwrite(text, template, anti_aliasing=False)
+    for image in images:
+        image.show()
+
+    text = """测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。
+    测试‘box’比背景图大的情况。测试‘box’比背景图大的情况。"""
     template['box'] = (-100, -100, im.width+100, im.height+100)
-    with open("./data/texts/荷塘月色.txt") as f:
-        text = f.read()
     images = handwrite(text, template)
     for image in images:
         image.show()
