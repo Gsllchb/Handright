@@ -9,12 +9,10 @@ import PIL.ImageDraw
 
 def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
     """
-    Simulating Chinese handwriting through introducing numerous randomness in the process. The function is mainly
-    developed on the top of Pillow Module and take advantage of the power of Multiprocess Module to accelerate the
-    computation.
+    Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
     Note that, the module is built for simulating Chinese handwriting instead of English(or other languages)
-    handwriting. Though injecting pieces of exotic language generally may NOT effect the overall performance, you should
+    handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
     :param text: a char sequence.
