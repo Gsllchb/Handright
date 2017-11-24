@@ -74,48 +74,26 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
 
     :return: a list of drawn images.
     """
+    template = dict(template)
+    font_size = template['font_size']
+    if 'x_amplitude' not in template:
+        template['x_amplitude'] = 0.06 * font_size
+    if 'y_amplitude' not in template:
+        template['y_amplitude'] = 0.06 * font_size
+    if 'x_wavelength' not in template:
+        template['x_wavelength'] = 2 * font_size
+    if 'y_wavelength' not in template:
+        template['y_wavelength'] = 2 * font_size
+    if 'x_lambd' not in template:
+        template['x_lambd'] = 1 / font_size
+    if 'y_lambd' not in template:
+        template['y_lambd'] = 1 / font_size
     worker = worker if worker > 0 else multiprocess.cpu_count() + worker
+    return _handwrite(text, template, anti_aliasing, worker)
+
+
+def _handwrite(text, template: dict, anti_aliasing: bool, worker: int):
     settings = _get_settings(template, anti_aliasing)
-    return _handwrite(text, settings, anti_aliasing, worker)
-
-
-def _get_settings(template: dict, anti_aliasing: bool):
-    """
-    Construct a dict to replace template for later processes.
-    :return: a dict containing settings.
-    """
-    settings = dict(template)
-    if anti_aliasing:
-        settings['box'] = tuple(2 * i for i in settings['box'])
-        settings['font_size'] *= 2
-        settings['font_size_sigma'] *= 2
-        settings['line_spacing'] *= 2
-        settings['line_spacing_sigma'] *= 2
-        settings['word_spacing'] *= 2
-        settings['word_spacing_sigma'] *= 2
-
-    if anti_aliasing:
-        settings['size'] = tuple(2 * i for i in settings['background'].size)
-    else:
-        settings['size'] = settings['background'].size
-
-    font_size = settings['font_size']
-    if 'x_amplitude' not in settings:
-        settings['x_amplitude'] = 0.06 * font_size
-    if 'y_amplitude' not in settings:
-        settings['y_amplitude'] = 0.06 * font_size
-    if 'x_wavelength' not in settings:
-        settings['x_wavelength'] = 2 * font_size
-    if 'y_wavelength' not in settings:
-        settings['y_wavelength'] = 2 * font_size
-    if 'x_lambd' not in settings:
-        settings['x_lambd'] = 1 / font_size
-    if 'y_lambd' not in settings:
-        settings['y_lambd'] = 1 / font_size
-    return settings
-
-
-def _handwrite(text, settings: dict, anti_aliasing: bool, worker: int):
     outlines = _sketch(text, **settings)
     # Because the FreeTypeFont object is NOT pickle-able, we can not accelerate _draw_chars() with multiprocess.
     images = map(_draw_chars_factory(**settings), outlines)
@@ -125,6 +103,32 @@ def _handwrite(text, settings: dict, anti_aliasing: bool, worker: int):
             images = p.map(_downsample, images)
         images = p.map(_merge_factory(**settings), images)
     return images
+
+
+def _get_settings(template: dict, anti_aliasing: bool):
+    """
+    Construct a dict to replace template for later processes.
+    :return: a dict containing settings.
+    """
+    if anti_aliasing:
+        template['box'] = tuple(2 * i for i in template['box'])
+        template['font_size'] *= 2
+        template['font_size_sigma'] *= 2
+        template['line_spacing'] *= 2
+        template['line_spacing_sigma'] *= 2
+        template['word_spacing'] *= 2
+        template['word_spacing_sigma'] *= 2
+        template['x_amplitude'] *= 2
+        template['y_amplitude'] *= 2
+        template['x_wavelength'] *= 2
+        template['y_wavelength'] *= 2
+        template['x_lambd'] /= 2
+        template['y_lambd'] /= 2
+    if anti_aliasing:
+        template['size'] = tuple(2 * i for i in template['background'].size)
+    else:
+        template['size'] = template['background'].size
+    return template
 
 
 def _sketch(text,
