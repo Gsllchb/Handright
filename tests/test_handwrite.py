@@ -7,6 +7,7 @@ from multiprocessing import freeze_support
 import os
 import time
 
+
 def main():
     im = Image.open("./data/pictures/design.jpg")
     template = {
