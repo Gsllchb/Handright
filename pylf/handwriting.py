@@ -60,7 +60,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             default: 1 / font_size.
         'y_lambd': <float>
             default: 1 / font_size.
-
+    
     :param anti_aliasing: whether or not turn on the anti-aliasing.
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the computational cost.
@@ -93,16 +93,24 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
 def _handwrite(text, template, anti_aliasing, worker):
     outlines = _sketch(anti_aliasing, text, **template)
     # Because the FreeTypeFont object is NOT pickle-able, we can not accelerate _draw_chars() with multiprocess.
-    images = map(_draw_chars_factory(anti_aliasing, **template), outlines)
-    with multiprocess.Pool(worker) as p:
-        images = p.map(_perturb_factory(anti_aliasing, **template), images)
-        images = p.map(_downsample_factory(anti_aliasing, **template), images)
-        images = p.map(_merge_factory(anti_aliasing, **template), images)
+    images = map(_draw_text_factory(anti_aliasing, **template), outlines)
+    with multiprocess.Pool(worker) as pool:
+        images = pool.map(_RenderFactory(anti_aliasing, **template), images)
     return images
 
 
-def _sketch(anti_aliasing, text, box, font_size, font_size_sigma, line_spacing, line_spacing_sigma,
-            word_spacing, word_spacing_sigma, is_end_char, is_half_char, **kwargs):
+def _sketch(anti_aliasing,
+            text,
+            box,
+            font_size,
+            font_size_sigma,
+            line_spacing,
+            line_spacing_sigma,
+            word_spacing,
+            word_spacing_sigma,
+            is_end_char,
+            is_half_char,
+            **kwargs):
     """
     Draw the outlines for later parallel computation.
     :return: outlines
@@ -143,7 +151,7 @@ def _sketch(anti_aliasing, text, box, font_size, font_size_sigma, line_spacing, 
     return outlines
 
 
-def _draw_chars_factory(anti_aliasing, background, font, color, **kwargs):
+def _draw_text_factory(anti_aliasing, background, font, color, **kwargs):
     """
     The factory of the function that draw chars on the foreground depending on the 'outline' provided by _sketch().
     """
@@ -156,6 +164,24 @@ def _draw_chars_factory(anti_aliasing, background, font, color, **kwargs):
             draw.text(xy, char, fill=(*color, 255), font=font.font_variant(size=font_size))
         return image
     return _draw_chars
+
+
+class _RenderFactory:
+    def __init__(self):
+        pass
+
+    def __call__(self, image):
+        self.random = random.Random(self.seed)
+        return self._merge(self._downsample(self._perturb(image)))
+
+    def _perturb(self, image):
+        pass
+
+    def _downsample(self, image):
+        pass
+
+    def _merge(self, image):
+        pass
 
 
 def _perturb_factory(anti_aliasing, x_amplitude, y_amplitude, x_wavelength, y_wavelength, x_lambd, y_lambd, **kwargs):
