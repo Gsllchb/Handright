@@ -160,6 +160,7 @@ def _draw_text(text,
 
 
 class _RenderFactory:
+
     def __init__(self,
                  anti_aliasing,
                  background,
@@ -171,52 +172,52 @@ class _RenderFactory:
                  y_lambd,
                  **kwargs):
 
-        self.anti_aliasing = anti_aliasing
-        self.background = background
-        self.x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
-        self.y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
-        self.x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
-        self.y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
-        self.x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
-        self.y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
+        self._anti_aliasing = anti_aliasing
+        self._background = background
+        self._x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
+        self._y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
+        self._x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
+        self._y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
+        self._x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
+        self._y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
 
     def __call__(self, image):
-        self.random = random.Random()
-        image = self._perturb(image)
-        if self.anti_aliasing:
-            image = self._downsample(image)
-        return self._merge(image)
+        self._random = random.Random()
+        image = self.__perturb(image)
+        if self._anti_aliasing:
+            image = self.__downsample(image)
+        return self.__merge(image)
 
-    def _perturb(self, image):
+    def __perturb(self, image):
         from math import sin, pi
         height = image.height
         width = image.width
         px = image.load()
         start = 0
         for x in range(width):
-            if x >= start + self.x_wavelength:
-                start = x + self.random.expovariate(self.x_lambd)
+            if x >= start + self._x_wavelength:
+                start = x + self._random.expovariate(self._x_lambd)
             if x <= start:
                 continue
-            offset = int(self.x_amplitude * (sin(2 * pi *(x - start) / self.x_wavelength - pi / 2) + 1))
+            offset = int(self._x_amplitude * (sin(2 * pi *(x - start) / self._x_wavelength - pi / 2) + 1))
             for y in range(height - offset):
                 px[x, y] = px[x, y + offset]
             for y in range(height - offset, height):
                 px[x, y] = (0, 0, 0, 0)
         start = 0
         for y in range(height):
-            if y >= start + self.y_wavelength:
-                start = y + self.random.expovariate(self.y_lambd)
+            if y >= start + self._y_wavelength:
+                start = y + self._random.expovariate(self._y_lambd)
             if y <= start:
                 continue
-            offset = int(self.y_amplitude * (sin(2 * pi *(y - start) / self.y_wavelength - pi / 2) + 1))
+            offset = int(self._y_amplitude * (sin(2 * pi *(y - start) / self._y_wavelength - pi / 2) + 1))
             for x in range(width - offset):
                 px[x, y] = px[x + offset, y]
             for x in range(width - offset, width):
                 px[x, y] = (0, 0, 0, 0)
         return image
 
-    def _downsample(self, image):
+    def __downsample(self, image):
         width, height = image.size[0] // 2, image.size[1] // 2
         sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
         spx, px = sampled_image.load(), image.load()
@@ -226,6 +227,6 @@ class _RenderFactory:
                                                             px[2 * x, 2 * y + 1], px[2 * x + 1, 2 * y + 1])))
         return sampled_image
 
-    def _merge(self, image):
-        self.background.paste(image, mask=image)
-        return self.background
+    def __merge(self, image):
+        self._background.paste(image, mask=image)
+        return self._background
