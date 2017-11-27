@@ -46,6 +46,6 @@ def main():
 
 if __name__ == '__main__':
     freeze_support()
-    start = time.clock()
+    start = time.time()
     main()
-    print(time.clock() - start)
+    print(time.time() - start)

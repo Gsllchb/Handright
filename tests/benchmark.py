@@ -14,20 +14,23 @@ def main():
         'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
         'font_size': 80,
         'font_size_sigma': 2,
-        'line_spacing': 400,
+        'line_spacing': 600,
         'line_spacing_sigma': 1,
         'word_spacing': 0,
         'word_spacing_sigma': 2,
         'is_half_char': lambda c: c.isdigit() or c in ('!', '.', '?', ',', '，', '。'),
         'is_end_char': lambda c: c in ('!', '.', '?', ',', '，', '。')
     }
-    print('case \t char \t image \t time')
+    print('case, char, image, time')
     for i in range(1, 35):
-        start = time.clock()
+        start = time.time()
         images = handwrite(case * i, template, worker=4)
         # for im in images:
         #     im.show()
-        print('#{}: \t {} \t {} \t {}'.format(i, len(case) * i, len(images), time.clock() - start))
+        print('{}, {}, {}, {}'.format(i, len(case) * i, len(images), time.time() - start))
+        if len(images) > 10:
+            break
+
 
 if __name__ == '__main__':
     freeze_support()
