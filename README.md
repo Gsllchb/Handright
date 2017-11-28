@@ -1,5 +1,5 @@
 # PyLf
-![](./demo/out/I_can_eat_glass.jpg) <br>
+![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
 PyLf is a lightweight Python library for simulating Chinese handwriting. It introduces a great deal of randomness in the 
 process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
 ## For Windows users
@@ -57,9 +57,11 @@ process of Chinese handwriting to simulate the uncertainty of glyphs written by 
     for image in images:
         image.show()
 
-## Demo
-* 我能吞下玻璃而不伤身体 <br>
-![I_can_eat_glass](./demo/out/I_can_eat_glass.jpg)
-* 《荷塘月色》 <br>
-![荷塘月色0](./demo/out/荷塘月色/0.jpg)
-![荷塘月色1](./demo/out/荷塘月色/1.jpg)
+## Examples
+* **“我能吞下玻璃而不伤身体。”** <br>
+[./examples/i_can_eat_glass.py](./examples/i_can_eat_glass.py) <br>
+![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
+* **《荷塘月色》** <br>
+[./examples/he_tang_yue_se.py](./examples/he_tang_yue_se.py) <br>
+![荷塘月色0](./examples/out/荷塘月色/0.jpg) <br>
+![荷塘月色1](./examples/out/荷塘月色/1.jpg) <br>
