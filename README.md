@@ -1,20 +1,20 @@
-# PyLf
+# *PyLf*
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
-PyLf is a lightweight Python library for simulating Chinese handwriting. It introduces a great deal of randomness in the 
+*PyLf* is a lightweight *Python* library for simulating Chinese handwriting. It introduces a great deal of randomness in the 
 process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
-## For Windows users
-* [Windows用户必读！](https://github.com/Gsllchb/PyLf/wiki/Windows%E7%94%A8%E6%88%B7%E5%BF%85%E8%AF%BB%EF%BC%81)
+## For *Windows* users
+* [*Windows*用户必读](./docs/Windows用户必读.md)
 ## Installation
-由于PyLf的依赖项[Pillow](https://python-pillow.org/)会与[PIL](http://www.pythonware.com/products/pil/)发生冲突，
-如若您已安装[PIL](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
+由于*PyLf*的依赖项[*Pillow*](https://python-pillow.org/)会与[*PIL*](http://www.pythonware.com/products/pil/)发生冲突，
+如若您已安装[*PIL*](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
 
     pip uninstall PIL
 
-此外如若您并未安装[setuptools](https://pypi.python.org/pypi/setuptools),请先**手动安装**：
+此外如若您并未安装[*setuptools*](https://pypi.python.org/pypi/setuptools),请先**手动安装**：
 
     pip install setuptools
 
-安装PyLf：
+安装*PyLf*：
 
     pip install pylf
 
@@ -50,7 +50,7 @@ process of Chinese handwriting to simulate the uncertainty of glyphs written by 
         'is_end_char': lambda c: c in ('！', '.', '？', ',' , '，', '。')
     }
     # 需要“手写”的文本
-    text = """your context"""
+    text = """我能吞下玻璃而不伤身体。"""
     # 开始“手写”
     images = handwrite(text, template)
     # 显示每一张生成的图片
@@ -62,6 +62,10 @@ process of Chinese handwriting to simulate the uncertainty of glyphs written by 
 [./examples/i_can_eat_glass.py](./examples/i_can_eat_glass.py) <br>
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
 * **《荷塘月色》** <br>
-[./examples/he_tang_yue_se.py](./examples/he_tang_yue_se.py) <br>
+[./examples/hetangyuese.py](./examples/hetangyuese.py) <br>
 ![荷塘月色0](./examples/out/荷塘月色/0.jpg) <br>
 ![荷塘月色1](./examples/out/荷塘月色/1.jpg) <br>
+
+## More
+* [Change Log](./CHANGES.md)
+ 
