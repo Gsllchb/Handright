@@ -130,6 +130,12 @@ def _draw_text(text,
                word_spacing_sigma,
                is_end_char,
                is_half_char):
+    """
+    :return: a list of drawn image
+    :raise: ValueError
+    """
+    if not box[3] - box[1] > font_size:
+        raise ValueError('(box[3] - box[1]) must be greater than font_size.')
 
     length = len(text)
     images = []
