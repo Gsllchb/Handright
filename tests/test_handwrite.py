@@ -1,6 +1,3 @@
-"""
-Test handwrite by naked eye.
-"""
 from PIL import Image, ImageFont
 from pylf import handwrite
 import unittest
