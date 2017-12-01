@@ -15,62 +15,62 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
-    :param text: a char sequence.
+    :param text: a char sequence
 
-    :param template: a dict containing the settings of the template.
+    :param template: a dict containing the settings of the template
         The dict should contain below settings:
         'background': <Image>
-            An Image object used as the background.
+            An Image object used as the background
         'box': (<int>, <int>, <int>, <int>)
-            A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate.
+            A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function DO NOT guarantee the drawn texts would absolutely in the 'box' due to the randomness used.
         'color': (<int>, <int>, <int>)
             The color of font in RGB. These values should be within [0, 255].
         'font': <FreeTypeFont>
-            A FreeTypeFont object. Note that the size of the FreeTypeFont Object means nothing to the function.
+            Note that the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
         'font_size_sigma': <float>
-            The sigma of the gauss distribution of font size.
+            The sigma of the gauss distribution of font size
         'line_spacing': <int>
         'line_spacing_sigma': <float>
-            The sigma of the gauss distribution of line spacing.
+            The sigma of the gauss distribution of line spacing
         'word_spacing': <int>
         'word_spacing_sigma': <float>
-            The sigma of the gauss distribution of word spacing.
+            The sigma of the gauss distribution of word spacing
         'is_half_char': <callable>
             A function judges whether or not a char only take up half of the horizontal space of other char (e.g. 'a',
-            '?', '2').
+            '?', '2')
             The function should take a char parameter and return a boolean value.
-        'is_end_char': <callable>,
-            A function judges whether or not a char can NOT be in the beginning of the lines (e.g. ',' , '!').
+        'is_end_char': <callable>
+            A function judges whether or not a char can NOT be in the beginning of the lines (e.g. ',' , '!')
 
         Advanced:
         If you do NOT fully understand the algorithm, please leave these value default.
         'x_amplitude': <float>
-            default: 0.06 * font_size.
+            default: 0.06 * font_size
         'y_amplitude': <float>
-            default: 0.06 * font_size.
+            default: 0.06 * font_size
         'x_wavelength': <float>
-            default: 2 * font_size.
+            default: 2 * font_size
         'y_wavelength': <float>
-            default: 2 * font_size.
+            default: 2 * font_size
         'x_lambd': <float>
-            default: 1 / font_size.
+            default: 1 / font_size
         'y_lambd': <float>
-            default: 1 / font_size.
+            default: 1 / font_size
     
-    :param anti_aliasing: whether or not turn on the anti-aliasing.
+    :param anti_aliasing: whether or not turn on the anti-aliasing
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the computational cost.
-        default True.
+        default: True
 
-    :param worker: the number of worker.
+    :param worker: the number of worker
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
-        default 0 (use all available CPU in the computer).
+        default: 0 (use all available CPU in the computer)
 
-    :return: a list of drawn images.
+    :return: a list of drawn images
     """
     template = dict(template)
     font_size = template['font_size']
@@ -190,7 +190,7 @@ class _RenderFactory:
         self._y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
 
     def __call__(self, image):
-        self._random = random.Random()
+        self._random = random.Random()  # construct thread local random generator
         image = self.__perturb(image)
         if self._anti_aliasing:
             image = self.__downsample(image)
@@ -226,6 +226,9 @@ class _RenderFactory:
         return image
 
     def __downsample(self, image):
+        """
+        Downsample for 4X SSAA
+        """
         width, height = image.size[0] // 2, image.size[1] // 2
         sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
         spx, px = sampled_image.load(), image.load()
