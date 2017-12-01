@@ -32,15 +32,15 @@ class TestHandwrite(unittest.TestCase):
 
         tmp['box'] = (100, 100, 100 + font_size + 1, 100 + font_size)
         with self.assertRaises(ValueError):
-            handwrite(text, tmp)
+            handwrite(txt, tmp)
 
         tmp['box'] = (100, 100, 100 + font_size, 100 + font_size + 1)
         with self.assertRaises(ValueError):
-            handwrite(text, tmp)
+            handwrite(txt, tmp)
 
         tmp['box'] = (100, 100, 100 + font_size, 100 + font_size )
         with self.assertRaises(ValueError):
-            handwrite(text, tmp)
+            handwrite(txt, tmp)
 
     def test_side_effect(self):
         txt, tmp = self.__copy()
@@ -54,7 +54,8 @@ class TestHandwrite(unittest.TestCase):
 
     def test_by_naked_eyes(self):
         import os
-        prompt = "{}\nTest by naked eyes. pass test? [Y/N] \n"
+        print('Test by naked eyes:')
+        prompt = "{}\npass test? [Y/N] \n"
         tmp = self.__copy()[1]
         dir_path, dir_names, file_names = list(os.walk("./data/texts"))[0]
         for filename in file_names:
