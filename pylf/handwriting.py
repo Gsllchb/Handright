@@ -94,42 +94,42 @@ def _handwrite(text, template, anti_aliasing, worker):
     if not text:
         return []
 
-    images = _draw_text(text=text,
-                        size=(tuple(2 * i for i in template['background'].size)
-                              if anti_aliasing else template['background'].size),
-                        box=tuple(2 * i for i in template['box']) if anti_aliasing else template['box'],
-                        color=template['color'],
-                        font=template['font'],
-                        font_size=template['font_size'] * 2 if anti_aliasing else template['font_size'],
-                        font_size_sigma=(template['font_size_sigma'] * 2
-                                         if anti_aliasing else template['font_size_sigma']),
-                        line_spacing=template['line_spacing'] * 2 if anti_aliasing else template['line_spacing'],
-                        line_spacing_sigma=(template['line_spacing_sigma'] * 2
-                                            if anti_aliasing else template['line_spacing_sigma']),
-                        word_spacing=template['word_spacing'] * 2 if anti_aliasing else template['word_spacing'],
-                        word_spacing_sigma=(template['word_spacing_sigma'] * 2
-                                            if anti_aliasing else template['word_spacing_sigma']),
-                        is_end_char=template['is_end_char'],
-                        is_half_char=template['is_half_char'])
+    images = _draw_text(
+        text=text,
+        size=tuple(2 * i for i in template['background'].size) if anti_aliasing else template['background'].size,
+        box=tuple(2 * i for i in template['box']) if anti_aliasing else template['box'],
+        color=template['color'],
+        font=template['font'],
+        font_size=template['font_size'] * 2 if anti_aliasing else template['font_size'],
+        font_size_sigma=template['font_size_sigma'] * 2 if anti_aliasing else template['font_size_sigma'],
+        line_spacing=template['line_spacing'] * 2 if anti_aliasing else template['line_spacing'],
+        line_spacing_sigma=template['line_spacing_sigma'] * 2 if anti_aliasing else template['line_spacing_sigma'],
+        word_spacing=template['word_spacing'] * 2 if anti_aliasing else template['word_spacing'],
+        word_spacing_sigma=template['word_spacing_sigma'] * 2 if anti_aliasing else template['word_spacing_sigma'],
+        is_end_char=template['is_end_char'],
+        is_half_char=template['is_half_char']
+    )
     render = _RenderFactory(anti_aliasing, **template)
     with multiprocessing.Pool(min(worker, len(images))) as pool:
         images = pool.map(render, images)
     return images
 
 
-def _draw_text(text,
-               size,
-               box,
-               color,
-               font,
-               font_size,
-               font_size_sigma,
-               line_spacing,
-               line_spacing_sigma,
-               word_spacing,
-               word_spacing_sigma,
-               is_end_char,
-               is_half_char):
+def _draw_text(
+        text,
+        size,
+        box,
+        color,
+        font,
+        font_size,
+        font_size_sigma,
+        line_spacing,
+        line_spacing_sigma,
+        word_spacing,
+        word_spacing_sigma,
+        is_end_char,
+        is_half_char
+):
     """
     :return: a list of drawn image
     :raise: ValueError
@@ -169,16 +169,18 @@ def _draw_text(text,
 
 class _RenderFactory:
 
-    def __init__(self,
-                 anti_aliasing,
-                 background,
-                 x_amplitude,
-                 y_amplitude,
-                 x_wavelength,
-                 y_wavelength,
-                 x_lambd,
-                 y_lambd,
-                 **kwargs):
+    def __init__(
+            self,
+            anti_aliasing,
+            background,
+            x_amplitude,
+            y_amplitude,
+            x_wavelength,
+            y_wavelength,
+            x_lambd,
+            y_lambd,
+            **kwargs
+    ):
 
         self._anti_aliasing = anti_aliasing
         self._background = background
