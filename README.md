@@ -1,7 +1,6 @@
 # *PyLf*
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
-*PyLf* is a lightweight *Python* library for simulating Chinese handwriting. It introduces a great deal of randomness in the 
-process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings.
+*PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
 ## Installation
 由于*PyLf*的依赖项[*Pillow*](https://python-pillow.org/)会与[*PIL*](http://www.pythonware.com/products/pil/)发生冲突，
