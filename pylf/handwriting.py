@@ -28,6 +28,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             NOTE: The function DO NOT guarantee the drawn texts would absolutely in the 'box' due to the randomness used.
         'color': (<int>, <int>, <int>)
             The color of font in RGB. These values should be within [0, 255].
+            default: (0, 0, 0)
         'font': <FreeTypeFont>
             Note that the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
@@ -74,6 +75,8 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     """
     template = dict(template)
     font_size = template['font_size']
+    if 'color' not in template:
+        template['color'] = (0, 0, 0)
     if 'x_amplitude' not in template:
         template['x_amplitude'] = 0.06 * font_size
     if 'y_amplitude' not in template:
@@ -86,6 +89,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         template['x_lambd'] = 1 / font_size
     if 'y_lambd' not in template:
         template['y_lambd'] = 1 / font_size
+
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, anti_aliasing, worker)
 

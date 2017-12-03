@@ -21,7 +21,6 @@
         template = {
             'background': Image.open("./something.png"),  
             'box': (0, 0, 1000, 1000),
-            'color': (0, 0, 0),  
             'font': ImageFont.truetype("./something.ttf"),  
             'font_size': 10,
             'font_size_sigma': 0.1,

@@ -6,7 +6,6 @@ image = Image.open("./data/pictures/background.png")
 template = {
     'background': image,
     'box': (100, 150, image.width - 100, image.height - 100),
-    'color': (0, 0, 0),
     'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
     'font_size': 30,
     'font_size_sigma': 1,
@@ -73,11 +72,30 @@ class TestHandwrite(unittest.TestCase):
         self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
 
         txt = "测试‘box’比背景图大的情况。"
+        tmp = self.__copy()[1]
         tmp['box'] = (-100, -100, im.width + 100, im.height + 100)
         images = handwrite(txt * 100, tmp)
         for im in images:
             im.show()
         self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
+
+        tmp = self.__copy()[1]
+        cases = {
+            '黑色': (0, 0, 0),
+            '白色': (255, 255, 255),
+            '红色': (255, 0, 0),
+            '绿色': (0, 255, 0),
+            '蓝色': (0, 0, 255),
+            'color: (-1, -1, -1)': (-1, -1, -1),
+            'color: (1000, 1000, 1000)': (1000, 1000, 1000),
+        }
+        for (k, v) in cases.items():
+            print(k, v)
+            tmp['color'] = v
+            images = handwrite(k, tmp)
+            for im in images:
+                im.show()
+        self.assertTrue(input(prompt.format("测试颜色")).upper() == 'Y')
 
 
 if __name__ == '__main__':

@@ -7,7 +7,6 @@ def main():
     template = {
         'background': Image.open("./pictures/树信笺纸.jpg"),
         'box': (50, 500, 800 - 80, 800 - 50),
-        'color': (0, 0, 0),
         'font': ImageFont.truetype("./fonts/Gsllchb_lf.ttf"),
         'font_size': 60,
         'font_size_sigma': 1,

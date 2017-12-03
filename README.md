@@ -29,21 +29,19 @@
             'background': Image.open("./something.png"),  
             # 限定“手写”的范围的左、上、右、下边界的坐标（以左上角为坐标原点）
             'box': (0, 0, 100, 100),
-            # RGB（取值0~255）
-            'color': (0, 0, 0),  
             # 选择字体
             'font': ImageFont.truetype("./something.ttf"),  
             # 平均字体大小
             'font_size': 10,
-            # 绝对值越大字体大小的随机性越强  
+            # 绝对值越大字体大小的方差越大  
             'font_size_sigma': 0.1,
             # 行间距
             'line_spacing': 15,
-            # 绝对值越大行间距大小的随机性越强  
+            # 绝对值越大行间距大小的方差越大  
             'line_spacing_sigma': 0.1,
             # 字间距
             'word_spacing': 10,
-            # 绝对值越大字间距大小的随机性越强  
+            # 绝对值越大字间距大小的方差越大  
             'word_spacing_sigma': 0.1,
             # 判断一个字符是否仅占用正常水平位置的一半
             'is_half_char': lambda c: c.isdigit() or c in ('！', '.', '？', ',', '，', '。', ' '),
