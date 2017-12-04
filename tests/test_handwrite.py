@@ -5,12 +5,12 @@ import unittest
 image = Image.open("./data/pictures/background.png")
 template = {
     'background': image,
-    'box': (100, 150, image.width - 100, image.height - 100),
+    'box': (68, 131, 653, 950),
     'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
-    'font_size': 30,
-    'font_size_sigma': 1,
-    'line_spacing': 30,
-    'line_spacing_sigma': 1,
+    'font_size': 26,
+    'font_size_sigma': 0.5,
+    'line_spacing': 33,
+    'line_spacing_sigma': 0.5,
     'word_spacing': 0,
     'word_spacing_sigma': 1,
     'is_half_char': lambda c: c.isdigit() or c in ('!', '.', '?', ',', '，', '。'),
@@ -86,11 +86,11 @@ class TestHandwrite(unittest.TestCase):
             '红色': (255, 0, 0),
             '绿色': (0, 255, 0),
             '蓝色': (0, 0, 255),
-            'color: (-1, -1, -1)': (-1, -1, -1),
-            'color: (1000, 1000, 1000)': (1000, 1000, 1000),
+            'color0': (-1, -1, -1),
+            'color1': (1000, 1000, 1000),
         }
         for (k, v) in cases.items():
-            print(k, v)
+            print('{}: {}'.format(k, v))
             tmp['color'] = v
             images = handwrite(k, tmp)
             for im in images:
