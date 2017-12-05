@@ -28,8 +28,6 @@
             'line_spacing_sigma': 0.1,
             'word_spacing': 10,
             'word_spacing_sigma': 0.1,
-            'is_half_char': lambda c: c.isdigit() or c in ('！', '.', '？', ',', '，', '。', ' '),
-            'is_end_char': lambda c: c in ('！', '.', '？', ',' , '，', '。')
         }
         text = """我能吞下玻璃而不伤身体。"""
         images = handwrite(text, template)
