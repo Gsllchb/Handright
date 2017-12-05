@@ -5,5 +5,5 @@ This file records the changes in *PyLf* library in reverse chronological order.
 [Gsllchb]
 * Improve docstring
 [Gsllchb]
-* 将黑色作为template的缺省颜色
+* **将黑色作为template的缺省颜色**
 [Gsllchb]
