@@ -7,6 +7,9 @@ import PIL.Image
 import PIL.ImageDraw
 
 
+_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+
+
 def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
@@ -26,9 +29,6 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function DO NOT guarantee the drawn texts would absolutely in the 'box' due to the randomness used.
-        'color': (<int>, <int>, <int>)
-            The color of font in RGB. These values should be within [0, 255].
-            default: (0, 0, 0)
         'font': <FreeTypeFont>
             Note that the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
@@ -40,12 +40,18 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         'word_spacing': <int>
         'word_spacing_sigma': <float>
             The sigma of the gauss distribution of word spacing
+
+        Optional:
+        'color': (<int>, <int>, <int>)
+            The color of font in RGB. These values should be within [0, 255].
+            default: (0, 0, 0)
         'is_half_char': <callable>
-            A function judges whether or not a char only take up half of the horizontal space of other char (e.g. 'a',
-            '?', '2')
+            A function judges whether or not a char only take up half of its original width
             The function should take a char parameter and return a boolean value.
+            The feature is designed for some of Chinese punctuations that usually only take up the left half of their
+            space (e.g. '，', '。').
         'is_end_char': <callable>
-            A function judges whether or not a char can NOT be in the beginning of the lines (e.g. ',' , '!')
+            A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
 
         Advanced:
         If you do NOT fully understand the algorithm, please leave these value default.
@@ -77,6 +83,10 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     font_size = template['font_size']
     if 'color' not in template:
         template['color'] = (0, 0, 0)
+    if 'is_half_char' not in template:
+        template['is_half_char'] = lambda c: False
+    if 'is_end_char' not in template:
+        template['is_end_char'] = lambda c: c in _END_CHARS
     if 'x_amplitude' not in template:
         template['x_amplitude'] = 0.06 * font_size
     if 'y_amplitude' not in template:
@@ -162,8 +172,10 @@ def _draw_text(
                     break
                 actual_font_size = int(random.gauss(font_size, font_size_sigma))
                 xy = x, int(random.gauss(y, line_spacing_sigma))
-                draw.text(xy, char, fill=(*color, 255), font=font.font_variant(size=actual_font_size))
-                x_step = word_spacing + actual_font_size * (1 / 2 if is_half_char(char) else 1)
+                font = font.font_variant(size=actual_font_size)
+                draw.text(xy, char, fill=(*color, 255), font=font)
+                font_width = font.getsize(char)[0]
+                x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                 x += int(random.gauss(x_step, word_spacing_sigma))
                 i += 1
             y += line_spacing

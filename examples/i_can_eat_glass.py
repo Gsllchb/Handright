@@ -11,12 +11,9 @@ def main():
         'font_size': 60,
         'font_size_sigma': 1,
         'line_spacing': 60,
-        'line_spacing_sigma': 1,
+        'line_spacing_sigma': 0.5,
         'word_spacing': 0,
         'word_spacing_sigma': 1,
-        'is_half_char': lambda c: c.isdigit() or c in ('！', '.', '？', ',', '，', '。', ' '),
-        'is_end_char': lambda c: c in ('！', '.', '？', ',' , '，', '。'),
-        'x_amplitude': 1
     }
     text = "我能吞下玻璃而不伤身体。"
     images = handwrite(text, template)

@@ -13,8 +13,6 @@ template = {
     'line_spacing_sigma': 0.5,
     'word_spacing': 0,
     'word_spacing_sigma': 1,
-    'is_half_char': lambda c: c.isdigit() or c in ('!', '.', '?', ',', '，', '。'),
-    'is_end_char': lambda c: c in ('!', '.', '?', ',', '，', '。')
 }
 text = """我能吞下玻璃而不伤身体。"""
 
@@ -55,6 +53,7 @@ class TestHandwrite(unittest.TestCase):
         import os
         print('Test by naked eyes:')
         prompt = "{}\npass test? [Y/N] \n"
+
         tmp = self.__copy()[1]
         dir_path, dir_names, file_names = list(os.walk("./data/texts"))[0]
         for filename in file_names:
@@ -74,7 +73,7 @@ class TestHandwrite(unittest.TestCase):
         txt = "测试‘box’比背景图大的情况。"
         tmp = self.__copy()[1]
         tmp['box'] = (-100, -100, im.width + 100, im.height + 100)
-        images = handwrite(txt * 100, tmp)
+        images = handwrite(txt * 150, tmp)
         for im in images:
             im.show()
         self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
@@ -96,6 +95,24 @@ class TestHandwrite(unittest.TestCase):
             for im in images:
                 im.show()
         self.assertTrue(input(prompt.format("测试颜色")).upper() == 'Y')
+
+        txt = """测试is_half_char　= lambda c: c in ('，', '。')
+        ，，，，，，，，。。。。。。。。。。。"""
+        tmp = self.__copy()[1]
+        tmp['is_half_char'] = lambda c: c in ('，', '。')
+        images = handwrite(txt, tmp)
+        for im in images:
+            im.show()
+        self.assertTrue(input(prompt.format("测试is_half_char")).upper() == 'Y')
+
+        txt = """测试is_end_char　= lambda c: False
+        。。。。。。。。。。。。。。。。。。。。。。。。"""
+        tmp = self.__copy()[1]
+        tmp['is_end_char'] = lambda c: False
+        images = handwrite(txt, tmp)
+        for im in images:
+            im.show()
+        self.assertTrue(input(prompt.format("测试is_end_char")).upper() == 'Y')
 
 
 if __name__ == '__main__':

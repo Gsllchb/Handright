@@ -14,8 +14,6 @@ def main():
         'line_spacing_sigma': 0.1,
         'word_spacing': 0,
         'word_spacing_sigma': 0.1,
-        'is_half_char': lambda c: c.isdigit() or c in ('！', '.', '？', ',', '，', '。', ' '),
-        'is_end_char': lambda c: c in ('！', '.', '？', ',' , '，', '。')
     }
     text = """                                   荷塘月色
     
