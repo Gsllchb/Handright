@@ -96,10 +96,10 @@ class TestHandwrite(unittest.TestCase):
                 im.show()
         self.assertTrue(input(prompt.format("测试颜色")).upper() == 'Y')
 
-        txt = """测试is_half_char　= lambda c: c in ('，', '。')
+        txt = """测试is_half_char　= lambda c: c in '，。'
         ，，，，，，，，。。。。。。。。。。。"""
         tmp = self.__copy()[1]
-        tmp['is_half_char'] = lambda c: c in ('，', '。')
+        tmp['is_half_char'] = lambda c: c in '，。'
         images = handwrite(txt, tmp)
         for im in images:
             im.show()
