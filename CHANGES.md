@@ -1,6 +1,6 @@
 # *PyLf* Change Log
 This file records the changes in *PyLf* library in reverse chronological order.
-## in progress version
+## v0.4.0 (2017-12-5)
 * Add *ValueError* raised by *pylf.handwrite()* to prevent dead loop in some corner cases
 [Gsllchb]
 * Improve docstring
