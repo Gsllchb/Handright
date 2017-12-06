@@ -123,7 +123,7 @@ def _handwrite(text, template, anti_aliasing, worker):
         is_end_char=template['is_end_char'],
         is_half_char=template['is_half_char']
     )
-    render = _RenderFactory(anti_aliasing, **template)
+    render = _RenderMaker(anti_aliasing, **template)
     with multiprocessing.Pool(min(worker, len(images))) as pool:
         images = pool.map(render, images)
     return images
@@ -183,7 +183,7 @@ def _draw_text(
     return images
 
 
-class _RenderFactory:
+class _RenderMaker:
 
     def __init__(
             self,
