@@ -1,4 +1,7 @@
 # *PyLf*
+[License](./LICENSE) |
+[Release Notes](./NEWS.md)
+
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
 *PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
@@ -67,7 +70,4 @@
 [./examples/hetangyuese.py](./examples/hetangyuese.py) <br>
 ![荷塘月色0](./examples/out/荷塘月色/0.jpg) <br>
 ![荷塘月色1](./examples/out/荷塘月色/1.jpg) <br>
-
-## More
-* [Change Log](./CHANGES.md)
  
