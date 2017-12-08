@@ -1,5 +1,9 @@
 # Release Notes
 This file records the main changes in *PyLf* library in reverse chronological order.
+
+## in progress version
+* **改进算法使得参数*text*可为*iterable***
+
 ## v0.4.0 (2017-12-5)
 * Add *ValueError* raised by *pylf.handwrite()* to prevent dead loop in some corner cases
 * Improve docstring
