@@ -18,7 +18,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
-    :param text: a char sequence
+    :param text: a char iterable
 
     :param template: a dict containing the settings of the template
         The dict should contain below settings:
@@ -153,34 +153,36 @@ def _draw_text(
     if not box[2] - box[0] > font_size:
         raise ValueError('(box[2] - box[0]) must be greater than font_size.')
 
-    length = len(text)
+    chars = iter(text)
     images = []
-    i = 0
-    while i != length:
-        image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
-        draw = PIL.ImageDraw.Draw(image)
-        y = box[1]
-        while y < box[3] - font_size and i != length:
-            x = box[0]
-            while i != length:
-                char = text[i]
-                # DO NOT change the order of these if statements.
-                if char == '\n':
-                    i += 1
-                    break
-                if x > box[2] - font_size and not is_end_char(char):
-                    break
-                actual_font_size = int(random.gauss(font_size, font_size_sigma))
-                xy = x, int(random.gauss(y, line_spacing_sigma))
-                font = font.font_variant(size=actual_font_size)
-                draw.text(xy, char, fill=(*color, 255), font=font)
-                font_width = font.getsize(char)[0]
-                x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
-                x += int(random.gauss(x_step, word_spacing_sigma))
-                i += 1
-            y += line_spacing
-        images.append(image)
-    return images
+    try:
+        char = next(chars)
+        while True:
+            image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
+            draw = PIL.ImageDraw.Draw(image)
+            y = box[1]
+            try:
+                while y < box[3] - font_size:
+                    x = box[0]
+                    while x < box[2] - font_size or is_end_char(char):
+                        if char == '\n':
+                            char = next(chars)
+                            break
+                        actual_font_size = int(random.gauss(font_size, font_size_sigma))
+                        xy = x, int(random.gauss(y, line_spacing_sigma))
+                        font = font.font_variant(size=actual_font_size)
+                        draw.text(xy, char, fill=(*color, 255), font=font)
+                        font_width = font.getsize(char)[0]
+                        x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
+                        x += int(random.gauss(x_step, word_spacing_sigma))
+                        char = next(chars)
+                    y += line_spacing
+                images.append(image)
+            except StopIteration:
+                images.append(image)
+                raise StopIteration()
+    except StopIteration:
+        return images
 
 
 class _RenderMaker:
