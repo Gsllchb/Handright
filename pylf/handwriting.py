@@ -105,9 +105,6 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
 
 
 def _handwrite(text, template, anti_aliasing, worker):
-    if not text:
-        return []
-
     images = _draw_text(
         text=text,
         size=tuple(2 * i for i in template['background'].size) if anti_aliasing else template['background'].size,
@@ -123,6 +120,8 @@ def _handwrite(text, template, anti_aliasing, worker):
         is_end_char=template['is_end_char'],
         is_half_char=template['is_half_char']
     )
+    if not images:
+        return images
     render = _RenderMaker(anti_aliasing, **template)
     with multiprocessing.Pool(min(worker, len(images))) as pool:
         images = pool.map(render, images)
@@ -200,7 +199,6 @@ class _RenderMaker:
             y_lambd,
             **kwargs
     ):
-
         self._anti_aliasing = anti_aliasing
         self._background = background
         self._x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
