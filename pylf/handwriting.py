@@ -6,7 +6,8 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
-# Chinese, English and other end char
+
+# Chinese, English and other end chars
 _END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 
 
@@ -207,9 +208,10 @@ class _RenderMaker:
         self._y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
         self._x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
         self._y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
+        self._random = random.Random()
 
     def __call__(self, image):
-        self._random = random.Random()  # construct thread local random generator
+        self._random.seed()
         image = self.__perturb(image)
         if self._anti_aliasing:
             image = self.__downsample(image)
@@ -244,7 +246,8 @@ class _RenderMaker:
                 px[x, y] = (0, 0, 0, 0)
         return image
 
-    def __downsample(self, image):
+    @staticmethod
+    def __downsample(image):
         """
         Downsample for 4X SSAA
         """
