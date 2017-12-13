@@ -6,7 +6,7 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
-
+# Chinese, English and other end char
 _END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 
 
@@ -153,6 +153,7 @@ def _draw_text(
     if not box[2] - box[0] > font_size:
         raise ValueError('(box[2] - box[0]) must be greater than font_size.')
 
+    left, upper, right, lower = box
     chars = iter(text)
     images = []
     try:
@@ -160,11 +161,11 @@ def _draw_text(
         while True:
             image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
             draw = PIL.ImageDraw.Draw(image)
-            y = box[1]
+            y = upper
             try:
-                while y < box[3] - font_size:
-                    x = box[0]
-                    while x < box[2] - font_size or is_end_char(char):
+                while y < lower - font_size:
+                    x = left
+                    while x < right - font_size or is_end_char(char):
                         if char == '\n':
                             char = next(chars)
                             break
