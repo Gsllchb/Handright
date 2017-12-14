@@ -2,6 +2,8 @@
 This file records the main changes in *PyLf* library in reverse chronological order.
 
 ## in progress version
+
+## v0.5.0 (2017-12-14)
 * **改进算法使得参数*text*可为*iterable***
 
 ## v0.4.0 (2017-12-5)
