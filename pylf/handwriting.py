@@ -165,9 +165,11 @@ def _draw_text(
             try:
                 while y < lower - font_size:
                     x = left
-                    while x < right - font_size or is_end_char(char):
+                    while True:
                         if char == '\n':
                             char = next(chars)
+                            break
+                        if x >= right - font_size and not is_end_char(char):
                             break
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
                         xy = x, int(random.gauss(y, line_spacing_sigma))
