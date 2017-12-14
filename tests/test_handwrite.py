@@ -49,6 +49,16 @@ class TestHandwrite(unittest.TestCase):
         tmp = self.__copy()[1]
         self.assertEqual(handwrite('', tmp), [])
 
+    def test_text_iterable(self):
+        txt, tmp = self.__copy()
+        handwrite(txt, tmp)
+        txt = list(txt)
+        handwrite(txt, tmp)
+        txt = tuple(txt)
+        handwrite(txt, tmp)
+        txt = (c for c in txt)
+        handwrite(txt, tmp)
+
     def test_by_naked_eyes(self):
         import os
         print('Test by naked eyes:')
