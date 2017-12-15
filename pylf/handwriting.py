@@ -1,6 +1,4 @@
-"""
-The core module.
-"""
+""" The core module """
 import multiprocessing
 import random
 import PIL.Image
@@ -145,6 +143,7 @@ def _draw_text(
         is_half_char
 ):
     """
+    Draw the text randomly in blank image(s)
     :return: a list of drawn image
     :raise: ValueError
     """
@@ -189,6 +188,9 @@ def _draw_text(
 
 
 class _RenderMaker:
+    """
+    The maker of the function-like object rendering the foreground that was drawn text and returning finished image
+    """
 
     def __init__(
             self,
@@ -202,46 +204,47 @@ class _RenderMaker:
             y_lambd,
             **kwargs
     ):
-        self._anti_aliasing = anti_aliasing
-        self._background = background
-        self._x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
-        self._y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
-        self._x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
-        self._y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
-        self._x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
-        self._y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
-        self._random = random.Random()
+        self.__anti_aliasing = anti_aliasing
+        self.__background = background
+        self.__x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
+        self.__y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
+        self.__x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
+        self.__y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
+        self.__x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
+        self.__y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
+        self.__random = random.Random()
 
     def __call__(self, image):
-        self._random.seed()
+        self.__random.seed()
         image = self.__perturb(image)
-        if self._anti_aliasing:
+        if self.__anti_aliasing:
             image = self.__downsample(image)
         return self.__merge(image)
 
     def __perturb(self, image):
+        """ 'Perturb' the image and generally make the glyphs from same chars, if any, seem different """
         from math import sin, pi
         height = image.height
         width = image.width
         px = image.load()
         start = 0
         for x in range(width):
-            if x >= start + self._x_wavelength:
-                start = x + self._random.expovariate(self._x_lambd)
+            if x >= start + self.__x_wavelength:
+                start = x + self.__random.expovariate(self.__x_lambd)
             if x <= start:
                 continue
-            offset = int(self._x_amplitude * (sin(2 * pi *(x - start) / self._x_wavelength - pi / 2) + 1))
+            offset = int(self.__x_amplitude * (sin(2 * pi *(x - start) / self.__x_wavelength - pi / 2) + 1))
             for y in range(height - offset):
                 px[x, y] = px[x, y + offset]
             for y in range(height - offset, height):
                 px[x, y] = (0, 0, 0, 0)
         start = 0
         for y in range(height):
-            if y >= start + self._y_wavelength:
-                start = y + self._random.expovariate(self._y_lambd)
+            if y >= start + self.__y_wavelength:
+                start = y + self.__random.expovariate(self.__y_lambd)
             if y <= start:
                 continue
-            offset = int(self._y_amplitude * (sin(2 * pi *(y - start) / self._y_wavelength - pi / 2) + 1))
+            offset = int(self.__y_amplitude * (sin(2 * pi *(y - start) / self.__y_wavelength - pi / 2) + 1))
             for x in range(width - offset):
                 px[x, y] = px[x + offset, y]
             for x in range(width - offset, width):
@@ -250,7 +253,7 @@ class _RenderMaker:
 
     @staticmethod
     def __downsample(image):
-        """ Downsample for 4X SSAA """
+        """ Downsample the image for 4X SSAA """
         width, height = image.size[0] // 2, image.size[1] // 2
         sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
         spx, px = sampled_image.load(), image.load()
@@ -261,5 +264,6 @@ class _RenderMaker:
         return sampled_image
 
     def __merge(self, image):
-        self._background.paste(image, mask=image)
-        return self._background
+        """ Merge the foreground and the background image """
+        self.__background.paste(image, mask=image)
+        return self.__background
