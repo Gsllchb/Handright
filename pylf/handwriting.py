@@ -250,9 +250,7 @@ class _RenderMaker:
 
     @staticmethod
     def __downsample(image):
-        """
-        Downsample for 4X SSAA
-        """
+        """ Downsample for 4X SSAA """
         width, height = image.size[0] // 2, image.size[1] // 2
         sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
         spx, px = sampled_image.load(), image.load()
