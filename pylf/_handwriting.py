@@ -13,7 +13,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
-    Note that, the module is built for simulating Chinese handwriting instead of English(or other languages)
+    Note that, the module is built for simulating Chinese handwriting instead of English(or other languages')
     handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
@@ -27,18 +27,18 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
-            NOTE: The function DO NOT guarantee the drawn texts would absolutely in the 'box' due to the randomness used.
+            NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
         'font': <FreeTypeFont>
-            Note that the size of the FreeTypeFont Object means nothing in the function.
+            NOTE: the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
         'font_size_sigma': <float>
-            The sigma of the gauss distribution of font size
+            The sigma of the gauss distribution of the font size
         'line_spacing': <int>
         'line_spacing_sigma': <float>
-            The sigma of the gauss distribution of line spacing
+            The sigma of the gauss distribution of the line spacing
         'word_spacing': <int>
         'word_spacing_sigma': <float>
-            The sigma of the gauss distribution of word spacing
+            The sigma of the gauss distribution of the word spacing
 
         Optional:
         'color': (<int>, <int>, <int>)
@@ -46,11 +46,12 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             default: (0, 0, 0)
         'is_half_char': <callable>
             A function judges whether or not a char only take up half of its original width
-            The function should take a char parameter and return a boolean value.
-            The feature is designed for some of Chinese punctuations that usually only take up the left half of their
+            The function must take a char parameter and return a boolean value.
+            The feature is designed for some of Chinese punctuations that only take up the left half of their
             space (e.g. '，', '。').
         'is_end_char': <callable>
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
+            The function must take a char parameter and return a boolean value.
 
         Advanced:
         If you do NOT fully understand the algorithm, please leave these value default.
@@ -143,8 +144,8 @@ def _draw_text(
         is_half_char
 ):
     """
-    Draw the text randomly in blank image(s)
-    :return: a list of drawn image
+    Draw the text randomly in blank images
+    :return: a list of drawn images
     :raise: ValueError
     """
     if not box[3] - box[1] > font_size:
@@ -233,7 +234,7 @@ class _RenderMaker:
                 start = x + self.__random.expovariate(self.__x_lambd)
             if x <= start:
                 continue
-            offset = int(self.__x_amplitude * (sin(2 * pi *(x - start) / self.__x_wavelength - pi / 2) + 1))
+            offset = int(self.__x_amplitude * (sin(2 * pi * (x - start) / self.__x_wavelength - pi / 2) + 1))
             for y in range(height - offset):
                 px[x, y] = px[x, y + offset]
             for y in range(height - offset, height):
@@ -244,7 +245,7 @@ class _RenderMaker:
                 start = y + self.__random.expovariate(self.__y_lambd)
             if y <= start:
                 continue
-            offset = int(self.__y_amplitude * (sin(2 * pi *(y - start) / self.__y_wavelength - pi / 2) + 1))
+            offset = int(self.__y_amplitude * (sin(2 * pi * (y - start) / self.__y_wavelength - pi / 2) + 1))
             for x in range(width - offset):
                 px[x, y] = px[x + offset, y]
             for x in range(width - offset, width):
