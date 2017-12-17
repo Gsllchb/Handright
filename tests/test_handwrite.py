@@ -35,7 +35,7 @@ class TestHandwrite(unittest.TestCase):
         with self.assertRaises(ValueError):
             handwrite(txt, tmp)
 
-        tmp['box'] = (100, 100, 100 + font_size, 100 + font_size )
+        tmp['box'] = (100, 100, 100 + font_size, 100 + font_size)
         with self.assertRaises(ValueError):
             handwrite(txt, tmp)
 
@@ -82,7 +82,7 @@ class TestHandwrite(unittest.TestCase):
 
         txt = "测试‘box’比背景图大的情况。"
         tmp = self.__copy()[1]
-        tmp['box'] = (-100, -100, im.width + 100, im.height + 100)
+        tmp['box'] = (-100, -100, image.width + 100, image.height + 100)
         images = handwrite(txt * 150, tmp)
         for im in images:
             im.show()
