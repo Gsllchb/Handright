@@ -5,8 +5,11 @@ import PIL.Image
 import PIL.ImageDraw
 
 
+_DEFAULT_COLOR = (0, 0, 0)
+_DEFAULT_WORD_SPACING = 0
+_DEFAULT_IS_HALF_CHARS = lambda c: False
 # Chinese, English and other end chars
-_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+_DEFAULT_IS_END_CHARS = lambda c: c in ("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 
 def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
@@ -31,12 +34,16 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         'font': <FreeTypeFont>
             NOTE: the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
+            The average font size in pixel
         'font_size_sigma': <float>
             The sigma of the gauss distribution of the font size
         'line_spacing': <int>
+            The average line spacing in pixel
         'line_spacing_sigma': <float>
             The sigma of the gauss distribution of the line spacing
         'word_spacing': <int>
+            The average gap between two adjacent char in pixel
+            default: 0
         'word_spacing_sigma': <float>
             The sigma of the gauss distribution of the word spacing
 
@@ -80,13 +87,16 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     :return: a list of drawn images
     """
     template = dict(template)
-    font_size = template['font_size']
     if 'color' not in template:
-        template['color'] = (0, 0, 0)
+        template['color'] = _DEFAULT_COLOR
+    if 'word_spacing' not in template:
+        template['word_spacing'] = _DEFAULT_WORD_SPACING
     if 'is_half_char' not in template:
-        template['is_half_char'] = lambda c: False
+        template['is_half_char'] = _DEFAULT_IS_HALF_CHARS
     if 'is_end_char' not in template:
-        template['is_end_char'] = lambda c: c in _END_CHARS
+        template['is_end_char'] = _DEFAULT_IS_END_CHARS
+
+    font_size = template['font_size']
     if 'x_amplitude' not in template:
         template['x_amplitude'] = 0.06 * font_size
     if 'y_amplitude' not in template:

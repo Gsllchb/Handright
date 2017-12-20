@@ -26,7 +26,6 @@
             'font_size_sigma': 0.1,
             'line_spacing': 15,
             'line_spacing_sigma': 0.1,
-            'word_spacing': 10,
             'word_spacing_sigma': 0.1,
         }
         text = """我能吞下玻璃而不伤身体。"""

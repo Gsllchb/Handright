@@ -12,7 +12,6 @@ def main():
         'font_size_sigma': 1,
         'line_spacing': 60,
         'line_spacing_sigma': 0.5,
-        'word_spacing': 0,
         'word_spacing_sigma': 1,
     }
     text = "我能吞下玻璃而不伤身体。"

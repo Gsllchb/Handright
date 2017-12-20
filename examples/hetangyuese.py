@@ -12,7 +12,6 @@ def main():
         'font_size_sigma': 0.1,
         'line_spacing': 27,
         'line_spacing_sigma': 0.1,
-        'word_spacing': 0,
         'word_spacing_sigma': 0.1,
     }
     text = """                                         荷塘月色

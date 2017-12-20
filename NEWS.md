@@ -2,6 +2,8 @@
 This file records the main changes in *PyLf* library in reverse chronological order.
 
 ## in progress version
+* **将0作为*word_spacing*的缺省值**
+* 完善文档
 
 ## v0.5.1 (2017-12-14)
 * fix #2

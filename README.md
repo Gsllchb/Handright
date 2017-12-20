@@ -42,8 +42,6 @@
             'line_spacing': 15,
             # 绝对值越大行间距大小的方差越大  
             'line_spacing_sigma': 0.1,
-            # 字间距
-            'word_spacing': 10,
             # 绝对值越大字间距大小的方差越大  
             'word_spacing_sigma': 0.1,
         }
