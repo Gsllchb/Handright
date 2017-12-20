@@ -12,7 +12,7 @@ _DEFAULT_IS_HALF_CHARS = lambda c: False
 _DEFAULT_IS_END_CHARS = lambda c: c in ("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 
-def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
+def handwrite(text, template: dict, worker: int=0) -> list:
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
@@ -31,6 +31,9 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
+        'color': (<int>, <int>, <int>)
+            The color of font in RGB. These values should be within [0, 255].
+            default: (0, 0, 0)
         'font': <FreeTypeFont>
             NOTE: the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
@@ -48,9 +51,6 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
             The sigma of the gauss distribution of the word spacing
 
         Optional:
-        'color': (<int>, <int>, <int>)
-            The color of font in RGB. These values should be within [0, 255].
-            default: (0, 0, 0)
         'is_half_char': <callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
@@ -75,11 +75,6 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         'y_lambd': <float>
             default: 1 / font_size
     
-    :param anti_aliasing: whether or not turn on the anti-aliasing
-        It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
-        significantly reduce the computational cost.
-        default: True
-
     :param worker: the number of worker
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all available CPU in the computer)
@@ -111,28 +106,14 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         template['y_lambd'] = 1 / font_size
 
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
-    return _handwrite(text, template, anti_aliasing, worker)
+    return _handwrite(text, template, worker)
 
 
-def _handwrite(text, template, anti_aliasing, worker):
-    images = _draw_text(
-        text=text,
-        size=tuple(2 * i for i in template['background'].size) if anti_aliasing else template['background'].size,
-        box=tuple(2 * i for i in template['box']) if anti_aliasing else template['box'],
-        color=template['color'],
-        font=template['font'],
-        font_size=template['font_size'] * 2 if anti_aliasing else template['font_size'],
-        font_size_sigma=template['font_size_sigma'] * 2 if anti_aliasing else template['font_size_sigma'],
-        line_spacing=template['line_spacing'] * 2 if anti_aliasing else template['line_spacing'],
-        line_spacing_sigma=template['line_spacing_sigma'] * 2 if anti_aliasing else template['line_spacing_sigma'],
-        word_spacing=template['word_spacing'] * 2 if anti_aliasing else template['word_spacing'],
-        word_spacing_sigma=template['word_spacing_sigma'] * 2 if anti_aliasing else template['word_spacing_sigma'],
-        is_end_char=template['is_end_char'],
-        is_half_char=template['is_half_char']
-    )
+def _handwrite(text, template, worker):
+    images = _draw_text(text, size=template['background'].size, **template)
     if not images:
         return images
-    render = _RenderMaker(anti_aliasing, **template)
+    render = _RenderMaker(**template)
     with multiprocessing.Pool(min(worker, len(images))) as pool:
         images = pool.map(render, images)
     return images
@@ -151,7 +132,8 @@ def _draw_text(
         word_spacing,
         word_spacing_sigma,
         is_end_char,
-        is_half_char
+        is_half_char,
+        **kwargs
 ):
     """
     Draw the text randomly in blank images
@@ -169,6 +151,7 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
+            # FIXME: the used image mode-'RGBA' actually is unnecessary. Change it to grey level image.
             image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
             draw = PIL.ImageDraw.Draw(image)
             y = upper
@@ -205,7 +188,6 @@ class _RenderMaker:
 
     def __init__(
             self,
-            anti_aliasing,
             background,
             x_amplitude,
             y_amplitude,
@@ -215,25 +197,23 @@ class _RenderMaker:
             y_lambd,
             **kwargs
     ):
-        self.__anti_aliasing = anti_aliasing
         self.__background = background
-        self.__x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
-        self.__y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
-        self.__x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
-        self.__y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
-        self.__x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
-        self.__y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
+        self.__x_amplitude = x_amplitude
+        self.__y_amplitude = y_amplitude
+        self.__x_wavelength = x_wavelength
+        self.__y_wavelength = y_wavelength
+        self.__x_lambd = x_lambd
+        self.__y_lambd = y_lambd
         self.__random = random.Random()
 
     def __call__(self, image):
         self.__random.seed()
         image = self.__perturb(image)
-        if self.__anti_aliasing:
-            image = self.__downsample(image)
         return self.__merge(image)
 
     def __perturb(self, image):
         """ 'Perturb' the image and generally make the glyphs from same chars, if any, seem different """
+        # FIXME: improve the algorithm and enable it 'perturb' the image without producing jaggies
         from math import sin, pi
         height = image.height
         width = image.width
@@ -262,19 +242,8 @@ class _RenderMaker:
                 px[x, y] = (0, 0, 0, 0)
         return image
 
-    @staticmethod
-    def __downsample(image):
-        """ Downsample the image for 4X SSAA """
-        width, height = image.size[0] // 2, image.size[1] // 2
-        sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
-        spx, px = sampled_image.load(), image.load()
-        for x in range(width):
-            for y in range(height):
-                spx[x, y] = (tuple(sum(i) // 4 for i in zip(px[2 * x, 2 * y], px[2 * x + 1, 2 * y],
-                                                            px[2 * x, 2 * y + 1], px[2 * x + 1, 2 * y + 1])))
-        return sampled_image
-
     def __merge(self, image):
         """ Merge the foreground and the background image """
+        # FIXME: rewrite the code for the change of _draw_text()
         self.__background.paste(image, mask=image)
         return self.__background
