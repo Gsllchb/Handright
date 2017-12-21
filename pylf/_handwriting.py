@@ -5,11 +5,8 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-_DEFAULT_COLOR = (0, 0, 0)
-_DEFAULT_WORD_SPACING = 0
-_DEFAULT_IS_HALF_CHARS = lambda c: False
 # Chinese, English and other end chars
-_DEFAULT_IS_END_CHARS = lambda c: c in ("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
+_DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 
 
 def handwrite(text, template: dict, worker: int=0) -> list:
@@ -83,13 +80,13 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     """
     template = dict(template)
     if 'color' not in template:
-        template['color'] = _DEFAULT_COLOR
+        template['color'] = (0, 0, 0)
     if 'word_spacing' not in template:
-        template['word_spacing'] = _DEFAULT_WORD_SPACING
+        template['word_spacing'] = 0
     if 'is_half_char' not in template:
-        template['is_half_char'] = _DEFAULT_IS_HALF_CHARS
+        template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
-        template['is_end_char'] = _DEFAULT_IS_END_CHARS
+        template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
 
     font_size = template['font_size']
     if 'x_amplitude' not in template:
