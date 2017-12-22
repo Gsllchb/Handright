@@ -1,6 +1,6 @@
-.idea/
-build/
-dist/
-pylf.egg-info/
-pylf/__pycache__/
+/.idea/
+/pylf/__pycache__/
+/build/
+/dist/
+/pylf.egg-info/
 /release.sh
