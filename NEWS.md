@@ -1,5 +1,5 @@
 # Release Notes
-This file records the main changes in *PyLf* library in reverse chronological order.
+This file records the **main** changes in *PyLf* library.
 
 ## in progress version
 * **将0作为*word_spacing*的缺省值**
