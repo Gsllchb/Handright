@@ -35,19 +35,19 @@ def handwrite(text, template: dict, worker: int=0) -> list:
             NOTE: the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
             The average font size in pixel
-        'font_size_sigma': <float>
-            The sigma of the gauss distribution of the font size
         'line_spacing': <int>
             The average line spacing in pixel
-        'line_spacing_sigma': <float>
-            The sigma of the gauss distribution of the line spacing
         'word_spacing': <int>
             The average gap between two adjacent char in pixel
             default: 0
+
+        Advanced:
+        'font_size_sigma': <float>
+            The sigma of the gauss distribution of the font size
+        'line_spacing_sigma': <float>
+            The sigma of the gauss distribution of the line spacing
         'word_spacing_sigma': <float>
             The sigma of the gauss distribution of the word spacing
-
-        Optional:
         'is_half_char': <callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
@@ -56,22 +56,9 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         'is_end_char': <callable>
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
             The function must take a char parameter and return a boolean value.
+        'alpha': <float>
+            default: 0.1
 
-        Advanced:
-        If you do NOT fully understand the algorithm, please leave these value default.
-        'x_amplitude': <float>
-            default: 0.06 * font_size
-        'y_amplitude': <float>
-            default: 0.06 * font_size
-        'x_wavelength': <float>
-            default: 2 * font_size
-        'y_wavelength': <float>
-            default: 2 * font_size
-        'x_lambd': <float>
-            default: 1 / font_size
-        'y_lambd': <float>
-            default: 1 / font_size
-    
     :param worker: the number of worker
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all available CPU in the computer)
@@ -87,20 +74,8 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
-
-    font_size = template['font_size']
-    if 'x_amplitude' not in template:
-        template['x_amplitude'] = 0.06 * font_size
-    if 'y_amplitude' not in template:
-        template['y_amplitude'] = 0.06 * font_size
-    if 'x_wavelength' not in template:
-        template['x_wavelength'] = 2 * font_size
-    if 'y_wavelength' not in template:
-        template['y_wavelength'] = 2 * font_size
-    if 'x_lambd' not in template:
-        template['x_lambd'] = 1 / font_size
-    if 'y_lambd' not in template:
-        template['y_lambd'] = 1 / font_size
+    if 'alpha' not in template:
+        template['alpha'] = 0.1
 
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, worker)
@@ -138,9 +113,9 @@ def _draw_text(
     :raise: ValueError
     """
     if not box[3] - box[1] > font_size:
-        raise ValueError('(box[3] - box[1]) must be greater than font_size.')
+        raise ValueError('(box[3] - box[1]) must be > font_size.')
     if not box[2] - box[0] > font_size:
-        raise ValueError('(box[2] - box[0]) must be greater than font_size.')
+        raise ValueError('(box[2] - box[0]) must be > font_size.')
 
     left, upper, right, lower = box
     chars = iter(text)
@@ -186,58 +161,63 @@ class _RenderMaker:
     def __init__(
             self,
             background,
-            x_amplitude,
-            y_amplitude,
-            x_wavelength,
-            y_wavelength,
-            x_lambd,
-            y_lambd,
+            font_size,
+            alpha,
             **kwargs
     ):
         self.__background = background
-        self.__x_amplitude = x_amplitude
-        self.__y_amplitude = y_amplitude
-        self.__x_wavelength = x_wavelength
-        self.__y_wavelength = y_wavelength
-        self.__x_lambd = x_lambd
-        self.__y_lambd = y_lambd
+        self.__font_size = font_size
+        self.__alpha = alpha
         self.__random = random.Random()
 
     def __call__(self, image):
         self.__random.seed()
-        image = self.__perturb(image)
+        self.__perturb(image)
         return self.__merge(image)
 
-    def __perturb(self, image):
-        """ 'Perturb' the image and generally make the glyphs from same chars, if any, seem different """
-        # FIXME: improve the algorithm and enable it 'perturb' the image without producing jaggies
+    def __perturb(self, image) -> None:
+        """ 'perturb' the image and generally make the glyphs from same chars, if any, seem different """
+        if not 0 <= self.__alpha <= 1:
+            raise ValueError("alpha must be >= 0 and <= 1.")
+
         from math import sin, pi
-        height = image.height
-        width = image.width
-        px = image.load()
-        start = 0
-        for x in range(width):
-            if x >= start + self.__x_wavelength:
-                start = x + self.__random.expovariate(self.__x_lambd)
-            if x <= start:
+
+        wavelength = 2 * self.__font_size
+        lambd = 1 / self.__font_size
+
+        x0, x = 0, 0
+        while x < image.width:
+            if x >= x0 + wavelength:
+                x0 = x + self.__random.expovariate(lambd)
+            if x <= x0:
+                x = x0 + 1
                 continue
-            offset = int(self.__x_amplitude * (sin(2 * pi * (x - start) / self.__x_wavelength - pi / 2) + 1))
-            for y in range(height - offset):
-                px[x, y] = px[x, y + offset]
-            for y in range(height - offset, height):
-                px[x, y] = (0, 0, 0, 0)
-        start = 0
-        for y in range(height):
-            if y >= start + self.__y_wavelength:
-                start = y + self.__random.expovariate(self.__y_lambd)
-            if y <= start:
+            offset = self.__alpha * wavelength / (2 * pi) * sin(2 * pi / wavelength * (x - x0))
+            self.__slide_x(image, x, offset)
+            x += 1
+
+        y0, y = 0, 0
+        while y < image.height:
+            if y >= y0 + wavelength:
+                y0 = y + self.__random.expovariate(lambd)
+            if y <= y0:
+                y = y0 + 1
                 continue
-            offset = int(self.__y_amplitude * (sin(2 * pi * (y - start) / self.__y_wavelength - pi / 2) + 1))
-            for x in range(width - offset):
-                px[x, y] = px[x + offset, y]
-            for x in range(width - offset, width):
-                px[x, y] = (0, 0, 0, 0)
-        return image
+            offset = self.__alpha * wavelength / (2 * pi) * sin(2 * pi / wavelength * (y - y0))
+            self.__slide_y(image, y, offset)
+            y += 1
+
+    @staticmethod
+    def __slide_x(image, x, offset: float) -> None:
+        """ Slide one given column without producing jaggies """
+        # TODO
+        pass
+
+    @staticmethod
+    def __slide_y(image, y, offset: float) -> None:
+        """ Slide one given row without producing jaggies """
+        # TODO
+        pass
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
