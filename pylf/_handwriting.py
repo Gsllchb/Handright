@@ -181,33 +181,29 @@ class _RenderMaker:
 
     def __perturb(self, image) -> None:
         """ 'perturb' the image and generally make the glyphs from same chars, if any, seem different """
+        from math import cos, pi
         if not 0 <= self.__alpha <= 1:
             raise ValueError("alpha must be >= 0 and <= 1.")
-
-        from math import cos, pi
-
-        wavelength = 2 * self.__font_size
-        lambd = 1 / self.__font_size
-
+        wavelength_x, wavelength_y = 2 * self.__font_size, 2 * self.__font_size
+        lambd_x, lambd_y = 1 / self.__font_size, 1 / self.__font_size
         x0, x = 0, 0
         while x < image.width:
-            if x >= x0 + wavelength:
-                x0 = x + self.__random.expovariate(lambd)
+            if x >= x0 + wavelength_x:
+                x0 = x + self.__random.expovariate(lambd_x)
             if x <= x0:
                 x = x0 + 1
                 continue
-            offset = self.__alpha * wavelength / (2 * pi) * (1 - cos(2 * pi / wavelength * (x - x0)))
+            offset = self.__alpha * wavelength_x / (2 * pi) * (1 - cos(2 * pi / wavelength_x * (x - x0)))
             self.__slide_x(image, x, offset)
             x += 1
-
         y0, y = 0, 0
         while y < image.height:
-            if y >= y0 + wavelength:
-                y0 = y + self.__random.expovariate(lambd)
+            if y >= y0 + wavelength_y:
+                y0 = y + self.__random.expovariate(lambd_y)
             if y <= y0:
                 y = y0 + 1
                 continue
-            offset = self.__alpha * wavelength / (2 * pi) * (1 - cos(2 * pi / wavelength * (y - y0)))
+            offset = self.__alpha * wavelength_y / (2 * pi) * (1 - cos(2 * pi / wavelength_y * (y - y0)))
             self.__slide_y(image, y, offset)
             y += 1
 
