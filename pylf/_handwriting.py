@@ -4,6 +4,7 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
+# TODO: improve docstrings and exception messages
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
@@ -53,10 +54,13 @@ def handwrite(text, template: dict, worker: int=0) -> list:
             The function must take a char parameter and return a boolean value.
             The feature is designed for some of Chinese punctuations that only take up the left half of their
             space (e.g. '，', '。').
+            default: (lambda c: False)
         'is_end_char': <callable>
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
             The function must take a char parameter and return a boolean value.
+            default: (lambda c: c in _DEFAULT_END_CHARS)
         'alpha': <float>
+            # FIXME
             default: 0.1
 
     :param worker: the number of worker
@@ -180,7 +184,7 @@ class _RenderMaker:
         if not 0 <= self.__alpha <= 1:
             raise ValueError("alpha must be >= 0 and <= 1.")
 
-        from math import sin, pi
+        from math import cos, pi
 
         wavelength = 2 * self.__font_size
         lambd = 1 / self.__font_size
@@ -192,7 +196,7 @@ class _RenderMaker:
             if x <= x0:
                 x = x0 + 1
                 continue
-            offset = self.__alpha * wavelength / (2 * pi) * sin(2 * pi / wavelength * (x - x0))
+            offset = self.__alpha * wavelength / (2 * pi) * (1 - cos(2 * pi / wavelength * (x - x0)))
             self.__slide_x(image, x, offset)
             x += 1
 
@@ -203,7 +207,7 @@ class _RenderMaker:
             if y <= y0:
                 y = y0 + 1
                 continue
-            offset = self.__alpha * wavelength / (2 * pi) * sin(2 * pi / wavelength * (y - y0))
+            offset = self.__alpha * wavelength / (2 * pi) * (1 - cos(2 * pi / wavelength * (y - y0)))
             self.__slide_y(image, y, offset)
             y += 1
 
