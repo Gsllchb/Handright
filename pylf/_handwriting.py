@@ -59,7 +59,10 @@ def handwrite(text, template: dict, worker: int=0) -> list:
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
             The function must take a char parameter and return a boolean value.
             default: (lambda c: c in _DEFAULT_END_CHARS)
-        'alpha': <float>
+        'alpha_x': <float>
+            # FIXME
+            default: 0.1
+        'alpha_y': <float>
             # FIXME
             default: 0.1
 
@@ -166,12 +169,14 @@ class _RenderMaker:
             self,
             background,
             font_size,
-            alpha,
+            alpha_x,
+            alpha_y,
             **kwargs
     ):
         self.__background = background
         self.__font_size = font_size
-        self.__alpha = alpha
+        self.__alpha_x = alpha_x
+        self.__alpha_y = alpha_y
         self.__random = random.Random()
 
     def __call__(self, image):
@@ -182,30 +187,12 @@ class _RenderMaker:
     def __perturb(self, image) -> None:
         """ 'perturb' the image and generally make the glyphs from same chars, if any, seem different """
         from math import cos, pi
-        if not 0 <= self.__alpha <= 1:
-            raise ValueError("alpha must be >= 0 and <= 1.")
-        wavelength_x, wavelength_y = 2 * self.__font_size, 2 * self.__font_size
-        lambd_x, lambd_y = 1 / self.__font_size, 1 / self.__font_size
-        x0, x = 0, 0
-        while x < image.width:
-            if x >= x0 + wavelength_x:
-                x0 = x + self.__random.expovariate(lambd_x)
-            if x <= x0:
-                x = x0 + 1
-                continue
-            offset = self.__alpha * wavelength_x / (2 * pi) * (1 - cos(2 * pi / wavelength_x * (x - x0)))
-            self.__slide_x(image, x, offset)
-            x += 1
-        y0, y = 0, 0
-        while y < image.height:
-            if y >= y0 + wavelength_y:
-                y0 = y + self.__random.expovariate(lambd_y)
-            if y <= y0:
-                y = y0 + 1
-                continue
-            offset = self.__alpha * wavelength_y / (2 * pi) * (1 - cos(2 * pi / wavelength_y * (y - y0)))
-            self.__slide_y(image, y, offset)
-            y += 1
+        if not 0 <= self.__alpha_x <= 1:
+            raise ValueError("alpha_x must be >= 0 and <= 1.")
+        if not 0 <= self.__alpha_y <= 1:
+            raise ValueError("alpha_y must be >= 0 and <= 1.")
+        wavelength = 2 * self.__font_size
+        # TODO: implement the algorithm with using uniform distribution
 
     @staticmethod
     def __slide_x(image, x, offset: float) -> None:
