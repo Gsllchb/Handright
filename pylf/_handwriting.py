@@ -82,9 +82,10 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
-    if 'alpha' not in template:
-        template['alpha'] = 0.1
-
+    if 'alpha_x' not in template:
+        template['alpha_x'] = 0.1
+    if 'alpha_y' not in template:
+        template['alpha_y'] = 0.1
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, worker)
 
