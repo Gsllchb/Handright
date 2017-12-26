@@ -4,7 +4,6 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
-# TODO: improve docstrings and exception messages
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
@@ -60,15 +59,17 @@ def handwrite(text, template: dict, worker: int=0) -> list:
             The function must take a char parameter and return a boolean value.
             default: (lambda c: c in _DEFAULT_END_CHARS)
         'alpha_x': <float>
-            # FIXME
+            A float that controls the degree of the distortion in the horizontal direction
+            its value must be between 0(inclusive) and 1(inclusive).
             default: 0.1
         'alpha_y': <float>
-            # FIXME
+            A float that controls the degree of the distortion in the vertical direction
+            its value must be between 0(inclusive) and 1(inclusive).
             default: 0.1
 
     :param worker: the number of worker
-        if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
-        default: 0 (use all available CPU in the computer)
+        if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
+        default: 0 (use all the available CPU in the computer)
 
     :return: a list of drawn images
     """
@@ -120,9 +121,9 @@ def _draw_text(
     :raise: ValueError
     """
     if not box[3] - box[1] > font_size:
-        raise ValueError('(box[3] - box[1]) must be > font_size.')
+        raise ValueError('(box[3] - box[1]) must be greater than font_size.')
     if not box[2] - box[0] > font_size:
-        raise ValueError('(box[2] - box[0]) must be > font_size.')
+        raise ValueError('(box[2] - box[0]) must be greater than font_size.')
 
     left, upper, right, lower = box
     chars = iter(text)
@@ -185,12 +186,16 @@ class _RenderMaker:
         return self.__merge(image)
 
     def __perturb(self, image) -> None:
-        """ 'perturb' the image and generally make the glyphs from same chars, if any, seem different """
+        """
+        'perturb' the image and generally make the glyphs from same chars, if any, seem different
+        :raise: ValueError
+        """
         from math import cos, pi
         if not 0 <= self.__alpha_x <= 1:
-            raise ValueError("alpha_x must be >= 0 and <= 1.")
+            raise ValueError("alpha_x must be between 0 (inclusive) and 1 (inclusive).")
         if not 0 <= self.__alpha_y <= 1:
-            raise ValueError("alpha_y must be >= 0 and <= 1.")
+            raise ValueError("alpha_y must be between 0 (inclusive) and 1 (inclusive).")
+
         wavelength = 2 * self.__font_size
         # TODO: implement the algorithm with using uniform distribution
 
