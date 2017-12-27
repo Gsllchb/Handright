@@ -3,6 +3,8 @@ This file records the main changes in *PyLf* library in reverse chronological or
 
 ## in progress version
 * **将0作为*word_spacing*的缺省值**
+* **将*line_spacing*的含义改为两临近行间的间隙（即上一行字的下端和下一行字的上端的距离）的大小（以像素为单位），使之与*word_spacing*和
+*Pillow*中*line_spacing*含义一致**
 * 完善文档
 
 ## v0.5.1 (2017-12-14)
