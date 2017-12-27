@@ -36,9 +36,9 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         'font_size': <int>
             The average font size in pixel
         'line_spacing': <int>
-            The average line spacing in pixel
+            The average gap between two adjacent lines in pixel
         'word_spacing': <int>
-            The average gap between two adjacent char in pixel
+            The average gap between two adjacent chars in pixel
             default: 0
 
         Advanced:
@@ -153,7 +153,7 @@ def _draw_text(
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
                         char = next(chars)
-                    y += line_spacing
+                    y += line_spacing + font_size
                 images.append(image)
             except StopIteration:
                 images.append(image)
