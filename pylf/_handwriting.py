@@ -16,7 +16,7 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
-    Note that, the module is built for simulating Chinese handwriting instead of English(or other languages')
+    Note that, the module is built for simulating Chinese handwriting instead of English (or other languages')
     handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
@@ -24,15 +24,14 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
 
     :param template: a dict containing the settings of the template
         The dict should contain below settings:
-        'background': <Image>
-            An Image object used as the background
+        'background': <Image> (from PIL.Image)
         'box': (<int>, <int>, <int>, <int>)
             A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
-        'font': <FreeTypeFont>
-            NOTE: the size of the FreeTypeFont Object means nothing in the function.
+        'font': <Font> (from PIL.ImageFont)
+            NOTE: the size attribute of the font object means nothing in the function.
         'font_size': <int>
             The average font size in pixel
         'font_size_sigma': <float>
@@ -84,7 +83,8 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all available CPU in the computer)
 
-    :return: a list of drawn images
+    :return: <list<Image>>
+        a list of drawn images
     """
     template = dict(template)
     if 'color' not in template:
