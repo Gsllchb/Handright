@@ -123,6 +123,14 @@ class TestHandwrite(unittest.TestCase):
             im.show()
         self.assertTrue(input(prompt.format("测试is_end_char")).upper() == 'Y')
 
+        import multiprocessing
+        txt = "测试生成图片数量超过worker"
+        tmp = self.__copy()[1]
+        worker = multiprocessing.cpu_count()
+        images = handwrite(txt * 100 * worker, tmp, worker=worker)
+        for im in images:
+            im.show()
+        self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
 
 if __name__ == '__main__':
     unittest.main()

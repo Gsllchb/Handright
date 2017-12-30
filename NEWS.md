@@ -1,9 +1,9 @@
 # Release Notes
 This file records the **main** changes in *PyLf* library.
 
-## in progress version
+## v0.5.2 (2017-12-30)
 * **将0作为*word_spacing*的缺省值**
-* 完善文档
+* **修复当生成图片数超过*worker*时文字出现大范围重叠的漏洞**
 
 ## v0.5.1 (2017-12-14)
 * fix #2

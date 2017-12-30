@@ -276,5 +276,6 @@ class _RenderMaker:
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
-        self.__background.paste(image, mask=image)
-        return self.__background
+        background = self.__background.copy()
+        background.paste(image, mask=image)
+        return background
