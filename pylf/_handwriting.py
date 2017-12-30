@@ -215,5 +215,6 @@ class _RenderMaker:
     def __merge(self, image):
         """ Merge the foreground and the background image """
         # FIXME: rewrite the code for the change of _draw_text()
-        self.__background.paste(image, mask=image)
-        return self.__background
+        background = self.__background.copy()
+        background.paste(image, mask=image)
+        return background
