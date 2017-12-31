@@ -90,7 +90,7 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     return _handwrite(text, template, worker)
 
 
-def _handwrite(text, template, worker):
+def _handwrite(text, template: dict, worker: int) -> list:
     images = _draw_text(text, size=template['background'].size, **template)
     if not images:
         return images
@@ -102,20 +102,20 @@ def _handwrite(text, template, worker):
 
 def _draw_text(
         text,
-        size,
-        box,
-        color,
+        size: tuple,
+        box: tuple,
+        color: tuple,
         font,
-        font_size,
-        font_size_sigma,
-        line_spacing,
-        line_spacing_sigma,
-        word_spacing,
-        word_spacing_sigma,
+        font_size: int,
+        font_size_sigma: float,
+        line_spacing: int,
+        line_spacing_sigma: float,
+        word_spacing: int,
+        word_spacing_sigma: float,
         is_end_char,
         is_half_char,
         **kwargs
-):
+) -> list:
     """
     Draw the text randomly in blank images
     :return: a list of drawn images
@@ -170,9 +170,9 @@ class _RenderMaker:
     def __init__(
             self,
             background,
-            font_size,
-            alpha_x,
-            alpha_y,
+            font_size: int,
+            alpha_x: float,
+            alpha_y: float,
             **kwargs
     ):
         self.__background = background
