@@ -73,12 +73,6 @@ class TestHandwrite(unittest.TestCase):
                 im.show()
             self.assertTrue(input(prompt.format(filename)).upper() == 'Y')
 
-        txt = "测试关闭SSAA抗锯齿的效果"
-        images = handwrite(txt, tmp, anti_aliasing=False)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
-
         txt = "测试‘box’比背景图大的情况。"
         tmp = self.__copy()[1]
         tmp['box'] = (-100, -100, image.width + 100, image.height + 100)

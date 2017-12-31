@@ -7,6 +7,7 @@ import PIL.ImageDraw
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+_MAX_BYTE = 255
 
 
 def handwrite(text, template: dict, worker: int=0) -> list:
@@ -132,7 +133,6 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
-            # FIXME: the used image mode-'RGBA' actually is unnecessary. Change it to grey level image.
             image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
             draw = PIL.ImageDraw.Draw(image)
             y = upper
@@ -148,7 +148,7 @@ def _draw_text(
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
                         xy = x, int(random.gauss(y, line_spacing_sigma))
                         font = font.font_variant(size=actual_font_size)
-                        draw.text(xy, char, fill=(*color, 255), font=font)
+                        draw.text(xy, char, fill=(*color, _MAX_BYTE), font=font)
                         font_width = font.getsize(char)[0]
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
@@ -215,26 +215,29 @@ class _RenderMaker:
         """
         The helper function of __perturb()
         Slide one given column without producing jaggies
-        :param offset: a float value between 0(inclusive) and 1(inclusive)
+        :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
+        default_color = (_MAX_BYTE, _MAX_BYTE, _MAX_BYTE, 0)
         for i in range(height - 1):
-            matrix[x, i] = (1 - offset) * matrix[x, i] + offset * matrix[x, i + 1]
-        matrix[x, height - 1] = (1 - offset) * matrix[x, height - 1]
+            matrix[x, i] = tuple(int((1 - offset) * matrix[x, i][j] + offset * matrix[x, i + 1][j]) for j in range(4))
+        matrix[x, height - 1] = tuple(int((1 - offset) * matrix[x, height - 1][i] + offset * default_color[i])
+                                      for i in range(4))
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
         """
         The helper function of __perturb()
         Slide one given row without producing jaggies
-        :param offset: a float value between 0(inclusive) and 1(inclusive)
+        :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
+        default_color = (_MAX_BYTE, _MAX_BYTE, _MAX_BYTE, 0)
         for i in range(width - 1):
-            matrix[i, y] = (1 - offset) * matrix[i, y] + offset * matrix[i + 1, y]
-        matrix[width - 1, y] = (1 - offset) * matrix[width - 1, y]
+            matrix[i, y] = tuple(int((1 - offset) * matrix[i, y][j] + offset * matrix[i + 1, y][j]) for j in range(4))
+        matrix[width - 1, y] = tuple(int((1 - offset) * matrix[width - 1, y][i] + offset * default_color[i])
+                                     for i in range(4))
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
-        # FIXME: rewrite the code for the change of _draw_text()
         background = self.__background.copy()
         background.paste(image, mask=image)
         return background
