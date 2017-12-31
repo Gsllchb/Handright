@@ -198,19 +198,39 @@ class _RenderMaker:
             raise ValueError("alpha_y must be between 0 (inclusive) and 1 (inclusive).")
 
         wavelength = 2 * self.__font_size
-        # TODO: implement the algorithm with using uniform distribution
+        matrix = image.load()
+        for i in range(image.width // wavelength + 1):
+            x0 = self.__random.randrange(0, image.width)
+            for j in range(min(wavelength, image.width - x0)):
+                offset = self.__alpha_x * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
+                self.__slide_x(matrix, x0 + j, offset, image.height)
+        for i in range(image.height // wavelength + 1):
+            y0 = self.__random.randrange(0, image.height)
+            for j in range(min(wavelength, image.height - y0)):
+                offset = self.__alpha_y * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
+                self.__slide_y(matrix, y0 + j, offset, image.width)
 
     @staticmethod
-    def __slide_x(image, x, offset: float) -> None:
-        """ Slide one given column without producing jaggies """
-        # TODO
-        pass
+    def __slide_x(matrix, x: int, offset: float, height: int) -> None:
+        """
+        The helper function of __perturb()
+        Slide one given column without producing jaggies
+        :param offset: a float value between 0(inclusive) and 1(inclusive)
+        """
+        for i in range(height - 1):
+            matrix[x, i] = (1 - offset) * matrix[x, i] + offset * matrix[x, i + 1]
+        matrix[x, height - 1] = (1 - offset) * matrix[x, height - 1]
 
     @staticmethod
-    def __slide_y(image, y, offset: float) -> None:
-        """ Slide one given row without producing jaggies """
-        # TODO
-        pass
+    def __slide_y(matrix, y: int, offset: float, width: int) -> None:
+        """
+        The helper function of __perturb()
+        Slide one given row without producing jaggies
+        :param offset: a float value between 0(inclusive) and 1(inclusive)
+        """
+        for i in range(width - 1):
+            matrix[i, y] = (1 - offset) * matrix[i, y] + offset * matrix[i + 1, y]
+        matrix[width - 1, y] = (1 - offset) * matrix[width - 1, y]
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
