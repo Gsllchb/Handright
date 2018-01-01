@@ -223,14 +223,14 @@ class _RenderMaker:
 
         wavelength = 2 * self.__font_size
         matrix = image.load()
-        for i in range(image.width // wavelength + 1):
-            x0 = self.__random.randrange(0, image.width)
-            for j in range(min(wavelength, image.width - x0)):
+        for i in range((image.width + wavelength) // wavelength + 1):
+            x0 = self.__random.randrange(-wavelength, image.width)
+            for j in range(max(0, -x0), min(wavelength, image.width - x0)):
                 offset = self.__alpha_x * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
                 self.__slide_x(matrix, x0 + j, offset, image.height)
-        for i in range(image.height // wavelength + 1):
-            y0 = self.__random.randrange(0, image.height)
-            for j in range(min(wavelength, image.height - y0)):
+        for i in range((image.height + wavelength) // wavelength + 1):
+            y0 = self.__random.randrange(-wavelength, image.height)
+            for j in range(max(0, -y0), min(wavelength, image.height - y0)):
                 offset = self.__alpha_y * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
                 self.__slide_y(matrix, y0 + j, offset, image.width)
 
@@ -243,7 +243,7 @@ class _RenderMaker:
         """
         for i in range(height - 1):
             matrix[x, i] = int((1 - offset) * matrix[x, i] + offset * matrix[x, i + 1])
-        matrix[x, height - 1] = int((1 - offset) * matrix[x, height - 1])
+        # matrix[x, height - 1] = int((1 - offset) * matrix[x, height - 1])
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
@@ -254,7 +254,7 @@ class _RenderMaker:
         """
         for i in range(width - 1):
             matrix[i, y] = int((1 - offset) * matrix[i, y] + offset * matrix[i + 1, y])
-        matrix[width - 1, y] = int((1 - offset) * matrix[width - 1, y])
+        # matrix[width - 1, y] = int((1 - offset) * matrix[width - 1, y])
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
