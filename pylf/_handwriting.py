@@ -34,18 +34,19 @@ def handwrite(text, template: dict, worker: int=0) -> list:
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
-        'color': (<int>, <int>, <int>)
-            The color of font in RGB. These values should be within [0, 255].
-            default: (0, 0, 0)
         'font': <FreeTypeFont>
             NOTE: the size of the FreeTypeFont Object means nothing in the function.
         'font_size': <int>
             The average font size in pixel
-        'line_spacing': <int>
-            The average gap between two adjacent lines in pixel
+        'color': (<int>, <int>, <int>)
+            The color of font in RGB. These values should be within [0, 255].
+            default: (0, 0, 0)
         'word_spacing': <int>
             The average gap between two adjacent chars in pixel
             default: 0
+        'line_spacing': <int>
+            The average gap between two adjacent lines in pixel
+            default: font_size // 5
 
         Advanced:
         'font_size_sigma': <float>
@@ -83,13 +84,15 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     :return: a list of drawn images
     """
     template = dict(template)
+    font_size = template['font_size']
 
     if 'color' not in template:
         template['color'] = _DEFAULT_COLOR
     if 'word_spacing' not in template:
         template['word_spacing'] = _DEFAULT_WORD_SPACING
+    if 'line_spacing' not in template:
+        template['line_spacing'] = font_size // 5
 
-    font_size = template['font_size']
     if 'font_size_sigma' not in template:
         template['font_size_sigma'] = font_size / 4
     if 'line_spacing_sigma' not in template:
