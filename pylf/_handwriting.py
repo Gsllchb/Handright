@@ -241,7 +241,7 @@ class _RenderMaker:
         return background
 
     @staticmethod
-    def __generate_palette(image):
+    def __generate_palette():
         """
         The helper function of __merge()
         Generate the palette (RGB as raw mode) depend on the image
