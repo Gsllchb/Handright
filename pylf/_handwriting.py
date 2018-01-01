@@ -105,7 +105,6 @@ def _draw_text(
         text,
         size: tuple,
         box: tuple,
-        color: tuple,
         font,
         font_size: int,
         font_size_sigma: float,
@@ -133,7 +132,7 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
-            image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
+            image = PIL.Image.new('L', size, color=0)
             draw = PIL.ImageDraw.Draw(image)
             y = upper
             try:
@@ -148,7 +147,7 @@ def _draw_text(
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
                         xy = x, int(random.gauss(y, line_spacing_sigma))
                         font = font.font_variant(size=actual_font_size)
-                        draw.text(xy, char, fill=(*color, _MAX_BYTE), font=font)
+                        draw.text(xy, char, fill=_MAX_BYTE, font=font)
                         font_width = font.getsize(char)[0]
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
@@ -170,12 +169,14 @@ class _RenderMaker:
     def __init__(
             self,
             background,
+            color,
             font_size: int,
             alpha_x: float,
             alpha_y: float,
             **kwargs
     ):
         self.__background = background
+        self.__color = color
         self.__font_size = font_size
         self.__alpha_x = alpha_x
         self.__alpha_y = alpha_y
@@ -217,11 +218,9 @@ class _RenderMaker:
         Slide one given column without producing jaggies
         :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
-        default_color = (_MAX_BYTE, _MAX_BYTE, _MAX_BYTE, 0)
         for i in range(height - 1):
-            matrix[x, i] = tuple(int((1 - offset) * matrix[x, i][j] + offset * matrix[x, i + 1][j]) for j in range(4))
-        matrix[x, height - 1] = tuple(int((1 - offset) * matrix[x, height - 1][i] + offset * default_color[i])
-                                      for i in range(4))
+            matrix[x, i] = int((1 - offset) * matrix[x, i] + offset * matrix[x, i + 1])
+        matrix[x, height - 1] = int((1 - offset) * matrix[x, height - 1])
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
@@ -230,14 +229,22 @@ class _RenderMaker:
         Slide one given row without producing jaggies
         :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
-        default_color = (_MAX_BYTE, _MAX_BYTE, _MAX_BYTE, 0)
         for i in range(width - 1):
-            matrix[i, y] = tuple(int((1 - offset) * matrix[i, y][j] + offset * matrix[i + 1, y][j]) for j in range(4))
-        matrix[width - 1, y] = tuple(int((1 - offset) * matrix[width - 1, y][i] + offset * default_color[i])
-                                     for i in range(4))
+            matrix[i, y] = int((1 - offset) * matrix[i, y] + offset * matrix[i + 1, y])
+        matrix[width - 1, y] = int((1 - offset) * matrix[width - 1, y])
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
         background = self.__background.copy()
+        image.putpalette(self.__generate_palette(image), rawmode='RGB')
         background.paste(image, mask=image)
         return background
+
+    @staticmethod
+    def __generate_palette(image):
+        """
+        The helper function of __merge()
+        Generate the palette (RGB as raw mode) depend on the image
+        """
+        # TODO
+        pass
