@@ -50,10 +50,13 @@ def handwrite(text, template: dict, worker: int=0) -> list:
         Advanced:
         'font_size_sigma': <float>
             The sigma of the gauss distribution of the font size
+            default: font_size / 4
         'line_spacing_sigma': <float>
             The sigma of the gauss distribution of the line spacing
+            default: font_size / 4
         'word_spacing_sigma': <float>
             The sigma of the gauss distribution of the word spacing
+            default: font_size / 4
         'is_half_char': <callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
@@ -80,18 +83,30 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     :return: a list of drawn images
     """
     template = dict(template)
+
     if 'color' not in template:
         template['color'] = _DEFAULT_COLOR
     if 'word_spacing' not in template:
         template['word_spacing'] = _DEFAULT_WORD_SPACING
+
+    font_size = template['font_size']
+    if 'font_size_sigma' not in template:
+        template['font_size_sigma'] = font_size / 4
+    if 'line_spacing_sigma' not in template:
+        template['line_spacing_sigma'] = font_size / 4
+    if 'word_spacing_sigma' not in template:
+        template['word_spacing_sigma'] = font_size / 4
+
     if 'is_half_char' not in template:
         template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
+
     if 'alpha_x' not in template:
         template['alpha_x'] = _DEFAULT_ALPHA_X
     if 'alpha_y' not in template:
         template['alpha_y'] = _DEFAULT_ALPHA_Y
+
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, worker)
 
