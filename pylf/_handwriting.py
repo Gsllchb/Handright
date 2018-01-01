@@ -5,9 +5,14 @@ import PIL.Image
 import PIL.ImageDraw
 
 
+_MAX_BYTE_VALUE = 255
+
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
-_MAX_BYTE = 255
+_DEFAULT_COLOR = (0, 0, 0)
+_DEFAULT_WORD_SPACING = 0
+_DEFAULT_ALPHA_X = 0.1
+_DEFAULT_ALPHA_Y = 0.1
 
 
 def handwrite(text, template: dict, worker: int=0) -> list:
@@ -76,17 +81,17 @@ def handwrite(text, template: dict, worker: int=0) -> list:
     """
     template = dict(template)
     if 'color' not in template:
-        template['color'] = (0, 0, 0)
+        template['color'] = _DEFAULT_COLOR
     if 'word_spacing' not in template:
-        template['word_spacing'] = 0
+        template['word_spacing'] = _DEFAULT_WORD_SPACING
     if 'is_half_char' not in template:
         template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
     if 'alpha_x' not in template:
-        template['alpha_x'] = 0.1
+        template['alpha_x'] = _DEFAULT_ALPHA_X
     if 'alpha_y' not in template:
-        template['alpha_y'] = 0.1
+        template['alpha_y'] = _DEFAULT_ALPHA_Y
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, worker)
 
@@ -147,7 +152,7 @@ def _draw_text(
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
                         xy = x, int(random.gauss(y, line_spacing_sigma))
                         font = font.font_variant(size=actual_font_size)
-                        draw.text(xy, char, fill=_MAX_BYTE, font=font)
+                        draw.text(xy, char, fill=_MAX_BYTE_VALUE, font=font)
                         font_width = font.getsize(char)[0]
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
