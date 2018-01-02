@@ -243,7 +243,7 @@ class _RenderMaker:
         """
         for i in range(height - 1):
             matrix[x, i] = int((1 - offset) * matrix[x, i] + offset * matrix[x, i + 1])
-        # matrix[x, height - 1] = int((1 - offset) * matrix[x, height - 1])
+        # Leave the last row unchanged
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
@@ -254,7 +254,7 @@ class _RenderMaker:
         """
         for i in range(width - 1):
             matrix[i, y] = int((1 - offset) * matrix[i, y] + offset * matrix[i + 1, y])
-        # matrix[width - 1, y] = int((1 - offset) * matrix[width - 1, y])
+        # Leave the last column unchanged
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
