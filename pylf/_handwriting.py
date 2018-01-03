@@ -241,6 +241,7 @@ class _RenderMaker:
         Slide one given column without producing jaggies
         :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
+        # FIXME
         for i in range(height - 1):
             matrix[x, i] = int((1 - offset) * matrix[x, i] + offset * matrix[x, i + 1])
         # Leave the last row unchanged
@@ -252,6 +253,7 @@ class _RenderMaker:
         Slide one given row without producing jaggies
         :param offset: a float value between 0 (inclusive) and 1 (inclusive)
         """
+        # FIXME
         for i in range(width - 1):
             matrix[i, y] = int((1 - offset) * matrix[i, y] + offset * matrix[i + 1, y])
         # Leave the last column unchanged
