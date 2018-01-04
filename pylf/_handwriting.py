@@ -142,7 +142,6 @@ def _draw_text(
     """
     Draw the text randomly in blank images
     :return: a list of drawn images
-    :raise: ValueError
     """
     if not box[3] - box[1] > font_size:
         raise ValueError('(box[3] - box[1]) must be greater than font_size.')
@@ -213,7 +212,6 @@ class _RenderMaker:
     def __perturb(self, image) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
-        :raise: ValueError
         """
         from math import cos, pi
         if not 0 <= self.__alpha_x <= 1:
