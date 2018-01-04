@@ -16,7 +16,7 @@ _DEFAULT_ALPHA_X = 0.1
 _DEFAULT_ALPHA_Y = 0.1
 
 
-def handwrite(text, template: dict, worker: int=0) -> list:
+def handwrite(text, template: dict, worker: int = 0) -> list:
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
