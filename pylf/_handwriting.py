@@ -1,9 +1,10 @@
 """ The core module """
+import math
 import multiprocessing
 import random
+
 import PIL.Image
 import PIL.ImageDraw
-
 
 _MAX_BYTE_VALUE = 255
 
@@ -213,7 +214,6 @@ class _RenderMaker:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
         """
-        from math import cos, pi
         if not 0 <= self.__alpha_x <= 1:
             raise ValueError("alpha_x must be between 0 (inclusive) and 1 (inclusive).")
         if not 0 <= self.__alpha_y <= 1:
@@ -224,12 +224,12 @@ class _RenderMaker:
         for i in range((image.width + wavelength) // wavelength + 1):
             x0 = self.__random.randrange(-wavelength, image.width)
             for j in range(max(0, -x0), min(wavelength, image.width - x0)):
-                offset = self.__alpha_x * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
+                offset = self.__alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength))
                 self.__slide_x(matrix, x0 + j, offset, image.height)
         for i in range((image.height + wavelength) // wavelength + 1):
             y0 = self.__random.randrange(-wavelength, image.height)
             for j in range(max(0, -y0), min(wavelength, image.height - y0)):
-                offset = self.__alpha_y * wavelength / (2 * pi) * (1 - cos(2 * pi * j / wavelength))
+                offset = self.__alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength))
                 self.__slide_y(matrix, y0 + j, offset, image.width)
 
     @staticmethod
@@ -239,11 +239,11 @@ class _RenderMaker:
         Slide one given column without producing jaggies
         :param offset: a float value greater than or equal to 0
         """
-        from math import ceil, floor
         weight = offset % 1
-        for i in range(height - ceil(offset)):
-            matrix[x, i] = int((1 - weight) * matrix[x, i + floor(offset)] + weight * matrix[x, i + ceil(offset)])
-        for i in range(height - ceil(offset), height):
+        for i in range(height - math.ceil(offset)):
+            matrix[x, i] = int((1 - weight) * matrix[x, i + math.floor(offset)]
+                               + weight * matrix[x, i + math.ceil(offset)])
+        for i in range(height - math.ceil(offset), height):
             matrix[x, i] = 0
 
     @staticmethod
@@ -253,11 +253,11 @@ class _RenderMaker:
         Slide one given row without producing jaggies
         :param offset: a float value greater than or equal to 0
         """
-        from math import ceil, floor
         weight = offset % 1
-        for i in range(width - ceil(offset)):
-            matrix[i, y] = int((1 - weight) * matrix[i, y + floor(offset)] + weight * matrix[i + ceil(offset), y])
-        for i in range(width - ceil(offset), width):
+        for i in range(width - math.ceil(offset)):
+            matrix[i, y] = int((1 - weight) * matrix[i, y + math.floor(offset)]
+                               + weight * matrix[i + math.ceil(offset), y])
+        for i in range(width - math.ceil(offset), width):
             matrix[i, y] = 0
 
     def __merge(self, image):
