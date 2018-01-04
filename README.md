@@ -5,6 +5,10 @@
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
 *PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
+## For *Windows* users
+* [*Windows*用户必读](./docs/Windows用户必读.md)
+
+
 ## Installation
 由于*PyLf*的依赖项[*Pillow*](https://python-pillow.org/)会与[*PIL*](http://www.pythonware.com/products/pil/)发生冲突，
 如若您已安装[*PIL*](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
@@ -56,9 +60,6 @@
     if __name__ == '__main__':
         main()
 
-
-## For *Windows* users
-* [*Windows*用户必读](./docs/Windows用户必读.md)
 
 ## Examples
 * **“我能吞下玻璃而不伤身体。”** <br>
