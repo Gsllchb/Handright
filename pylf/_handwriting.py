@@ -20,71 +20,74 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     handwriting. Though injecting pieces of exotic language generally may not effect the overall performance, you should
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
-    :param text: a char iterable
+    :param text: <Iterable>
+        a char iterable
 
     :param template: a dict containing the settings of the template
         The dict should contain below settings:
         'background': <Image> (from PIL.Image)
-        'box': (<int>, <int>, <int>, <int>)
+        'box': (<Int>, <Int>, <Int>, <Int>)
             A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
         'font': <Font> (from PIL.ImageFont)
             NOTE: the size attribute of the font object means nothing in the function.
-        'font_size': <int>
+        'font_size': <Int>
             The average font size in pixel
-        'font_size_sigma': <float>
+        'font_size_sigma': <Float>
             The sigma of the gauss distribution of the font size
-        'line_spacing': <int>
+        'line_spacing': <Int>
             The average line spacing in pixel
-        'line_spacing_sigma': <float>
+        'line_spacing_sigma': <Float>
             The sigma of the gauss distribution of the line spacing
-        'word_spacing': <int>
+        'word_spacing': <Int>
             The average gap between two adjacent char in pixel
             default: 0
-        'word_spacing_sigma': <float>
+        'word_spacing_sigma': <Float>
             The sigma of the gauss distribution of the word spacing
 
         Optional:
-        'color': (<int>, <int>, <int>)
+        'color': (<Int>, <Int>, <Int>)
             The color of font in RGB. These values should be within [0, 255].
             default: (0, 0, 0)
-        'is_half_char': <callable>
+        'is_half_char': <Callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
             The feature is designed for some of Chinese punctuations that only take up the left half of their
             space (e.g. '，', '。').
-        'is_end_char': <callable>
+        'is_end_char': <Callable>
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
             The function must take a char parameter and return a boolean value.
 
         Advanced:
         If you do NOT fully understand the algorithm, please leave these value default.
-        'x_amplitude': <float>
+        'x_amplitude': <Float>
             default: 0.06 * font_size
-        'y_amplitude': <float>
+        'y_amplitude': <Float>
             default: 0.06 * font_size
-        'x_wavelength': <float>
+        'x_wavelength': <Float>
             default: 2 * font_size
-        'y_wavelength': <float>
+        'y_wavelength': <Float>
             default: 2 * font_size
-        'x_lambd': <float>
+        'x_lambd': <Float>
             default: 1 / font_size
-        'y_lambd': <float>
+        'y_lambd': <Float>
             default: 1 / font_size
     
-    :param anti_aliasing: whether or not turn on the anti-aliasing
+    :param anti_aliasing: <Bool>
+        whether or not turn on the anti-aliasing
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the computational cost.
         default: True
 
-    :param worker: the number of worker
+    :param worker: <Int>
+        the number of worker
         if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all available CPU in the computer)
 
     :return: <list<Image>>
-        a list of drawn images
+        a list of drawn images with the same size and mode as the background
     """
     template = dict(template)
     if 'color' not in template:
@@ -156,7 +159,6 @@ def _draw_text(
     """
     Draw the text randomly in blank images
     :return: a list of drawn images
-    :raise: ValueError
     """
     if not box[3] - box[1] > font_size:
         raise ValueError('(box[3] - box[1]) must be greater than font_size.')
