@@ -237,24 +237,28 @@ class _RenderMaker:
         """
         The helper function of __perturb()
         Slide one given column without producing jaggies
-        :param offset: a float value between 0 (inclusive) and 1 (inclusive)
+        :param offset: a float value greater than or equal to 0
         """
-        # FIXME
-        for i in range(height - 1):
-            matrix[x, i] = int((1 - offset) * matrix[x, i] + offset * matrix[x, i + 1])
-        # Leave the last row unchanged
+        from math import ceil, floor
+        weight = offset % 1
+        for i in range(height - ceil(offset)):
+            matrix[x, i] = int((1 - weight) * matrix[x, i + floor(offset)] + weight * matrix[x, i + ceil(offset)])
+        for i in range(height - ceil(offset), height):
+            matrix[x, i] = 0
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
         """
         The helper function of __perturb()
         Slide one given row without producing jaggies
-        :param offset: a float value between 0 (inclusive) and 1 (inclusive)
+        :param offset: a float value greater than or equal to 0
         """
-        # FIXME
-        for i in range(width - 1):
-            matrix[i, y] = int((1 - offset) * matrix[i, y] + offset * matrix[i + 1, y])
-        # Leave the last column unchanged
+        from math import ceil, floor
+        weight = offset % 1
+        for i in range(width - ceil(offset)):
+            matrix[i, y] = int((1 - weight) * matrix[i, y + floor(offset)] + weight * matrix[i + ceil(offset), y])
+        for i in range(width - ceil(offset), width):
+            matrix[i, y] = 0
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
