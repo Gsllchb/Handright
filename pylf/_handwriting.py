@@ -255,7 +255,7 @@ class _RenderMaker:
         """
         weight = offset % 1
         for i in range(width - math.ceil(offset)):
-            matrix[i, y] = int((1 - weight) * matrix[i, y + math.floor(offset)]
+            matrix[i, y] = int((1 - weight) * matrix[i + math.floor(offset), y]
                                + weight * matrix[i + math.ceil(offset), y])
         for i in range(width - math.ceil(offset), width):
             matrix[i, y] = 0
