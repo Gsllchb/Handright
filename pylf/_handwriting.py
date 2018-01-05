@@ -192,7 +192,7 @@ class _RenderMaker:
     def __init__(
             self,
             background,
-            color,
+            color: tuple,
             font_size: int,
             alpha_x: float,
             alpha_y: float,
