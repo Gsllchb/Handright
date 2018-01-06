@@ -82,7 +82,7 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
         if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all the available CPU in the computer)
 
-    :return: a list of drawn images
+    :return: a list of drawn images with RGB mode
     """
     template = dict(template)
     font_size = template['font_size']
@@ -95,11 +95,11 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
         template['line_spacing'] = font_size // 5
 
     if 'font_size_sigma' not in template:
-        template['font_size_sigma'] = font_size / 4
+        template['font_size_sigma'] = font_size / 2 / 4
     if 'line_spacing_sigma' not in template:
-        template['line_spacing_sigma'] = font_size / 4
+        template['line_spacing_sigma'] = font_size / 2 / 4
     if 'word_spacing_sigma' not in template:
-        template['word_spacing_sigma'] = font_size / 4
+        template['word_spacing_sigma'] = font_size / 2 / 4
 
     if 'is_half_char' not in template:
         template['is_half_char'] = lambda c: False
@@ -131,6 +131,7 @@ def _draw_text(
         box: tuple,
         font,
         font_size: int,
+        color: tuple,
         font_size_sigma: float,
         line_spacing: int,
         line_spacing_sigma: float,
@@ -155,7 +156,7 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
-            image = PIL.Image.new('L', size, color=0)
+            image = PIL.Image.new('RGB', size, color=(_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE))
             draw = PIL.ImageDraw.Draw(image)
             y = upper
             try:
@@ -170,7 +171,7 @@ def _draw_text(
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
                         xy = x, int(random.gauss(y, line_spacing_sigma))
                         font = font.font_variant(size=actual_font_size)
-                        draw.text(xy, char, fill=_MAX_BYTE_VALUE, font=font)
+                        draw.text(xy, char, fill=color, font=font)
                         font_width = font.getsize(char)[0]
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
@@ -241,10 +242,13 @@ class _RenderMaker:
         """
         weight = offset % 1
         for i in range(height - math.ceil(offset)):
-            matrix[x, i] = int((1 - weight) * matrix[x, i + math.floor(offset)]
-                               + weight * matrix[x, i + math.ceil(offset)])
+            matrix[x, i] = (
+                int((1 - weight) * matrix[x, i + math.floor(offset)][0] + weight * matrix[x, i + math.ceil(offset)][0]),
+                int((1 - weight) * matrix[x, i + math.floor(offset)][1] + weight * matrix[x, i + math.ceil(offset)][1]),
+                int((1 - weight) * matrix[x, i + math.floor(offset)][2] + weight * matrix[x, i + math.ceil(offset)][2])
+            )
         for i in range(height - math.ceil(offset), height):
-            matrix[x, i] = 0
+            matrix[x, i] = (_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE)
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: float, width: int) -> None:
@@ -255,23 +259,15 @@ class _RenderMaker:
         """
         weight = offset % 1
         for i in range(width - math.ceil(offset)):
-            matrix[i, y] = int((1 - weight) * matrix[i + math.floor(offset), y]
-                               + weight * matrix[i + math.ceil(offset), y])
+            matrix[i, y] = (
+                int((1 - weight) * matrix[i + math.floor(offset), y][0] + weight * matrix[i + math.ceil(offset), y][0]),
+                int((1 - weight) * matrix[i + math.floor(offset), y][1] + weight * matrix[i + math.ceil(offset), y][1]),
+                int((1 - weight) * matrix[i + math.floor(offset), y][2] + weight * matrix[i + math.ceil(offset), y][2]),
+            )
         for i in range(width - math.ceil(offset), width):
-            matrix[i, y] = 0
+            matrix[i, y] = (_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE)
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
-        background = self.__background.copy()
-        image.putpalette(self.__generate_palette(image), rawmode='RGB')
-        background.paste(image, mask=image)
-        return background
-
-    @staticmethod
-    def __generate_palette():
-        """
-        The helper function of __merge()
-        Generate the palette (RGB as raw mode) depend on the image
-        """
-        # TODO
-        pass
+        image.paste(self.__background, mask=image.convert(mode='L'))
+        return image
