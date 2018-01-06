@@ -40,7 +40,7 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
         'font_size': <int>
             The average font size in pixel
         'color': (<int>, <int>, <int>)
-            The color of font in RGB. These values should be within [0, 255].
+            The color of font in RGB. These values must be between 0 (inclusive) and 255 (inclusive).
             default: (0, 0, 0)
         'word_spacing': <int>
             The average gap between two adjacent chars in pixel
@@ -147,7 +147,7 @@ def _draw_text(
 ) -> list:
     """
     Draw the text randomly in blank images
-    :return: a list of drawn images
+    :return: a list of drawn images with RGB mode and given size
     """
     if not box[3] - box[1] > font_size:
         raise ValueError('(box[3] - box[1]) must be greater than font_size.')
