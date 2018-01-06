@@ -172,10 +172,8 @@ def _draw_text(
                             break
                         if x >= right - font_size and not is_end_char(char):
                             break
-                        actual_font_size = int(random.gauss(font_size, font_size_sigma))
-                        if actual_font_size <= 0:
-                            actual_font_size = 1
-                        xy = x, int(random.gauss(y, line_spacing_sigma))
+                        actual_font_size = max(int(random.gauss(font_size, font_size_sigma)), 0)
+                        xy = (x, int(random.gauss(y, line_spacing_sigma)))
                         font = font.font_variant(size=actual_font_size)
                         draw.text(xy, char, fill=color, font=font)
                         font_width = font.getsize(char)[0]
