@@ -124,5 +124,6 @@ class TestHandwrite(unittest.TestCase):
             im.show()
         self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
 
+
 if __name__ == '__main__':
     unittest.main()
