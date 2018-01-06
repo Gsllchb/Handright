@@ -94,6 +94,7 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
     if 'line_spacing' not in template:
         template['line_spacing'] = font_size // 5
 
+    # FIXME: tune following default values
     if 'font_size_sigma' not in template:
         template['font_size_sigma'] = font_size / 2 / 4
     if 'line_spacing_sigma' not in template:
@@ -106,6 +107,7 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
 
+    # FIXME: tune following default values
     if 'alpha_x' not in template:
         template['alpha_x'] = _DEFAULT_ALPHA_X
     if 'alpha_y' not in template:
