@@ -1,17 +1,15 @@
-from PIL import Image, ImageFont
-from pylf import handwrite
 import unittest
+
+from PIL import Image, ImageFont
+
+from pylf import handwrite
 
 image = Image.open("./data/pictures/background.png")
 template = {
     'background': image,
     'box': (68, 131, 653, 950),
     'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
-    'font_size': 26,
-    'font_size_sigma': 0.5,
-    'line_spacing': 33,
-    'line_spacing_sigma': 0.5,
-    'word_spacing_sigma': 1,
+    'font_size': 50,
 }
 text = """我能吞下玻璃而不伤身体。"""
 
@@ -72,12 +70,6 @@ class TestHandwrite(unittest.TestCase):
             for im in images:
                 im.show()
             self.assertTrue(input(prompt.format(filename)).upper() == 'Y')
-
-        txt = "测试关闭SSAA抗锯齿的效果"
-        images = handwrite(txt, tmp, anti_aliasing=False)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
 
         txt = "测试‘box’比背景图大的情况。"
         tmp = self.__copy()[1]

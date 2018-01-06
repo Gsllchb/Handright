@@ -1,18 +1,22 @@
 """ The core module """
+import math
 import multiprocessing
 import random
+
 import PIL.Image
 import PIL.ImageDraw
 
+_MAX_BYTE_VALUE = 255
 
+# Chinese, English and other end chars
+_DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 _DEFAULT_COLOR = (0, 0, 0)
 _DEFAULT_WORD_SPACING = 0
-_DEFAULT_IS_HALF_CHARS = lambda c: False
-# Chinese, English and other end chars
-_DEFAULT_IS_END_CHARS = lambda c: c in ("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
+_DEFAULT_ALPHA_X = 0.1
+_DEFAULT_ALPHA_Y = 0.1
 
 
-def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> list:
+def handwrite(text, template: dict, worker: int = 0) -> list:
     """
     Simulating Chinese handwriting through introducing numerous randomness in the process.
     The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner as same as Pillow Module.
@@ -21,121 +25,105 @@ def handwrite(text, template: dict, anti_aliasing: bool=True, worker: int=0) -> 
     NOT count on it has a great performance in the domain of non-Chinese handwriting.
 
     :param text: <Iterable>
-        a char iterable
+        a char Iterable
 
     :param template: a dict containing the settings of the template
         The dict should contain below settings:
         'background': <Image> (from PIL.Image)
-        'box': (<Int>, <Int>, <Int>, <Int>)
+        'box': (<int>, <int>, <int>, <int>)
             A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             NOTE: The bounding area should be in the 'background'. In other words, it should be in (0, 0,
             background.width, background.height).
             NOTE: The function do NOT guarantee the drawn texts will completely in the 'box' due to the used randomness.
         'font': <Font> (from PIL.ImageFont)
             NOTE: the size attribute of the font object means nothing in the function.
-        'font_size': <Int>
+        'font_size': <int>
             The average font size in pixel
-        'font_size_sigma': <Float>
-            The sigma of the gauss distribution of the font size
-        'line_spacing': <Int>
-            The average line spacing in pixel
-        'line_spacing_sigma': <Float>
-            The sigma of the gauss distribution of the line spacing
-        'word_spacing': <Int>
-            The average gap between two adjacent char in pixel
-            default: 0
-        'word_spacing_sigma': <Float>
-            The sigma of the gauss distribution of the word spacing
-
-        Optional:
-        'color': (<Int>, <Int>, <Int>)
+        'color': (<int>, <int>, <int>)
             The color of font in RGB. These values should be within [0, 255].
             default: (0, 0, 0)
+        'word_spacing': <int>
+            The average gap between two adjacent chars in pixel
+            default: 0
+        'line_spacing': <int>
+            The average gap between two adjacent lines in pixel
+            default: font_size // 5
+
+        Advanced:
+        'font_size_sigma': <float>
+            The sigma of the gauss distribution of the font size
+            default: font_size / 4
+        'line_spacing_sigma': <float>
+            The sigma of the gauss distribution of the line spacing
+            default: font_size / 4
+        'word_spacing_sigma': <float>
+            The sigma of the gauss distribution of the word spacing
+            default: font_size / 4
         'is_half_char': <Callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
             The feature is designed for some of Chinese punctuations that only take up the left half of their
             space (e.g. '，', '。').
+            default: (lambda c: False)
         'is_end_char': <Callable>
             A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，' , '。', '》')
             The function must take a char parameter and return a boolean value.
+            default: (lambda c: c in _DEFAULT_END_CHARS)
+        'alpha_x': <float>
+            A float that controls the degree of the distortion in the horizontal direction
+            its value must be between 0(inclusive) and 1(inclusive).
+            default: 0.1
+        'alpha_y': <float>
+            A float that controls the degree of the distortion in the vertical direction
+            its value must be between 0(inclusive) and 1(inclusive).
+            default: 0.1
 
-        Advanced:
-        If you do NOT fully understand the algorithm, please leave these value default.
-        'x_amplitude': <Float>
-            default: 0.06 * font_size
-        'y_amplitude': <Float>
-            default: 0.06 * font_size
-        'x_wavelength': <Float>
-            default: 2 * font_size
-        'y_wavelength': <Float>
-            default: 2 * font_size
-        'x_lambd': <Float>
-            default: 1 / font_size
-        'y_lambd': <Float>
-            default: 1 / font_size
-    
-    :param anti_aliasing: <Bool>
-        whether or not turn on the anti-aliasing
-        It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
-        significantly reduce the computational cost.
-        default: True
-
-    :param worker: <Int>
+    :param worker: <int>
         the number of worker
-        if worker <= 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
-        default: 0 (use all available CPU in the computer)
+        if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
+        default: 0 (use all the available CPU in the computer)
 
     :return: <list<Image>>
-        a list of drawn images with the same size and mode as the background
+        a list of drawn images with RGB mode and the same size as the background
     """
     template = dict(template)
+    font_size = template['font_size']
+
     if 'color' not in template:
         template['color'] = _DEFAULT_COLOR
     if 'word_spacing' not in template:
         template['word_spacing'] = _DEFAULT_WORD_SPACING
-    if 'is_half_char' not in template:
-        template['is_half_char'] = _DEFAULT_IS_HALF_CHARS
-    if 'is_end_char' not in template:
-        template['is_end_char'] = _DEFAULT_IS_END_CHARS
+    if 'line_spacing' not in template:
+        template['line_spacing'] = font_size // 5
 
-    font_size = template['font_size']
-    if 'x_amplitude' not in template:
-        template['x_amplitude'] = 0.06 * font_size
-    if 'y_amplitude' not in template:
-        template['y_amplitude'] = 0.06 * font_size
-    if 'x_wavelength' not in template:
-        template['x_wavelength'] = 2 * font_size
-    if 'y_wavelength' not in template:
-        template['y_wavelength'] = 2 * font_size
-    if 'x_lambd' not in template:
-        template['x_lambd'] = 1 / font_size
-    if 'y_lambd' not in template:
-        template['y_lambd'] = 1 / font_size
+    # FIXME: tune following default values
+    if 'font_size_sigma' not in template:
+        template['font_size_sigma'] = font_size / 2 / 4
+    if 'line_spacing_sigma' not in template:
+        template['line_spacing_sigma'] = font_size / 2 / 4
+    if 'word_spacing_sigma' not in template:
+        template['word_spacing_sigma'] = font_size / 2 / 4
+
+    if 'is_half_char' not in template:
+        template['is_half_char'] = lambda c: False
+    if 'is_end_char' not in template:
+        template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
+
+    # FIXME: tune following default values
+    if 'alpha_x' not in template:
+        template['alpha_x'] = _DEFAULT_ALPHA_X
+    if 'alpha_y' not in template:
+        template['alpha_y'] = _DEFAULT_ALPHA_Y
 
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
-    return _handwrite(text, template, anti_aliasing, worker)
+    return _handwrite(text, template, worker)
 
 
-def _handwrite(text, template, anti_aliasing, worker):
-    images = _draw_text(
-        text=text,
-        size=tuple(2 * i for i in template['background'].size) if anti_aliasing else template['background'].size,
-        box=tuple(2 * i for i in template['box']) if anti_aliasing else template['box'],
-        color=template['color'],
-        font=template['font'],
-        font_size=template['font_size'] * 2 if anti_aliasing else template['font_size'],
-        font_size_sigma=template['font_size_sigma'] * 2 if anti_aliasing else template['font_size_sigma'],
-        line_spacing=template['line_spacing'] * 2 if anti_aliasing else template['line_spacing'],
-        line_spacing_sigma=template['line_spacing_sigma'] * 2 if anti_aliasing else template['line_spacing_sigma'],
-        word_spacing=template['word_spacing'] * 2 if anti_aliasing else template['word_spacing'],
-        word_spacing_sigma=template['word_spacing_sigma'] * 2 if anti_aliasing else template['word_spacing_sigma'],
-        is_end_char=template['is_end_char'],
-        is_half_char=template['is_half_char']
-    )
+def _handwrite(text, template: dict, worker: int) -> list:
+    images = _draw_text(text, size=template['background'].size, **template)
     if not images:
         return images
-    render = _RenderMaker(anti_aliasing, **template)
+    render = _RenderMaker(**template)
     with multiprocessing.Pool(min(worker, len(images))) as pool:
         images = pool.map(render, images)
     return images
@@ -143,19 +131,20 @@ def _handwrite(text, template, anti_aliasing, worker):
 
 def _draw_text(
         text,
-        size,
-        box,
-        color,
+        size: tuple,
+        box: tuple,
         font,
-        font_size,
-        font_size_sigma,
-        line_spacing,
-        line_spacing_sigma,
-        word_spacing,
-        word_spacing_sigma,
+        font_size: int,
+        color: tuple,
+        font_size_sigma: float,
+        line_spacing: int,
+        line_spacing_sigma: float,
+        word_spacing: int,
+        word_spacing_sigma: float,
         is_end_char,
-        is_half_char
-):
+        is_half_char,
+        **kwargs
+) -> list:
     """
     Draw the text randomly in blank images
     :return: a list of drawn images
@@ -171,7 +160,7 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
-            image = PIL.Image.new('RGBA', size, color=(0, 0, 0, 0))
+            image = PIL.Image.new('RGB', size, color=(_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE))
             draw = PIL.ImageDraw.Draw(image)
             y = upper
             try:
@@ -184,14 +173,16 @@ def _draw_text(
                         if x >= right - font_size and not is_end_char(char):
                             break
                         actual_font_size = int(random.gauss(font_size, font_size_sigma))
+                        if actual_font_size <= 0:
+                            actual_font_size = 1
                         xy = x, int(random.gauss(y, line_spacing_sigma))
                         font = font.font_variant(size=actual_font_size)
-                        draw.text(xy, char, fill=(*color, 255), font=font)
+                        draw.text(xy, char, fill=color, font=font)
                         font_width = font.getsize(char)[0]
                         x_step = word_spacing + font_width * (1 / 2 if is_half_char(char) else 1)
                         x += int(random.gauss(x_step, word_spacing_sigma))
                         char = next(chars)
-                    y += line_spacing
+                    y += line_spacing + font_size
                 images.append(image)
             except StopIteration:
                 images.append(image)
@@ -207,77 +198,82 @@ class _RenderMaker:
 
     def __init__(
             self,
-            anti_aliasing,
             background,
-            x_amplitude,
-            y_amplitude,
-            x_wavelength,
-            y_wavelength,
-            x_lambd,
-            y_lambd,
+            color: tuple,
+            font_size: int,
+            alpha_x: float,
+            alpha_y: float,
             **kwargs
     ):
-        self.__anti_aliasing = anti_aliasing
         self.__background = background
-        self.__x_amplitude = x_amplitude * 2 if anti_aliasing else x_amplitude
-        self.__y_amplitude = y_amplitude * 2 if anti_aliasing else y_amplitude
-        self.__x_wavelength = x_wavelength * 2 if anti_aliasing else x_wavelength
-        self.__y_wavelength = y_wavelength * 2 if anti_aliasing else y_wavelength
-        self.__x_lambd = x_lambd / 2 if anti_aliasing else x_lambd
-        self.__y_lambd = y_lambd / 2 if anti_aliasing else y_lambd
+        self.__color = color
+        self.__font_size = font_size
+        self.__alpha_x = alpha_x
+        self.__alpha_y = alpha_y
         self.__random = random.Random()
 
     def __call__(self, image):
         self.__random.seed()
-        image = self.__perturb(image)
-        if self.__anti_aliasing:
-            image = self.__downsample(image)
+        self.__perturb(image)
         return self.__merge(image)
 
-    def __perturb(self, image):
-        """ 'Perturb' the image and generally make the glyphs from same chars, if any, seem different """
-        from math import sin, pi
-        height = image.height
-        width = image.width
-        px = image.load()
-        start = 0
-        for x in range(width):
-            if x >= start + self.__x_wavelength:
-                start = x + self.__random.expovariate(self.__x_lambd)
-            if x <= start:
-                continue
-            offset = int(self.__x_amplitude * (sin(2 * pi * (x - start) / self.__x_wavelength - pi / 2) + 1))
-            for y in range(height - offset):
-                px[x, y] = px[x, y + offset]
-            for y in range(height - offset, height):
-                px[x, y] = (0, 0, 0, 0)
-        start = 0
-        for y in range(height):
-            if y >= start + self.__y_wavelength:
-                start = y + self.__random.expovariate(self.__y_lambd)
-            if y <= start:
-                continue
-            offset = int(self.__y_amplitude * (sin(2 * pi * (y - start) / self.__y_wavelength - pi / 2) + 1))
-            for x in range(width - offset):
-                px[x, y] = px[x + offset, y]
-            for x in range(width - offset, width):
-                px[x, y] = (0, 0, 0, 0)
-        return image
+    def __perturb(self, image) -> None:
+        """
+        'perturb' the image and generally make the glyphs from same chars, if any, seem different
+        """
+        if not 0 <= self.__alpha_x <= 1:
+            raise ValueError("alpha_x must be between 0 (inclusive) and 1 (inclusive).")
+        if not 0 <= self.__alpha_y <= 1:
+            raise ValueError("alpha_y must be between 0 (inclusive) and 1 (inclusive).")
+
+        wavelength = 2 * self.__font_size
+        matrix = image.load()
+        for i in range((image.width + wavelength) // wavelength + 1):
+            x0 = self.__random.randrange(-wavelength, image.width)
+            for j in range(max(0, -x0), min(wavelength, image.width - x0)):
+                offset = self.__alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength))
+                self.__slide_x(matrix, x0 + j, offset, image.height)
+        for i in range((image.height + wavelength) // wavelength + 1):
+            y0 = self.__random.randrange(-wavelength, image.height)
+            for j in range(max(0, -y0), min(wavelength, image.height - y0)):
+                offset = self.__alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength))
+                self.__slide_y(matrix, y0 + j, offset, image.width)
 
     @staticmethod
-    def __downsample(image):
-        """ Downsample the image for 4X SSAA """
-        width, height = image.size[0] // 2, image.size[1] // 2
-        sampled_image = PIL.Image.new('RGBA', (width, height), color=(0, 0, 0, 0))
-        spx, px = sampled_image.load(), image.load()
-        for x in range(width):
-            for y in range(height):
-                spx[x, y] = (tuple(sum(i) // 4 for i in zip(px[2 * x, 2 * y], px[2 * x + 1, 2 * y],
-                                                            px[2 * x, 2 * y + 1], px[2 * x + 1, 2 * y + 1])))
-        return sampled_image
+    def __slide_x(matrix, x: int, offset: float, height: int) -> None:
+        """
+        The helper function of __perturb()
+        Slide one given column without producing jaggies
+        :param offset: a float value greater than or equal to 0
+        """
+        weight = offset % 1
+        for i in range(height - math.ceil(offset)):
+            matrix[x, i] = (
+                int((1 - weight) * matrix[x, i + math.floor(offset)][0] + weight * matrix[x, i + math.ceil(offset)][0]),
+                int((1 - weight) * matrix[x, i + math.floor(offset)][1] + weight * matrix[x, i + math.ceil(offset)][1]),
+                int((1 - weight) * matrix[x, i + math.floor(offset)][2] + weight * matrix[x, i + math.ceil(offset)][2])
+            )
+        for i in range(height - math.ceil(offset), height):
+            matrix[x, i] = (_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE)
+
+    @staticmethod
+    def __slide_y(matrix, y: int, offset: float, width: int) -> None:
+        """
+        The helper function of __perturb()
+        Slide one given row without producing jaggies
+        :param offset: a float value greater than or equal to 0
+        """
+        weight = offset % 1
+        for i in range(width - math.ceil(offset)):
+            matrix[i, y] = (
+                int((1 - weight) * matrix[i + math.floor(offset), y][0] + weight * matrix[i + math.ceil(offset), y][0]),
+                int((1 - weight) * matrix[i + math.floor(offset), y][1] + weight * matrix[i + math.ceil(offset), y][1]),
+                int((1 - weight) * matrix[i + math.floor(offset), y][2] + weight * matrix[i + math.ceil(offset), y][2]),
+            )
+        for i in range(width - math.ceil(offset), width):
+            matrix[i, y] = (_MAX_BYTE_VALUE, _MAX_BYTE_VALUE, _MAX_BYTE_VALUE)
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
-        background = self.__background.copy()
-        background.paste(image, mask=image)
-        return background
+        image.paste(self.__background, mask=image.convert(mode='L'))
+        return image

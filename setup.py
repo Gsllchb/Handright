@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
+
 import pylf
+
 classifiers = [
     'Intended Audience :: Developers',
     'Intended Audience :: Science/Research',
@@ -11,14 +13,15 @@ classifiers = [
     'Programming Language :: Python :: 3.5',
     "Programming Language :: Python :: 3.6",
 ]
+
 setup(
     name='pylf',
     version=pylf.__version__,
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
-    install_requires=['pillow>=4.3.0'],
-    python_requires='>=3.5',
+    install_requires=['pillow>=5.0.0, <6', ],
+    python_requires='>=3.5, <3.8',
     description="A lightweight Python library for simulating Chinese handwriting",
     long_description=pylf.__doc__,
     license="bsd-3-clause",
