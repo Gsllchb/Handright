@@ -9,7 +9,7 @@ template = {
     'background': image,
     'box': (68, 131, 653, 950),
     'font': ImageFont.truetype("./data/fonts/Gsllchb_lf.ttf"),
-    'font_size': 50,
+    'font_size': 1,
 }
 text = """我能吞下玻璃而不伤身体。"""
 
