@@ -62,12 +62,12 @@
 
 
 ## Examples
-* **“我能吞下玻璃而不伤身体。”** <br>
+* __“我能吞下玻璃而不伤身体。”__ <br>
 示例代码：[/examples/i_can_eat_glass.py](./examples/i_can_eat_glass.py) <br>
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
-* **《荷塘月色》** <br>
+* __《荷塘月色》__ <br>
 示例代码：[/examples/hetangyuese.py](./examples/hetangyuese.py) <br>
-（注：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
+（**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
 ![荷塘月色0](./examples/out/荷塘月色/0.jpg) <br>
 ![荷塘月色1](./examples/out/荷塘月色/1.jpg) <br>
  
