@@ -52,13 +52,13 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
         Advanced:
         'font_size_sigma': <float>
             The sigma of the gauss distribution of the font size
-            default: font_size / 4
+            default: font_size / 256
         'line_spacing_sigma': <float>
             The sigma of the gauss distribution of the line spacing
-            default: font_size / 4
+            default: font_size / 256
         'word_spacing_sigma': <float>
             The sigma of the gauss distribution of the word spacing
-            default: font_size / 4
+            default: font_size / 256
         'is_half_char': <Callable>
             A function judges whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
@@ -96,20 +96,18 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
     if 'line_spacing' not in template:
         template['line_spacing'] = font_size // 5
 
-    # FIXME: tune following default values
     if 'font_size_sigma' not in template:
-        template['font_size_sigma'] = font_size / 2 / 4
+        template['font_size_sigma'] = font_size / 256
     if 'line_spacing_sigma' not in template:
-        template['line_spacing_sigma'] = font_size / 2 / 4
+        template['line_spacing_sigma'] = font_size / 256
     if 'word_spacing_sigma' not in template:
-        template['word_spacing_sigma'] = font_size / 2 / 4
+        template['word_spacing_sigma'] = font_size / 256
 
     if 'is_half_char' not in template:
         template['is_half_char'] = lambda c: False
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
 
-    # FIXME: tune following default values
     if 'alpha_x' not in template:
         template['alpha_x'] = _DEFAULT_ALPHA_X
     if 'alpha_y' not in template:
