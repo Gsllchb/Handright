@@ -2,8 +2,13 @@
 This file records the **main** changes in *PyLf* library.
 
 ## in progress version
-* **将*line_spacing*的含义改为两临近行间的间隙（即上一行字的下端和下一行字的上端的距离）的大小（以像素为单位），使之与*word_spacing*和
-*Pillow*中*line_spacing*含义一致**
+* **将*font_size*/256作为*template*中3个*sigma*参数的缺省值**
+* ***template*添加新的参数*alpha_x*和*alpha_y***
+* ***handwrite*的返回值中图片的*mode*将由与*background*保持一致改为均为*RGB***
+* **废除*handwrite*的*anti_aliasing*参数**
+* **大幅提高性能，大幅减少内存占用**
+* **将*line_spacing*的含义改为两临近行间的间隙（即上一行字的下端和下一行字的上端的距离）的大小（以像素为单位），并将(*0.2\*font_size*)
+作为其缺省值**
 * 完善文档
 
 ## v0.5.2 (2017-12-30)
