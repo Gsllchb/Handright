@@ -1,5 +1,6 @@
 # *Windows*用户必读
-*Windows*用户在使用*PyLf*以及其它任何基于[*multiprocessing*](https://docs.python.org/3.6/library/multiprocessing.html)的module时，均须将代码写成类似于如下形式：
+*Windows*用户在使用*PyLf*以及其它任何基于[*multiprocessing*](https://docs.python.org/3.6/library/multiprocessing.html)
+的module时，均须将代码写成类似于如下形式：
 
     from multiprocessing import freeze_support
     
@@ -11,7 +12,7 @@
         main()
 
 
-亦即[README.md](../README.md)中**Walk through**中的代码须写成如下形式：
+亦即[README.md](../README.md)中`Walk through`中的代码须写成如下形式：
 
     from PIL import Image, ImageFont
     from pylf import handwrite
