@@ -10,10 +10,6 @@ _MAX_BYTE_VALUE = 255
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
-_DEFAULT_COLOR = (0, 0, 0)
-_DEFAULT_WORD_SPACING = 0
-_DEFAULT_ALPHA_X = 0.1
-_DEFAULT_ALPHA_Y = 0.1
 
 
 def handwrite(text, template: dict, worker: int = 0) -> list:
@@ -90,9 +86,9 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
     font_size = template['font_size']
 
     if 'color' not in template:
-        template['color'] = _DEFAULT_COLOR
+        template['color'] = (0, 0, 0)
     if 'word_spacing' not in template:
-        template['word_spacing'] = _DEFAULT_WORD_SPACING
+        template['word_spacing'] = 0
     if 'line_spacing' not in template:
         template['line_spacing'] = font_size // 5
 
@@ -109,9 +105,9 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
 
     if 'alpha_x' not in template:
-        template['alpha_x'] = _DEFAULT_ALPHA_X
+        template['alpha_x'] = 0.1
     if 'alpha_y' not in template:
-        template['alpha_y'] = _DEFAULT_ALPHA_Y
+        template['alpha_y'] = 0.1
 
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, worker)
