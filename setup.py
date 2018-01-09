@@ -20,11 +20,12 @@ setup(
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
-    install_requires=['pillow>=5.0.0, <6', ],
+    install_requires=['pillow >= 5.0.0, < 6', ],
     python_requires='>=3.5, <3.8',
     description="A lightweight Python library for simulating Chinese handwriting",
     long_description=pylf.__doc__,
     license="bsd-3-clause",
     keywords="simulating Chinese handwriting",
-    url="https://github.com/Gsllchb/PyLf"
+    url="https://github.com/Gsllchb/PyLf",
+    zip_safe=True
 )
