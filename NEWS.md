@@ -2,6 +2,7 @@
 This file records the **main** changes in *PyLf* library.
 
 ## in progress version
+* __将依赖项由`pillow >= 4.3.0`改为`5.0.0 <= pillow < 6`__
 * __将`font_size / 256`作为`template`中`font_size_sigma`、`word_spacing_sigma`和`line_spacing_sigma`参数的缺省值__
 * __`template`添加新的参数`alpha_x`和`alpha_y`__
 * __`handwrite`的返回值中图片的`mode`将由与`background`保持一致改为均为`RGB`__
