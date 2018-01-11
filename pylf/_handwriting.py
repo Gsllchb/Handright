@@ -35,6 +35,8 @@ def handwrite(text, template: dict, worker: int = 0) -> list:
             NOTE: the size attribute of the font object means nothing in the function.
         'font_size': <int>
             The average font size in pixel
+            NOTE: (box[3] - box[1]) must be greater than font_size.
+            NOTE: (box[2] - box[0]) must be greater than font_size.
         'color': (<int>, <int>, <int>)
             The color of font in RGB. These values must be between 0 (inclusive) and 255 (inclusive).
             default: (0, 0, 0)
@@ -142,11 +144,13 @@ def _draw_text(
     """
     Draw the text randomly in blank images
     :return: a list of drawn images with RGB mode and given size
+    NOTE: (box[3] - box[1]) must be greater than font_size.
+    NOTE: (box[2] - box[0]) must be greater than font_size.
     """
     if not box[3] - box[1] > font_size:
-        raise ValueError('(box[3] - box[1]) must be greater than font_size.')
+        raise ValueError("(box[3] - box[1]) must be greater than font_size.")
     if not box[2] - box[0] > font_size:
-        raise ValueError('(box[2] - box[0]) must be greater than font_size.')
+        raise ValueError("(box[2] - box[0]) must be greater than font_size.")
 
     left, upper, right, lower = box
     chars = iter(text)
@@ -212,6 +216,8 @@ class _RenderMaker:
     def __perturb(self, image) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
+        NOTE: self.__alpha_x must be between 0 (inclusive) and 1 (inclusive).
+        NOTE: self.__alpha_y must be between 0 (inclusive) and 1 (inclusive).
         """
         if not 0 <= self.__alpha_x <= 1:
             raise ValueError("alpha_x must be between 0 (inclusive) and 1 (inclusive).")
