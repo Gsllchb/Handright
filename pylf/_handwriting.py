@@ -6,13 +6,15 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
-_WHITE = 255
-_BLACK = 0
-# Amplification for 4X SSAA.
-# While change its value, must be rewrite _RenderMaker.__downsample properly also. Because the method is hardcoded.
-_AMP = 2
+
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+
+# While changing following constants, it is necessary to consider to rewrite the relevant codes.
+_INTERNAL_MODE = 'L'  # The mode for internal computation
+_WHITE = 255
+_BLACK = 0
+_AMP = 2  # Amplification for 4X SSAA.
 
 
 def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
@@ -156,7 +158,7 @@ def _draw_text(
     try:
         char = next(chars)
         while True:
-            image = PIL.Image.new(mode='L', size=size, color=_BLACK)
+            image = PIL.Image.new(mode=_INTERNAL_MODE, size=size, color=_BLACK)
             draw = PIL.ImageDraw.Draw(image)
             y = upper
             try:
@@ -275,7 +277,7 @@ class _RenderMaker:
     def __downsample(image):
         """ Downsample the image for 4X SSAA """
         width, height = image.size[0] // _AMP, image.size[1] // _AMP
-        sampled_image = PIL.Image.new(mode='L', size=(width, height))
+        sampled_image = PIL.Image.new(mode=_INTERNAL_MODE, size=(width, height))
         spx, px = sampled_image.load(), image.load()
         for x in range(width):
             for y in range(height):
