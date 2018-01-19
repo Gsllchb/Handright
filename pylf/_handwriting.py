@@ -67,7 +67,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         default: True
     :param worker: the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
-        default: 0 (use all the available CPU in the computer)
+        default: 0 (use all the available CPUs in the computer)
     :return: A list of drawn images with the same size and mode as background image
     """
     template = dict(template)
@@ -141,7 +141,7 @@ def _draw_text(
 ) -> list:
     """
     Draw the text randomly in black images with white color
-    :return: a list of drawn images with RGB mode and given size
+    :return: a list of drawn images with L mode and given size
     NOTE: (box[3] - box[1]) must be greater than font_size.
     NOTE: (box[2] - box[0]) must be greater than font_size.
     """
