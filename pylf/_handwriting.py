@@ -65,7 +65,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             default: 0.1
     :param anti_aliasing: whether or not turn on the anti-aliasing
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
-        significantly reduce the computational cost.
+        significantly reduce the overall computation.
         default: True
     :param worker: the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
