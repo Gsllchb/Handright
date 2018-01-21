@@ -118,8 +118,6 @@ def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
         is_end_char=template['is_end_char'],
         is_half_char=template['is_half_char']
     )
-    if not images:
-        return images
     render = _RenderMaker(anti_aliasing, **template)
     with multiprocessing.Pool(worker) as pool:
         images = pool.map(render, images)
