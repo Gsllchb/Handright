@@ -138,8 +138,7 @@ def _draw_text(
         word_spacing: int,
         word_spacing_sigma: float,
         is_end_char,
-        is_half_char,
-        **kwargs
+        is_half_char
 ) -> list:
     """
     Draw the text randomly in black images with white color
