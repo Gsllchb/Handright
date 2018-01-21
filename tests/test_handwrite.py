@@ -9,7 +9,7 @@ template = {
     'background': image,
     'box': (68, 131, 653, 950),
     'font': ImageFont.truetype("./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
-    'font_size': 40,
+    'font_size': 30,
 }
 text = """我能吞下玻璃而不伤身体。"""
 
