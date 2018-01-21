@@ -201,7 +201,7 @@ class _RenderMaker:
             self,
             anti_aliasing: bool,
             background,
-            color,
+            color: str,
             font_size: int,
             alpha_x: float,
             alpha_y: float,
