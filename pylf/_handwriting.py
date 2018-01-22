@@ -57,12 +57,9 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             '》', ')', ']')
             The function must take a char parameter and return a boolean value.
             default: (lambda c: c in _DEFAULT_END_CHARS)
-        alpha_x: A float that controls the degree of the distortion in the horizontal direction
-            its value must be between 0 (inclusive) and 1 (inclusive).
-            default: 0.1
-        alpha_y: A float that controls the degree of the distortion in the vertical direction
-            its value must be between 0 (inclusive) and 1 (inclusive).
-            default: 0.1
+        alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in order
+            Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
+            default: (0.1, 0.1)
     :param anti_aliasing: whether or not turn on the anti-aliasing
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the overall computation.
@@ -94,10 +91,8 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
     if 'is_end_char' not in template:
         template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
 
-    if 'alpha_x' not in template:
-        template['alpha_x'] = 0.1
-    if 'alpha_y' not in template:
-        template['alpha_y'] = 0.1
+    if 'alpha' not in template:
+        template['alpha'] = (0.1, 0.1)
 
     worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
     return _handwrite(text, template, anti_aliasing, worker)
@@ -203,16 +198,14 @@ class _RenderMaker:
             background,
             color: str,
             font_size: int,
-            alpha_x: float,
-            alpha_y: float,
+            alpha: tuple,
             **kwargs
     ):
         self.__anti_aliasing = anti_aliasing
         self.__background = background
         self.__color = color
         self.__font_size = font_size
-        self.__alpha_x = alpha_x
-        self.__alpha_y = alpha_y
+        self.__alpha = alpha
         self.__random = random.Random()
 
     def __call__(self, image):
@@ -225,25 +218,25 @@ class _RenderMaker:
     def __perturb(self, image) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
-        NOTE: self.__alpha_x must be between 0 (inclusive) and 1 (inclusive).
-        NOTE: self.__alpha_y must be between 0 (inclusive) and 1 (inclusive).
+        NOTE: self.__alpha[0] must be between 0 (inclusive) and 1 (inclusive).
+        NOTE: self.__alpha[1] must be between 0 (inclusive) and 1 (inclusive).
         """
-        if not 0 <= self.__alpha_x <= 1:
-            raise ValueError("alpha_x must be between 0 (inclusive) and 1 (inclusive).")
-        if not 0 <= self.__alpha_y <= 1:
-            raise ValueError("alpha_y must be between 0 (inclusive) and 1 (inclusive).")
+        if not 0 <= self.__alpha[0] <= 1:
+            raise ValueError("alpha[0] must be between 0 (inclusive) and 1 (inclusive).")
+        if not 0 <= self.__alpha[1] <= 1:
+            raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
 
         wavelength = 2 * self.__font_size
         matrix = image.load()
         for i in range((image.width + wavelength) // wavelength + 1):
             x0 = self.__random.randrange(-wavelength, image.width)
             for j in range(max(0, -x0), min(wavelength, image.width - x0)):
-                offset = int(self.__alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
+                offset = int(self.__alpha[0] * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
                 self.__slide_x(matrix, x0 + j, offset, image.height)
         for i in range((image.height + wavelength) // wavelength + 1):
             y0 = self.__random.randrange(-wavelength, image.height)
             for j in range(max(0, -y0), min(wavelength, image.height - y0)):
-                offset = int(self.__alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
+                offset = int(self.__alpha[1] * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
                 self.__slide_y(matrix, y0 + j, offset, image.width)
 
     @staticmethod
