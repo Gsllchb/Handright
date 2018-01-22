@@ -2,11 +2,10 @@
 This file records the **main** changes in *PyLf* library.
 
 ## in progress version
+* __废除`template`中的参数`x_amplitude`、`y_amplitude`、`x_wavelength`、`y_wavelength`、`x_lambd`和`y_lambd`__
 * __将依赖项由`pillow >= 4.3.0`改为`5.0.0 <= pillow < 6`__
 * __将`font_size / 256`作为`template`中`font_size_sigma`、`word_spacing_sigma`和`line_spacing_sigma`参数的缺省值__
-* __`template`添加新的参数`alpha_x`和`alpha_y`__
-* __`handwrite`的返回值中图片的`mode`将由与`background`保持一致改为均为`RGB`__
-* __废除参数`anti_aliasing`__
+* __`template`添加新的参数`alpha`__
 * __大幅提高性能，大幅减少内存占用__
 * __将`line_spacing`的含义改为两临近行间的间隙（即上一行字的下端和下一行字的上端的距离）的大小（以像素为单位），并将
 `font_size // 5`作为其缺省值__
