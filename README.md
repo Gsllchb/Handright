@@ -1,6 +1,6 @@
 # *PyLf*
 [License](./LICENSE) |
-[Release Notes](docs/NEWS.md)
+[Release Notes](NEWS.md)
 
 ![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
 *PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
