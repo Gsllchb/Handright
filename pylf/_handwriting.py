@@ -179,10 +179,7 @@ def _draw_text(
 
 
 def _draw_char(draw, char: str, xy: tuple, font) -> int:
-    """
-    The helper function of _draw_text that draws a single char with the parameters and white color, and returns the
-    offset.
-    """
+    """ Draw a single char with the parameters and white color, and return the offset """
     draw.text(xy, char, fill=_WHITE, font=font)
     return font.getsize(char)[0]
 
@@ -241,11 +238,7 @@ class _RenderMaker:
 
     @staticmethod
     def __slide_x(matrix, x: int, offset: int, height: int) -> None:
-        """
-        The helper function of __perturb()
-        Slide one given column without producing jaggies
-        :param offset: a float value greater than or equal to 0
-        """
+        """ Slide one given column """
         for i in range(height - offset):
             matrix[x, i] = matrix[x, i + offset]
         for i in range(height - offset, height):
@@ -253,11 +246,7 @@ class _RenderMaker:
 
     @staticmethod
     def __slide_y(matrix, y: int, offset: int, width: int) -> None:
-        """
-        The helper function of __perturb()
-        Slide one given row without producing jaggies
-        :param offset: a float value greater than or equal to 0
-        """
+        """ Slide one given row """
         for i in range(width - offset):
             matrix[i, y] = matrix[i + offset, y]
         for i in range(width - offset, width):
