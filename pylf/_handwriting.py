@@ -27,32 +27,32 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             NOTE: The function do NOT guarantee the drawn texts will completely in the box.
         font: A Pillow's font object
             NOTE: This function do not use the size attribute of the font object.
-        font_size: A int that is the average font size in pixel
+        font_size: A int as the average font size in pixel
             NOTE: (box[3] - box[1]) must be greater than font_size.
             NOTE: (box[2] - box[0]) must be greater than font_size.
         color: A str with specific format
             The format is given as 'rgb(red, green, blue)' where the color values are integers in the range 0
             (inclusive) to 255 (inclusive)
             default: 'rgb(0, 0, 0)'
-        word_spacing: A int that is the average gap between two adjacent chars in pixel
+        word_spacing: A int as the average gap between two adjacent chars in pixel
             default: 0
-        line_spacing: A int that is the average gap between two adjacent lines in pixel
+        line_spacing: A int as the average gap between two adjacent lines in pixel
             default: font_size // 5
 
         Advanced parameters:
         --------------------
-        font_size_sigma: A float that is the sigma of the gauss distribution of the font size
+        font_size_sigma: A float as the sigma of the gauss distribution of the font size
             default: font_size / 256
-        line_spacing_sigma: A float that is the sigma of the gauss distribution of the line spacing
+        line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
             default: font_size / 256
-        word_spacing_sigma: The sigma of the gauss distribution of the word spacing
+        word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing
             default: font_size / 256
-        is_half_char: A function judges whether or not a char only take up half of its original width
+        is_half_char: A function judging whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
             The feature is designed for some of Chinese punctuations that only take up the left half of their space
             (e.g. '，', '。', '！', '、').
             default: (lambda c: False)
-        is_end_char: A function judges whether or not a char can NOT be in the beginning of the lines (e.g. '，', '。',
+        is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，', '。',
             '》', ')', ']')
             The function must take a char parameter and return a boolean value.
             default: (lambda c: c in _DEFAULT_END_CHARS)
@@ -63,7 +63,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the overall computation.
         default: True
-    :param worker: the number of worker
+    :param worker: A int as the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
         default: 0 (use all the available CPUs in the computer)
     :return: A list of drawn images with the same size and mode as background image
