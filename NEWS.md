@@ -4,6 +4,9 @@ This file records the **main** changes in *PyLf* library.
 ## in progress version
 
 ## v1.0.0 (2018-1-25)
+本版本对核心算法做了大幅改动，一方面使得效果更为逼真，另一方面使得性能得到大幅提升而内存占用大幅降低；但也使得接口发生了**不兼容**的改动。同时，
+本次更新也使得接口易用性得到大幅的提高。
+* __`template`中的参数`color`由`tuple`类型改为特定格式的`str`__
 * __废除`template`中的参数`x_amplitude`、`y_amplitude`、`x_wavelength`、`y_wavelength`、`x_lambd`和`y_lambd`__
 * __将依赖项由`pillow >= 4.3.0`改为`5.0.0 <= pillow < 6`__
 * __将`font_size / 256`作为`template`中`font_size_sigma`、`word_spacing_sigma`和`line_spacing_sigma`参数的缺省值__
