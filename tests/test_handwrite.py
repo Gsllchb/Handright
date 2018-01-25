@@ -7,6 +7,9 @@ import PIL.ImageFont
 
 import pylf
 
+BACKGROUND_COLOR = 'rgb(255, 255, 255)'
+DEFAULT_SIZE = (500, 500)
+
 
 class TestHandwrite(unittest.TestCase):
 
@@ -22,7 +25,7 @@ class TestHandwrite(unittest.TestCase):
     def get_default_template():
         """ Get the template without randomness """
         template = {
-            'background': PIL.Image.new(mode='RGB', size=(500, 500), color='rgb(255, 255, 255)'),
+            'background': PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
             'box': (50, 100, 450, 400),
             'font': PIL.ImageFont.truetype(
                 "./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
@@ -199,6 +202,28 @@ class TestHandwrite(unittest.TestCase):
         for i, im in enumerate(ims):
             # im.save("./data/images/test_abundant_output{}.png".format(i))
             self.assertTrue(self.compare(im, PIL.Image.open("./data/images/test_abundant_output{}.png".format(i))))
+
+    def test_mode(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        # Due to various reasons
+        # Except: LAB, HSV, F, CMYK, RGBa, 1, I, RGBA, YCbCr, RGBX
+
+        png_modes = ('LA',)
+        for mode in png_modes:
+            template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
+            ims = pylf.handwrite(text, template, anti_aliasing=False)
+            assert len(ims) == 1
+            # ims[0].save("./data/images/test_mode_{}.png".format(mode))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_mode_{}.png".format(mode))))
+
+        bmp_modes = ('L', 'RGB')
+        for mode in bmp_modes:
+            template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
+            ims = pylf.handwrite(text, template, anti_aliasing=False)
+            assert len(ims) == 1
+            # ims[0].save("./data/images/test_mode_{}.bmp".format(mode))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_mode_{}.bmp".format(mode))))
 
 
 if __name__ == '__main__':
