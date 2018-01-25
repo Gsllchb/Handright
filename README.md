@@ -39,7 +39,7 @@
             'box': (100, 200, 700, 800),
             # 设置字体
             'font': ImageFont.truetype("./something.ttf"),  
-            'font_size': 10,
+            'font_size': 50,
         }
         text = "我能吞下玻璃而不伤身体。"
         images = handwrite(text, template)
