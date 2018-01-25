@@ -1,128 +1,204 @@
+import copy
 import unittest
 
-from PIL import Image, ImageFont
+import PIL.Image
+import PIL.ImageDraw
+import PIL.ImageFont
 
-from pylf import handwrite
-
-image = Image.open("./data/pictures/background.png")
-template = {
-    'background': image,
-    'box': (68, 131, 653, 950),
-    'font': ImageFont.truetype("./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
-    'font_size': 30,
-}
-text = """我能吞下玻璃而不伤身体。"""
+import pylf
 
 
 class TestHandwrite(unittest.TestCase):
 
     @staticmethod
-    def __copy():
-        return str(text), dict(template)
+    def compare(im1, im2):
+        return im1.tobytes() == im2.tobytes()
 
-    def test_exception(self):
-        txt, tmp = self.__copy()
-        font_size = tmp['font_size']
+    @staticmethod
+    def get_default_text():
+        return "我能吞下玻璃而不伤身体"
 
-        tmp['box'] = (100, 100, 100 + font_size + 1, 100 + font_size)
+    @staticmethod
+    def get_default_template():
+        """ Get the template without randomness """
+        template = {
+            'background': PIL.Image.new(mode='RGB', size=(500, 500), color='rgb(255, 255, 255)'),
+            'box': (50, 100, 450, 400),
+            'font': PIL.ImageFont.truetype(
+                "./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
+            'font_size': 30,
+            'font_size_sigma': 0,
+            'line_spacing_sigma': 0,
+            'word_spacing_sigma': 0,
+            'alpha': (0, 0)
+        }
+        return template
+
+    def test_error_box(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        font_size = template['font_size']
+
+        template['box'] = (100, 100, 100 + font_size + 1, 100 + font_size)
         with self.assertRaises(ValueError):
-            handwrite(txt, tmp)
+            pylf.handwrite(text, template)
 
-        tmp['box'] = (100, 100, 100 + font_size, 100 + font_size + 1)
+        template['box'] = (100, 100, 100 + font_size, 100 + font_size + 1)
         with self.assertRaises(ValueError):
-            handwrite(txt, tmp)
+            pylf.handwrite(text, template, anti_aliasing=False)
 
-        tmp['box'] = (100, 100, 100 + font_size, 100 + font_size)
+        template['box'] = (100, 100, 100 + font_size, 100 + font_size)
         with self.assertRaises(ValueError):
-            handwrite(txt, tmp)
+            pylf.handwrite(text, template)
+
+    def test_error_alpha(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+
+        template['alpha'] = (-1, 0)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template)
+
+        template['alpha'] = (-1, -1)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template, anti_aliasing=False)
+
+        template['alpha'] = (0, -1)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template)
+
+        template['alpha'] = (2, 0)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template)
+
+        template['alpha'] = (2, 2)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template)
+
+        template['alpha'] = (0, 2)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template, anti_aliasing=False)
+
+        template['alpha'] = (-1, 2)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template, anti_aliasing=False)
+
+        template['alpha'] = (2, -1)
+        with self.assertRaises(ValueError):
+            pylf.handwrite(text, template)
 
     def test_side_effect(self):
-        txt, tmp = self.__copy()
-        handwrite(txt, tmp)
-        self.assertEqual(txt, text)
-        self.assertEqual(tmp, template)
+        text = self.get_default_text()
+        template = self.get_default_template()
+        template_clone = copy.copy(template)
+        pylf.handwrite(text, template)
+        self.assertEqual(text, self.get_default_text())
+        self.assertEqual(template, template_clone)
+
+        text = self.get_default_text()
+        template = self.get_default_template()
+        template_clone = copy.copy(template)
+        pylf.handwrite(text, template, anti_aliasing=False)
+        self.assertEqual(text, self.get_default_text())
+        self.assertEqual(template, template_clone)
 
     def test_null_text(self):
-        tmp = self.__copy()[1]
-        self.assertEqual(handwrite('', tmp), [])
+        self.assertEqual(pylf.handwrite('', self.get_default_template()), [])
 
     def test_text_iterable(self):
-        txt, tmp = self.__copy()
-        handwrite(txt, tmp)
-        txt = list(txt)
-        handwrite(txt, tmp)
-        txt = tuple(txt)
-        handwrite(txt, tmp)
-        txt = (c for c in txt)
-        handwrite(txt, tmp)
+        template = self.get_default_template()
 
-    def test_by_naked_eyes(self):
-        import os
-        print('Test by naked eyes:')
-        prompt = "{}\npass test? [Y/N] \n"
+        text = self.get_default_text()
+        ims1 = pylf.handwrite(text, template)
 
-        tmp = self.__copy()[1]
-        dir_path, dir_names, file_names = list(os.walk("./data/texts"))[0]
-        for filename in file_names:
-            with open("{}/{}".format(dir_path, filename)) as f:
-                txt = f.read()
-            images = handwrite(txt, tmp)
-            for im in images:
-                im.show()
-            self.assertTrue(input(prompt.format(filename)).upper() == 'Y')
+        text = list(self.get_default_text())
+        ims2 = pylf.handwrite(text, template)
+        for im1, im2 in zip(ims1, ims2):
+            self.assertTrue(self.compare(im1, im2))
 
-        txt = "测试‘box’比背景图大的情况。"
-        tmp = self.__copy()[1]
-        tmp['box'] = (-100, -100, image.width + 100, image.height + 100)
-        images = handwrite(txt * 150, tmp)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
+        text = tuple(self.get_default_text())
+        ims2 = pylf.handwrite(text, template)
+        for im1, im2 in zip(ims1, ims2):
+            self.assertTrue(self.compare(im1, im2))
 
-        tmp = self.__copy()[1]
-        cases = {
-            '黑色': (0, 0, 0),
-            '白色': (255, 255, 255),
-            '红色': (255, 0, 0),
-            '绿色': (0, 255, 0),
-            '蓝色': (0, 0, 255),
-            'color0': (-1, -1, -1),
-            'color1': (1000, 1000, 1000),
+        text = (c for c in self.get_default_text())
+        ims2 = pylf.handwrite(text, template)
+        for im1, im2 in zip(ims1, ims2):
+            self.assertTrue(self.compare(im1, im2))
+
+    def test_outside_box(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        template['box'] = (-100, -100, 0, 0)
+        ims = pylf.handwrite(text, template, anti_aliasing=False)
+        for im in ims:
+            self.assertEqual(im, template['background'])
+
+    def test_randomness(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        ims1 = pylf.handwrite(text, template)
+        ims2 = pylf.handwrite(text, template)
+        for im1, im2 in zip(ims1, ims2):
+            self.assertTrue(self.compare(im1, im2))
+
+        ims1 = pylf.handwrite(text, template, anti_aliasing=False)
+        ims2 = pylf.handwrite(text, template, anti_aliasing=False)
+        for im1, im2 in zip(ims1, ims2):
+            self.assertTrue(self.compare(im1, im2))
+
+    def test_color(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        colors = {
+            'black': 'rgb(0, 0, 0)',
+            'red': 'rgb(255, 0, 0)',
+            'green': 'rgb(0, 255, 0)',
+            'blue': 'rgb(0, 0, 255)',
+            'white': 'rgb(255, 255, 255)'
         }
-        for (k, v) in cases.items():
-            print('{}: {}'.format(k, v))
-            tmp['color'] = v
-            images = handwrite(k, tmp)
-            for im in images:
-                im.show()
-        self.assertTrue(input(prompt.format("测试颜色")).upper() == 'Y')
+        for k, v in colors.items():
+            template['color'] = v
+            ims = pylf.handwrite(text, template)
+            assert len(ims) == 1
+            # ims[0].save("./data/images/test_color_{}.png".format(k))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_color_{}.png".format(k))))
 
-        txt = """测试is_half_char　= lambda c: c in '，。'
-        ，，，，，，，，。。。。。。。。。。。"""
-        tmp = self.__copy()[1]
-        tmp['is_half_char'] = lambda c: c in '，。'
-        images = handwrite(txt, tmp)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format("测试is_half_char")).upper() == 'Y')
+    def test_oversized_box(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        background = template['background']
+        template['box'] = (-100, -50, background.width + 100, background.height + 50)
+        ims = pylf.handwrite(text * 10, template)
+        assert len(ims) == 1
+        # ims[0].save("./data/images/test_oversized_box.png")
+        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_oversized_box.png")))
 
-        txt = """测试is_end_char　= lambda c: False
-        。。。。。。。。。。。。。。。。。。。。。。。。"""
-        tmp = self.__copy()[1]
-        tmp['is_end_char'] = lambda c: False
-        images = handwrite(txt, tmp)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format("测试is_end_char")).upper() == 'Y')
+    def test_is_half_char(self):
+        text = "，，，，，，，，。。。。。。。。。。。"
+        template = self.get_default_template()
+        template['is_half_char'] = lambda c: c in '，。'
+        ims = pylf.handwrite(text, template)
+        assert len(ims) == 1
+        # ims[0].save("./data/images/test_is_half_char.png")
+        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_is_half_char.png")))
 
-        import multiprocessing
-        txt = "测试生成图片数量超过worker"
-        tmp = self.__copy()[1]
-        worker = multiprocessing.cpu_count()
-        images = handwrite(txt * 100 * worker, tmp, worker=worker)
-        for im in images:
-            im.show()
-        self.assertTrue(input(prompt.format(txt)).upper() == 'Y')
+    def test_is_end_char(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        template['is_end_char'] = lambda c: False
+        ims = pylf.handwrite(text * 5, template)
+        assert len(ims) == 1
+        # ims[0].save("./data/images/test_is_end_char.png")
+        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_is_end_char.png")))
+
+    def test_abundant_output(self):
+        text = self.get_default_text()
+        template = self.get_default_template()
+        ims = pylf.handwrite(text * 66, template, worker=1)
+        for i, im in enumerate(ims):
+            # im.save("./data/images/test_abundant_output{}.png".format(i))
+            self.assertTrue(self.compare(im, PIL.Image.open("./data/images/test_abundant_output{}.png".format(i))))
 
 
 if __name__ == '__main__':
