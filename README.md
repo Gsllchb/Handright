@@ -29,33 +29,23 @@
     from PIL import Image, ImageFont
     from pylf import handwrite
     
+    
     def main():
         # 设置模板的参数
         template = {
-            # 选择背景图片（图片的大小应大于‘box’所限定的范围）
-            'background': Image.open("./something.png"),  
+            # 设置背景图片（图片的大小应大于‘box’所限定的范围）
+            'background': Image.new(mode='RGB', size=(800, 1000), color='rgb(255, 255, 255)'),  
             # 限定“手写”的范围的左、上、右、下边界的坐标（以左上角为坐标原点）
-            'box': (0, 0, 100, 100),
-            # 选择字体
+            'box': (100, 200, 700, 800),
+            # 设置字体
             'font': ImageFont.truetype("./something.ttf"),  
-            # 平均字体大小
             'font_size': 10,
-            # 绝对值越大字体大小的方差越大  
-            'font_size_sigma': 0.1,
-            # 行间距
-            'line_spacing': 15,
-            # 绝对值越大行间距大小的方差越大  
-            'line_spacing_sigma': 0.1,
-            # 绝对值越大字间距大小的方差越大  
-            'word_spacing_sigma': 0.1,
         }
-        # 需要“手写”的文本
-        text = """我能吞下玻璃而不伤身体。"""
-        # 开始“手写”
+        text = "我能吞下玻璃而不伤身体。"
         images = handwrite(text, template)
-        # 显示每一张生成的图片
         for image in images:
             image.show()
+
 
     if __name__ == '__main__':
         main()

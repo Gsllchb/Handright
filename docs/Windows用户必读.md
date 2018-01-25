@@ -19,17 +19,17 @@
     from multiprocessing import freeze_support
     
     def main():
+        # 设置模板的参数
         template = {
-            'background': Image.open("./something.png"),  
-            'box': (0, 0, 1000, 1000),
+            # 设置背景图片（图片的大小应大于‘box’所限定的范围）
+            'background': Image.new(mode='RGB', size=(800, 1000), color='rgb(255, 255, 255)'),  
+            # 限定“手写”的范围的左、上、右、下边界的坐标（以左上角为坐标原点）
+            'box': (100, 200, 700, 800),
+            # 设置字体
             'font': ImageFont.truetype("./something.ttf"),  
             'font_size': 10,
-            'font_size_sigma': 0.1,
-            'line_spacing': 15,
-            'line_spacing_sigma': 0.1,
-            'word_spacing_sigma': 0.1,
         }
-        text = """我能吞下玻璃而不伤身体。"""
+        text = "我能吞下玻璃而不伤身体。"
         images = handwrite(text, template)
         for image in images:
             image.show()

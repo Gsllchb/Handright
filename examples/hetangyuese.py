@@ -5,16 +5,13 @@ from multiprocessing import freeze_support
 
 def main():
     template = {
-        'background': Image.open("./pictures/树信笺纸.jpg"),
-        'box': (20, 67, 800 - 22, 800 - 20),
-        'font': ImageFont.truetype("./fonts/Gsllchb_lf.ttf"),
-        'font_size': 20,
-        'font_size_sigma': 0.1,
-        'line_spacing': 27,
-        'line_spacing_sigma': 0.1,
-        'word_spacing_sigma': 0.1,
+        'background': Image.open("./pictures/letter.jpg"),
+        'box': (65, 203, 926, 1325),
+        'font': ImageFont.truetype("./fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
+        'font_size': 40,
+        'line_spacing': 14
     }
-    text = """                                         荷塘月色
+    text = """                  荷塘月色
     
     这几天心里颇不宁静。今晚在院子里坐着乘凉，忽然想起日日走过的荷塘，在这满月的光里，总该另有一番样子吧。月亮渐渐地升高了，墙外马路上孩子们的欢笑，已经听不见了；妻在屋里拍着闰儿，迷迷糊糊地哼着眠歌。我悄悄地披了大衫，带上门出去。
     沿着荷塘，是一条曲折的小煤屑路。这是一条幽僻的路；白天也少人走，夜晚更加寂寞。荷塘四面，长着许多树，蓊蓊郁郁⑵的。路的一旁，是些杨柳，和一些不知道名字的树。没有月光的晚上，这路上阴森森的，有些怕人。今晚却很好，虽然月光也还是淡淡的。

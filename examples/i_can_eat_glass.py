@@ -7,12 +7,8 @@ def main():
     template = {
         'background': Image.open("./pictures/树信笺纸.jpg"),
         'box': (50, 500, 800 - 80, 800 - 50),
-        'font': ImageFont.truetype("./fonts/Gsllchb_lf.ttf"),
+        'font': ImageFont.truetype("./fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
         'font_size': 60,
-        'font_size_sigma': 1,
-        'line_spacing': 60,
-        'line_spacing_sigma': 0.5,
-        'word_spacing_sigma': 1,
     }
     text = "我能吞下玻璃而不伤身体。"
     images = handwrite(text, template)
