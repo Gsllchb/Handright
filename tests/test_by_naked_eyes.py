@@ -11,7 +11,7 @@ class TestByNakedEyes(unittest.TestCase):
         print('Test by naked eyes:')
         template = {
             'background': PIL.Image.open("./data/backgrounds/letter.png"),
-            'box': (68, 130, 655, 920),
+            'box': (68, 130, 655, 925),
             'font': PIL.ImageFont.truetype("./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
             'font_size': 27,
             'line_spacing': 6
