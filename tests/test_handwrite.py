@@ -24,17 +24,16 @@ class TestHandwrite(unittest.TestCase):
     @staticmethod
     def get_default_template():
         """ Get the template without randomness """
-        template = {
-            'background': PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-            'box': (50, 100, 450, 400),
-            'font': PIL.ImageFont.truetype(
-                "./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
-            'font_size': 30,
-            'font_size_sigma': 0,
-            'line_spacing_sigma': 0,
-            'word_spacing_sigma': 0,
-            'alpha': (0, 0)
-        }
+        template = dict(
+            background=PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+            box=(50, 100, 450, 400),
+            font=PIL.ImageFont.truetype("./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
+            font_size=30,
+            font_size_sigma=0,
+            line_spacing_sigma=0,
+            word_spacing_sigma=0,
+            alpha=(0, 0),
+        )
         return template
 
     def test_error_box(self):
