@@ -26,6 +26,6 @@ setup(
     long_description=pylf.__doc__,
     license="bsd-3-clause",
     keywords="simulating Chinese handwriting",
-    url="https://github.com/Gsllchb/PyLf",
+    url="https://gsllchb.github.io/PyLf/",
     zip_safe=True
 )
