@@ -1,12 +1,12 @@
 # *PyLf*
-[License](./LICENSE) |
+[License](LICENSE) |
 [Release Notes](NEWS.md)
 
-![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
+![“我能吞下玻璃而不伤身体。”](examples/out/i_can_eat_glass.jpg) <br>
 *PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
 ## For *Windows* users
-* [*Windows*用户必读](./docs/Windows用户必读.md)
+* [*Windows*用户必读](docs/Windows用户必读.md)
 
 
 ## Installation
@@ -53,13 +53,13 @@
 
 ## Examples
 * __“我能吞下玻璃而不伤身体。”__ <br>
-示例代码：[/examples/i_can_eat_glass.py](./examples/i_can_eat_glass.py) <br>
-![“我能吞下玻璃而不伤身体。”](./examples/out/i_can_eat_glass.jpg) <br>
+示例代码：[examples/i_can_eat_glass.py](examples/i_can_eat_glass.py) <br>
+![“我能吞下玻璃而不伤身体。”](examples/out/i_can_eat_glass.jpg) <br>
 * __《荷塘月色》__ <br>
-示例代码：[/examples/hetangyuese.py](./examples/hetangyuese.py) <br>
+示例代码：[examples/hetangyuese.py](examples/hetangyuese.py) <br>
 （**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
-![荷塘月色0](./examples/out/荷塘月色/0.jpg) <br>
-![荷塘月色1](./examples/out/荷塘月色/1.jpg) <br>
-![荷塘月色2](./examples/out/荷塘月色/2.jpg) <br>
-![荷塘月色3](./examples/out/荷塘月色/3.jpg) <br>
+![荷塘月色0](examples/out/荷塘月色/0.jpg) <br>
+![荷塘月色1](examples/out/荷塘月色/1.jpg) <br>
+![荷塘月色2](examples/out/荷塘月色/2.jpg) <br>
+![荷塘月色3](examples/out/荷塘月色/3.jpg) <br>
  
