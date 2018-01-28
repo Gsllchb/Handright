@@ -53,4 +53,4 @@ Handwrite the `text` with the parameters in the `template`
         if `worker` is less than or equal to `0`, the actual amount of worker would be 
         `multiprocessing.cpu_count() + worker`.  <br>
         Default: `0` (use all the available CPUs in the computer)
-* Return: A `list` of drawn images with the same `size` and `mode` as background image
+* **Return**: A `list` of drawn images with the same `size` and `mode` as background image
