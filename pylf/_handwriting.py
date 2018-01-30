@@ -112,9 +112,9 @@ def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
         is_end_char=template['is_end_char'],
         is_half_char=template['is_half_char']
     )
-    render = _RenderMaker(anti_aliasing, **template)
+    renderer = _Renderer(anti_aliasing, **template)
     with multiprocessing.Pool(worker) as pool:
-        images = pool.map(render, images)
+        images = pool.map(renderer, images)
     return images
 
 
@@ -183,10 +183,8 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
     return font.getsize(char)[0]
 
 
-class _RenderMaker:
-    """
-    The maker of the function-like object rendering the foreground that was drawn text and returning finished image
-    """
+class _Renderer:
+    """ A function-like object rendering the foreground that was drawn text and returning rendered image """
 
     def __init__(
             self,
