@@ -12,8 +12,8 @@ Handwrite the `text` with the parameters in the `template`
     * **template**: A `dict` containing following parameters:
         * **background**: A Pillow's Image object
         * **box**: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate  <br>
-            **NOTE**: The module uses a Cartesian pixel coordinate system, with `(0, 0)` in the upper left corner.  <br>
-            **NOTE**: The function do NOT guarantee the drawn `text` will completely in the box.
+            The module uses a Cartesian pixel coordinate system, with `(0, 0)` in the upper left corner. The function do
+            not guarantee the drawn `text` will completely in the `box`.
         * **font**: A Pillow's font object  <br>
             **NOTE**: This function do not use the `size` attribute of the font object.
         * **font_size**: A `int` as the average font size in pixel  <br>
@@ -50,7 +50,7 @@ Handwrite the `text` with the parameters in the `template`
         significantly reduce the overall computation.  <br>
         Default: `True`
     * **worker**: A `int` as the number of worker  <br>
-        if `worker` is less than or equal to `0`, the actual amount of worker would be 
-        `multiprocessing.cpu_count() + worker`.  <br>
+        if `worker` is less than or equal to `0`, the actual amount of worker would be the number of CPU in the computer
+        adding `worker`.
         Default: `0` (use all the available CPUs in the computer)
 * **Return**: A `list` of drawn images with the same `size` and `mode` as background image

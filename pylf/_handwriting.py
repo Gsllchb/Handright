@@ -23,8 +23,8 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
     :param template: A dict containing following parameters:
         background: A Pillow's Image object
         box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
-            NOTE: The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner.
-            NOTE: The function do NOT guarantee the drawn texts will completely in the box.
+            The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. The function do
+            not guarantee the drawn texts will completely in the box.
         font: A Pillow's font object
             NOTE: This function do not use the size attribute of the font object.
         font_size: A int as the average font size in pixel
@@ -38,9 +38,6 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             default: 0
         line_spacing: A int as the average gap between two adjacent lines in pixel
             default: font_size // 5
-
-        Advanced parameters:
-        --------------------
         font_size_sigma: A float as the sigma of the gauss distribution of the font size
             default: font_size / 256
         line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
@@ -64,7 +61,8 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         significantly reduce the overall computation.
         default: True
     :param worker: A int as the number of worker
-        if worker is less than or equal to 0, the actual amount of worker would be multiprocessing.cpu_count() + worker.
+        if worker is less than or equal to 0, the actual amount of worker would be the number of CPU in the computer
+        adding worker.
         default: 0 (use all the available CPUs in the computer)
     :return: A list of drawn images with the same size and mode as background image
     """
