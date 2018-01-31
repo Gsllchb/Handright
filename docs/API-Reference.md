@@ -1,11 +1,14 @@
 # API Reference
 *PyLf* is a lightweight *Python* library for simulating Chinese handwriting. It introduces a great deal of randomness in
 the process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings. Currently, *PyLf* is
-built on the top of *Pillow* module.
+built on the top of [*Pillow*](https://python-pillow.org/) library.
 
-## Functions
+## `pylf` Module
+The `pylf` module is the core of *PyLf* library.
 
-### pylf.handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list
+### _Function:_
+
+#### handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list
 Handwrite the `text` with the parameters in the `template`
 * **Parameter**:
     * **text**: A `char` `iterable`
