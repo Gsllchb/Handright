@@ -221,11 +221,13 @@ class _Renderer:
         wavelength = 2 * self.__font_size
         alpha_x, alpha_y = self.__alpha
         matrix = image.load()
+
         for i in range((image.width + wavelength) // wavelength + 1):
             x0 = self.__random.randrange(-wavelength, image.width)
             for j in range(max(0, -x0), min(wavelength, image.width - x0)):
                 offset = int(alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
                 self.__slide_x(matrix, x0 + j, offset, image.height)
+
         for i in range((image.height + wavelength) // wavelength + 1):
             y0 = self.__random.randrange(-wavelength, image.height)
             for j in range(max(0, -y0), min(wavelength, image.height - y0)):
