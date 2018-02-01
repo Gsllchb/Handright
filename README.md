@@ -57,7 +57,7 @@
 示例代码：[examples/motto.py](examples/motto.py) <br>
 ![“我能吞下玻璃而不伤身体。”](examples/out/i_can_eat_glass.png) <br>
 * __《荷塘月色》__ <br>
-示例代码：[examples/hetangyuese.py](examples/hetangyuese.py) <br>
+示例代码：[examples/article.py](examples/article.py) <br>
 （**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
 ![荷塘月色0](examples/out/荷塘月色/0.png) <br>
 ![荷塘月色1](examples/out/荷塘月色/1.png) <br>
