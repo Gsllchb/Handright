@@ -1,25 +1,11 @@
 # *PyLf*
 [License](LICENSE) |
-[Release Notes](NEWS.md) |
-[API Reference](docs/API-Reference.md)
+[Installation](docs/Installation.md) |
+[API Reference](docs/API-Reference.md) |
+[Release Notes](NEWS.md)
 
 ![“我能吞下玻璃而不伤身体。”](examples/out/motto.png) <br>
-*PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
-
-## Installation
-由于*PyLf*的依赖项[*Pillow*](https://python-pillow.org/)会与[*PIL*](http://www.pythonware.com/products/pil/)发生冲突，
-如若您已安装[*PIL*](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
-
-    pip uninstall PIL
-
-此外如若您并未安装[*setuptools*](https://pypi.python.org/pypi/setuptools),请先**手动安装**：
-
-    pip install setuptools
-
-安装*PyLf*：
-
-    pip install pylf
-
+*PyLf*是一个轻量级模仿中文手写的*Python*库，其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
 ## Walk through
 
