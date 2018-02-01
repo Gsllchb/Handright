@@ -54,7 +54,7 @@
 
 ## Examples
 * __“我能吞下玻璃而不伤身体。”__ <br>
-示例代码：[examples/i_can_eat_glass.py](examples/i_can_eat_glass.py) <br>
+示例代码：[examples/motto.py](examples/motto.py) <br>
 ![“我能吞下玻璃而不伤身体。”](examples/out/i_can_eat_glass.png) <br>
 * __《荷塘月色》__ <br>
 示例代码：[examples/hetangyuese.py](examples/hetangyuese.py) <br>
