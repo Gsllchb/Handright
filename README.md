@@ -6,10 +6,6 @@
 ![“我能吞下玻璃而不伤身体。”](examples/out/motto.png) <br>
 *PyLf*是一个轻量级模仿中文手写的*Python*库。其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
 
-## For *Windows* users
-* [*Windows*用户必读](docs/Windows用户必读.md)
-
-
 ## Installation
 由于*PyLf*的依赖项[*Pillow*](https://python-pillow.org/)会与[*PIL*](http://www.pythonware.com/products/pil/)发生冲突，
 如若您已安装[*PIL*](http://www.pythonware.com/products/pil/)，请先**手动卸载**：
@@ -29,6 +25,7 @@
 
     from PIL import Image, ImageFont
     from pylf import handwrite
+    from multiprocessing import freeze_support  # 非Windows用户可删除此行
     
     
     def main():
@@ -49,6 +46,7 @@
     
     
     if __name__ == '__main__':
+        freeze_support()  # 非Windows用户可删除此行
         main()
 
 
