@@ -12,7 +12,7 @@ def main():
     )
     text = "我能吞下玻璃而不伤身体。"
     images = handwrite(text, template)
-    images[0].crop((0, 450, 800, 800-200)).save("./out/i_can_eat_glass.png")
+    images[0].crop((0, 450, 800, 800-200)).save("./out/motto.png")
 
 
 if __name__ == '__main__':
