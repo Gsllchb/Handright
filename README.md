@@ -4,7 +4,7 @@
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md)
 
-![“我能吞下玻璃而不伤身体。”](examples/out/motto.png)
+![](examples/out/motto.png)
 
 *PyLf*是一个轻量级模仿中文手写的*Python*库，其通过在处理过程中大量引入随机性来模仿汉字书写。
 
@@ -41,14 +41,14 @@
 
 * __“我能吞下玻璃而不伤身体。”__ <br>
 示例代码：[examples/motto.py](examples/motto.py) <br>
-![“我能吞下玻璃而不伤身体。”](examples/out/motto.png) <br>
+![](examples/out/motto.png) <br>
 * __《荷塘月色》__ <br>
 示例代码：[examples/article.py](examples/article.py) <br>
 （**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
-![荷塘月色0](examples/out/荷塘月色/0.png) <br>
-![荷塘月色1](examples/out/荷塘月色/1.png) <br>
-![荷塘月色2](examples/out/荷塘月色/2.png) <br>
-![荷塘月色3](examples/out/荷塘月色/3.png) <br>
+![](examples/out/荷塘月色/0.png)
+![](examples/out/荷塘月色/1.png)
+![](examples/out/荷塘月色/2.png)
+![](examples/out/荷塘月色/3.png)
  
  ## Contributing
  
