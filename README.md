@@ -4,8 +4,9 @@
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md)
 
-![“我能吞下玻璃而不伤身体。”](examples/out/motto.png) <br>
-*PyLf*是一个轻量级模仿中文手写的*Python*库，其通过在处理过程中大量引入随机性来模仿汉字书写。　<br>
+![“我能吞下玻璃而不伤身体。”](examples/out/motto.png)
+
+*PyLf*是一个轻量级模仿中文手写的*Python*库，其通过在处理过程中大量引入随机性来模仿汉字书写。
 
 ## Walk through
 
@@ -37,6 +38,7 @@
 
 
 ## Examples
+
 * __“我能吞下玻璃而不伤身体。”__ <br>
 示例代码：[examples/motto.py](examples/motto.py) <br>
 ![“我能吞下玻璃而不伤身体。”](examples/out/motto.png) <br>
