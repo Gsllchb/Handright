@@ -50,3 +50,7 @@
 ![荷塘月色2](examples/out/荷塘月色/2.png) <br>
 ![荷塘月色3](examples/out/荷塘月色/3.png) <br>
  
+ ## Contributing
+ 
+ * [code of conduct](CODE_OF_CONDUCT.md)
+ 
