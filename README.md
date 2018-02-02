@@ -52,5 +52,6 @@
  
  ## Contributing
  
- * [code of conduct](CODE_OF_CONDUCT.md)
+ * [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md)
+ * [Issue Template](ISSUE_TEMPLATE.md)
  
