@@ -16,13 +16,9 @@
     
     
     def main():
-        # 设置模板的参数
         template = dict(
-            # 设置背景图片（图片的大小应大于‘box’所限定的范围）
             background=Image.new(mode='RGB', size=(800, 1000), color='rgb(255, 255, 255)'),
-            # 限定“手写”的范围的左、上、右、下边界的坐标（以左上角为坐标原点）
             box=(100, 200, 700, 800),
-            # 设置字体
             font=ImageFont.truetype("./something.ttf"),
             font_size=50,
         )
