@@ -1,4 +1,4 @@
-# *PyLf*
+# PyLf
 [License](LICENSE) |
 [Installation](docs/Installation.md) |
 [API Reference](docs/API-Reference.md) |
