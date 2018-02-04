@@ -36,18 +36,24 @@
 ## Examples
 
 * __“我能吞下玻璃而不伤身体。”__ <br>
-示例代码：[examples/motto.py](examples/motto.py) <br>
-![](examples/out/motto.png) <br>
+
+示例代码：[examples/motto.py](examples/motto.py)
+
+![](examples/out/motto.png)
+
 * __《荷塘月色》__ <br>
-示例代码：[examples/article.py](examples/article.py) <br>
-（**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。）
+
+**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
+
+示例代码：[examples/article.py](examples/article.py)
+
 ![](examples/out/荷塘月色/0.png)
 ![](examples/out/荷塘月色/1.png)
 ![](examples/out/荷塘月色/2.png)
 ![](examples/out/荷塘月色/3.png)
- 
- ## Contributing
- 
+
+## Contributing
+
  * [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md)
  * [Issue Template](ISSUE_TEMPLATE.md)
  
