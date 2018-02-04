@@ -8,7 +8,7 @@
 
 *PyLf*是一个轻量级模仿中文手写的*Python*库，其通过在处理过程中大量引入随机性来模仿汉字书写。
 
-## Walk through
+## Quickstart
 
     from PIL import Image, ImageFont
     from pylf import handwrite
