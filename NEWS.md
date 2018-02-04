@@ -1,6 +1,6 @@
 # Release Notes
 
-This file records the **main** changes in *PyLf* library.
+This file records the **main** changes in PyLf library.
 
 ## in progress version
 
