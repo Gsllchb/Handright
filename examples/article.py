@@ -1,4 +1,4 @@
-from multiprocessing import freeze_support
+from multiprocessing import freeze_support  # 非Windows用户可删除此行
 
 from PIL import Image, ImageFont
 
@@ -35,5 +35,5 @@ def main():
 
 
 if __name__ == '__main__':
-    freeze_support()
+    freeze_support()  # 非Windows用户可删除此行
     main()
