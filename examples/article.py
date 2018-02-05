@@ -31,6 +31,7 @@ def main():
     )
     images = handwrite(TEXT, template)
     for i, im in enumerate(images):
+        im = im.resize(size=(im.size[0] // 2, im.size[1] // 2), resample=Image.LANCZOS)
         im.save("./out/荷塘月色/{}.png".format(i))
 
 
