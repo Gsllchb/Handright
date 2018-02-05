@@ -110,7 +110,7 @@ def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
         is_end_char=template['is_end_char'],
         is_half_char=template['is_half_char']
     )
-    renderer = _Renderer(anti_aliasing, **template)
+    renderer = _Renderer(**template, anti_aliasing=anti_aliasing)
     with multiprocessing.Pool(worker) as pool:
         images = pool.map(renderer, images)
     return images
@@ -186,11 +186,11 @@ class _Renderer:
 
     def __init__(
             self,
-            anti_aliasing: bool,
             background,
             color: str,
             font_size: int,
             alpha: tuple,
+            anti_aliasing: bool,
             **kwargs
     ):
         self.__anti_aliasing = anti_aliasing
