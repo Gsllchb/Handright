@@ -204,7 +204,7 @@ class _Renderer:
         self.__random.seed()
         self.__perturb(image)
         if self.__anti_aliasing:
-            image = self.__downsample(image)
+            image = self.__downscale(image)
         return self.__merge(image)
 
     def __perturb(self, image) -> None:
@@ -251,16 +251,9 @@ class _Renderer:
             matrix[i, y] = _BLACK
 
     @staticmethod
-    def __downsample(image):
-        """ Downsample the image for 4X SSAA """
-        width, height = image.size[0] // _AMP, image.size[1] // _AMP
-        sampled_image = PIL.Image.new(mode=_INTERNAL_MODE, size=(width, height))
-        spx, px = sampled_image.load(), image.load()
-        for x in range(width):
-            for y in range(height):
-                spx[x, y] = (px[2 * x, 2 * y] + px[2 * x + 1, 2 * y]
-                             + px[2 * x, 2 * y + 1] + px[2 * x + 1, 2 * y + 1]) // (_AMP * _AMP)
-        return sampled_image
+    def __downscale(image):
+        """ Downscale the image for 4X SSAA """
+        return image.resize(size=(image.size[0] // _AMP, image.size[1] // _AMP), resample=PIL.Image.BOX)
 
     def __merge(self, image):
         """ Merge the foreground and the background image """
