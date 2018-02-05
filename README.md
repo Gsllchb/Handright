@@ -2,7 +2,8 @@
 [License](LICENSE) |
 [Installation](docs/Installation.md) |
 [API Reference](docs/API-Reference.md) |
-[Release Notes](NEWS.md)
+[Release Notes](NEWS.md) |
+[Contributing](docs/CONTRIBUTING.md)
 
 ![](examples/out/motto.png)
 
@@ -51,9 +52,3 @@ PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程�
 ![](examples/out/荷塘月色/1.png)
 ![](examples/out/荷塘月色/2.png)
 ![](examples/out/荷塘月色/3.png)
-
-## Contributing
-
- * [Contributor Covenant Code of Conduct](docs/CODE_OF_CONDUCT.md)
- * [Issue Template](docs/ISSUE_TEMPLATE.md)
- 
