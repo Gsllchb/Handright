@@ -23,7 +23,7 @@ TEXT = """                  荷塘月色
 
 def main():
     template = dict(
-        background=Image.open("./pictures/letter.jpg"),
+        background=Image.open("./pictures/letter.png"),
         box=(65, 203, 926, 1325),
         font=ImageFont.truetype("./fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
         font_size=40,
