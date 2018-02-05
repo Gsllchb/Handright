@@ -30,8 +30,14 @@ def main():
         line_spacing=14
     )
     images = handwrite(TEXT, template)
-    for i, im in enumerate(images):
-        im.save("./out/荷塘月色/{}.png".format(i))
+    assert len(images) == 4
+    width, height = images[0].size
+    res = Image.new(mode=images[0].mode, size=(width * 2, height * 2))
+    res.paste(images[0], (0, 0))
+    res.paste(images[1], (width, 0))
+    res.paste(images[2], (0, height))
+    res.paste(images[3], (width, height))
+    res.save("./out/荷塘月色.png")
 
 
 if __name__ == '__main__':
