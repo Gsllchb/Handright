@@ -54,6 +54,6 @@ PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程�
 
 ## Contributing
 
- * [Contributor Covenant Code of Conduct](.github/CODE_OF_CONDUCT.md)
- * [Issue Template](.github/ISSUE_TEMPLATE.md)
+ * [Contributor Covenant Code of Conduct](docs/CODE_OF_CONDUCT.md)
+ * [Issue Template](docs/ISSUE_TEMPLATE.md)
  
