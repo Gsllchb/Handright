@@ -49,3 +49,6 @@ PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程�
 示例代码：[examples/article.py](examples/article.py)
 
 ![](examples/out/荷塘月色.png)
+
+# More
+* [Windows用户必读](docs/more/Windows用户必读.md)
