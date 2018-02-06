@@ -7,6 +7,5 @@ include MANIFEST.in
 include NEWS.md
 include README.md
 include setup.py
-include setup.cfg
 global-exclude .gitignore
 global-exclude *.pyc
