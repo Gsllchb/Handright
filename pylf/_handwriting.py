@@ -193,49 +193,49 @@ class _Renderer:
             anti_aliasing: bool,
             **kwargs
     ):
-        self.__anti_aliasing = anti_aliasing
-        self.__background = background
-        self.__color = color
-        self.__font_size = font_size
-        self.__alpha = alpha
-        self.__random = random.Random()
+        self._anti_aliasing = anti_aliasing
+        self._background = background
+        self._color = color
+        self._font_size = font_size
+        self._alpha = alpha
+        self._random = random.Random()
 
     def __call__(self, image):
-        self.__random.seed()
-        self.__perturb(image)
-        if self.__anti_aliasing:
-            image = self.__downscale(image)
-        return self.__merge(image)
+        self._random.seed()
+        self._perturb(image)
+        if self._anti_aliasing:
+            image = self._downscale(image)
+        return self._merge(image)
 
-    def __perturb(self, image) -> None:
+    def _perturb(self, image) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
-        NOTE: self.__alpha[0] must be between 0 (inclusive) and 1 (inclusive).
-        NOTE: self.__alpha[1] must be between 0 (inclusive) and 1 (inclusive).
+        NOTE: self._alpha[0] must be between 0 (inclusive) and 1 (inclusive).
+        NOTE: self._alpha[1] must be between 0 (inclusive) and 1 (inclusive).
         """
-        if not 0 <= self.__alpha[0] <= 1:
+        if not 0 <= self._alpha[0] <= 1:
             raise ValueError("alpha[0] must be between 0 (inclusive) and 1 (inclusive).")
-        if not 0 <= self.__alpha[1] <= 1:
+        if not 0 <= self._alpha[1] <= 1:
             raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
 
-        wavelength = 2 * self.__font_size
-        alpha_x, alpha_y = self.__alpha
+        wavelength = 2 * self._font_size
+        alpha_x, alpha_y = self._alpha
         matrix = image.load()
 
         for i in range((image.width + wavelength) // wavelength + 1):
-            x0 = self.__random.randrange(-wavelength, image.width)
+            x0 = self._random.randrange(-wavelength, image.width)
             for j in range(max(0, -x0), min(wavelength, image.width - x0)):
                 offset = int(alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self.__slide_x(matrix, x0 + j, offset, image.height)
+                self._slide_x(matrix, x0 + j, offset, image.height)
 
         for i in range((image.height + wavelength) // wavelength + 1):
-            y0 = self.__random.randrange(-wavelength, image.height)
+            y0 = self._random.randrange(-wavelength, image.height)
             for j in range(max(0, -y0), min(wavelength, image.height - y0)):
                 offset = int(alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self.__slide_y(matrix, y0 + j, offset, image.width)
+                self._slide_y(matrix, y0 + j, offset, image.width)
 
     @staticmethod
-    def __slide_x(matrix, x: int, offset: int, height: int) -> None:
+    def _slide_x(matrix, x: int, offset: int, height: int) -> None:
         """ Slide one given column """
         for i in range(height - offset):
             matrix[x, i] = matrix[x, i + offset]
@@ -243,7 +243,7 @@ class _Renderer:
             matrix[x, i] = _BLACK
 
     @staticmethod
-    def __slide_y(matrix, y: int, offset: int, width: int) -> None:
+    def _slide_y(matrix, y: int, offset: int, width: int) -> None:
         """ Slide one given row """
         for i in range(width - offset):
             matrix[i, y] = matrix[i + offset, y]
@@ -251,13 +251,13 @@ class _Renderer:
             matrix[i, y] = _BLACK
 
     @staticmethod
-    def __downscale(image):
+    def _downscale(image):
         """ Downscale the image for 4X SSAA """
         return image.resize(size=(image.size[0] // _AMP, image.size[1] // _AMP), resample=PIL.Image.BOX)
 
-    def __merge(self, image):
+    def _merge(self, image):
         """ Merge the foreground and the background image """
-        res = self.__background.copy()
+        res = self._background.copy()
         draw = PIL.ImageDraw.Draw(res)
-        draw.bitmap(xy=(0, 0), bitmap=image, fill=self.__color)
+        draw.bitmap(xy=(0, 0), bitmap=image, fill=self._color)
         return res
