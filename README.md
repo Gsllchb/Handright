@@ -20,7 +20,7 @@ PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程�
         template = dict(
             background=Image.new(mode='RGB', size=(800, 1000), color='rgb(255, 255, 255)'),
             box=(100, 200, 700, 800),
-            font=ImageFont.truetype("./something.ttf"),
+            font=ImageFont.truetype("YOUR FONT PATH"),  # 填入您所使用字体文件的路径
             font_size=50,
         )
         text = "我能吞下玻璃而不伤身体。"
