@@ -6,6 +6,8 @@ import random
 import PIL.Image
 import PIL.ImageDraw
 
+from ._page import Page
+
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 
@@ -96,7 +98,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
 
 
 def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
-    images = _draw_text(
+    pages = _draw_text(
         text=text,
         size=tuple(_AMP * i for i in template['background'].size) if anti_aliasing else template['background'].size,
         box=tuple(_AMP * i for i in template['box']) if anti_aliasing else template['box'],
@@ -112,7 +114,7 @@ def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
     )
     renderer = _Renderer(**template, anti_aliasing=anti_aliasing)
     with multiprocessing.Pool(worker) as pool:
-        images = pool.map(renderer, images)
+        images = pool.map(renderer, pages)
     return images
 
 
@@ -132,7 +134,7 @@ def _draw_text(
 ) -> list:
     """
     Draw the text randomly in black images with white color
-    :return: a list of drawn images with L mode and given size
+    :return: a list of drawn pages with L mode and given size
     NOTE: (box[3] - box[1]) must be greater than font_size.
     NOTE: (box[2] - box[0]) must be greater than font_size.
     """
@@ -143,12 +145,12 @@ def _draw_text(
 
     left, upper, right, lower = box
     chars = iter(text)
-    images = []
+    pages = []
     try:
         char = next(chars)
         while True:
-            image = PIL.Image.new(mode=_INTERNAL_MODE, size=size, color=_BLACK)
-            draw = PIL.ImageDraw.Draw(image)
+            page = Page(mode=_INTERNAL_MODE, size=size, color=_BLACK)
+            draw = page.draw
             y = upper
             try:
                 while y < lower - font_size:
@@ -167,12 +169,12 @@ def _draw_text(
                         x += int(random.gauss(x_step, word_spacing_sigma))
                         char = next(chars)
                     y += line_spacing + font_size
-                images.append(image)
+                pages.append(page)
             except StopIteration:
-                images.append(image)
+                pages.append(page)
                 raise StopIteration()
     except StopIteration:
-        return images
+        return pages
 
 
 def _draw_char(draw, char: str, xy: tuple, font) -> int:
@@ -200,14 +202,14 @@ class _Renderer:
         self._alpha = alpha
         self._random = random.Random()
 
-    def __call__(self, image):
+    def __call__(self, page):
         self._random.seed()
-        self._perturb(image)
+        self._perturb(page)
         if self._anti_aliasing:
-            image = self._downscale(image)
-        return self._merge(image)
+            self._downscale(page)
+        return self._merge(page)
 
-    def _perturb(self, image) -> None:
+    def _perturb(self, page) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
         NOTE: self._alpha[0] must be between 0 (inclusive) and 1 (inclusive).
@@ -220,19 +222,19 @@ class _Renderer:
 
         wavelength = 2 * self._font_size
         alpha_x, alpha_y = self._alpha
-        matrix = image.load()
+        matrix = page.matrix
 
-        for i in range((image.width + wavelength) // wavelength + 1):
-            x0 = self._random.randrange(-wavelength, image.width)
-            for j in range(max(0, -x0), min(wavelength, image.width - x0)):
+        for i in range((page.width + wavelength) // wavelength + 1):
+            x0 = self._random.randrange(-wavelength, page.width)
+            for j in range(max(0, -x0), min(wavelength, page.width - x0)):
                 offset = int(alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self._slide_x(matrix, x0 + j, offset, image.height)
+                self._slide_x(matrix, x0 + j, offset, page.height)
 
-        for i in range((image.height + wavelength) // wavelength + 1):
-            y0 = self._random.randrange(-wavelength, image.height)
-            for j in range(max(0, -y0), min(wavelength, image.height - y0)):
+        for i in range((page.height + wavelength) // wavelength + 1):
+            y0 = self._random.randrange(-wavelength, page.height)
+            for j in range(max(0, -y0), min(wavelength, page.height - y0)):
                 offset = int(alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self._slide_y(matrix, y0 + j, offset, image.width)
+                self._slide_y(matrix, y0 + j, offset, page.width)
 
     @staticmethod
     def _slide_x(matrix, x: int, offset: int, height: int) -> None:
@@ -251,13 +253,13 @@ class _Renderer:
             matrix[i, y] = _BLACK
 
     @staticmethod
-    def _downscale(image):
+    def _downscale(page) -> None:
         """ Downscale the image for 4X SSAA """
-        return image.resize(size=(image.size[0] // _AMP, image.size[1] // _AMP), resample=PIL.Image.BOX)
+        page.image = page.image.resize(size=(page.width // _AMP, page.height // _AMP), resample=PIL.Image.BOX)
 
-    def _merge(self, image):
-        """ Merge the foreground and the background image """
+    def _merge(self, page):
+        """ Merge the foreground and the background and return merged raw image """
         res = self._background.copy()
         draw = PIL.ImageDraw.Draw(res)
-        draw.bitmap(xy=(0, 0), bitmap=image, fill=self._color)
+        draw.bitmap(xy=(0, 0), bitmap=page.image, fill=self._color)
         return res
