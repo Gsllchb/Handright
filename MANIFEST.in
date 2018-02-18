@@ -1,7 +1,5 @@
 graft docs
-graft examples
 graft pylf
-graft tests
 include LICENSE
 include MANIFEST.in
 include NEWS.md
