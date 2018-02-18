@@ -30,3 +30,6 @@ MANIFEST
 
 # etc
 release.sh
+
+# pipenv
+Pipfile.lock

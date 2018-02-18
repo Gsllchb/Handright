@@ -1,0 +1,20 @@
+[[source]]
+
+name = "pypi"
+verify_ssl = true
+url = "https://pypi.python.org/simple"
+
+
+[packages]
+
+pillow = ">=5.0.0, <6"
+
+
+[dev-packages]
+
+twine = "*"
+
+
+[requires]
+
+python_version = "3.5"
