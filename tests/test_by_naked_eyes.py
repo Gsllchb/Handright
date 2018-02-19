@@ -5,7 +5,7 @@ import unittest
 import PIL.Image
 import PIL.ImageFont
 
-import pylf
+from pylf import handwrite
 
 
 class TestByNakedEyes(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestByNakedEyes(unittest.TestCase):
             print(file)
             with file.open() as f:
                 text = f.read()
-            images = pylf.handwrite(text, template)
+            images = handwrite(text, template)
             for im in images:
                 im.show()
             self.assertTrue(input("Like it? [Y/N] ").upper() == 'Y')
