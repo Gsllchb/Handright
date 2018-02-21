@@ -68,29 +68,34 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         default: 0 (use all the available CPUs in the computer)
     :return: A list of drawn images with the same size and mode as background image
     """
-    page_setting = {}
-    font_size = template['font_size']
-
+    page_setting = dict()
     page_setting['background'] = template['background']
     page_setting['box'] = template['box']
-    page_setting['font_size'] = font_size
-    page_setting['word_spacing'] = template.get('word_spacing', 0)
-    page_setting['line_spacing'] = template.get('line_spacing', font_size // 5)
-    page_setting['font_size_sigma'] = template.get('font_size_sigma', font_size / 256)
-    page_setting['line_spacing_sigma'] = template.get('line_spacing_sigma', font_size / 256)
-    page_setting['word_spacing_sigma'] = template.get('word_spacing_sigma', font_size / 256)
+    page_setting['font_size'] = template['font_size']
+    if 'word_spacing' in template:
+        page_setting['word_spacing'] = template['word_spacing']
+    if 'line_spacing' in template:
+        page_setting['line_spacing'] = template['line_spacing']
+    if 'font_size_sigma' in template:
+        page_setting['font_size_sigma'] = template['font_size_sigma']
+    if 'line_spacing_sigma' in template:
+        page_setting['line_spacing_sigma'] = template['line_spacing_sigma']
+    if 'word_spacing_sigma' in template:
+        page_setting['word_spacing_sigma'] = template['word_spacing_sigma']
 
-    return _handwrite(
-        text,
-        [page_setting],
-        template['font'],
-        template.get('color', 'rgb(0, 0, 0)'),
-        template.get('is_half_char', lambda c: False),
-        template.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
-        template.get('alpha', (0.1, 0.1)),
-        anti_aliasing,
-        worker if worker > 0 else multiprocessing.cpu_count() + worker
-    )
+    template2 = dict()
+    template2['page_settings'] = [page_setting, ]
+    template2['font'] = template['font']
+    if 'color' in template:
+        template2['color'] = template['color']
+    if 'is_half_char' in template:
+        template2['is_half_char'] = template['is_half_char']
+    if 'is_end_char' in template:
+        template2['is_end_char'] = template['is_end_char']
+    if 'alpha' in template:
+        template2['alpha'] = template['alpha']
+
+    return handwrite2(text, template2, anti_aliasing, worker)
 
 
 def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
