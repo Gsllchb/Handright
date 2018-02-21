@@ -68,88 +68,143 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         default: 0 (use all the available CPUs in the computer)
     :return: A list of drawn images with the same size and mode as background image
     """
-    template = dict(template)
+    page_setting = {}
     font_size = template['font_size']
 
-    if 'color' not in template:
-        template['color'] = 'rgb(0, 0, 0)'
-    if 'word_spacing' not in template:
-        template['word_spacing'] = 0
-    if 'line_spacing' not in template:
-        template['line_spacing'] = font_size // 5
+    page_setting['background'] = template['background']
+    page_setting['box'] = template['box']
+    page_setting['font_size'] = font_size
+    page_setting['word_spacing'] = template.get('word_spacing', 0)
+    page_setting['line_spacing'] = template.get('line_spacing', font_size // 5)
+    page_setting['font_size_sigma'] = template.get('font_size_sigma', font_size / 256)
+    page_setting['line_spacing_sigma'] = template.get('line_spacing_sigma', font_size / 256)
+    page_setting['word_spacing_sigma'] = template.get('word_spacing_sigma', font_size / 256)
 
-    if 'font_size_sigma' not in template:
-        template['font_size_sigma'] = font_size / 256
-    if 'line_spacing_sigma' not in template:
-        template['line_spacing_sigma'] = font_size / 256
-    if 'word_spacing_sigma' not in template:
-        template['word_spacing_sigma'] = font_size / 256
-
-    if 'is_half_char' not in template:
-        template['is_half_char'] = lambda c: False
-    if 'is_end_char' not in template:
-        template['is_end_char'] = lambda c: c in _DEFAULT_END_CHARS
-
-    if 'alpha' not in template:
-        template['alpha'] = (0.1, 0.1)
-
-    worker = worker if worker > 0 else multiprocessing.cpu_count() + worker
-    return _handwrite(text, template, anti_aliasing, worker)
-
-
-def _handwrite(text, template: dict, anti_aliasing: bool, worker: int) -> list:
-    pages = _draw_text(
-        text=text,
-        size=tuple(_AMP * i for i in template['background'].size) if anti_aliasing else template['background'].size,
-        box=tuple(_AMP * i for i in template['box']) if anti_aliasing else template['box'],
-        font=template['font'],
-        font_size=template['font_size'] * _AMP if anti_aliasing else template['font_size'],
-        font_size_sigma=template['font_size_sigma'] * _AMP if anti_aliasing else template['font_size_sigma'],
-        line_spacing=template['line_spacing'] * _AMP if anti_aliasing else template['line_spacing'],
-        line_spacing_sigma=template['line_spacing_sigma'] * _AMP if anti_aliasing else template['line_spacing_sigma'],
-        word_spacing=template['word_spacing'] * _AMP if anti_aliasing else template['word_spacing'],
-        word_spacing_sigma=template['word_spacing_sigma'] * _AMP if anti_aliasing else template['word_spacing_sigma'],
-        is_end_char=template['is_end_char'],
-        is_half_char=template['is_half_char']
+    return _handwrite(
+        text,
+        [page_setting],
+        template['font'],
+        template.get('color', 'rgb(0, 0, 0)'),
+        template.get('is_half_char', lambda c: False),
+        template.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
+        template.get('alpha', (0.1, 0.1)),
+        anti_aliasing,
+        worker if worker > 0 else multiprocessing.cpu_count() + worker
     )
-    renderer = _Renderer(**template, anti_aliasing=anti_aliasing)
+
+
+def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
+    """
+    The 'periodic' version of handwrite, see also handwrite
+    :param template2: A dict containing following parameters:
+        page_settings: A list of dict containing following parameters:
+            background: A Pillow's Image object
+            box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
+                The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. The function do
+                not guarantee the drawn texts will completely in the box.
+                NOTE: This function do not use the size attribute of the font object.
+            font_size: A int as the average font size in pixel
+                NOTE: (box[3] - box[1]) must be greater than font_size.
+                NOTE: (box[2] - box[0]) must be greater than font_size.
+            word_spacing: A int as the average gap between two adjacent chars in pixel
+                default: 0
+            line_spacing: A int as the average gap between two adjacent lines in pixel
+                default: font_size // 5
+            font_size_sigma: A float as the sigma of the gauss distribution of the font size
+                default: font_size / 256
+            line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
+                default: font_size / 256
+            word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing
+                default: font_size / 256
+        font: A Pillow's font object
+        color: A str with specific format
+            The format is given as 'rgb(red, green, blue)' where the color values are integers in the range 0
+            (inclusive) to 255 (inclusive)
+            default: 'rgb(0, 0, 0)'
+        is_half_char: A function judging whether or not a char only take up half of its original width
+            The function must take a char parameter and return a boolean value.
+            The feature is designed for some of Chinese punctuations that only take up the left half of their space
+            (e.g. '，', '。', '！', '、').
+            default: (lambda c: False)
+        is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，', '。',
+            '》', ')', ']')
+            The function must take a char parameter and return a boolean value.
+            default: (lambda c: c in _DEFAULT_END_CHARS)
+        alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in order
+            Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
+            default: (0.1, 0.1)
+    """
+    page_settings = template2['page_settings']
+    for page_setting in page_settings:
+        font_size = page_setting['font_size']
+        page_setting.setdefault('word_spacing', 0)
+        page_setting.setdefault('line_spacing', font_size // 5)
+        page_setting.setdefault('font_size_sigma', font_size / 256)
+        page_setting.setdefault('line_spacing_sigma', font_size / 256)
+        page_setting.setdefault('word_spacing_sigma', font_size / 256)
+
+    return _handwrite(
+        text,
+        page_settings,
+        template2['font'],
+        template2.get('color', 'rgb(0, 0, 0)'),
+        template2.get('is_half_char', lambda c: False),
+        template2.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
+        template2.get('alpha', (0.1, 0.1)),
+        anti_aliasing,
+        worker if worker > 0 else multiprocessing.cpu_count() + worker
+    )
+
+
+def _handwrite(
+        text: str,
+        page_settings: list,
+        font,
+        color: str,
+        is_half_char,
+        is_end_char,
+        alpha: tuple,
+        anti_aliasing: bool,
+        worker: int
+) -> list:
+    pages = _draw_text(text, page_settings, font, is_half_char, is_end_char, anti_aliasing)
+    renderer = _Renderer(page_settings, color, alpha, anti_aliasing)
     with multiprocessing.Pool(worker) as pool:
         images = pool.map(renderer, pages)
     return images
 
 
 def _draw_text(
-        text,
-        size: tuple,
-        box: tuple,
+        text: str,
+        page_settings: list,
         font,
-        font_size: int,
-        font_size_sigma: float,
-        line_spacing: int,
-        line_spacing_sigma: float,
-        word_spacing: int,
-        word_spacing_sigma: float,
+        is_half_char,
         is_end_char,
-        is_half_char
+        anti_aliasing: bool
 ) -> list:
     """
     Draw the text randomly in black images with white color
-    :return: a list of drawn pages with L mode and given size
-    NOTE: (box[3] - box[1]) must be greater than font_size.
-    NOTE: (box[2] - box[0]) must be greater than font_size.
+    NOTE: (box[3] - box[1]) must be greater corresponding than font_size.
+    NOTE: (box[2] - box[0]) must be greater corresponding than font_size.
     """
-    if not box[3] - box[1] > font_size:
-        raise ValueError("(box[3] - box[1]) must be greater than font_size.")
-    if not box[2] - box[0] > font_size:
-        raise ValueError("(box[2] - box[0]) must be greater than font_size.")
+    # prevent dead loop
+    for page_setting in page_settings:
+        if not page_setting['box'][3] - page_setting['box'][1] > page_setting['font_size']:
+            raise ValueError("(box[3] - box[1]) must be greater than corresponding font_size.")
+        if not page_setting['box'][2] - page_setting['box'][0] > page_setting['font_size']:
+            raise ValueError("(box[2] - box[0]) must be greater than corresponding font_size.")
 
-    left, upper, right, lower = box
+    length = len(page_settings)
     chars = iter(text)
     pages = []
     try:
         char = next(chars)
+        index = 0
         while True:
-            page = Page(mode=_INTERNAL_MODE, size=size, color=_BLACK)
+            (size, box, font_size, word_spacing, line_spacing, font_size_sigma, line_spacing_sigma,
+             word_spacing_sigma) = _parse_page_setting(page_settings[index % length], anti_aliasing)
+            left, upper, right, lower = box
+            page = Page(_INTERNAL_MODE, size, _BLACK, index)
             draw = page.draw
             y = upper
             try:
@@ -173,8 +228,26 @@ def _draw_text(
             except StopIteration:
                 pages.append(page)
                 raise StopIteration()
+            index += 1
     except StopIteration:
         return pages
+
+
+def _parse_page_setting(page_setting: dict, anti_aliasing: bool) -> tuple:
+    """ A helper function of _draw_text """
+    size = tuple(i * _AMP for i in page_setting['background'].size) \
+        if anti_aliasing else page_setting['background'].size
+    box = tuple(i * _AMP for i in page_setting['box']) if anti_aliasing else page_setting['box']
+    font_size = page_setting['font_size'] * _AMP if anti_aliasing else page_setting['font_size']
+    word_spacing = page_setting['word_spacing'] * _AMP if anti_aliasing else page_setting['word_spacing']
+    line_spacing = page_setting['line_spacing'] * _AMP if anti_aliasing else page_setting['line_spacing']
+    font_size_sigma = page_setting['font_size_sigma'] * _AMP if anti_aliasing else page_setting['font_size_sigma']
+    line_spacing_sigma = page_setting['line_spacing_sigma'] * _AMP \
+        if anti_aliasing else page_setting['line_spacing_sigma']
+    word_spacing_sigma = page_setting['word_spacing_sigma'] * _AMP \
+        if anti_aliasing else page_setting['word_spacing_sigma']
+    return (size, box, font_size, word_spacing, line_spacing, font_size_sigma, line_spacing_sigma,
+            word_spacing_sigma)
 
 
 def _draw_char(draw, char: str, xy: tuple, font) -> int:
@@ -188,28 +261,25 @@ class _Renderer:
 
     def __init__(
             self,
-            background,
+            page_settings: list,
             color: str,
-            font_size: int,
             alpha: tuple,
-            anti_aliasing: bool,
-            **kwargs
+            anti_aliasing: bool
     ):
-        self._anti_aliasing = anti_aliasing
-        self._background = background
+        self._page_settings = page_settings
         self._color = color
-        self._font_size = font_size
         self._alpha = alpha
+        self._anti_aliasing = anti_aliasing
         self._random = random.Random()
 
-    def __call__(self, page):
+    def __call__(self, page: Page):
         self._random.seed()
         self._perturb(page)
         if self._anti_aliasing:
             self._downscale(page)
         return self._merge(page)
 
-    def _perturb(self, page) -> None:
+    def _perturb(self, page: Page) -> None:
         """
         'perturb' the image and generally make the glyphs from same chars, if any, seem different
         NOTE: self._alpha[0] must be between 0 (inclusive) and 1 (inclusive).
@@ -220,7 +290,7 @@ class _Renderer:
         if not 0 <= self._alpha[1] <= 1:
             raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
 
-        wavelength = 2 * self._font_size
+        wavelength = 2 * self._page_settings[page.index % len(self._page_settings)]['font_size']
         alpha_x, alpha_y = self._alpha
         matrix = page.matrix
 
@@ -253,13 +323,13 @@ class _Renderer:
             matrix[i, y] = _BLACK
 
     @staticmethod
-    def _downscale(page) -> None:
+    def _downscale(page: Page) -> None:
         """ Downscale the image for 4X SSAA """
         page.image = page.image.resize(size=(page.width // _AMP, page.height // _AMP), resample=PIL.Image.BOX)
 
-    def _merge(self, page):
+    def _merge(self, page: Page):
         """ Merge the foreground and the background and return merged raw image """
-        res = self._background.copy()
+        res = self._page_settings[page.index % len(self._page_settings)]['background'].copy()
         draw = PIL.ImageDraw.Draw(res)
         draw.bitmap(xy=(0, 0), bitmap=page.image, fill=self._color)
         return res
