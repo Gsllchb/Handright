@@ -2,7 +2,6 @@ import copy
 import unittest
 
 import PIL.Image
-import PIL.ImageDraw
 import PIL.ImageFont
 
 from pylf import handwrite
