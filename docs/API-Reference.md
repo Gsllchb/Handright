@@ -52,6 +52,8 @@ Handwrite the `text` with the parameters in the `template`
         Default: `0` (use all the available CPUs in the computer)
 * **Return**: A `list` of drawn images with the same `size` and `mode` as background image
 
+_since 1.0.0_
+
 
 #### handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
 The 'periodic' version of `pylf.handwrite`. This function is designed for simulating handwriting in periodic backgrounds. In most case, `handwrite` can meet your need. Currently, this feature is **experimental**.  
@@ -73,6 +75,8 @@ The 'periodic' version of `pylf.handwrite`. This function is designed for simula
 * alpha
 
 See also `pylf.handwrite`
+
+_since 1.1.0_
 
 
 [Pillow-homepage]: https://python-pillow.org/
