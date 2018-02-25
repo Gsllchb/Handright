@@ -1,4 +1,4 @@
-# Windows用户必读
+# Windows用户需知
 
 Windows用户在使用PyLf以及其它基于[multiprocessing](https://docs.python.org/3.6/library/multiprocessing.html)的module时，一般须将代码写成类似于如下形式：
 
