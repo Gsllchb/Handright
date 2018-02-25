@@ -35,20 +35,20 @@ PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程�
 
 
 ## Examples
-
-* __“我能吞下玻璃而不伤身体。”__ <br>
-
-示例代码：[examples/motto.py](examples/motto.py)
-
-![](examples/out/motto.png)
+**注**：以下某些图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
 
 * __《荷塘月色》__ <br>
-
-**注**：该图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
 
 示例代码：[examples/article.py](examples/article.py)
 
 ![](examples/out/荷塘月色.png)
+
+
+* __《从百草园到三味书屋》__ <br>
+
+示例代码：[examples/even_odd.py](examples/even_odd.py)
+
+![](examples/out/从百草园到三味书屋.png)
 
 # More
 * [Windows用户必读](docs/more/Windows用户必读.md)
