@@ -21,7 +21,7 @@ setup(
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
     install_requires=['pillow >= 5.0.0, < 6', ],
-    python_requires='>=3.5, <3.8',
+    python_requires='>=3.5, <3.7',
     description="A lightweight Python library for simulating Chinese handwriting",
     long_description=pylf.__doc__,
     license="bsd-3-clause",
