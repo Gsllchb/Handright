@@ -4,7 +4,6 @@ import pylf
 
 classifiers = [
     'Intended Audience :: Developers',
-    'Intended Audience :: Science/Research',
     'Topic :: Software Development :: Build Tools',
     "Topic :: Multimedia :: Graphics",
     'License :: OSI Approved :: BSD License',
