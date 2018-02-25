@@ -1,12 +1,13 @@
 # API Reference
-
 PyLf is a lightweight Python library for simulating Chinese handwriting. It introduces a great deal of randomness in the process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings. Currently, PyLf is built on the top of [Pillow][Pillow-homepage] library.
 
-## `pylf` Module
 
+## `pylf` Module
 The `pylf` module is the core of PyLf library.
 
+
 ### _Function:_
+
 
 #### handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list
 Handwrite the `text` with the parameters in the `template`
@@ -50,5 +51,28 @@ Handwrite the `text` with the parameters in the `template`
         if `worker` is less than or equal to `0`, the actual amount of worker would be the number of CPU in the computer adding `worker`.  <br>
         Default: `0` (use all the available CPUs in the computer)
 * **Return**: A `list` of drawn images with the same `size` and `mode` as background image
+
+
+#### handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
+The 'periodic' version of `pylf.handwrite`. This function is designed for simulating handwriting in periodic backgrounds. In most case, `handwrite` can meet your need. Currently, this feature is **experimental**.  
+
+`template2`: A `dict` containing following parameters:
+* page_settings: A `list` of `dict` containing following parameters:
+    * background
+    * box
+    * font_size
+    * word_spacing
+    * line_spacing
+    * font_size_sigma
+    * line_spacing_sigma
+    * word_spacing_sigma
+* font
+* color
+* is_half_char
+* is_end_char
+* alpha
+
+See also `pylf.handwrite`
+
 
 [Pillow-homepage]: https://python-pillow.org/
