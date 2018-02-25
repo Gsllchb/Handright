@@ -30,6 +30,8 @@ def main():
         line_spacing=14
     )
     images = handwrite(TEXT, template)
+
+    # 为了方便展示，将生成图片合并成一张图片。
     assert len(images) == 4
     width, height = images[0].size
     res = Image.new(mode=images[0].mode, size=(width * 2, height * 2))

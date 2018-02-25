@@ -14,6 +14,8 @@ def main():
     )
     text = "我能吞下玻璃而不伤身体。"
     images = handwrite(text, template)
+
+    # 剪切出图片中含有字的一部分
     assert len(images) == 1
     images[0].crop((0, 450, 800, 800-200)).save("./out/motto.png")
 

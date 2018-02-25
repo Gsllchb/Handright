@@ -51,7 +51,7 @@ def main():
     )
     images = handwrite2(TEXT, template2)
 
-    # 为了方便展示，将生成图片合并成一张图片
+    # 为了方便展示，将生成图片合并成一张图片。
     assert images
     width, height = images[0].size
     res = Image.new(images[0].mode, size=(width * len(images), height))
