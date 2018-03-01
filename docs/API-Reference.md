@@ -4,11 +4,9 @@ process of Chinese handwriting to simulate the uncertainty of glyphs written by 
 on the top of [Pillow][Pillow-homepage] library.
 
 
-## `pylf` Module
-The `pylf` module is the core of PyLf library.
+## pylf Module
+The pylf module is the core of PyLf library.
 
-
-### _Function:_
 
 ------------------------------------------------------------------------------------------------------------------------
 #### handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list
@@ -63,6 +61,7 @@ Handwrite the `text` with the parameters in the `template`
 
 _since 1.0.0_
 
+
 ------------------------------------------------------------------------------------------------------------------------
 #### handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
 The 'periodic' version of `pylf.handwrite`. This function is designed for simulating handwriting in periodic
@@ -89,5 +88,6 @@ See also `pylf.handwrite`
 _since 1.1.0_
 
 ------------------------------------------------------------------------------------------------------------------------
+
 
 [Pillow-homepage]: https://python-pillow.org/
