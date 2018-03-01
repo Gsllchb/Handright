@@ -1,5 +1,5 @@
 # Release Notes
-This file records the **main** changes in PyLf library.
+This file records the changes in PyLf library.
 
 ## v1.1.1 (2018-2-26)
 * 将所需Python版本由`>=3.5, <3.8`改为`>=3.5, <3.7`, 以解决PyLf依赖项Pillow无法在某些平台上安装的问题。
