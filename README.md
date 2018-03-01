@@ -1,7 +1,4 @@
 # PyLf
-[API Reference](docs/API-Reference.md) |
-[Release Notes](NEWS.md) |
-
 ![](examples/out/motto.png)
 
 PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程中大量引入随机性来模仿汉字书写。
@@ -47,6 +44,12 @@ if __name__ == '__main__':
     main()
     
 ```
+如以上代码所示，函数`pylf.handwrite`是整个PyLf库的核心。而模板`template`则是本库的一个重要概念。模板包含着在手写模仿过程中所需的背景、排版设置、
+字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。有关`handwrite`和`template`的更多可选参数请参阅
+[API Reference](docs/API-Reference.md)。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特定的模板（往往需要经历不断的调试）。
+
+另外，请您在更新PyLf后及时参阅[Release Notes](NEWS.md)，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
+
 
 ## Examples
 **注**：以下某些图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
