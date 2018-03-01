@@ -1,6 +1,5 @@
 # PyLf
 [License](LICENSE) |
-[Installation](docs/Installation.md) |
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md) |
 [Contributing](docs/CONTRIBUTING.md)
@@ -8,6 +7,22 @@
 ![](examples/out/motto.png)
 
 PyLf是一个轻量级模仿中文手写的Python库，其通过在处理过程中大量引入随机性来模仿汉字书写。
+
+
+## Installation
+由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，如若您已安装[PIL][PIL-homepage]，请先**手动卸载**：
+```commandline
+pip uninstall PIL
+```
+此外如若您并未安装[setuptools][setuptools-homepage],请先**手动安装**：
+```commandline
+pip install setuptools
+```
+安装PyLf：
+```commandline
+pip install pylf
+```
+
 
 ## Quickstart
 ```python
@@ -53,3 +68,8 @@ if __name__ == '__main__':
 
 # More
 * [Windows用户需知](docs/more/Windows用户需知.md)
+
+
+[PIL-homepage]: http://www.pythonware.com/products/pil/
+[Pillow-homepage]: https://python-pillow.org/
+[setuptools-homepage]: https://pypi.python.org/pypi/setuptools
