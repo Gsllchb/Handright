@@ -1,7 +1,6 @@
 # PyLf
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md) |
-[Contributing](docs/CONTRIBUTING.md)
 
 ![](examples/out/motto.png)
 
