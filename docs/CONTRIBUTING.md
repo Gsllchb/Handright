@@ -1,5 +1,6 @@
 # Contributing
-First of all, every participant should obey [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). In this project, Chinese and English both are welcoming.
+First of all, every participant should obey [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). In this project,
+Chinese and English both are welcoming.
 
 ## Workflow
 1. Fork the PyLf repository;
@@ -14,7 +15,6 @@ First of all, every participant should obey [Contributor Covenant Code of Conduc
 * Follow PEP8;
 * Only can use English in source codes, except in comments;
 * Maintain consistency with the whole (e.g. code style, algorithm, expressions, etc);
-* It would be better to run [Pycharm](https://www.jetbrains.com/pycharm/)'s default `Reformat Code` and `Optimize Imports`;
 * The documents and the examples both are for released versions; 
 * Contact me if you have any question.
 
