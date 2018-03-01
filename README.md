@@ -1,5 +1,4 @@
 # PyLf
-[License](LICENSE) |
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md) |
 [Contributing](docs/CONTRIBUTING.md)
