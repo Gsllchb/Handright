@@ -3,9 +3,6 @@ from setuptools import setup, find_packages
 import pylf
 
 classifiers = [
-    'Intended Audience :: Developers',
-    'Topic :: Software Development :: Build Tools',
-    "Topic :: Multimedia :: Graphics",
     'License :: OSI Approved :: BSD License',
     "Topic :: Multimedia :: Graphics",
     'Programming Language :: Python :: 3',
