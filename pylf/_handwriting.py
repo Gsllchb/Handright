@@ -9,7 +9,7 @@ import PIL.ImageDraw
 from ._page import Page
 
 # Chinese, English and other end chars
-_DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+_DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 # While changing following constants, it is necessary to consider to rewrite the relevant codes.
 _INTERNAL_MODE = 'L'  # The mode for internal computation
