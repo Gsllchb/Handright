@@ -173,8 +173,10 @@ def _handwrite(
         worker: int
 ) -> list:
     pages = _draw_text(text, page_settings, font, is_half_char, is_end_char, anti_aliasing)
+    if not pages:
+        return pages
     renderer = _Renderer(page_settings, color, alpha, anti_aliasing)
-    with multiprocessing.Pool(worker) as pool:
+    with multiprocessing.Pool(min(worker, len(pages))) as pool:
         images = pool.map(renderer, pages)
     return images
 
