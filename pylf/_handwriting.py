@@ -48,8 +48,6 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             default: font_size / 256
         is_half_char: A function judging whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
-            The feature is designed for some of Chinese punctuations that only take up the left half of their space
-            (e.g. '，', '。', '！', '、').
             default: (lambda c: False)
         is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，', '。',
             '》', ')', ']')
@@ -59,8 +57,6 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
             default: (0.1, 0.1)
     :param anti_aliasing: whether or not turn on the anti-aliasing
-        It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
-        significantly reduce the overall computation.
         default: True
     :param worker: A int as the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be the number of CPU in the computer
@@ -103,41 +99,19 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
     The 'periodic' version of handwrite, see also handwrite
     :param template2: A dict containing following parameters:
         page_settings: A list of dict containing following parameters:
-            background: A Pillow's Image object
-            box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
-                The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. The function do
-                not guarantee the drawn texts will completely in the box.
-                NOTE: This function do not use the size attribute of the font object.
-            font_size: A int as the average font size in pixel
-                NOTE: (box[3] - box[1]) must be greater than font_size.
-                NOTE: (box[2] - box[0]) must be greater than font_size.
-            word_spacing: A int as the average gap between two adjacent chars in pixel
-                default: 0
-            line_spacing: A int as the average gap between two adjacent lines in pixel
-                default: font_size // 5
-            font_size_sigma: A float as the sigma of the gauss distribution of the font size
-                default: font_size / 256
-            line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
-                default: font_size / 256
-            word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing
-                default: font_size / 256
-        font: A Pillow's font object
-        color: A str with specific format
-            The format is given as 'rgb(red, green, blue)' where the color values are integers in the range 0
-            (inclusive) to 255 (inclusive)
-            default: 'rgb(0, 0, 0)'
-        is_half_char: A function judging whether or not a char only take up half of its original width
-            The function must take a char parameter and return a boolean value.
-            The feature is designed for some of Chinese punctuations that only take up the left half of their space
-            (e.g. '，', '。', '！', '、').
-            default: (lambda c: False)
-        is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，', '。',
-            '》', ')', ']')
-            The function must take a char parameter and return a boolean value.
-            default: (lambda c: c in _DEFAULT_END_CHARS)
-        alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in order
-            Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
-            default: (0.1, 0.1)
+            background
+            box
+            font_size
+            word_spacing (0)
+            line_spacing (font_size // 5)
+            font_size_sigma (font_size / 256)
+            line_spacing_sigma (font_size / 256)
+            word_spacing_sigma (font_size / 256)
+        font
+        color ('rgb(0, 0, 0)')
+        is_half_char (lambda c: False)
+        is_end_char (lambda c: c in _DEFAULT_END_CHARS)
+        alpha ((0.1, 0.1))
     """
     page_settings = template2['page_settings']
     for page_setting in page_settings:
