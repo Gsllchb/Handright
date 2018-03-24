@@ -57,6 +57,21 @@ if __name__ == '__main__':
 另外，请您在更新PyLf后及时参阅[Release Notes](NEWS.md)，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
 
 
+# Features
+|                         特性                        |               相关参数                                  |              
+| :------------------------------------------------- | :----------------------------------------------------- |
+| 设置背景及周期性背景                                  | background                                              |
+| 设置字体及其大小、颜色                                | font, font_size, color                                  |
+| 设置手写区域、行间距、字间距                           | box, line_spacing, word_spacing                         |
+| 调节排版随机化的强弱                                  | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
+| 调节页面随机扰动的强弱                                 | alpha                                                  |
+| 设置在行末不换行的字符集（如：'。', '》', ')', ']'）     | is_end_char                                             |
+| 设置在排版时只占其宽度一半的字符集（如：'，', '。', '！'） | is_half_char                                            |
+| 抗锯齿                                              | anti_aliasing                                           |
+| 多线程加速                                           | worker                                                  |
+| 周期性模板                                           | template2（详情：pylf.handwrite2）                       |
+
+
 ## Examples
 **注**：以下某些图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
 
