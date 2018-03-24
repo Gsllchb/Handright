@@ -60,7 +60,7 @@ if __name__ == '__main__':
 # Features
 |                         特性                        |               相关参数                                  |              
 | :------------------------------------------------- | :----------------------------------------------------- |
-| 设置背景及周期性背景                                  | background                                              |
+| 设置背景                                            | background                                              |
 | 设置字体及其大小、颜色                                | font, font_size, color                                  |
 | 设置手写区域、行间距、字间距                           | box, line_spacing, word_spacing                         |
 | 调节排版随机化的强弱                                  | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
