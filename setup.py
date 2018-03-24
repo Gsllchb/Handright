@@ -5,7 +5,6 @@ import pylf
 classifiers = [
     'License :: OSI Approved :: BSD License',
     "Topic :: Multimedia :: Graphics",
-    'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.5',
     "Programming Language :: Python :: 3.6",
 ]
