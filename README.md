@@ -1,8 +1,12 @@
 # PyLf
+[![version](https://img.shields.io/pypi/v/PyLf.svg)](https://pypi.python.org/pypi/pylf)
+![python version](https://img.shields.io/pypi/pyversions/PyLf.svg)
+![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)
+[![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
+
 [API Reference](docs/API-Reference.md) |
 [Release Notes](NEWS.md) |
-[Contributing](docs/CONTRIBUTING.md) |
-[Gitter][gitter]
+[Contributing](docs/CONTRIBUTING.md)
 
 ![](examples/out/motto.png)
 
@@ -90,10 +94,8 @@ if __name__ == '__main__':
 
 # More
 * [Windows用户需知](docs/more/Windows用户需知.md)
-* 加入[Gitter][gitter]，参与讨论
 
 
-[gitter]: https://gitter.im/Python-PyLf/PyLf?utm_source=share-link&utm_medium=link&utm_campaign=share-link
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: https://python-pillow.org/
 [setuptools-homepage]: https://pypi.python.org/pypi/setuptools
