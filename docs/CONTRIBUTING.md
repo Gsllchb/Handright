@@ -17,6 +17,3 @@ Chinese and English both are welcoming.
 * Maintain consistency with the whole (e.g. code style, algorithm, expressions, etc);
 * The documents and the examples both are for released versions; 
 * Contact me if you have any question.
-
-## Contact
-* Email: gsllchb@gmail.com
