@@ -2,7 +2,7 @@
 This file records the changes in PyLf library.
 
 
-## Unreleased
+## v1.1.2 (2018-3-25)
 * 轻微提高当`worker`大于生成图片数时的性能
 * 轻微提高在使用`is_end_char`默认参数下的性能
 
