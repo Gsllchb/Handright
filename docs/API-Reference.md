@@ -26,37 +26,37 @@ Handwrite the `text` with the parameters in the `template`
         * **color**: A `str` with specific format  <br>
             The format is given as `'rgb(red, green, blue)'` where the color values are integers in the range `0`
             (inclusive) to `255` (inclusive)  <br>
-            *default*: `'rgb(0, 0, 0)'`
+            *default:* `'rgb(0, 0, 0)'`
         * **word_spacing**: A `int` as the average gap between two adjacent chars in pixel  <br>
-            *default*: `0`
+            *default:* `0`
         * **line_spacing**: A `int` as the average gap between two adjacent lines in pixel  <br>
-            *default*: `font_size // 5`
+            *default:* `font_size // 5`
         * **font_size_sigma**: A `float` as the sigma of the gauss distribution of the font size  <br>
-            *default*: `font_size / 256`
+            *default:* `font_size / 256`
         * **word_spacing_sigma**: A `float` as the sigma of the gauss distribution of the word spacing  <br>
-            *default*: `font_size / 256`
+            *default:* `font_size / 256`
         * **line_spacing_sigma**: A `float` as the sigma of the gauss distribution of the line spacing  <br>
-            *default*: `font_size / 256`
+            *default:* `font_size / 256`
         * **is_half_char**: A `function` judging whether or not a `char` only take up half of its original `width`  <br>
             The function must take a `char` parameter and return a `bool` value. The feature is designed for some of
             Chinese punctuations that only take up the left half of their space (e.g. '，', '。', '！', '、').  <br>
-            *default*: `lambda c: False`
+            *default:* `lambda c: False`
         * **is_end_char**: A `function` judging whether or not a `char` can NOT be in the beginning of the lines (e.g.
             '，', '。', '》', ')', ']')  <br>
             The function must take a `char` parameter and return a `bool` value.  <br>
-            *default*: `lambda c: c in _DEFAULT_END_CHARS`
+            *default:* `lambda c: c in _DEFAULT_END_CHARS`
         * **alpha**: A `tuple` of two floats as the degree of the distortion in the horizontal and vertical direction in
             order  <br>
             Both values must be between `0.0` (inclusive) and `1.0` (inclusive).  <br>
-            *default*: `(0.1, 0.1)`
+            *default:* `(0.1, 0.1)`
     * **anti_aliasing**: whether or not turn on the anti-aliasing  <br>
         It will do the anti-aliasing with using 4X SSAA. Generally, to turn off this anti-aliasing option would
         significantly reduce the overall computation.  <br>
-        *default*: `True`
+        *default:* `True`
     * **worker**: A `int` as the number of worker  <br>
         if `worker` is less than or equal to `0`, the actual amount of worker would be the number of CPU in the computer
         adding `worker`.  <br>
-        *default*: `0` (use all the available CPUs in the computer)
+        *default:* `0` (use all the available CPUs in the computer)
 * **Return**: A `list` of drawn images with the same `size` and `mode` as background image
 
 _since 1.0.0_
