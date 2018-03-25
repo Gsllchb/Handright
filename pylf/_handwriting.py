@@ -42,9 +42,9 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
             default: font_size // 5
         font_size_sigma: A float as the sigma of the gauss distribution of the font size
             default: font_size / 256
-        line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
-            default: font_size / 256
         word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing
+            default: font_size / 256
+        line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing
             default: font_size / 256
         is_half_char: A function judging whether or not a char only take up half of its original width
             The function must take a char parameter and return a boolean value.
@@ -74,10 +74,10 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         page_setting['line_spacing'] = template['line_spacing']
     if 'font_size_sigma' in template:
         page_setting['font_size_sigma'] = template['font_size_sigma']
-    if 'line_spacing_sigma' in template:
-        page_setting['line_spacing_sigma'] = template['line_spacing_sigma']
     if 'word_spacing_sigma' in template:
         page_setting['word_spacing_sigma'] = template['word_spacing_sigma']
+    if 'line_spacing_sigma' in template:
+        page_setting['line_spacing_sigma'] = template['line_spacing_sigma']
 
     template2 = dict()
     template2['page_settings'] = [page_setting, ]
@@ -105,8 +105,8 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
             word_spacing (0)
             line_spacing (font_size // 5)
             font_size_sigma (font_size / 256)
-            line_spacing_sigma (font_size / 256)
             word_spacing_sigma (font_size / 256)
+            line_spacing_sigma (font_size / 256)
         font
         color ('rgb(0, 0, 0)')
         is_half_char (lambda c: False)
@@ -119,8 +119,8 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
         page_setting.setdefault('word_spacing', 0)
         page_setting.setdefault('line_spacing', font_size // 5)
         page_setting.setdefault('font_size_sigma', font_size / 256)
-        page_setting.setdefault('line_spacing_sigma', font_size / 256)
         page_setting.setdefault('word_spacing_sigma', font_size / 256)
+        page_setting.setdefault('line_spacing_sigma', font_size / 256)
 
     return _handwrite(
         text,
@@ -168,7 +168,7 @@ def _draw_text(
     NOTE: (box[3] - box[1]) must be greater corresponding than font_size.
     NOTE: (box[2] - box[0]) must be greater corresponding than font_size.
     """
-    # prevent dead loop
+    # Avoid dead loops
     for page_setting in page_settings:
         if not page_setting['box'][3] - page_setting['box'][1] > page_setting['font_size']:
             raise ValueError("(box[3] - box[1]) must be greater than corresponding font_size.")
@@ -223,10 +223,10 @@ def _parse_page_setting(page_setting: dict, anti_aliasing: bool) -> tuple:
     word_spacing = page_setting['word_spacing'] * _AMP if anti_aliasing else page_setting['word_spacing']
     line_spacing = page_setting['line_spacing'] * _AMP if anti_aliasing else page_setting['line_spacing']
     font_size_sigma = page_setting['font_size_sigma'] * _AMP if anti_aliasing else page_setting['font_size_sigma']
-    line_spacing_sigma = page_setting['line_spacing_sigma'] * _AMP \
-        if anti_aliasing else page_setting['line_spacing_sigma']
     word_spacing_sigma = page_setting['word_spacing_sigma'] * _AMP \
         if anti_aliasing else page_setting['word_spacing_sigma']
+    line_spacing_sigma = page_setting['line_spacing_sigma'] * _AMP \
+        if anti_aliasing else page_setting['line_spacing_sigma']
     return (size, box, font_size, word_spacing, line_spacing, font_size_sigma, line_spacing_sigma,
             word_spacing_sigma)
 

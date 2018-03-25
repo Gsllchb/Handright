@@ -33,9 +33,9 @@ Handwrite the `text` with the parameters in the `template`
             Default: `font_size // 5`
         * **font_size_sigma**: A `float` as the sigma of the gauss distribution of the font size  <br>
             Default: `font_size / 256`
-        * **line_spacing_sigma**: A `float` as the sigma of the gauss distribution of the line spacing  <br>
-            Default: `font_size / 256`
         * **word_spacing_sigma**: A `float` as the sigma of the gauss distribution of the word spacing  <br>
+            Default: `font_size / 256`
+        * **line_spacing_sigma**: A `float` as the sigma of the gauss distribution of the line spacing  <br>
             Default: `font_size / 256`
         * **is_half_char**: A `function` judging whether or not a `char` only take up half of its original `width`  <br>
             The function must take a `char` parameter and return a `bool` value. The feature is designed for some of
@@ -75,8 +75,8 @@ backgrounds. In most case, `handwrite` can meet your need. Currently, this featu
     * word_spacing
     * line_spacing
     * font_size_sigma
-    * line_spacing_sigma
     * word_spacing_sigma
+    * line_spacing_sigma
 * font
 * color
 * is_half_char
