@@ -79,14 +79,14 @@ if __name__ == '__main__':
 ## Examples
 **注**：以下某些图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
 
-* __《荷塘月色》__ <br>
+* __《荷塘月色》__
 
 示例代码：[article.py](examples/article.py)
 
 ![](examples/out/荷塘月色.png)
 
 
-* __《从百草园到三味书屋》__ <br>
+* __《从百草园到三味书屋》__
 
 示例代码：[even_odd.py](examples/even_odd.py)
 
