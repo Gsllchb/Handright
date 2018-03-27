@@ -92,9 +92,6 @@ if __name__ == '__main__':
 
 ![](examples/out/从百草园到三味书屋.png)
 
-## More
-* [Windows用户需知](docs/more/Windows用户需知.md)
-
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: https://python-pillow.org/
