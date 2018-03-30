@@ -4,4 +4,4 @@ process of Chinese handwriting to simulate the uncertainty of glyphs written by 
 on the top of Pillow library.
 """
 from ._handwriting import *
-__version__ = '1.1.2'
+__version__ = '1.1.3'

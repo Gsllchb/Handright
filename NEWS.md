@@ -1,7 +1,7 @@
 # Release Notes
 
 
-## unreleased
+## v1.1.3 (2018-3-30)
 * 修复`setup.py`中的细微问题
 
 
