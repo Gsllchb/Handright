@@ -1,8 +1,7 @@
 # Release Notes
-This file records the changes in PyLf library.
 
 
-## Unreleased
+## unreleased
 * 修复`setup.py`中的细微问题
 
 
