@@ -2,6 +2,8 @@ from setuptools import setup, find_packages
 
 import pylf
 
+with open('./README.md') as f:
+    long_description = f.read()
 
 setup(
     classifiers=[
@@ -21,7 +23,8 @@ setup(
     install_requires=['pillow >= 5.0.0, < 6', ],
     python_requires='>=3.5, <3.7',
     description="A lightweight Python library for simulating Chinese handwriting",
-    long_description=pylf.__doc__,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     license="bsd-3-clause",
     keywords="simulating Chinese handwriting",
     url="https://github.com/Gsllchb/PyLf",
