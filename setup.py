@@ -20,6 +20,7 @@ setup(
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
+    setup_requires=['setuptools>=38.6.0', ],
     install_requires=['pillow >= 5.0.0, < 6', ],
     python_requires='>=3.5, <3.7',
     description="A lightweight Python library for simulating Chinese handwriting",
