@@ -1,7 +1,7 @@
 # PyLf
-[![version](https://img.shields.io/pypi/v/PyLf.svg)](https://pypi.python.org/pypi/pylf)
-[![python version](https://img.shields.io/pypi/pyversions/PyLf.svg)](https://pypi.python.org/pypi/pylf)
-[![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)](https://pypi.python.org/pypi/pylf)
+[![version](https://img.shields.io/pypi/v/PyLf.svg)](https://pypi.org/project/pylf/)
+[![python version](https://img.shields.io/pypi/pyversions/PyLf.svg)](https://pypi.org/project/pylf/)
+[![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)](https://pypi.org/project/pylf/)
 [![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 
 [API Reference](docs/API-Reference.md) |
@@ -95,4 +95,4 @@ if __name__ == '__main__':
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: https://python-pillow.org/
-[setuptools-homepage]: https://pypi.python.org/pypi/setuptools
+[setuptools-homepage]: https://pypi.org/project/setuptools/
