@@ -1,6 +1,11 @@
 # Release Notes
 
 
+## unreleased 
+* 将`README.md`作为`setup.py`中的`long_description`
+* 添加安装依赖项`setuptools>=38.6.0`
+
+
 ## v1.1.3 (2018-3-30)
 * 修复`setup.py`中的细微问题
 
