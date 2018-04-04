@@ -8,7 +8,7 @@
 [Release Notes](NEWS.md) |
 [Contributing](docs/CONTRIBUTING.md)
 
-![](examples/out/motto.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/motto.png)
 
 PyLf是一个轻量级模仿中文手写的Python库。其通过在处理过程中大量引入随机性来模仿汉字书写。
 
@@ -81,16 +81,18 @@ if __name__ == '__main__':
 
 * __《荷塘月色》__
 
-示例代码：[article.py](examples/article.py)
+示例代码：[article.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/article.py)
 
-![](examples/out/荷塘月色.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/%E8%8D%B7%E5%A1%98%E6%9C%88%E8%89%B2.png)
 
 
 * __《从百草园到三味书屋》__
 
-示例代码：[even_odd.py](examples/even_odd.py)
+示例代码：[even_odd.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/even_odd.py)
 
-![](examples/out/从百草园到三味书屋.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/%E4%BB%8E%E7%99%BE%E8%8D%89%E5%9B%AD%E5%88%B0%E4%B8%89%E5%91%B3%E4%B9%A6%E5%B1%8B.png)
+
+欲查看更多示例请前往[PyLf-examples](https://github.com/Gsllchb/PyLf-examples)。
 
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
