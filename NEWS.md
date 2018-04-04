@@ -2,7 +2,6 @@
 
 
 ## unreleased 
-* 将`README.md`作为`setup.py`中的`long_description`
 * 添加安装依赖项`setuptools>=38.6.0`
 
 
