@@ -5,7 +5,7 @@
 [![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 
 [API Reference](docs/API-Reference.md) |
-[Release Notes](NEWS.md) |
+[Release Notes](docs/NEWS.md) |
 [Contributing](docs/CONTRIBUTING.md)
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/motto.png)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 [API Reference](docs/API-Reference.md)。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特定的模板（往往需要经历不断的调
 试）。
 
-另外，请您在更新PyLf后及时参阅[Release Notes](NEWS.md)，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
+另外，请您在更新PyLf后及时参阅[Release Notes](docs/NEWS.md)，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
 
 
 ## Features

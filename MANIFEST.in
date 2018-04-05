@@ -2,7 +2,6 @@ graft docs
 graft pylf
 include LICENSE
 include MANIFEST.in
-include NEWS.md
 include README.md
 include setup.py
 global-exclude *.pyc
