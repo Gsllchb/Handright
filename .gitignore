@@ -8,6 +8,3 @@ __pycache__/
 
 # shell script
 /release.sh
-
-# pipenv
-/Pipfile.lock
