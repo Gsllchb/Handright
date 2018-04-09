@@ -5,6 +5,7 @@
 [![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 
 [API Reference](docs/API-Reference.md) |
+[Examples][examples-homepage] |
 [Release Notes](docs/NEWS.md) |
 [Contributing](docs/CONTRIBUTING.md)
 
@@ -92,9 +93,10 @@ if __name__ == '__main__':
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/%E4%BB%8E%E7%99%BE%E8%8D%89%E5%9B%AD%E5%88%B0%E4%B8%89%E5%91%B3%E4%B9%A6%E5%B1%8B.png)
 
-__欲查看更多示例请前往[PyLf-examples](https://github.com/Gsllchb/PyLf-examples)。__
+__欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: https://python-pillow.org/
 [setuptools-homepage]: https://pypi.org/project/setuptools/
+[examples-homepage]: https://github.com/Gsllchb/PyLf-examples
