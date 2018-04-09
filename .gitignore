@@ -1,4 +1,5 @@
 __pycache__/
+
 /build/
 /dist/
 /pylf.egg-info/
@@ -6,5 +7,8 @@ __pycache__/
 # Pycharm
 /.idea/
 
-# shell script
 /release.sh
+
+.pytest_cache/
+
+/.tox/
