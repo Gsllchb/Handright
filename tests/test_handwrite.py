@@ -1,4 +1,5 @@
 import copy
+import os
 import unittest
 
 import PIL.Image
@@ -8,6 +9,10 @@ from pylf import handwrite
 
 BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_SIZE = (500, 500)
+
+
+def get_path(path: str) -> str:
+    return os.path.split(os.path.realpath(__file__))[0] + '/' + path
 
 
 class TestHandwrite(unittest.TestCase):
@@ -26,7 +31,8 @@ class TestHandwrite(unittest.TestCase):
         template = dict(
             background=PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
             box=(50, 100, 450, 400),
-            font=PIL.ImageFont.truetype("./data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
+            font=PIL.ImageFont.truetype(get_path(
+                "data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf")),
             font_size=30,
             font_size_sigma=0,
             line_spacing_sigma=0,
@@ -162,8 +168,8 @@ class TestHandwrite(unittest.TestCase):
             template['color'] = v
             ims = handwrite(text, template)
             assert len(ims) == 1
-            # ims[0].save("./data/images/test_color_{}.png".format(k))
-            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_color_{}.png".format(k))))
+            # ims[0].save(get_path("data/images/test_color_{}.png".format(k)))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_color_{}.png".format(k)))))
 
     def test_oversized_box(self):
         text = self.get_default_text()
@@ -172,8 +178,8 @@ class TestHandwrite(unittest.TestCase):
         template['box'] = (-100, -50, background.width + 100, background.height + 50)
         ims = handwrite(text * 10, template)
         assert len(ims) == 1
-        # ims[0].save("./data/images/test_oversized_box.png")
-        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_oversized_box.png")))
+        # ims[0].save(get_path("data/images/test_oversized_box.png"))
+        self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_oversized_box.png"))))
 
     def test_is_half_char(self):
         text = "，，，，，，，，。。。。。。。。。。。"
@@ -181,8 +187,8 @@ class TestHandwrite(unittest.TestCase):
         template['is_half_char'] = lambda c: c in '，。'
         ims = handwrite(text, template)
         assert len(ims) == 1
-        # ims[0].save("./data/images/test_is_half_char.png")
-        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_is_half_char.png")))
+        # ims[0].save(get_path("data/images/test_is_half_char.png"))
+        self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_is_half_char.png"))))
 
     def test_is_end_char(self):
         text = self.get_default_text()
@@ -190,16 +196,17 @@ class TestHandwrite(unittest.TestCase):
         template['is_end_char'] = lambda c: False
         ims = handwrite(text * 5, template)
         assert len(ims) == 1
-        # ims[0].save("./data/images/test_is_end_char.png")
-        self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_is_end_char.png")))
+        # ims[0].save(get_path("data/images/test_is_end_char.png"))
+        self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_is_end_char.png"))))
 
     def test_abundant_output(self):
         text = self.get_default_text()
         template = self.get_default_template()
         ims = handwrite(text * 66, template, worker=1)
         for i, im in enumerate(ims):
-            # im.save("./data/images/test_abundant_output{}.png".format(i))
-            self.assertTrue(self.compare(im, PIL.Image.open("./data/images/test_abundant_output{}.png".format(i))))
+            # im.save(get_path("data/images/test_abundant_output{}.png".format(i)))
+            self.assertTrue(self.compare(im, PIL.Image.open(get_path(
+                "data/images/test_abundant_output{}.png".format(i)))))
 
     def test_mode(self):
         text = self.get_default_text()
@@ -212,16 +219,16 @@ class TestHandwrite(unittest.TestCase):
             template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
             ims = handwrite(text, template, anti_aliasing=False)
             assert len(ims) == 1
-            # ims[0].save("./data/images/test_mode_{}.png".format(mode))
-            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_mode_{}.png".format(mode))))
+            # ims[0].save(get_path("data/images/test_mode_{}.png".format(mode)))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_mode_{}.png".format(mode)))))
 
         bmp_modes = ('L', 'RGB')
         for mode in bmp_modes:
             template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
             ims = handwrite(text, template, anti_aliasing=False)
             assert len(ims) == 1
-            # ims[0].save("./data/images/test_mode_{}.bmp".format(mode))
-            self.assertTrue(self.compare(ims[0], PIL.Image.open("./data/images/test_mode_{}.bmp".format(mode))))
+            # ims[0].save(get_path("data/images/test_mode_{}.bmp".format(mode)))
+            self.assertTrue(self.compare(ims[0], PIL.Image.open(get_path("data/images/test_mode_{}.bmp".format(mode)))))
 
 
 if __name__ == '__main__':
