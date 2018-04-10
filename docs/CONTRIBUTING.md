@@ -1,12 +1,13 @@
 # Contributing
 First of all, every participant should obey [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). In this project,
-Chinese and English both are welcoming.
+Chinese and English both are welcoming. Besides, before starting working, I strongly recommend that all of you notify
+and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) first.
 
 ## Workflow
 1. Fork the PyLf repository;
 2. Improve documents and examples, improve tests, optimize algorithm, etc;
 3. Provide tests for any newly added code in `pylf` package;
-4. Run all the test code in `tests` folder if you change any code in `pylf` package;
+4. Run `tox` in the project's root folder and run `watch_by_eyes.py`;
 5. Update `NEWS.md` for non-transparent changes;
 6. Create a pull request to pull the changes to the master branch.
 
