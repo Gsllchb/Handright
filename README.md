@@ -84,20 +84,24 @@ if __name__ == '__main__':
 
 示例代码：[article.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/article.py)
 
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/0.png" width="436" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/1.png" width="436" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/2.png" width="436" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/3.png" width="436" />
+<div align="center">
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/0.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/1.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/2.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/3.png" width="436" />
+</div>
 
 * __《从百草园到三味书屋》__
 
 示例代码：[even_odd.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/even_odd.py)
 
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/0.png" width="174" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/1.png" width="174" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/2.png" width="174" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/3.png" width="174" />
-<img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/4.png" width="174" />
+<div align="center">
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/0.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/1.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/2.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/3.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/4.png" width="174" />
+</div>
 
 __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 
