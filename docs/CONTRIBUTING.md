@@ -5,11 +5,12 @@ and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) fir
 
 ## Workflow
 1. Fork the PyLf repository;
-2. Improve documents and examples, improve tests, optimize algorithm, etc;
-3. Provide tests for any newly added code in `pylf` package;
-4. Run `tox` in the project's root folder and run `tests/watch_by_eyes.py`;
-5. Update `docs/NEWS.md` for non-transparent changes;
-6. Create a pull request to pull the changes to the master branch.
+2. Run `pip install -r requirements.txt` to install the requirements;
+3. Improve documents and examples, improve tests, optimize algorithm, etc;
+4. Provide tests for any newly added code in `pylf` package;
+5. Run `tox` in the project's root folder and run `tests/watch_by_eyes.py`;
+6. Update `docs/NEWS.md` for non-transparent changes;
+7. Create a pull request to pull the changes to the master branch.
 
 ## Guidelines
 * One commit for one change;
