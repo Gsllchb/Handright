@@ -1,14 +1,18 @@
+# CPython
 __pycache__/
 
+# Packaging and Distributing
 /build/
 /dist/
 /pylf.egg-info/
+/release.sh
 
 # Pycharm
 /.idea/
 
-/release.sh
-
+# Test
 .pytest_cache/
-
 /.tox/
+
+# virtualenv
+/venv/
