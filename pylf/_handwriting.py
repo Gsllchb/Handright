@@ -20,9 +20,11 @@ _AMP = 2  # Amplification for 4X SSAA.
 
 def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
     """
-    Handwrite the text with the parameters in the template
-    :param text: A char iterable
-    :param template: A dict containing following parameters:
+    Handwrite the text with the parameters in the template.
+
+    text: A char iterable
+
+    template: A dict containing following parameters:
         background: A Pillow's Image object
         box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate
             The module uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. The function do
@@ -56,13 +58,16 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
         alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in order
             Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
             default: (0.1, 0.1)
-    :param anti_aliasing: whether or not turn on the anti-aliasing
+
+    anti_aliasing: whether or not turn on the anti-aliasing
         default: True
-    :param worker: A int as the number of worker
+
+    worker: A int as the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be the number of CPU in the computer
         adding worker.
         default: 0 (use all the available CPUs in the computer)
-    :return: A list of drawn images with the same size and mode as background image
+
+    Return: A list of drawn images with the same size and mode as the background image
 
     since 1.0.0
     """
@@ -99,8 +104,10 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0)
 def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0) -> list:
     """
     The 'periodic' version of handwrite. See also handwrite.
-    :param text: A char iterable
-    :param template2: A dict containing following parameters:
+
+    text: A char iterable
+
+    template2: A dict containing following parameters:
         page_settings: A list of dict containing the following parameters. Each of these dict will be applied cyclically
             to each page.
             background: A Pillow's Image object
@@ -136,13 +143,16 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
         alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in order
             Both values must be between 0.0 (inclusive) and 1.0 (inclusive).
             default: (0.1, 0.1)
-    :param anti_aliasing: whether or not turn on the anti-aliasing
+
+    anti_aliasing: whether or not turn on the anti-aliasing
         default: True
-    :param worker: A int as the number of worker
+
+    worker: A int as the number of worker
         if worker is less than or equal to 0, the actual amount of worker would be the number of CPU in the computer
         adding worker.
         default: 0 (use all the available CPUs in the computer)
-    :return: A list of drawn images with the same size and mode as background image
+
+    Return: A list of drawn images with the same size and mode as the corresponding background images
 
     since 1.1.0
     """

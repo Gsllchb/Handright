@@ -111,7 +111,7 @@ The 'periodic' version of `handwrite`. See also `handwrite`.
     if `worker` is less than or equal to `0`, the actual amount of worker would be the number of CPU in the computer
     adding `worker`.  <br>
     *default:* `0` (use all the available CPUs in the computer)
-* **Return**: A `list` of drawn images with the same `size` and `mode` as background image
+* **Return**: A `list` of drawn images with the same `size` and `mode` as corresponding background images
 
 _since 1.1.0_
 
