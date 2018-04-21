@@ -67,7 +67,7 @@ The 'periodic' version of `handwrite`. See also `handwrite`.
 * **text**: A `char` `iterable`
 * **template2**: A `dict` containing following parameters:
     * **page_settings**: A `list` of `dict` containing the following parameters <br>
-        Each of these `dict` will be appliedcyclically to each page.
+        Each of these `dict` will be applied cyclically to each page.
         * **background**: A Pillow's Image object
         * **box**: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate  <br>
             The module uses a Cartesian pixel coordinate system, with `(0, 0)` in the upper left corner. The function do
