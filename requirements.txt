@@ -1,4 +1,5 @@
 twine >= 1.8.0
 setuptools >= 38.6.0
 pillow >= 5.0.0, < 6
+wheel
 tox
