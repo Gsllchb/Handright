@@ -3,6 +3,7 @@
 
 ## unreleased 
 * 添加安装依赖项`setuptools>=38.6.0`
+* description改为README.md的内容
 
 
 ## v1.1.3 (2018-3-30)
