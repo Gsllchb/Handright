@@ -13,7 +13,7 @@ def get_long_description() -> str:
         "docs/CODE_OF_CONDUCT.md",
         "docs/CONTRIBUTING.md",
         "docs/ISSUE_TEMPLATE.md",
-        "docs/NEWS.md",
+        "docs/Release-Notes.md",
         "LICENSE",
         "README.md"
     )
