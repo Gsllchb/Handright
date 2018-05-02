@@ -1,46 +1,34 @@
 import copy
-import os
 
 import PIL.Image
+import PIL.ImageDraw
 import PIL.ImageFont
 import pytest
+from util import *
 
 from pylf import handwrite
 
+THESHOLD = 10.0
+
 BACKGROUND_COLOR = 'rgb(255, 255, 255)'
-DEFAULT_SIZE = (500, 500)
-
-
-def get_path(path: str) -> str:
-    return os.path.split(os.path.realpath(__file__))[0] + '/' + path
-
-
-def compare(im1, im2):
-    return im1.tobytes() == im2.tobytes()
-
-
-def get_default_text():
-    return "我能吞下玻璃而不伤身体"
+DEFAULT_WIDTH = 500
+DEFAULT_HEIGHT = 500
+DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
 
 def get_default_template():
-    """ Get the template without randomness """
     template = dict(
         background=PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-        box=(50, 100, 450, 400),
-        font=PIL.ImageFont.truetype(get_path(
-            "data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf")),
+        box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
+        font=get_default_font(),
         font_size=30,
-        font_size_sigma=0,
-        line_spacing_sigma=0,
-        word_spacing_sigma=0,
-        alpha=(0, 0),
+        font_size_sigma=0
     )
     return template
 
 
 def test_error_box():
-    text = get_default_text()
+    text = get_short_text()
     template = get_default_template()
     font_size = template['font_size']
 
@@ -58,7 +46,7 @@ def test_error_box():
 
 
 def test_error_alpha():
-    text = get_default_text()
+    text = get_short_text()
     template = get_default_template()
 
     template['alpha'] = (-1, 0)
@@ -95,19 +83,13 @@ def test_error_alpha():
 
 
 def test_side_effect():
-    text = get_default_text()
-    template = get_default_template()
-    template_clone = copy.copy(template)
-    handwrite(text, template)
-    assert text == get_default_text()
-    assert template == template_clone
-
-    text = get_default_text()
-    template = get_default_template()
-    template_clone = copy.copy(template)
-    handwrite(text, template, anti_aliasing=False)
-    assert text == get_default_text()
-    assert template == template_clone
+    for anti_aliasing in (True, False):
+        text = get_short_text()
+        template = get_default_template()
+        template_clone = copy.copy(template)
+        handwrite(text, template, anti_aliasing=anti_aliasing)
+        assert text == get_short_text()
+        assert template == template_clone
 
 
 def test_null_text():
@@ -117,125 +99,148 @@ def test_null_text():
 def test_text_iterable():
     template = get_default_template()
 
-    text = get_default_text()
-    ims1 = handwrite(text, template)
+    text = get_short_text()
+    ims1 = handwrite(text, template, anti_aliasing=False)
 
-    text = list(get_default_text())
-    ims2 = handwrite(text, template)
+    text = list(get_short_text())
+    ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare(im1, im2)
+        assert compare_histogram(im1, im2) < THESHOLD
 
-    text = tuple(get_default_text())
-    ims2 = handwrite(text, template)
+    text = tuple(get_short_text())
+    ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare(im1, im2)
+        assert compare_histogram(im1, im2) < THESHOLD
 
-    text = (c for c in get_default_text())
-    ims2 = handwrite(text, template)
+    text = (c for c in get_short_text())
+    ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare(im1, im2)
+        assert compare_histogram(im1, im2) < THESHOLD
 
 
 def test_outside_box():
-    text = get_default_text()
+    text = get_short_text()
     template = get_default_template()
-    template['box'] = (-100, -100, 0, 0)
-    ims = handwrite(text, template, anti_aliasing=False)
-    for im in ims:
-        assert im == template['background']
+    for box in (
+            (-2 * DEFAULT_WIDTH, 0, -DEFAULT_WIDTH, DEFAULT_HEIGHT),
+            (0, -2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, -DEFAULT_HEIGHT),
+            (2 * DEFAULT_WIDTH, 0, 3 * DEFAULT_WIDTH, DEFAULT_HEIGHT),
+            (0, 2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, 3 * DEFAULT_HEIGHT),
+            (-2 * DEFAULT_WIDTH, -2 * DEFAULT_HEIGHT, -DEFAULT_WIDTH, -DEFAULT_HEIGHT)
+    ):
+        template['box'] = box
+        for anti_aliasing in (True, False):
+            ims = handwrite(text, template, anti_aliasing=anti_aliasing)
+            for im in ims:
+                assert absolute_equal(im, template['background'])
 
 
 def test_randomness():
-    text = get_default_text()
+    text = get_short_text()
     template = get_default_template()
     ims1 = handwrite(text, template)
     ims2 = handwrite(text, template)
     for im1, im2 in zip(ims1, ims2):
-        assert compare(im1, im2)
+        assert compare_histogram(im1, im2) < THESHOLD
 
     ims1 = handwrite(text, template, anti_aliasing=False)
     ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare(im1, im2)
+        assert compare_histogram(im1, im2) < THESHOLD
 
 
-def test_color():
-    text = get_default_text()
+def test_mode_and_color():
+    text = get_short_text()
     template = get_default_template()
-    colors = {
-        'black': 'rgb(0, 0, 0)',
-        'red': 'rgb(255, 0, 0)',
-        'green': 'rgb(0, 255, 0)',
-        'blue': 'rgb(0, 0, 255)',
-        'white': 'rgb(255, 255, 255)'
-    }
-    for k, v in colors.items():
-        template['color'] = v
-        ims = handwrite(text, template)
-        assert len(ims) == 1
-        # ims[0].save(get_path("data/images/test_color_{}.png".format(k)))
-        assert compare(ims[0], PIL.Image.open(get_path("data/images/test_color_{}.png".format(k))))
+    for mode in ('L', 'RGB', 'RGBA'):
+        for background_color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
+            template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
+            for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
+                template['color'] = color
+                standard_image = template['background'].copy()
+                PIL.ImageDraw.Draw(standard_image).text(
+                    xy=(template['box'][0], template['box'][1]),
+                    text=text,
+                    fill=color,
+                    font=template['font'].font_variant(size=template['font_size'])
+                )
+
+                images = handwrite(text, template, anti_aliasing=False)
+                assert len(images) == 1
+                assert compare_histogram(standard_image, images[0]) < THESHOLD
+                images = handwrite(text, template)
+                assert len(images) == 1
+                assert compare_histogram(standard_image, images[0]) < THESHOLD
 
 
-def test_oversized_box():
-    text = get_default_text()
+def test_font_size():
+    text = get_short_text()
     template = get_default_template()
-    background = template['background']
-    template['box'] = (-100, -50, background.width + 100, background.height + 50)
-    ims = handwrite(text * 10, template)
-    assert len(ims) == 1
-    # ims[0].save(get_path("data/images/test_oversized_box.png"))
-    assert compare(ims[0], PIL.Image.open(get_path("data/images/test_oversized_box.png")))
+    template['color'] = 'rgb(0, 0, 0)'
+    for font_size in (0, 1, 10, 30):
+        standard_image = template['background'].copy()
+        PIL.ImageDraw.Draw(standard_image).text(
+            xy=(template['box'][0], template['box'][1]),
+            text=text,
+            fill=template['color'],
+            font=template['font'].font_variant(size=font_size)
+        )
+
+        template['font_size'] = font_size
+        images = handwrite(text, template, anti_aliasing=False)
+        assert len(images) == 1
+        assert compare_histogram(standard_image, images[0]) < THESHOLD
+        images = handwrite(text, template)
+        assert len(images) == 1
+        assert compare_histogram(standard_image, images[0]) < THESHOLD
 
 
 def test_is_half_char():
-    text = "，，，，，，，，。。。。。。。。。。。"
+    text = '。' * 30
     template = get_default_template()
-    template['is_half_char'] = lambda c: c in '，。'
-    ims = handwrite(text, template)
-    assert len(ims) == 1
-    # ims[0].save(get_path("data/images/test_is_half_char.png"))
-    assert compare(ims[0], PIL.Image.open(get_path("data/images/test_is_half_char.png")))
+    template['color'] = 'rgb(0, 0, 0)'
+    template['is_half_char'] = lambda c: True
+    images = handwrite(text, template, anti_aliasing=False)
+    assert len(images) == 1
+    standard_image = template['background'].copy()
+    PIL.ImageDraw.Draw(standard_image).multiline_text(
+        xy=(template['box'][0], template['box'][1]),
+        text=('。' * 6 + '\n') * 5,
+        fill=template['color'],
+        font=template['font'].font_variant(size=template['font_size'])
+    )
+    assert compare_histogram(standard_image, images[0]) < THESHOLD
 
 
 def test_is_end_char():
-    text = get_default_text()
+    text = '。' * 30
     template = get_default_template()
-    template['is_end_char'] = lambda c: False
-    ims = handwrite(text * 5, template)
-    assert len(ims) == 1
-    # ims[0].save(get_path("data/images/test_is_end_char.png"))
-    assert compare(ims[0], PIL.Image.open(get_path("data/images/test_is_end_char.png")))
+    template['color'] = 'rgb(0, 0, 0)'
+    template['is_end_char'] = lambda c: True
+    images = handwrite(text, template, anti_aliasing=False)
+    assert len(images) == 1
+    standard_image = template['background'].copy()
+    PIL.ImageDraw.Draw(standard_image).multiline_text(
+        xy=(template['box'][0], template['box'][1]),
+        text=('。' * 6 + '\n') * 5,
+        fill=template['color'],
+        font=template['font'].font_variant(size=template['font_size'])
+    )
+    assert compare_histogram(standard_image, images[0]) >= THESHOLD
 
 
-def test_abundant_output():
-    text = get_default_text()
+def test_multiprocessing():
+    text = get_short_text()
     template = get_default_template()
-    ims = handwrite(text * 66, template, worker=1)
-    for i, im in enumerate(ims):
-        # im.save(get_path("data/images/test_abundant_output{}.png".format(i)))
-        assert compare(im, PIL.Image.open(get_path(
-            "data/images/test_abundant_output{}.png".format(i))))
-
-
-def test_mode():
-    text = get_default_text()
-    template = get_default_template()
-    # Due to various reasons
-    # Except: LAB, HSV, F, CMYK, RGBa, 1, I, RGBA, YCbCr, RGBX
-
-    png_modes = ('LA',)
-    for mode in png_modes:
-        template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
-        ims = handwrite(text, template, anti_aliasing=False)
-        assert len(ims) == 1
-        # ims[0].save(get_path("data/images/test_mode_{}.png".format(mode)))
-        assert compare(ims[0], PIL.Image.open(get_path("data/images/test_mode_{}.png".format(mode))))
-
-    bmp_modes = ('L', 'RGB')
-    for mode in bmp_modes:
-        template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=BACKGROUND_COLOR)
-        ims = handwrite(text, template, anti_aliasing=False)
-        assert len(ims) == 1
-        # ims[0].save(get_path("data/images/test_mode_{}.bmp".format(mode)))
-        assert compare(ims[0], PIL.Image.open(get_path("data/images/test_mode_{}.bmp".format(mode))))
+    template['color'] = 'rgb(0, 0, 0)'
+    standard_image = template['background'].copy()
+    PIL.ImageDraw.Draw(standard_image).text(
+        xy=(template['box'][0], template['box'][1]),
+        text=text,
+        fill=template['color'],
+        font=template['font'].font_variant(size=template['font_size'])
+    )
+    images = handwrite((text + '\n' * 8) * 6, template, worker=2, anti_aliasing=False)
+    for image in images:
+        image.show()
+        assert compare_histogram(standard_image, image) < THESHOLD
