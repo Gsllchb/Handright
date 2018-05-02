@@ -315,6 +315,8 @@ class _Renderer:
             raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
 
         wavelength = 2 * self._page_settings[page.index % len(self._page_settings)]['font_size']
+        if wavelength == 0:
+            return
         alpha_x, alpha_y = self._alpha
         matrix = page.matrix
 
