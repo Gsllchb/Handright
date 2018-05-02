@@ -1,4 +1,4 @@
-""" Test the results with your eyes """
+""" Doing the tests with your naked eyes """
 import os
 import pathlib
 
@@ -6,10 +6,7 @@ import PIL.Image
 import PIL.ImageFont
 
 from pylf import handwrite
-
-
-def get_path(path: str) -> str:
-    return os.path.split(os.path.realpath(__file__))[0] + '/' + path
+from util import *
 
 
 def test_articles():
