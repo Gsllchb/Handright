@@ -1,7 +1,11 @@
 """
 This module provides the essential functionality for the whole test suite.
+WARNING: Do not change the location of this file!
 """
 import math
+import os
+
+import PIL.ImageFont
 
 
 def compare_histogram(image1, image2) -> float:
@@ -28,3 +32,22 @@ def compare_pixel(image1, image2) -> float:
     """ Compare the two images pixel by pixel and return the root mean square """
     # TODO
     pass
+
+
+def get_path(path: str) -> str:
+    return os.path.split(os.path.realpath(__file__))[0] + '/' + path
+
+
+def get_short_text() -> str:
+    """ Return one short sentence """
+    return "我能吞下玻璃而不伤身体。"
+
+
+def get_long_text() -> str:
+    """ Return a article """
+    with open(get_path("data/texts/荷塘月色.txt")) as f:
+        return f.read()
+
+
+def get_default_font():
+    return PIL.ImageFont.truetype(get_path("data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
