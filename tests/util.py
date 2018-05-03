@@ -14,7 +14,7 @@ THRESHOLD = 17.0
 def compare_histogram(image1, image2) -> float:
     """
     Compare the two images and return the root mean square in histogram
-    This algorithm is inspired by the discussion of 'Compare two images the python/linux way' in Stackoverflow
+    This algorithm is inspired by the discussion about "Compare two images the python/linux way" in Stackoverflow
     """
     if image1.mode != image2.mode or image1.size != image2.size:
         raise ValueError("image1 and image2 must have same mode and same size")
