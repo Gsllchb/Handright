@@ -8,7 +8,6 @@ from util import *
 
 from pylf import handwrite
 
-THESHOLD = 10.0
 
 BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_WIDTH = 500
@@ -105,17 +104,17 @@ def test_text_iterable():
     text = list(get_short_text())
     ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THESHOLD
+        assert compare_histogram(im1, im2) < THRESHOLD
 
     text = tuple(get_short_text())
     ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THESHOLD
+        assert compare_histogram(im1, im2) < THRESHOLD
 
     text = (c for c in get_short_text())
     ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THESHOLD
+        assert compare_histogram(im1, im2) < THRESHOLD
 
 
 def test_outside_box():
@@ -141,12 +140,12 @@ def test_randomness():
     ims1 = handwrite(text, template)
     ims2 = handwrite(text, template)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THESHOLD
+        assert compare_histogram(im1, im2) < THRESHOLD
 
     ims1 = handwrite(text, template, anti_aliasing=False)
     ims2 = handwrite(text, template, anti_aliasing=False)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THESHOLD
+        assert compare_histogram(im1, im2) < THRESHOLD
 
 
 def test_mode_and_color():
@@ -167,10 +166,10 @@ def test_mode_and_color():
 
                 images = handwrite(text, template, anti_aliasing=False)
                 assert len(images) == 1
-                assert compare_histogram(standard_image, images[0]) < THESHOLD
+                assert compare_histogram(standard_image, images[0]) < THRESHOLD
                 images = handwrite(text, template)
                 assert len(images) == 1
-                assert compare_histogram(standard_image, images[0]) < THESHOLD
+                assert compare_histogram(standard_image, images[0]) < THRESHOLD
 
 
 def test_font_size():
@@ -189,10 +188,10 @@ def test_font_size():
         template['font_size'] = font_size
         images = handwrite(text, template, anti_aliasing=False)
         assert len(images) == 1
-        assert compare_histogram(standard_image, images[0]) < THESHOLD
+        assert compare_histogram(standard_image, images[0]) < THRESHOLD
         images = handwrite(text, template)
         assert len(images) == 1
-        assert compare_histogram(standard_image, images[0]) < THESHOLD
+        assert compare_histogram(standard_image, images[0]) < THRESHOLD
 
 
 def test_is_half_char():
@@ -209,7 +208,7 @@ def test_is_half_char():
         fill=template['color'],
         font=template['font'].font_variant(size=template['font_size'])
     )
-    assert compare_histogram(standard_image, images[0]) < THESHOLD
+    assert compare_histogram(standard_image, images[0]) < THRESHOLD
 
 
 def test_is_end_char():
@@ -226,7 +225,7 @@ def test_is_end_char():
         fill=template['color'],
         font=template['font'].font_variant(size=template['font_size'])
     )
-    assert compare_histogram(standard_image, images[0]) >= THESHOLD
+    assert compare_histogram(standard_image, images[0]) >= THRESHOLD
 
 
 def test_multiprocessing():
@@ -243,4 +242,4 @@ def test_multiprocessing():
     images = handwrite((text + '\n' * 8) * 6, template, worker=2, anti_aliasing=False)
     for image in images:
         image.show()
-        assert compare_histogram(standard_image, image) < THESHOLD
+        assert compare_histogram(standard_image, image) < THRESHOLD

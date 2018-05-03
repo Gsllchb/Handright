@@ -8,6 +8,9 @@ import os
 import PIL.ImageFont
 
 
+THRESHOLD = 17.0
+
+
 def compare_histogram(image1, image2) -> float:
     """
     Compare the two images and return the root mean square in histogram

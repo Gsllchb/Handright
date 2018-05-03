@@ -4,7 +4,6 @@ from util import *
 
 from pylf import *
 
-THESHOLD = 17.0
 
 BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_WIDTH = 500
@@ -31,4 +30,4 @@ def test_one_background():
         for im1, im2 in zip(images1, images2):
             im1.show()
             im2.show()
-            assert compare_histogram(im1, im2) < THESHOLD
+            assert compare_histogram(im1, im2) < THRESHOLD
