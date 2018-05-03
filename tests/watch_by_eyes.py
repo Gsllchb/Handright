@@ -1,12 +1,11 @@
 """ Doing the tests with your naked eyes """
-import os
 import pathlib
 
 import PIL.Image
 import PIL.ImageFont
+from util import *
 
 from pylf import handwrite
-from util import *
 
 
 def test_articles():
