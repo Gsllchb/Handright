@@ -259,6 +259,6 @@ def test_worker():
     cpu_count = multiprocessing.cpu_count()
     workers = [-1, 0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
     for worker in set(workers):
-        images = handwrite((text + '\n' * 8) * worker, template, worker=worker, anti_aliasing=False)
+        images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker, anti_aliasing=False)
         for image in images:
             assert compare_histogram(standard_image, image) < THRESHOLD
