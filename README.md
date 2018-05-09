@@ -9,7 +9,7 @@
 [Release Notes](docs/Release-Notes.md) |
 [Contributing](docs/CONTRIBUTING.md)
 
-![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/motto.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/slogan.png)
 
 PyLf是一个轻量级模仿中文手写的Python库。其通过在处理过程中广泛引入随机性来模仿汉字书写。目前，PyLf基于[Pillow][Pillow-homepage]开发，且
 在内部采用对点阵图形（而非矢量图形）处理的方式来得到最终的图像。
