@@ -24,23 +24,31 @@ def get_long_description() -> str:
     return long_description
 
 
+classifiers=[
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Multimedia :: Graphics",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+
+
+requires = [
+    'setuptools>=38.6.0',
+    'pillow >= 5.0.0, < 6',
+]
+
+
 setup(
-    classifiers=[
-        "License :: OSI Approved :: BSD License",
-        "Topic :: Multimedia :: Graphics",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: Implementation :: CPython"
-    ],
+    classifiers=classifiers,
     name='pylf',
     version=VERSION,
     author='Gsllchb',
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
-    setup_requires=['setuptools>=38.6.0', ],
-    install_requires=['pillow >= 5.0.0, < 6', ],
+    install_requires=requires,
     python_requires='>=3.5, <3.7',
     description="A lightweight Python library for simulating Chinese handwriting",
     long_description=get_long_description(),
