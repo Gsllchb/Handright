@@ -4,24 +4,11 @@ import pylf
 
 
 VERSION = pylf.__version__
-PROJECT_URL_HEADER = "https://github.com/Gsllchb/PyLf/blob/v{}/".format(VERSION)
 
 
 def get_long_description() -> str:
-    file_paths = (
-        "docs/API-Reference.md",
-        "docs/CODE_OF_CONDUCT.md",
-        "docs/CONTRIBUTING.md",
-        "docs/ISSUE_TEMPLATE.md",
-        "docs/Release-Notes.md",
-        "LICENSE",
-        "README.md"
-    )
     with open('README.md') as f:
-        long_description = f.read()
-    for file_path in file_paths:
-        long_description = long_description.replace(file_path, PROJECT_URL_HEADER + file_path)
-    return long_description
+        return f.read()
 
 
 classifiers=[
