@@ -38,7 +38,7 @@ def compare_pixel(image1, image2) -> float:
 
 
 def get_path(path: str) -> str:
-    return os.path.split(os.path.realpath(__file__))[0] + '/' + path
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
 
 
 def get_short_text() -> str:
