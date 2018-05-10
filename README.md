@@ -7,7 +7,7 @@
 [Reference](docs/reference.md) |
 [Examples][examples-homepage] |
 [Release Notes](docs/release-notes.md) |
-[Contributing](docs/CONTRIBUTING.md)
+[Contributing](.github/CONTRIBUTING.md)
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/slogan.png)
 
