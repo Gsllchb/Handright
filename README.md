@@ -20,10 +20,6 @@ PyLf是一个轻量级模仿中文手写的Python库。其通过在处理过程�
 ```commandline
 pip uninstall PIL
 ```
-此外如若您并未安装[setuptools][setuptools-homepage],请先**手动安装**：
-```commandline
-pip install setuptools
-```
 安装PyLf：
 ```commandline
 pip install pylf
@@ -109,5 +105,4 @@ __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: https://python-pillow.org/
-[setuptools-homepage]: https://pypi.org/project/setuptools/
 [examples-homepage]: https://github.com/Gsllchb/PyLf-examples
