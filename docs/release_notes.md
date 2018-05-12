@@ -46,7 +46,7 @@
 
 
 ## v0.5.1 (2017-12-14)
-* fix #2
+* fix [#2](https://github.com/Gsllchb/PyLf/issues/2)
 
 
 ## v0.5.0 (2017-12-14)
