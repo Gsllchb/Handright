@@ -9,7 +9,7 @@
 6. 提交更改到master分支上；
 7. 在当前master分支的commit上创建标签`v{NEW_VERSION}`;
 8. push标签和更改到GitHub；
-9. 发布新版本到PyPI：
+9. 打包并发布新版本到PyPI：
     ```sh
     python setup.py sdist
     python setup.py bdist_wheel
