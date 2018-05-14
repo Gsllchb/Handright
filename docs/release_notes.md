@@ -1,7 +1,7 @@
 # Release Notes
 
 
-## unreleased 
+## v1.1.4 (2018-5-14)
 * 添加安装依赖项`setuptools>=38.6.0`
 * description改为README.md的内容
 * 修复当`template['font_size'] == 0`时触发`ZeroDivisionError`的漏洞
