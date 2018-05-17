@@ -257,7 +257,9 @@ def test_worker():
         font=template['font'].font_variant(size=template['font_size'])
     )
     cpu_count = multiprocessing.cpu_count()
-    workers = [-1, 0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
+    workers = [0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
+    if cpu_count > 1:
+        workers.append(-1)
     for worker in set(workers):
         images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker, anti_aliasing=False)
         for image in images:
