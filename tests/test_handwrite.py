@@ -260,3 +260,14 @@ def test_worker():
         images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker, anti_aliasing=False)
         for image in images:
             assert compare_histogram(standard_image, image) < THRESHOLD
+
+
+def test_seed():
+    seed = 666
+    text = get_long_text()
+    template = get_default_template()
+    for anti_aliasing in (True, False):
+        ims1 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=2, seed=seed)
+        ims2 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=2, seed=seed)
+        for im1, im2 in zip(ims1, ims2):
+            assert absolute_equal(im1, im2)
