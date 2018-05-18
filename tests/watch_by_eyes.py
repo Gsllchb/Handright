@@ -8,6 +8,9 @@ from util import *
 from pylf import *
 
 
+SEED = 666
+
+
 def test_handwrite():
     template = dict(
         background=PIL.Image.open(get_path("data/backgrounds/letter.png")),
@@ -20,7 +23,7 @@ def test_handwrite():
         print(file)
         with file.open() as f:
             text = f.read()
-        images = handwrite(text, template)
+        images = handwrite(text, template, seed=SEED)
         for im in images:
             im.show()
         assert input("Like it? [Y/N] ").upper() == 'Y'
@@ -46,7 +49,7 @@ def test_handwrite2():
         print(file)
         with file.open() as f:
             text = f.read()
-        images = handwrite2(text, template2)
+        images = handwrite2(text, template2, seed=SEED)
         for im in images:
             im.show()
         assert input("Like it? [Y/N] ").upper() == 'Y'
