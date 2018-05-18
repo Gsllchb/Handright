@@ -137,15 +137,11 @@ def test_outside_box():
 def test_randomness():
     text = get_short_text()
     template = get_default_template()
-    ims1 = handwrite(text, template)
-    ims2 = handwrite(text, template)
-    for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THRESHOLD
-
-    ims1 = handwrite(text, template, anti_aliasing=False)
-    ims2 = handwrite(text, template, anti_aliasing=False)
-    for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THRESHOLD
+    for anti_aliasing in (True, False):
+        ims1 = handwrite(text, template, anti_aliasing=anti_aliasing)
+        ims2 = handwrite(text, template, anti_aliasing=anti_aliasing)
+        for im1, im2 in zip(ims1, ims2):
+            assert compare_histogram(im1, im2) < THRESHOLD
 
 
 def test_mode_and_color():
