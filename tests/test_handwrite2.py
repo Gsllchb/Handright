@@ -47,11 +47,12 @@ def test_one_background():
         page_settings=[dict(background=background, box=box, font_size=font_size, font_size_sigma=font_size_sigma), ],
         font=font,
     )
+    seed = 666
     for anti_aliasing in (True, False):
-        images1 = handwrite(text, template, anti_aliasing=anti_aliasing)
-        images2 = handwrite2(text, template2, anti_aliasing=anti_aliasing)
+        images1 = handwrite(text, template, anti_aliasing=anti_aliasing, seed=seed)
+        images2 = handwrite2(text, template2, anti_aliasing=anti_aliasing, seed=seed)
         for im1, im2 in zip(images1, images2):
-            assert compare_histogram(im1, im2) < THRESHOLD
+            assert absolute_equal(im1, im2)
 
 
 def test_even_odd():
@@ -74,11 +75,12 @@ def test_even_odd():
 
 
 def test_seed():
-    seed = 666
     text = get_long_text()
     template2 = get_default_template2()
-    for anti_aliasing in (True, False):
-        ims1 = handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=2, seed=seed)
-        ims2 = handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=2, seed=seed)
-        for im1, im2 in zip(ims1, ims2):
-            assert absolute_equal(im1, im2)
+    worker = 2
+    for seed in (-666, -1, 0, 1, 666):
+        for anti_aliasing in (True, False):
+            ims1 = handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
+            ims2 = handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
+            for im1, im2 in zip(ims1, ims2):
+                assert absolute_equal(im1, im2)

@@ -263,11 +263,12 @@ def test_worker():
 
 
 def test_seed():
-    seed = 666
     text = get_long_text()
     template = get_default_template()
-    for anti_aliasing in (True, False):
-        ims1 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=2, seed=seed)
-        ims2 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=2, seed=seed)
-        for im1, im2 in zip(ims1, ims2):
-            assert absolute_equal(im1, im2)
+    worker = 2
+    for seed in (-666, -1, 0, 1, 666):
+        for anti_aliasing in (True, False):
+            ims1 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
+            ims2 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
+            for im1, im2 in zip(ims1, ims2):
+                assert absolute_equal(im1, im2)

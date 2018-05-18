@@ -305,10 +305,10 @@ class _Renderer:
         self._seed = seed
 
     def __call__(self, page: Page):
-        if self._seed:
-            self._rand.seed(a=self._seed + page.index)
-        else:
+        if self._seed is None:
             self._rand.seed()  # avoid different processes sharing the same random state
+        else:
+            self._rand.seed(a=self._seed + page.index)
         self._perturb(page)
         if self._anti_aliasing:
             self._downscale(page)
