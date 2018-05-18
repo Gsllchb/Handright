@@ -71,8 +71,6 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
         default: None
 
     Return: A list of drawn images with the same size and mode as the background image
-
-    since 1.0.0
     """
     page_setting = dict()
     page_setting['background'] = template['background']
@@ -159,8 +157,6 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
         default: None
 
     Return: A list of drawn images with the same size and mode as the corresponding background images
-
-    since 1.1.0
     """
     page_settings = template2['page_settings']
     for page_setting in page_settings:
