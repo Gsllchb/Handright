@@ -75,7 +75,7 @@ def test_even_odd():
 
 
 def test_seed():
-    text = get_long_text()
+    text = get_short_text() * 50
     template2 = get_default_template2()
     worker = 2
     for seed in (-666, -1, 0, 1, 666):

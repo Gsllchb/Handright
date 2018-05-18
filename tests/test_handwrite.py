@@ -263,7 +263,7 @@ def test_worker():
 
 
 def test_seed():
-    text = get_long_text()
+    text = get_short_text() * 50
     template = get_default_template()
     worker = 2
     for seed in (-666, -1, 0, 1, 666):
