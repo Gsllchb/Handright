@@ -1,6 +1,10 @@
 # Release Notes
 
 
+## unreleased
+* 函数`handwrite`和`handwrite2`添加新可选参数`seed`，使得在设置了`seed`的情况下，结果具有可重复性
+
+
 ## v1.1.4 (2018-5-14)
 * 添加安装依赖项`setuptools>=38.6.0`
 * description改为README.md的内容
