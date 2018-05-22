@@ -13,6 +13,7 @@ BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
+SEED = 66
 
 
 def get_default_template():
@@ -99,22 +100,22 @@ def test_text_iterable():
     template = get_default_template()
 
     text = get_short_text()
-    ims1 = handwrite(text, template, anti_aliasing=False)
+    ims1 = handwrite(text, template, anti_aliasing=False, seed=SEED)
 
     text = list(get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False)
+    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THRESHOLD
+        assert absolute_equal(im1, im2)
 
     text = tuple(get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False)
+    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THRESHOLD
+        assert absolute_equal(im1, im2)
 
     text = (c for c in get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False)
+    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
-        assert compare_histogram(im1, im2) < THRESHOLD
+        assert absolute_equal(im1, im2)
 
 
 def test_outside_box():
@@ -129,7 +130,7 @@ def test_outside_box():
     ):
         template['box'] = box
         for anti_aliasing in (True, False):
-            ims = handwrite(text, template, anti_aliasing=anti_aliasing)
+            ims = handwrite(text, template, anti_aliasing=anti_aliasing, seed=SEED)
             for im in ims:
                 assert absolute_equal(im, template['background'])
 

@@ -8,6 +8,7 @@ from pylf import *
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
+SEED = 77
 
 
 def get_default_template2():
@@ -47,10 +48,9 @@ def test_one_background():
         page_settings=[dict(background=background, box=box, font_size=font_size, font_size_sigma=font_size_sigma), ],
         font=font,
     )
-    seed = 666
     for anti_aliasing in (True, False):
-        images1 = handwrite(text, template, anti_aliasing=anti_aliasing, seed=seed)
-        images2 = handwrite2(text, template2, anti_aliasing=anti_aliasing, seed=seed)
+        images1 = handwrite(text, template, anti_aliasing=anti_aliasing, seed=SEED)
+        images2 = handwrite2(text, template2, anti_aliasing=anti_aliasing, seed=SEED)
         for im1, im2 in zip(images1, images2):
             assert absolute_equal(im1, im2)
 
