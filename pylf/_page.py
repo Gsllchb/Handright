@@ -1,18 +1,18 @@
-""" A wrapper for Pillow Image Object """
-import PIL.Image
-import PIL.ImageDraw
+"""A wrapper for Pillow Image Object"""
+from PIL import Image
+from PIL import ImageDraw
 
 
-class Page:
-    """ A simple wrapper for Pillow Image Object """
+class Page(object):
+    """A simple wrapper for Pillow Image Object"""
 
     def __init__(self, mode: str, size: tuple, color, index: int = None):
-        self.image = PIL.Image.new(mode, size, color)
+        self.image = Image.new(mode, size, color)
         self.index = index
 
     @property
     def draw(self):
-        return PIL.ImageDraw.Draw(self.image)
+        return ImageDraw.Draw(self.image)
 
     @property
     def matrix(self):

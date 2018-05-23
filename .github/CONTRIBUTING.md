@@ -3,6 +3,7 @@ First of all, every participant should obey [Contributor Covenant Code of Conduc
 Chinese and English both are welcoming. Besides, before starting working, I strongly recommend that all of you notify
 and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) first.
 
+
 ## Workflow
 1. Fork the PyLf repository;
 2. Run `pip install -r requirements.txt` to install the requirements;
@@ -12,10 +13,12 @@ and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) fir
 6. Update `docs/release_notes.md` for non-transparent changes;
 7. Create a pull request to pull the changes to the master branch.
 
+
 ## Guidelines
 * One commit for one change;
-* Follow PEP8;
+* Maximum line length is 120 characters;
 * Only can use English in source codes, except in comments;
 * Maintain consistency with the whole (e.g. code style, algorithm, expressions, etc);
-* The documents and the examples both are for released versions; 
+* Documentations and Examples both are for released versions; 
+* Otherwise follow [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#Line_length);
 * Contact me if you have any question.
