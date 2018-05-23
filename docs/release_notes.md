@@ -5,6 +5,7 @@
 
 ## unreleased
 * __函数`handwrite`和`handwrite2`添加新可选参数`seed`，使得在设置了`seed`的情况下，结果具有可重复性__
+* docstring改为Google风格
 
 
 ## v1.1.4 (2018-5-14)
