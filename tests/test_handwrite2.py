@@ -1,7 +1,7 @@
-import PIL.Image
-import PIL.ImageFont
-from util import *
+from PIL import Image as image
+from PIL import ImageDraw as image_draw
 
+from util import *
 from pylf import *
 
 
@@ -15,14 +15,14 @@ def get_default_template2():
     template2 = dict(
         page_settings=[
             dict(
-                background=PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color='rgb(255, 255, 255)'),
+                background=image.new(mode='RGB', size=DEFAULT_SIZE, color='rgb(255, 255, 255)'),
                 box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
                 font_size=30,
                 font_size_sigma=0,
                 line_spacing=6
             ),
             dict(
-                background=PIL.Image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)'),
+                background=image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)'),
                 box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
                 font_size=20,
                 font_size_sigma=0,
@@ -36,7 +36,7 @@ def get_default_template2():
 
 
 def test_one_background():
-    background = PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color='rgb(255, 255, 255)')
+    background = image.new(mode='RGB', size=DEFAULT_SIZE, color='rgb(255, 255, 255)')
     box = (50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100)
     font = get_default_font()
     font_size = 30
@@ -61,7 +61,7 @@ def test_even_odd():
     standard_images = list()
     for i in range(2):
         standard_image = template2['page_settings'][i]['background'].copy()
-        PIL.ImageDraw.Draw(standard_image).text(
+        image_draw.Draw(standard_image).text(
             xy=(template2['page_settings'][i]['box'][0], template2['page_settings'][i]['box'][1]),
             text=text,
             fill=template2['color'],

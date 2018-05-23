@@ -1,10 +1,9 @@
 """ Doing the tests with your naked eyes """
 import pathlib
 
-import PIL.Image
-import PIL.ImageFont
-from util import *
+from PIL import Image as image
 
+from util import *
 from pylf import *
 
 
@@ -13,7 +12,7 @@ SEED = 666
 
 def test_handwrite():
     template = dict(
-        background=PIL.Image.open(get_path("data/backgrounds/letter.png")),
+        background=image.open(get_path("data/backgrounds/letter.png")),
         box=(68, 130, 655, 925),
         font=get_default_font(),
         font_size=27,
@@ -33,12 +32,12 @@ def test_handwrite2():
     template2 = dict(
         page_settings=[
             dict(
-                background=PIL.Image.open(get_path("data/backgrounds/even-odd-letter/村庄信笺纸.jpg")),
+                background=image.open(get_path("data/backgrounds/even-odd-letter/村庄信笺纸.jpg")),
                 box=(20, 107, 1285, 1110),
                 font_size=37,
             ),
             dict(
-                background=PIL.Image.open(get_path("data/backgrounds/even-odd-letter/树信笺纸.jpg")),
+                background=image.open(get_path("data/backgrounds/even-odd-letter/树信笺纸.jpg")),
                 box=(20, 107, 1285, 900),
                 font_size=37,
             ),
@@ -53,7 +52,6 @@ def test_handwrite2():
         for im in images:
             im.show()
         assert input("Like it? [Y/N] ").upper() == 'Y'
-
 
 
 if __name__ == '__main__':

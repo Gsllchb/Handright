@@ -1,13 +1,14 @@
 import copy
 import multiprocessing
 
-import PIL.Image
-import PIL.ImageDraw
-import PIL.ImageFont
+from PIL import Image as image
+from PIL import ImageDraw as image_draw
+from PIL import ImageFont as image_font
 import pytest
-from util import *
 
+from util import *
 from pylf import handwrite
+
 
 BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_WIDTH = 500
@@ -18,7 +19,7 @@ SEED = 66
 
 def get_default_template():
     template = dict(
-        background=PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+        background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
         box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
         font=get_default_font(),
         font_size=30,
@@ -150,11 +151,11 @@ def test_mode_and_color():
     template = get_default_template()
     for mode in ('L', 'RGB', 'RGBA'):
         for background_color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
-            template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
+            template['background'] = image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
             for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
                 template['color'] = color
                 standard_image = template['background'].copy()
-                PIL.ImageDraw.Draw(standard_image).text(
+                image_draw.Draw(standard_image).text(
                     xy=(template['box'][0], template['box'][1]),
                     text=text,
                     fill=color,
@@ -175,7 +176,7 @@ def test_font_size():
     template['color'] = 'rgb(0, 0, 0)'
     for font_size in (0, 1, 10, 30):
         standard_image = template['background'].copy()
-        PIL.ImageDraw.Draw(standard_image).text(
+        image_draw.Draw(standard_image).text(
             xy=(template['box'][0], template['box'][1]),
             text=text,
             fill=template['color'],
@@ -199,7 +200,7 @@ def test_is_half_char():
     images = handwrite(text, template, anti_aliasing=False)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    PIL.ImageDraw.Draw(standard_image).multiline_text(
+    image_draw.Draw(standard_image).multiline_text(
         xy=(template['box'][0], template['box'][1]),
         text=('。' * 6 + '\n') * 5,
         fill=template['color'],
@@ -216,7 +217,7 @@ def test_is_end_char():
     images = handwrite(text, template, anti_aliasing=False)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    PIL.ImageDraw.Draw(standard_image).multiline_text(
+    image_draw.Draw(standard_image).multiline_text(
         xy=(template['box'][0], template['box'][1]),
         text=('。' * 6 + '\n') * 5,
         fill=template['color'],
@@ -230,7 +231,7 @@ def test_multiprocessing():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    PIL.ImageDraw.Draw(standard_image).text(
+    image_draw.Draw(standard_image).text(
         xy=(template['box'][0], template['box'][1]),
         text=text,
         fill=template['color'],
@@ -247,7 +248,7 @@ def test_worker():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    PIL.ImageDraw.Draw(standard_image).text(
+    image_draw.Draw(standard_image).text(
         xy=(template['box'][0], template['box'][1]),
         text=text,
         fill=template['color'],
