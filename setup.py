@@ -16,6 +16,7 @@ classifiers=[
     "Topic :: Multimedia :: Graphics",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: Implementation :: CPython"
@@ -36,7 +37,7 @@ setup(
     author_email="Gsllchb@gmail.com",
     packages=find_packages(),
     install_requires=requires,
-    python_requires='>=3.5, <3.7',
+    python_requires='>=3.4',
     description="A lightweight Python library for simulating Chinese handwriting",
     long_description=get_long_description(),
     long_description_content_type='text/markdown',

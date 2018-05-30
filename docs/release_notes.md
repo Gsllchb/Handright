@@ -6,6 +6,8 @@
 ## unreleased
 * __函数`handwrite`和`handwrite2`添加新可选参数`seed`，使得在设置了`seed`的情况下，结果具有可重复性__
 * docstring改为Google风格
+* 添加对Python3.4的支持
+* 取消Python版本必须小于3.7的限制（但目前尚不对Python3.7及以上版本做任何官方支持）
 
 
 ## v1.1.4 (2018-5-14)
