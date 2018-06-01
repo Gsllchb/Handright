@@ -4,4 +4,5 @@ include LICENSE
 include MANIFEST.in
 include README.md
 include setup.py
+prune docs/dev
 global-exclude *.pyc
