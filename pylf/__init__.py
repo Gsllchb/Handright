@@ -7,7 +7,7 @@ import multiprocessing
 
 from pylf import _core
 
-__version__ = '1.1.4'
+__version__ = '1.2.0'
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")

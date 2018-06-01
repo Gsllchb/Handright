@@ -5,7 +5,6 @@
 [![](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 [![](https://img.shields.io/github/license/Gsllchb/PyLf.svg)](https://github.com/Gsllchb/PyLf/blob/master/LICENSE)
 
-[Reference](https://github.com/Gsllchb/PyLf/blob/master/docs/reference.md) |
 [Examples][examples-homepage] |
 [Release Notes](https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md) |
 [Contributing](https://github.com/Gsllchb/PyLf/blob/master/.github/CONTRIBUTING.md)
@@ -52,10 +51,11 @@ if __name__ == '__main__':
     main()
     
 ```
+首先，您可通过使用[pydoc](https://docs.python.org/3/library/pydoc.html)来查看PyLf的完整API文档。
+
 如以上代码所示，函数`pylf.handwrite`是整个PyLf库的核心。而模板`template`则是本库的一个重要概念。模板包含着在手写模仿过程中所需的背景、排版
-设置、字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。有关`pylf.handwrite`和`template`的更多信息请参阅
-[Reference](https://github.com/Gsllchb/PyLf/blob/master/docs/reference.md)。一般情况下，在第一次使用某个背景时，您需要根据自己的
-手写特征创建特定的模板（往往需要经历不断的调试）。
+设置、字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特
+定的模板（往往需要经历不断的调试）。
 
 另外，请您在更新PyLf后及时参阅[Release Notes](https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md)，以了解新版本
 的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
