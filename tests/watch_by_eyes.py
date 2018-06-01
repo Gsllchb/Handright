@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Doing the tests with your naked eyes """
 import pathlib
 
