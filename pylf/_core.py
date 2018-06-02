@@ -20,7 +20,8 @@ def handwrite(text:str, page_settings:list, font, color:str, is_half_char, is_en
               worker:int, seed:int) -> list:
     """Do the real stuffs for handwriting simulating."""
     pages = _draw_text(text, page_settings, font, is_half_char, is_end_char, anti_aliasing, seed)
-    if not pages: return pages
+    if not pages:
+        return pages
     renderer = _Renderer(page_settings, color, alpha, anti_aliasing, seed)
     with multiprocessing.Pool(min(worker, len(pages))) as pool:
         images = pool.map(renderer, pages)
@@ -59,7 +60,8 @@ def _draw_text(text:str, page_settings:list, font, is_half_char, is_end_char, an
                         if char == '\n':
                             char = next(chars)
                             break
-                        if x >= right - font_size and not is_end_char(char): break
+                        if x >= right - font_size and not is_end_char(char):
+                            break
                         actual_font_size = max(int(rand.gauss(font_size, font_size_sigma)), 0)
                         xy = (x, int(rand.gauss(y, line_spacing_sigma)))
                         font = font.font_variant(size=actual_font_size)
@@ -116,18 +118,22 @@ class _Renderer(object):
         else:
             self._rand.seed(a=self._seed + page.index)
         self._perturb(page)
-        if self._anti_aliasing: self._downscale(page)
+        if self._anti_aliasing:
+            self._downscale(page)
         return self._merge(page)
 
     def _perturb(self, page:_page.Page) -> None:
         """'perturbs' the image and generally makes the glyphs from same chars, if any, seems different. Note that
         self._alpha[0] and self._alpha[1] both must be between 0 (inclusive) and 1 (inclusive).
         """
-        if not 0 <= self._alpha[0] <= 1: raise ValueError("alpha[0] must be between 0 (inclusive) and 1 (inclusive).")
-        if not 0 <= self._alpha[1] <= 1: raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
+        if not 0 <= self._alpha[0] <= 1:
+            raise ValueError("alpha[0] must be between 0 (inclusive) and 1 (inclusive).")
+        if not 0 <= self._alpha[1] <= 1:
+            raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
 
         wavelength = 2 * self._page_settings[page.index % len(self._page_settings)]['font_size']
-        if wavelength == 0: return
+        if wavelength == 0:
+            return
         alpha_x, alpha_y = self._alpha
         matrix = page.matrix
 
