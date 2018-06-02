@@ -135,8 +135,13 @@ def handwrite2(text, template2:dict, anti_aliasing:bool=True, worker:int=0, seed
         page_setting.setdefault('word_spacing_sigma', font_size / 256)
         page_setting.setdefault('line_spacing_sigma', font_size / 256)
 
-    return _core.handwrite(text, page_settings, template2['font'], template2.get('color', 'rgb(0, 0, 0)'),
-                           template2.get('is_half_char', lambda c: False),
-                           template2.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
-                           template2.get('alpha', (0.1, 0.1)), anti_aliasing,
-                           worker if worker > 0 else multiprocessing.cpu_count() + worker, seed)
+    return _core.handwrite(text=text,
+                           page_settings=page_settings,
+                           font=template2['font'],
+                           color=template2.get('color', 'rgb(0, 0, 0)'),
+                           is_half_char=template2.get('is_half_char', lambda c: False),
+                           is_end_char=template2.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
+                           alpha=template2.get('alpha', (0.1, 0.1)),
+                           anti_aliasing=anti_aliasing,
+                           worker=worker if worker > 0 else multiprocessing.cpu_count() + worker,
+                           seed=seed)
