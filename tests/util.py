@@ -38,7 +38,7 @@ def compare_pixel(image1, image2) -> float:
     pass
 
 
-def get_path(path: str) -> str:
+def get_path(path:str) -> str:
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
 
 

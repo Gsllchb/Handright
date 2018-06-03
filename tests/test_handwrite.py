@@ -18,7 +18,7 @@ DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 SEED = 66
 
 
-def get_default_template():
+def get_default_template() -> dict:
     template = dict(background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
                     box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
                     font=get_default_font(),

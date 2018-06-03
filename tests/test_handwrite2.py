@@ -12,7 +12,7 @@ DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 SEED = 77
 
 
-def get_default_template2():
+def get_default_template2() -> dict:
     template2 = dict(page_settings=[dict(background=image.new(mode='RGB', size=DEFAULT_SIZE,
                                                               color='rgb(255, 255, 255)'),
                                          box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
