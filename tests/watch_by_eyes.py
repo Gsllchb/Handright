@@ -12,13 +12,11 @@ SEED = 666
 
 
 def test_handwrite():
-    template = dict(
-        background=image.open(get_path("data/backgrounds/letter.png")),
-        box=(68, 130, 655, 925),
-        font=get_default_font(),
-        font_size=27,
-        line_spacing=6
-    )
+    template = dict(background=image.open(get_path("data/backgrounds/letter.png")),
+                    box=(68, 130, 655, 925),
+                    font=get_default_font(),
+                    font_size=27,
+                    line_spacing=6)
     for file in pathlib.Path(get_path("data/texts")).iterdir():
         print(file)
         with file.open() as f:
@@ -30,21 +28,13 @@ def test_handwrite():
 
 
 def test_handwrite2():
-    template2 = dict(
-        page_settings=[
-            dict(
-                background=image.open(get_path("data/backgrounds/even-odd-letter/村庄信笺纸.jpg")),
-                box=(20, 107, 1285, 1110),
-                font_size=37,
-            ),
-            dict(
-                background=image.open(get_path("data/backgrounds/even-odd-letter/树信笺纸.jpg")),
-                box=(20, 107, 1285, 900),
-                font_size=37,
-            ),
-        ],
-        font=get_default_font(),
-    )
+    template2 = dict(page_settings=[dict(background=image.open(get_path("data/backgrounds/even-odd-letter/村庄信笺纸.jpg")),
+                                         box=(20, 107, 1285, 1110),
+                                         font_size=37),
+                                    dict(background=image.open(get_path("data/backgrounds/even-odd-letter/树信笺纸.jpg")),
+                                         box=(20, 107, 1285, 900),
+                                         font_size=37)],
+                     font=get_default_font())
     for file in pathlib.Path(get_path("data/texts")).iterdir():
         print(file)
         with file.open() as f:

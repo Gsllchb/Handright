@@ -19,13 +19,11 @@ SEED = 66
 
 
 def get_default_template():
-    template = dict(
-        background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-        box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
-        font=get_default_font(),
-        font_size=30,
-        font_size_sigma=0
-    )
+    template = dict(background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+                    box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
+                    font=get_default_font(),
+                    font_size=30,
+                    font_size_sigma=0)
     return template
 
 
@@ -123,13 +121,11 @@ def test_text_iterable():
 def test_outside_box():
     text = get_short_text()
     template = get_default_template()
-    for box in (
-            (-2 * DEFAULT_WIDTH, 0, -DEFAULT_WIDTH, DEFAULT_HEIGHT),
-            (0, -2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, -DEFAULT_HEIGHT),
-            (2 * DEFAULT_WIDTH, 0, 3 * DEFAULT_WIDTH, DEFAULT_HEIGHT),
-            (0, 2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, 3 * DEFAULT_HEIGHT),
-            (-2 * DEFAULT_WIDTH, -2 * DEFAULT_HEIGHT, -DEFAULT_WIDTH, -DEFAULT_HEIGHT)
-    ):
+    for box in ((-2 * DEFAULT_WIDTH, 0, -DEFAULT_WIDTH, DEFAULT_HEIGHT),
+                (0, -2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, -DEFAULT_HEIGHT),
+                (2 * DEFAULT_WIDTH, 0, 3 * DEFAULT_WIDTH, DEFAULT_HEIGHT),
+                (0, 2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, 3 * DEFAULT_HEIGHT),
+                (-2 * DEFAULT_WIDTH, -2 * DEFAULT_HEIGHT, -DEFAULT_WIDTH, -DEFAULT_HEIGHT)):
         template['box'] = box
         for anti_aliasing in (True, False):
             ims = handwrite(text, template, anti_aliasing=anti_aliasing, seed=SEED)
@@ -156,12 +152,8 @@ def test_mode_and_color():
             for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
                 template['color'] = color
                 standard_image = template['background'].copy()
-                image_draw.Draw(standard_image).text(
-                    xy=(template['box'][0], template['box'][1]),
-                    text=text,
-                    fill=color,
-                    font=template['font'].font_variant(size=template['font_size'])
-                )
+                image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=color,
+                                                     font=template['font'].font_variant(size=template['font_size']))
 
                 images = handwrite(text, template, anti_aliasing=False)
                 assert len(images) == 1
@@ -177,12 +169,8 @@ def test_font_size():
     template['color'] = 'rgb(0, 0, 0)'
     for font_size in (0, 1, 10, 30):
         standard_image = template['background'].copy()
-        image_draw.Draw(standard_image).text(
-            xy=(template['box'][0], template['box'][1]),
-            text=text,
-            fill=template['color'],
-            font=template['font'].font_variant(size=font_size)
-        )
+        image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text,
+                                             fill=template['color'], font=template['font'].font_variant(size=font_size))
 
         template['font_size'] = font_size
         images = handwrite(text, template, anti_aliasing=False)
@@ -201,12 +189,9 @@ def test_is_half_char():
     images = handwrite(text, template, anti_aliasing=False)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(
-        xy=(template['box'][0], template['box'][1]),
-        text=('。' * 6 + '\n') * 5,
-        fill=template['color'],
-        font=template['font'].font_variant(size=template['font_size'])
-    )
+    image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
+                                                   text=('。' * 6 + '\n') * 5, fill=template['color'],
+                                                   font=template['font'].font_variant(size=template['font_size']))
     assert compare_histogram(standard_image, images[0]) < THRESHOLD
 
 
@@ -218,12 +203,9 @@ def test_is_end_char():
     images = handwrite(text, template, anti_aliasing=False)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(
-        xy=(template['box'][0], template['box'][1]),
-        text=('。' * 6 + '\n') * 5,
-        fill=template['color'],
-        font=template['font'].font_variant(size=template['font_size'])
-    )
+    image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
+                                                   text=('。' * 6 + '\n') * 5, fill=template['color'],
+                                                   font=template['font'].font_variant(size=template['font_size']))
     assert compare_histogram(standard_image, images[0]) >= THRESHOLD
 
 
@@ -232,12 +214,8 @@ def test_multiprocessing():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(
-        xy=(template['box'][0], template['box'][1]),
-        text=text,
-        fill=template['color'],
-        font=template['font'].font_variant(size=template['font_size'])
-    )
+    image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
+                                         font=template['font'].font_variant(size=template['font_size']))
     for worker in (1, multiprocessing.cpu_count()):
         images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker, anti_aliasing=False)
         for image in images:
@@ -249,12 +227,8 @@ def test_worker():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(
-        xy=(template['box'][0], template['box'][1]),
-        text=text,
-        fill=template['color'],
-        font=template['font'].font_variant(size=template['font_size'])
-    )
+    image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
+                                         font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
     workers = [0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
     if cpu_count > 1:
