@@ -1,9 +1,9 @@
 # PyLf
-[![](https://img.shields.io/pypi/v/PyLf.svg)](https://pypi.org/project/pylf/)
-[![](https://img.shields.io/pypi/pyversions/PyLf.svg)](https://pypi.org/project/pylf/)
-[![](https://img.shields.io/pypi/implementation/PyLf.svg)](https://pypi.org/project/pylf/)
-[![](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
-[![](https://img.shields.io/github/license/Gsllchb/PyLf.svg)](https://github.com/Gsllchb/PyLf/blob/master/LICENSE)
+[![version](https://img.shields.io/pypi/v/PyLf.svg)](https://pypi.org/project/pylf/)
+[![python](https://img.shields.io/pypi/pyversions/PyLf.svg)](https://pypi.org/project/pylf/)
+[![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)](https://pypi.org/project/pylf/)
+[![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
+[![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)](https://github.com/Gsllchb/PyLf/blob/master/LICENSE)
 
 [Examples][examples-homepage] |
 [Release Notes](https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md) |
