@@ -5,17 +5,18 @@ import pylf
 
 VERSION = pylf.__version__
 
-CLASSIFIERS = ("License :: OSI Approved :: BSD License",
+CLASSIFIERS = ["License :: OSI Approved :: BSD License",
                "Topic :: Multimedia :: Graphics",
                "Programming Language :: Python",
                "Programming Language :: Python :: 3",
                "Programming Language :: Python :: 3.4",
                "Programming Language :: Python :: 3.5",
                "Programming Language :: Python :: 3.6",
-               "Programming Language :: Python :: Implementation :: CPython")
+               "Programming Language :: Python :: Implementation :: CPython"]
 
-REQUIRES = ('setuptools>=38.6.0',
-            'pillow >= 5.0.0, < 6')
+INSTALL_REQUIRES = ['pillow >= 5.0.0, < 6', ]
+
+SETUP_REQUIRES = ['setuptools>=38.6.0', ]
 
 
 def get_long_description() -> str:
@@ -30,7 +31,8 @@ def main():
                      author='Gsllchb',
                      author_email="Gsllchb@gmail.com",
                      packages=setuptools.find_packages(),
-                     install_requires=REQUIRES,
+                     install_requires=INSTALL_REQUIRES,
+                     setup_requires=SETUP_REQUIRES,
                      python_requires='>=3.4',
                      description="A lightweight Python library for simulating Chinese handwriting",
                      long_description=get_long_description(),
