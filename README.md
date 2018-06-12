@@ -11,8 +11,7 @@
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/slogan.png)
 
-PyLf是一个模仿中文手写的轻量级Python库。其通过在处理过程中广泛引入随机性来模仿汉字书写。目前，PyLf基于[Pillow][Pillow-homepage]开发，且
-在内部采用对点阵图形处理的方式来得到最终的图像。
+PyLf是一个模仿中文手写的轻量级Python库。其通过在处理过程中广泛引入随机性来模仿汉字书写。目前，PyLf基于[Pillow][Pillow-homepage]开发，且在内部采用对点阵图形处理的方式来得到最终的图像。
 
 
 ## Installation
@@ -51,12 +50,9 @@ if __name__ == '__main__':
 ```
 首先，您可通过使用[pydoc](https://docs.python.org/3/library/pydoc.html)来查看PyLf的完整API文档。
 
-如以上代码所示，函数`pylf.handwrite`是整个PyLf库的核心。而模板`template`则是本库的一个重要概念。模板包含着在手写模仿过程中所需的背景、排版
-设置、字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特
-定的模板（往往需要经历不断的调试）。
+如以上代码所示，函数`pylf.handwrite`是整个PyLf库的核心。而模板`template`则是本库的一个重要概念。模板包含着在手写模仿过程中所需的背景、排版设置、字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特定的模板（往往需要经历不断的调试）。
 
-另外，请您在更新PyLf后及时参阅[Release Notes](https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md)，以了解新版本
-的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
+另外，请您在更新PyLf后及时参阅[Release Notes](https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md)，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
 
 
 ## Features

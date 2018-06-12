@@ -4,8 +4,7 @@
 2. 更新`pylf.__init__.__version__`；
 3. 执行所有测试；
 4. 若通过以上测试，则继续执行以下步骤；
-5. 更新`docs/release_notes.md`（发布日期按照当地日期即可），并视情况将changelog重新整合完善（change不必按照时序排列）以及为新变化撰写摘
-要；
+5. 更新`docs/release_notes.md`（发布日期按照当地日期即可），并视情况将changelog重新整合完善（change不必按照时序排列）以及为新变化撰写摘要；
 6. 视情况更新相应文档和创建新文档；
 7. 提交更改到master分支上；
 8. 在当前master分支的commit上创建标签`v{NEW_VERSION}`;
