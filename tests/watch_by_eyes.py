@@ -19,7 +19,7 @@ def test_handwrite():
                     line_spacing=6)
     for file in pathlib.Path(get_path("data/texts")).iterdir():
         print(file)
-        with file.open() as f:
+        with file.open(encoding='utf-8') as f:
             text = f.read()
         images = handwrite(text, template, seed=SEED)
         for im in images:
@@ -37,7 +37,7 @@ def test_handwrite2():
                      font=get_default_font())
     for file in pathlib.Path(get_path("data/texts")).iterdir():
         print(file)
-        with file.open() as f:
+        with file.open(encoding='utf-8') as f:
             text = f.read()
         images = handwrite2(text, template2, seed=SEED)
         for im in images:

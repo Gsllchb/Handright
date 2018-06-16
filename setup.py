@@ -20,7 +20,7 @@ SETUP_REQUIRES = ['setuptools>=38.6.0', ]
 
 
 def get_long_description() -> str:
-    with open('README.md') as f:
+    with open('README.md', encoding='utf-8') as f:
         return f.read()
 
 

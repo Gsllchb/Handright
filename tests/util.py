@@ -49,7 +49,7 @@ def get_short_text() -> str:
 
 def get_long_text() -> str:
     """ Return a article """
-    with open(get_path("data/texts/荷塘月色.txt")) as f:
+    with open(get_path("data/texts/荷塘月色.txt"), encoding='utf-8') as f:
         return f.read()
 
 
