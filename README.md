@@ -100,5 +100,5 @@ __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 
 
 [PIL-homepage]: http://www.pythonware.com/products/pil/
-[Pillow-homepage]: https://python-pillow.org/
+[Pillow-homepage]: http://python-pillow.org/
 [examples-homepage]: https://github.com/Gsllchb/PyLf-examples
