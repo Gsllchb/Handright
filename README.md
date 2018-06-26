@@ -102,7 +102,7 @@ __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: http://python-pillow.org/
 [examples-homepage]: https://github.com/Gsllchb/PyLf-examples
-[release-notes-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.mdhttps://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md
+[release-notes-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md
 [pypi-homepage]: https://pypi.org/project/pylf/
 [license-link]: https://github.com/Gsllchb/PyLf/blob/master/LICENSE
 [contributing-link]: https://github.com/Gsllchb/PyLf/blob/master/.github/CONTRIBUTING.md
