@@ -16,11 +16,11 @@ PyLf是一个模仿中文手写的轻量级Python库。其通过在处理过程�
 
 ## Installation
 由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，因此如若您已安装[PIL][PIL-homepage]，请先**手动卸载**：
-```sh
+```console
 pip uninstall PIL
 ```
 安装PyLf：
-```sh
+```console
 pip install pylf
 ```
 

@@ -10,7 +10,7 @@
 8. 在当前master分支的commit上创建标签`v{NEW_VERSION}`;
 9. push标签和更改到GitHub；
 10. 打包并发布新版本到PyPI：
-    ```sh
+    ```console
     python setup.py sdist
     python setup.py bdist_wheel
     twine upload ./dist/*{NEW_VERSION}*
