@@ -2,7 +2,7 @@
 [![version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
 [![python](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
 [![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)][pypi-homepage]
-[![gitter](https://img.shields.io/gitter/room/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
+[![gitter](https://badges.gitter.im/Python-PyLf/PyLf.png)](https://gitter.im/Python-PyLf/PyLf)
 [![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
 [![Build Status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
 
