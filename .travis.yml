@@ -4,5 +4,5 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-install: pip install tox-travis pytest 'pillow >= 5.0.0, < 6'
+install: pip install tox-travis pytest pillow==5.0.0
 script: tox
