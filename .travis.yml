@@ -1,7 +1,8 @@
+sudo: false
 language: python
 os:
   - linux
-  - osx
+  #- osx  # unsupported yet
 python:
   - "3.4"
   - "3.5"
