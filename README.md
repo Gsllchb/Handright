@@ -10,7 +10,7 @@
 [Release Notes][release-notes-link] |
 [Contributing][contributing-link]
 
-![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/slogan.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/slogan.png)
 
 PyLf是一个模仿中文手写的轻量级Python库。其通过在处理过程中广泛引入随机性来模仿汉字书写。目前，PyLf基于[Pillow][Pillow-homepage]开发，且在内部采用对点阵图形处理的方式来得到最终的图像。
 
@@ -76,25 +76,25 @@ if __name__ == '__main__':
 
 * __《荷塘月色》__
 
-示例代码：[article.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/article.py)
+示例代码：[article.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/article.py)
 
 <div align="center">
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/0.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/1.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/2.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/荷塘月色/3.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/0.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/1.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/2.png" width="436" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/3.png" width="436" />
 </div>
 
 * __《从百草园到三味书屋》__
 
-示例代码：[even_odd.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/even_odd.py)
+示例代码：[even_odd.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/even_odd.py)
 
 <div align="center">
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/0.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/1.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/2.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/3.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/out/从百草园到三味书屋/4.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/0.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/1.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/2.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/3.png" width="174" />
+    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/4.png" width="174" />
 </div>
 
 __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
