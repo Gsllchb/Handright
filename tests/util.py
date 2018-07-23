@@ -34,8 +34,7 @@ def absolute_equal(image1, image2) -> bool:
 
 def compare_pixel(image1, image2) -> float:
     """ Compare the two images pixel by pixel and return the root mean square """
-    # TODO
-    pass
+    raise NotImplementedError("do not need yet")
 
 
 def get_path(path:str) -> str:
