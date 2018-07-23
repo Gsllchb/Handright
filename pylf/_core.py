@@ -15,6 +15,8 @@ _WHITE = 255
 _BLACK = 0
 _AMP = 2  # Amplification for 4X SSAA.
 
+_NEWLINE = '\n'
+
 
 def handwrite(text:str, page_settings:list, font, color:str, is_half_char, is_end_char, alpha:tuple, anti_aliasing:bool,
               worker:int, seed:int) -> list:
@@ -57,7 +59,7 @@ def _draw_text(text:str, page_settings:list, font, is_half_char, is_end_char, an
                 while y < lower - font_size:
                     x = left
                     while True:
-                        if char == '\n':
+                        if char == _NEWLINE:
                             char = next(chars)
                             break
                         if x >= right - font_size and not is_end_char(char):
