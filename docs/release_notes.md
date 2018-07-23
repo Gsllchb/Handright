@@ -4,6 +4,7 @@
 
 ## unreleased
 * 移除source distribution中的`docs`文件夹
+* 提供对Python3.7的支持，为此依赖项由`pillow >= 5.0.0, < 6`改为`pillow >= 5.2.0, < 6`
 
 
 ## v1.2.0 (2018-6-1)
