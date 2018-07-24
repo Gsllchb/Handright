@@ -15,7 +15,7 @@ and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) fir
 
 
 ## Guidelines
-* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python) in mind
+* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python) in mind;
 * One commit for one change;
 * Maximum line length is 120 characters;
 * Only can use English in source codes, except in comments;
