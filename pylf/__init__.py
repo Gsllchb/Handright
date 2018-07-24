@@ -18,33 +18,50 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
 
     Args:
         text: A char iterable.
+
         template: A dict containing following parameters.
+
             background: A Pillow's Image instance.
+
             box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate. The module
-                uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. Note that this function
-                do not guarantee the drawn texts will completely in the box.
+            uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. Note that this function do
+            not guarantee the drawn texts will completely in the box.
+
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font instance.
+
             font_size: A int as the average font size in pixel. Note that (box[3] - box[1]) and (box[2] - box[0]) both
-                must be greater than font_size.
+            must be greater than font_size.
+
             color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
-                Default: "black".
+            Default: "black".
+
             word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
+
             line_spacing: A int as the average gap between two adjacent lines in pixel. Default: font_size // 5.
+
             font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default: font_size / 256.
+
             word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing. Default:
-                font_size / 256.
+            font_size / 256.
+
             line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing. Default:
-                font_size / 256.
+            font_size / 256.
+
             is_half_char: A function judging whether or not a char only take up half of its original width. The function
-                must take a char parameter and return a boolean value. Default: (lambda c: False).
+            must take a char parameter and return a boolean value. Default: (lambda c: False).
+
             is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
-                '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
-                (lambda c: c in _DEFAULT_END_CHARS).
+            '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
+            (lambda c: c in _DEFAULT_END_CHARS).
+
             alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in
-                order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
+            order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
+
         anti_aliasing: Whether or not turn on the anti-aliasing. Default: True.
+
         worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
-            be the number of CPU in the computer adding worker. Default: 0.
+        be the number of CPU in the computer adding worker. Default: 0.
+
         seed: The seed of the internal random generators. Default: None.
 
     Returns:
@@ -88,36 +105,54 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
 
     Args:
         text: A char iterable.
+
         template2: A dict containing following parameters.
+
             page_settings: A list of dict containing the following parameters. Each of these dict will be applied
-                cyclically to each page.
+            cyclically to each page.
+
                 background: A Pillow's Image instance.
+
                 box: A bounding box as a 4-tuple defining the left, upper, right and lower pixel coordinate. The module
-                    uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. This function do not
-                    guarantee the drawn texts will completely in the box.
+                uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. This function do not
+                guarantee the drawn texts will completely in the box.
+
                 font_size: A int as the average font size in pixel. Note that (box[3] - box[1]) and (box[2] - box[0])
-                    both must be greater than font_size.
+                both must be greater than font_size.
+
                 word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
+
                 line_spacing: A int as the average gap between two adjacent lines in pixel. Default: font_size // 5.
+
                 font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default:
-                    font_size / 256.
+                font_size / 256.
+
                 word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing. Default:
-                    font_size / 256.
+                font_size / 256.
+
                 line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing. Default:
-                    font_size / 256.
+                font_size / 256.
+
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font object.
+
             color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
-                Default: "black".
+            Default: "black".
+
             is_half_char: A function judging whether or not a char only take up half of its original width. The function
-                must take a char parameter and return a boolean value. Default: (lambda c: False).
+            must take a char parameter and return a boolean value. Default: (lambda c: False).
+
             is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
-                '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
-                (lambda c: c in _DEFAULT_END_CHARS).
+            '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
+            (lambda c: c in _DEFAULT_END_CHARS).
+
             alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in
-                order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
+            order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
+
         anti_aliasing: Whether or not turn on the anti-aliasing. Default: True.
+
         worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
-            be the number of CPU in the computer adding worker. Default: 0.
+        be the number of CPU in the computer adding worker. Default: 0.
+
         seed: The seed of the internal random generators. Default: None.
 
     Returns:
