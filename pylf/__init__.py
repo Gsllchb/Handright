@@ -26,8 +26,8 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font instance.
             font_size: A int as the average font size in pixel. Note that (box[3] - box[1]) and (box[2] - box[0]) both
                 must be greater than font_size.
-            color: A str with specific format. The format is given as 'rgb(red, green, blue)' where the color values are
-                integers in the range 0 (inclusive) to 255 (inclusive). Default: 'rgb(0, 0, 0)'.
+            color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+                Default: "black".
             word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
             line_spacing: A int as the average gap between two adjacent lines in pixel. Default: font_size // 5.
             font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default: font_size / 256.
@@ -106,8 +106,8 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
                 line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing. Default:
                     font_size / 256.
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font object.
-            color: A str with specific format. The format is given as 'rgb(red, green, blue)' where the color values are
-                integers in the range 0 (inclusive) to 255 (inclusive). Default: 'rgb(0, 0, 0)'.
+            color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+                Default: "black".
             is_half_char: A function judging whether or not a char only take up half of its original width. The function
                 must take a char parameter and return a boolean value. Default: (lambda c: False).
             is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
@@ -138,7 +138,7 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
     return _core.handwrite(text=text,
                            page_settings=page_settings,
                            font=template2['font'],
-                           color=template2.get('color', 'rgb(0, 0, 0)'),
+                           color=template2.get('color', "black"),
                            is_half_char=template2.get('is_half_char', lambda c: False),
                            is_end_char=template2.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
                            alpha=template2.get('alpha', (0.1, 0.1)),
