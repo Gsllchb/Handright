@@ -13,7 +13,7 @@ __version__ = '1.3.0'
 _DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 
-def handwrite(text, template:dict, anti_aliasing:bool=True, worker:int=0, seed:int=None) -> list:
+def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0, seed: int = None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -83,7 +83,7 @@ def handwrite(text, template:dict, anti_aliasing:bool=True, worker:int=0, seed:i
     return handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
 
 
-def handwrite2(text, template2:dict, anti_aliasing:bool=True, worker:int=0, seed:int=None) -> list:
+def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed: int = None) -> list:
     """The 'periodic' version of handwrite. See also handwrite.
 
     Args:
