@@ -1,5 +1,5 @@
 # Contributing
-First of all, every participant should obey [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). In this project,
+First of all, every participant should obey [_Contributor Covenant Code of Conduct_](CODE_OF_CONDUCT.md). In this project,
 Chinese and English both are welcoming. Besides, before starting working, I strongly recommend that all of you notify
 and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) first.
 
@@ -21,5 +21,5 @@ and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) fir
 * Only can use English in source codes, except in comments;
 * Maintain consistency with the whole (e.g. code style, algorithm, expressions, etc);
 * Documentations and Examples both are for released versions; 
-* Otherwise follow [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#Line_length);
+* Otherwise follow [_Google Python Style Guide_](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#google-python-style-guide);
 * Contact me if you have any question.
