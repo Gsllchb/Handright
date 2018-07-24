@@ -8,7 +8,7 @@ from util import *
 from pylf import *
 
 
-SEED = 666
+SEED = "PyLf"
 
 
 def test_handwrite():

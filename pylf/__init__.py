@@ -13,7 +13,7 @@ __version__ = '1.3.0'
 _DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 
-def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0, seed: int = None) -> list:
+def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -45,7 +45,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
         anti_aliasing: Whether or not turn on the anti-aliasing. Default: True.
         worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
             be the number of CPU in the computer adding worker. Default: 0.
-        seed: A int as the seed of the internal random generators. Default: None.
+        seed: The seed of the internal random generators. Default: None.
 
     Returns:
         A list of drawn images with the same size and mode as the background image.
@@ -83,7 +83,7 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
     return handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
 
 
-def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed: int = None) -> list:
+def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite.
 
     Args:
@@ -118,7 +118,7 @@ def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 
         anti_aliasing: Whether or not turn on the anti-aliasing. Default: True.
         worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
             be the number of CPU in the computer adding worker. Default: 0.
-        seed: A int as the seed of the internal random generators. Default: None.
+        seed: The seed of the internal random generators. Default: None.
 
     Returns:
         A list of drawn images with the same size and mode as the corresponding background images.

@@ -9,7 +9,7 @@ from pylf import *
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
-SEED = 77
+SEED = "PyLf"
 
 
 def get_default_template2() -> dict:

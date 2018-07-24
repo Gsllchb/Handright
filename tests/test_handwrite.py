@@ -15,7 +15,7 @@ BACKGROUND_COLOR = 'rgb(255, 255, 255)'
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
-SEED = 66
+SEED = "PyLf"
 
 
 def get_default_template() -> dict:
@@ -243,7 +243,7 @@ def test_seed():
     text = get_short_text() * 50
     template = get_default_template()
     worker = 2
-    for seed in (-666, -1, 0, 1, 666):
+    for seed in (-666, "PyLf", 0.5, (6, 6), 666):
         for anti_aliasing in (True, False):
             ims1 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
             ims2 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
