@@ -13,13 +13,13 @@ __version__ = '1.3.0'
 _DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 
-def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
+def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
         text: A char iterable.
 
-        template: A dict containing following parameters.
+        template: A dict-like object containing following parameters.
 
             background: A Pillow's Image instance.
 
@@ -100,16 +100,16 @@ def handwrite(text, template: dict, anti_aliasing: bool = True, worker: int = 0,
     return handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
 
 
-def handwrite2(text, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
+def handwrite2(text: str, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite.
 
     Args:
         text: A char iterable.
 
-        template2: A dict containing following parameters.
+        template2: A dict-like object containing following parameters.
 
-            page_settings: A list of dict containing the following parameters. Each of these dict will be applied
-            cyclically to each page.
+            page_settings: A list-like object of dict-like objects containing the following parameters. Each of these
+            dict-like objects will be applied cyclically to each page.
 
                 background: A Pillow's Image instance.
 
