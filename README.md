@@ -1,4 +1,6 @@
 # PyLf
+___A lightweight Python library for simulating Chinese handwriting___
+
 [![version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
 [![python](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
 [![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)][pypi-homepage]
@@ -11,8 +13,6 @@
 [Contributing][contributing-link]
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/slogan.png)
-
-PyLf是一个模仿中文手写的轻量级Python库。其通过在处理过程中广泛引入随机性来模仿汉字书写。目前，PyLf基于[Pillow][Pillow-homepage]开发，且在内部采用对点阵图形处理的方式来得到最终的图像。
 
 
 ## Installation
