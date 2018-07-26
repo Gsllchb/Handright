@@ -15,6 +15,10 @@ ___A lightweight Python library for simulating Chinese handwriting___
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/slogan.png)
 
 
+## Vision
+Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and easy-to-use interfaces.
+
+
 ## Installation
 由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，因此如若您已安装[PIL][PIL-homepage]，请先**手动卸载**：
 ```console
