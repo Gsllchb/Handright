@@ -167,7 +167,7 @@ def handwrite2(text: str, template2: dict, anti_aliasing: bool = True, worker: i
     Raises:
         ValueError: When the parameters are not be set properly.
     """
-    page_settings = template2["page_settings"]
+    page_settings = tuple(template2["page_settings"])
     for page_setting in page_settings:
         font_size = page_setting["font_size"]
         page_setting.setdefault("word_spacing", _DEFAULT_WORD_SPACING)
