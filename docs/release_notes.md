@@ -6,7 +6,7 @@
 * __参数`seed`的类型由必须为`int`改为可为任一`hashable`__
 * __提供参数`color`对所有[Pillow Color Name](https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names)的支持__
 * 完善文档
-* 轻微提升`handwrite()`的性能
+* 轻微提升`handwrite()`和`handwrite2()`的性能
 
 
 ## v1.3.0 (2018-7-23)
