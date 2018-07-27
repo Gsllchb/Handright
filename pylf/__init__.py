@@ -7,10 +7,16 @@ import multiprocessing
 
 from pylf import _core
 
-__version__ = '1.3.0'
+__version__ = "1.3.0"
 
-# Chinese, English and other end chars
 _DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
+
+_DEFAULT_WORD_SPACING = 0
+_DEFAULT_COLOR = "black"
+_DEFAULT_IS_HALF_CHAR = lambda c: False
+# Chinese, English and other end chars
+_DEFAULT_IS_END_CHAR = lambda c: c in _DEFAULT_END_CHARS
+_DEFAULT_ALPHA = (0.1, 0.1)
 
 
 def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
@@ -71,31 +77,31 @@ def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int
         ValueError: When the parameters are not be set properly.
     """
     page_setting = dict()
-    page_setting['background'] = template['background']
-    page_setting['box'] = template['box']
-    page_setting['font_size'] = template['font_size']
-    if 'word_spacing' in template:
-        page_setting['word_spacing'] = template['word_spacing']
-    if 'line_spacing' in template:
-        page_setting['line_spacing'] = template['line_spacing']
-    if 'font_size_sigma' in template:
-        page_setting['font_size_sigma'] = template['font_size_sigma']
-    if 'word_spacing_sigma' in template:
-        page_setting['word_spacing_sigma'] = template['word_spacing_sigma']
-    if 'line_spacing_sigma' in template:
-        page_setting['line_spacing_sigma'] = template['line_spacing_sigma']
+    page_setting["background"] = template["background"]
+    page_setting["box"] = template["box"]
+    page_setting["font_size"] = template["font_size"]
+    if "word_spacing" in template:
+        page_setting["word_spacing"] = template["word_spacing"]
+    if "line_spacing" in template:
+        page_setting["line_spacing"] = template["line_spacing"]
+    if "font_size_sigma" in template:
+        page_setting["font_size_sigma"] = template["font_size_sigma"]
+    if "word_spacing_sigma" in template:
+        page_setting["word_spacing_sigma"] = template["word_spacing_sigma"]
+    if "line_spacing_sigma" in template:
+        page_setting["line_spacing_sigma"] = template["line_spacing_sigma"]
 
     template2 = dict()
-    template2['page_settings'] = [page_setting, ]
-    template2['font'] = template['font']
-    if 'color' in template:
-        template2['color'] = template['color']
-    if 'is_half_char' in template:
-        template2['is_half_char'] = template['is_half_char']
-    if 'is_end_char' in template:
-        template2['is_end_char'] = template['is_end_char']
-    if 'alpha' in template:
-        template2['alpha'] = template['alpha']
+    template2["page_settings"] = [page_setting, ]
+    template2["font"] = template["font"]
+    if "color" in template:
+        template2["color"] = template["color"]
+    if "is_half_char" in template:
+        template2["is_half_char"] = template["is_half_char"]
+    if "is_end_char" in template:
+        template2["is_end_char"] = template["is_end_char"]
+    if "alpha" in template:
+        template2["alpha"] = template["alpha"]
 
     return handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
 
@@ -161,22 +167,22 @@ def handwrite2(text: str, template2: dict, anti_aliasing: bool = True, worker: i
     Raises:
         ValueError: When the parameters are not be set properly.
     """
-    page_settings = template2['page_settings']
+    page_settings = template2["page_settings"]
     for page_setting in page_settings:
-        font_size = page_setting['font_size']
-        page_setting.setdefault('word_spacing', 0)
-        page_setting.setdefault('line_spacing', font_size // 5)
-        page_setting.setdefault('font_size_sigma', font_size / 256)
-        page_setting.setdefault('word_spacing_sigma', font_size / 256)
-        page_setting.setdefault('line_spacing_sigma', font_size / 256)
+        font_size = page_setting["font_size"]
+        page_setting.setdefault("word_spacing", _DEFAULT_WORD_SPACING)
+        page_setting.setdefault("line_spacing", font_size // 5)
+        page_setting.setdefault("font_size_sigma", font_size / 256)
+        page_setting.setdefault("word_spacing_sigma", font_size / 256)
+        page_setting.setdefault("line_spacing_sigma", font_size / 256)
 
     return _core.handwrite(text=text,
                            page_settings=page_settings,
-                           font=template2['font'],
-                           color=template2.get('color', "black"),
-                           is_half_char=template2.get('is_half_char', lambda c: False),
-                           is_end_char=template2.get('is_end_char', lambda c: c in _DEFAULT_END_CHARS),
-                           alpha=template2.get('alpha', (0.1, 0.1)),
+                           font=template2["font"],
+                           color=template2.get("color", _DEFAULT_COLOR),
+                           is_half_char=template2.get("is_half_char", _DEFAULT_IS_HALF_CHAR),
+                           is_end_char=template2.get("is_end_char", _DEFAULT_IS_END_CHAR),
+                           alpha=template2.get("alpha", _DEFAULT_ALPHA),
                            anti_aliasing=anti_aliasing,
                            worker=worker if worker > 0 else multiprocessing.cpu_count() + worker,
                            seed=seed)
