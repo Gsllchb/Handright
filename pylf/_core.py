@@ -18,7 +18,7 @@ _AMP = 2  # Amplification for 4X SSAA.
 _NEWLINE = '\n'
 
 
-def handwrite(text: str, page_settings: list, font, color: str, is_half_char, is_end_char, alpha: tuple,
+def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char, is_end_char, alpha: tuple,
               anti_aliasing: bool, worker: int, seed) -> list:
     """Do the real stuffs for handwriting simulating."""
     pages = _draw_text(text, page_settings, font, is_half_char, is_end_char, anti_aliasing, seed)
@@ -30,7 +30,7 @@ def handwrite(text: str, page_settings: list, font, color: str, is_half_char, is
     return images
 
 
-def _draw_text(text: str, page_settings: list, font, is_half_char, is_end_char, anti_aliasing: bool, seed) -> list:
+def _draw_text(text: str, page_settings: tuple, font, is_half_char, is_end_char, anti_aliasing: bool, seed) -> list:
     """Draws the text randomly in black images with white color. Note that (box[3] - box[1]) and (box[2] - box[0]) both
     must be greater than corresponding font_size.
     """
@@ -106,7 +106,7 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
 class _Renderer(object):
     """A function-like object rendering the foreground that was drawn text and returning rendered image."""
 
-    def __init__(self, page_settings: list, color: str, alpha: tuple, anti_aliasing: bool, seed):
+    def __init__(self, page_settings: tuple, color: str, alpha: tuple, anti_aliasing: bool, seed):
         self._page_settings = page_settings
         self._color = color
         self._alpha = alpha

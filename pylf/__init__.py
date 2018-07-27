@@ -92,7 +92,7 @@ def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int
         page_setting["line_spacing_sigma"] = template["line_spacing_sigma"]
 
     template2 = dict()
-    template2["page_settings"] = [page_setting, ]
+    template2["page_settings"] = (page_setting, )
     template2["font"] = template["font"]
     if "color" in template:
         template2["color"] = template["color"]
