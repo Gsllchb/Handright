@@ -9,7 +9,7 @@ from pylf import _core
 
 __version__ = "1.3.0"
 
-_DEFAULT_END_CHARS = set("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
+_DEFAULT_END_CHARS = frozenset("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
