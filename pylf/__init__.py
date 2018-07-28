@@ -76,7 +76,7 @@ def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int
     Raises:
         ValueError: When the parameters are not be set properly.
     """
-    page_setting = dict()
+    page_setting = {}
     page_setting["background"] = template["background"]
     page_setting["box"] = template["box"]
     page_setting["font_size"] = template["font_size"]
@@ -91,7 +91,7 @@ def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int
     if "line_spacing_sigma" in template:
         page_setting["line_spacing_sigma"] = template["line_spacing_sigma"]
 
-    template2 = dict()
+    template2 = {}
     template2["page_settings"] = (page_setting, )
     template2["font"] = template["font"]
     if "color" in template:
