@@ -9,12 +9,12 @@ from pylf import _core
 
 __version__ = "1.3.0"
 
+# Chinese, English and other end chars
 _DEFAULT_END_CHARS = frozenset("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
 
 _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
 _DEFAULT_IS_HALF_CHAR = lambda c: False
-# Chinese, English and other end chars
 _DEFAULT_IS_END_CHAR = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_ALPHA = (0.1, 0.1)
 
