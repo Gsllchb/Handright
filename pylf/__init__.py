@@ -19,7 +19,7 @@ _DEFAULT_IS_END_CHAR = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_ALPHA = (0.1, 0.1)
 
 
-def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
+def handwrite(text: str, template: dict, *, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -106,7 +106,7 @@ def handwrite(text: str, template: dict, anti_aliasing: bool = True, worker: int
     return handwrite2(text, template2, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
 
 
-def handwrite2(text: str, template2: dict, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
+def handwrite2(text: str, template2: dict, *, anti_aliasing: bool = True, worker: int = 0, seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite.
 
     Args:

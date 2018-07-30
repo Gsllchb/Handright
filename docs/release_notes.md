@@ -2,6 +2,10 @@
 本文档是为了让用户了解新版本的变化而撰写。新特性的添加、旧特性的删除、重大bug的修复以及不兼容性的变化等需要用户知道的重大变化在下文中将使用粗体标注。对于一般用户而言，仅需查看粗体部分即可。但还是建议闲得没事、充满好奇心或想全面了解新版本的用户看完所有新变化。
 
 
+## unreleased
+* `handwrite()`和`handwrite2()`的可选参数（即：`anti_aliasing`、`worker`和`seed`）改为强制以keyword的形式传入
+
+
 ## v1.4.0 (2018-7-30)
 * __参数`seed`的类型由必须为`int`改为可为任一`hashable`__
 * __提供参数`color`对所有[Pillow Color Name](https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names)的支持__
