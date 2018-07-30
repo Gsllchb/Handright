@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """
 This module provides the essential functionality for the whole test suite.
 WARNING: Do not change the location of this file!

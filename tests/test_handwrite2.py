@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from PIL import Image as image
 from PIL import ImageDraw as image_draw
 
