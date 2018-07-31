@@ -10,8 +10,8 @@ from PIL import ImageDraw as image_draw
 from pylf import _page
 
 # While changing following constants, it is necessary to consider to rewrite the relevant codes.
-_INTERNAL_MODE = 'L'  # The mode for internal computation
-_WHITE = 255
+_INTERNAL_MODE = '1'  # The mode for internal computation
+_WHITE = 1
 _BLACK = 0
 
 _NEWLINE = '\n'

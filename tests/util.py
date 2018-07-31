@@ -9,32 +9,23 @@ import os
 from PIL import ImageFont as image_font
 
 
-THRESHOLD = 17.0
-
-
-def compare_histogram(image1, image2) -> float:
-    """
-    Compare the two images and return the root mean square in histogram
-    This algorithm is inspired by the discussion about "Compare two images the python/linux way" in Stackoverflow
-    """
+def diff_histogram(image1, image2) -> float:
+    """Return the ratio of the difference of the two images."""
     if image1.mode != image2.mode or image1.size != image2.size:
         raise ValueError("image1 and image2 must have same mode and same size")
     h1 = image1.histogram()
     h2 = image2.histogram()
     assert len(h1) == len(h2)
-    s = 0
-    for c1, c2 in zip(h1, h2):
-        s += (c1 - c2) ** 2
-    return math.sqrt(s / len(h1))
+    summation = 0
+    difference = 0
+    for i1, i2 in zip(h1, h2):
+        difference += abs(i1 - i2)
+        summation += i1 + i2
+    return difference / summation
 
 
-def absolute_equal(image1, image2) -> bool:
+def equal(image1, image2) -> bool:
     return image1.tobytes() == image2.tobytes()
-
-
-def compare_pixel(image1, image2) -> float:
-    """ Compare the two images pixel by pixel and return the root mean square """
-    raise NotImplementedError("do not need yet")
 
 
 def get_path(path:str) -> str:

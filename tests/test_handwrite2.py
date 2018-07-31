@@ -10,11 +10,12 @@ DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 SEED = "PyLf"
+THRESHOLD = 0.01
 
 
 def get_default_template2() -> dict:
     template2 = dict(page_settings=[dict(background=image.new(mode='RGB', size=DEFAULT_SIZE,
-                                                              color='rgb(255, 255, 255)'),
+                                                              color="white"),
                                          box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
                                          font_size=30,
                                          font_size_sigma=0,
@@ -25,12 +26,12 @@ def get_default_template2() -> dict:
                                          font_size_sigma=0,
                                          line_spacing=16)],
                      font=get_default_font(),
-                     color='rgb(0, 0, 0)')
+                     color="black")
     return template2
 
 
 def test_one_background():
-    background = image.new(mode='RGB', size=DEFAULT_SIZE, color='rgb(255, 255, 255)')
+    background = image.new(mode='RGB', size=DEFAULT_SIZE, color="white")
     box = (50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100)
     font = get_default_font()
     font_size = 30
@@ -44,7 +45,7 @@ def test_one_background():
     images1 = handwrite(text, template, seed=SEED)
     images2 = handwrite2(text, template2, seed=SEED)
     for im1, im2 in zip(images1, images2):
-        assert absolute_equal(im1, im2)
+        assert im1 == im2
 
 
 def test_even_odd():
@@ -63,7 +64,7 @@ def test_even_odd():
 
     images2 = handwrite2((text + '\n' * 8) * 6, template2)
     for i in range(len(images2)):
-        assert compare_histogram(images2[i], standard_images[i % 2]) < THRESHOLD
+        assert diff_histogram(images2[i], standard_images[i % 2]) < THRESHOLD
 
 
 def test_seed():
@@ -74,4 +75,4 @@ def test_seed():
         ims1 = handwrite2(text, template2, worker=worker, seed=seed)
         ims2 = handwrite2(text, template2, worker=worker, seed=seed)
         for im1, im2 in zip(ims1, ims2):
-            assert absolute_equal(im1, im2)
+            assert im1 == im2
