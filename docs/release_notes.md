@@ -3,7 +3,7 @@
 
 
 ## unreleased
-* __移除可选参数`anti_aliasing`__
+* __废除抗锯齿特性，移除可选参数`anti_aliasing`__
 * __`handwrite()`和`handwrite2()`的可选参数（即：`worker`和`seed`）改为强制以keyword的形式传入__
 
 
