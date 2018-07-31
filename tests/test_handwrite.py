@@ -38,7 +38,7 @@ def test_error_box():
 
     template['box'] = (100, 100, 100 + font_size, 100 + font_size + 1)
     with pytest.raises(ValueError):
-        handwrite(text, template, anti_aliasing=False)
+        handwrite(text, template)
 
     template['box'] = (100, 100, 100 + font_size, 100 + font_size)
     with pytest.raises(ValueError):
@@ -55,7 +55,7 @@ def test_error_alpha():
 
     template['alpha'] = (-1, -1)
     with pytest.raises(ValueError):
-        handwrite(text, template, anti_aliasing=False)
+        handwrite(text, template)
 
     template['alpha'] = (0, -1)
     with pytest.raises(ValueError):
@@ -71,11 +71,11 @@ def test_error_alpha():
 
     template['alpha'] = (0, 2)
     with pytest.raises(ValueError):
-        handwrite(text, template, anti_aliasing=False)
+        handwrite(text, template)
 
     template['alpha'] = (-1, 2)
     with pytest.raises(ValueError):
-        handwrite(text, template, anti_aliasing=False)
+        handwrite(text, template)
 
     template['alpha'] = (2, -1)
     with pytest.raises(ValueError):
@@ -83,13 +83,12 @@ def test_error_alpha():
 
 
 def test_side_effect():
-    for anti_aliasing in (True, False):
-        text = get_short_text()
-        template = get_default_template()
-        template_clone = copy.copy(template)
-        handwrite(text, template, anti_aliasing=anti_aliasing)
-        assert text == get_short_text()
-        assert template == template_clone
+    text = get_short_text()
+    template = get_default_template()
+    template_clone = copy.copy(template)
+    handwrite(text, template)
+    assert text == get_short_text()
+    assert template == template_clone
 
 
 def test_null_text():
@@ -100,20 +99,20 @@ def test_text_iterable():
     template = get_default_template()
 
     text = get_short_text()
-    ims1 = handwrite(text, template, anti_aliasing=False, seed=SEED)
+    ims1 = handwrite(text, template, seed=SEED)
 
     text = list(get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
+    ims2 = handwrite(text, template, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
         assert absolute_equal(im1, im2)
 
     text = tuple(get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
+    ims2 = handwrite(text, template, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
         assert absolute_equal(im1, im2)
 
     text = (c for c in get_short_text())
-    ims2 = handwrite(text, template, anti_aliasing=False, seed=SEED)
+    ims2 = handwrite(text, template, seed=SEED)
     for im1, im2 in zip(ims1, ims2):
         assert absolute_equal(im1, im2)
 
@@ -127,20 +126,18 @@ def test_outside_box():
                 (0, 2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, 3 * DEFAULT_HEIGHT),
                 (-2 * DEFAULT_WIDTH, -2 * DEFAULT_HEIGHT, -DEFAULT_WIDTH, -DEFAULT_HEIGHT)):
         template['box'] = box
-        for anti_aliasing in (True, False):
-            ims = handwrite(text, template, anti_aliasing=anti_aliasing, seed=SEED)
-            for im in ims:
-                assert absolute_equal(im, template['background'])
+        ims = handwrite(text, template, seed=SEED)
+        for im in ims:
+            assert absolute_equal(im, template['background'])
 
 
 def test_randomness():
     text = get_short_text()
     template = get_default_template()
-    for anti_aliasing in (True, False):
-        ims1 = handwrite(text, template, anti_aliasing=anti_aliasing)
-        ims2 = handwrite(text, template, anti_aliasing=anti_aliasing)
-        for im1, im2 in zip(ims1, ims2):
-            assert compare_histogram(im1, im2) < THRESHOLD
+    ims1 = handwrite(text, template)
+    ims2 = handwrite(text, template)
+    for im1, im2 in zip(ims1, ims2):
+        assert compare_histogram(im1, im2) < THRESHOLD
 
 
 def test_mode_and_color():
@@ -155,9 +152,6 @@ def test_mode_and_color():
                 image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=color,
                                                      font=template['font'].font_variant(size=template['font_size']))
 
-                images = handwrite(text, template, anti_aliasing=False)
-                assert len(images) == 1
-                assert compare_histogram(standard_image, images[0]) < THRESHOLD
                 images = handwrite(text, template)
                 assert len(images) == 1
                 assert compare_histogram(standard_image, images[0]) < THRESHOLD
@@ -173,9 +167,6 @@ def test_font_size():
                                              fill=template['color'], font=template['font'].font_variant(size=font_size))
 
         template['font_size'] = font_size
-        images = handwrite(text, template, anti_aliasing=False)
-        assert len(images) == 1
-        assert compare_histogram(standard_image, images[0]) < THRESHOLD
         images = handwrite(text, template)
         assert len(images) == 1
         assert compare_histogram(standard_image, images[0]) < THRESHOLD
@@ -186,7 +177,7 @@ def test_is_half_char():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     template['is_half_char'] = lambda c: True
-    images = handwrite(text, template, anti_aliasing=False)
+    images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
     image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
@@ -200,7 +191,7 @@ def test_is_end_char():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     template['is_end_char'] = lambda c: True
-    images = handwrite(text, template, anti_aliasing=False)
+    images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
     image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
@@ -217,9 +208,9 @@ def test_multiprocessing():
     image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     for worker in (1, multiprocessing.cpu_count()):
-        images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker, anti_aliasing=False)
-        for image in images:
-            assert compare_histogram(standard_image, image) < THRESHOLD
+        images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker)
+        for i in images:
+            assert compare_histogram(standard_image, i) < THRESHOLD
 
 
 def test_worker():
@@ -233,10 +224,10 @@ def test_worker():
     workers = [0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
     if cpu_count > 1:
         workers.append(-1)
-    for worker in set(workers):
-        images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker, anti_aliasing=False)
-        for image in images:
-            assert compare_histogram(standard_image, image) < THRESHOLD
+    for worker in frozenset(workers):
+        images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker)
+        for i in images:
+            assert compare_histogram(standard_image, i) < THRESHOLD
 
 
 def test_seed():
@@ -244,8 +235,7 @@ def test_seed():
     template = get_default_template()
     worker = 2
     for seed in (-666, "PyLf", 0.5, (6, 6), 666):
-        for anti_aliasing in (True, False):
-            ims1 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
-            ims2 = handwrite(text, template, anti_aliasing=anti_aliasing, worker=worker, seed=seed)
-            for im1, im2 in zip(ims1, ims2):
-                assert absolute_equal(im1, im2)
+        ims1 = handwrite(text, template, worker=worker, seed=seed)
+        ims2 = handwrite(text, template, worker=worker, seed=seed)
+        for im1, im2 in zip(ims1, ims2):
+            assert absolute_equal(im1, im2)

@@ -3,7 +3,8 @@
 
 
 ## unreleased
-* `handwrite()`和`handwrite2()`的可选参数（即：`anti_aliasing`、`worker`和`seed`）改为强制以keyword的形式传入
+* __移除可选参数`anti_aliasing`__
+* __`handwrite()`和`handwrite2()`的可选参数（即：`worker`和`seed`）改为强制以keyword的形式传入__
 
 
 ## v1.4.0 (2018-7-30)
