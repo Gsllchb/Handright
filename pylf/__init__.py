@@ -19,7 +19,7 @@ _DEFAULT_IS_END_CHAR = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_ALPHA = (0.1, 0.1)
 
 
-def handwrite(text: str, template: dict, *, worker: int = 0, seed=None) -> list:
+def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -63,8 +63,7 @@ def handwrite(text: str, template: dict, *, worker: int = 0, seed=None) -> list:
             alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in
             order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
 
-        worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
-        be the number of CPU in the computer adding worker. Default: 0.
+        worker: A int as the number of worker. Default: multiprocessing.cpu_count().
 
         seed: The seed of the internal random generators. Default: None.
 
@@ -104,7 +103,7 @@ def handwrite(text: str, template: dict, *, worker: int = 0, seed=None) -> list:
     return handwrite2(text, template2, worker=worker, seed=seed)
 
 
-def handwrite2(text: str, template2: dict, *, worker: int = 0, seed=None) -> list:
+def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite.
 
     Args:
@@ -152,8 +151,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = 0, seed=None) -> lis
             alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in
             order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
 
-        worker: A int as the number of worker. if worker is less than or equal to 0, the actual amount of worker would
-        be the number of CPU in the computer adding worker. Default: 0.
+        worker: A int as the number of worker. Default: multiprocessing.cpu_count().
 
         seed: The seed of the internal random generators. Default: None.
 
@@ -179,5 +177,5 @@ def handwrite2(text: str, template2: dict, *, worker: int = 0, seed=None) -> lis
                            is_half_char=template2.get("is_half_char", _DEFAULT_IS_HALF_CHAR),
                            is_end_char=template2.get("is_end_char", _DEFAULT_IS_END_CHAR),
                            alpha=template2.get("alpha", _DEFAULT_ALPHA),
-                           worker=worker if worker > 0 else multiprocessing.cpu_count() + worker,
+                           worker=worker,
                            seed=seed)

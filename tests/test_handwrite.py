@@ -207,7 +207,7 @@ def test_multiprocessing():
     standard_image = template['background'].copy()
     image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
-    for worker in (1, multiprocessing.cpu_count()):
+    for worker in {1, multiprocessing.cpu_count()}:
         images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker)
         for i in images:
             assert compare_histogram(standard_image, i) < THRESHOLD
@@ -221,10 +221,7 @@ def test_worker():
     image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
-    workers = [0, 1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1]
-    if cpu_count > 1:
-        workers.append(-1)
-    for worker in frozenset(workers):
+    for worker in {1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1}:
         images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker)
         for i in images:
             assert compare_histogram(standard_image, i) < THRESHOLD
