@@ -21,29 +21,11 @@ THRESHOLD = 0.01
 
 def get_default_template() -> dict:
     template = dict(background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-                    box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
+                    margin = {"left": 50, "top": 100, "right": 50, "bottom": 100},
                     font=get_default_font(),
                     font_size=30,
                     font_size_sigma=0)
     return template
-
-
-def test_error_box():
-    text = get_short_text()
-    template = get_default_template()
-    font_size = template['font_size']
-
-    template['box'] = (100, 100, 100 + font_size + 1, 100 + font_size)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['box'] = (100, 100, 100 + font_size, 100 + font_size + 1)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['box'] = (100, 100, 100 + font_size, 100 + font_size)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
 
 
 def test_error_alpha():
@@ -118,20 +100,6 @@ def test_text_iterable():
         assert im1 == im2
 
 
-def test_outside_box():
-    text = get_short_text()
-    template = get_default_template()
-    for box in ((-2 * DEFAULT_WIDTH, 0, -DEFAULT_WIDTH, DEFAULT_HEIGHT),
-                (0, -2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, -DEFAULT_HEIGHT),
-                (2 * DEFAULT_WIDTH, 0, 3 * DEFAULT_WIDTH, DEFAULT_HEIGHT),
-                (0, 2 * DEFAULT_HEIGHT, DEFAULT_WIDTH, 3 * DEFAULT_HEIGHT),
-                (-2 * DEFAULT_WIDTH, -2 * DEFAULT_HEIGHT, -DEFAULT_WIDTH, -DEFAULT_HEIGHT)):
-        template['box'] = box
-        ims = handwrite(text, template, seed=SEED)
-        for im in ims:
-            assert im == template['background']
-
-
 def test_randomness():
     text = get_short_text()
     template = get_default_template()
@@ -150,7 +118,8 @@ def test_mode_and_color():
             for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
                 template['color'] = color
                 standard_image = template['background'].copy()
-                image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=color,
+                image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+                                                     text=text, fill=color,
                                                      font=template['font'].font_variant(size=template['font_size']))
 
                 images = handwrite(text, template)
@@ -164,8 +133,9 @@ def test_font_size():
     template['color'] = 'black'
     for font_size in (0, 1, 10, 30):
         standard_image = template['background'].copy()
-        image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text,
-                                             fill=template['color'], font=template['font'].font_variant(size=font_size))
+        image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+                                             text=text, fill=template['color'],
+                                             font=template['font'].font_variant(size=font_size))
 
         template['font_size'] = font_size
         images = handwrite(text, template)
@@ -181,7 +151,7 @@ def test_is_half_char():
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
+    image_draw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                                    text=('。' * 6 + '\n') * 5, fill=template['color'],
                                                    font=template['font'].font_variant(size=template['font_size']))
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
@@ -195,7 +165,7 @@ def test_is_end_char():
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(xy=(template['box'][0], template['box'][1]),
+    image_draw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                                    text=('。' * 6 + '\n') * 5, fill=template['color'],
                                                    font=template['font'].font_variant(size=template['font_size']))
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
@@ -206,7 +176,8 @@ def test_multiprocessing():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
+    image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+                                         text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     for worker in {1, multiprocessing.cpu_count()}:
         images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker)
@@ -219,7 +190,8 @@ def test_worker():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(xy=(template['box'][0], template['box'][1]), text=text, fill=template['color'],
+    image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+                                         text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
     for worker in {1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1}:

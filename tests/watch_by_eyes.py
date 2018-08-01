@@ -11,28 +11,12 @@ from pylf import *
 SEED = "PyLf"
 
 
-def test_handwrite():
-    template = dict(background=image.open(get_path("data/backgrounds/letter.png")),
-                    box=(68, 130, 655, 925),
-                    font=get_default_font(),
-                    font_size=27,
-                    line_spacing=6)
-    for file in pathlib.Path(get_path("data/texts")).iterdir():
-        print(file)
-        with file.open(encoding='utf-8') as f:
-            text = f.read()
-        images = handwrite(text, template, seed=SEED)
-        for im in images:
-            im.show()
-        assert input("Like it? [Y/N] ").upper() == 'Y'
-
-
 def test_handwrite2():
     template2 = dict(page_settings=[dict(background=image.open(get_path("data/backgrounds/even-odd-letter/村庄信笺纸.jpg")),
-                                         box=(20, 107, 1285, 1110),
+                                         margin={"left": 20, "top": 107, "right": 15, "bottom": 280},
                                          font_size=37),
                                     dict(background=image.open(get_path("data/backgrounds/even-odd-letter/树信笺纸.jpg")),
-                                         box=(20, 107, 1285, 900),
+                                         margin={"left": 20, "top": 107, "right": 15, "bottom": 490},
                                          font_size=37)],
                      font=get_default_font())
     for file in pathlib.Path(get_path("data/texts")).iterdir():
@@ -47,10 +31,6 @@ def test_handwrite2():
 
 if __name__ == '__main__':
     print("""Test by naked eyes:""")
-    # Testing handwrite2 is enough.
-    # print("""======================================
-    # Test: pylf.handwrite""")
-    # test_handwrite()
     print("""======================================
     Test: pylf.handwrite2""")
     test_handwrite2()

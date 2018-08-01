@@ -14,14 +14,13 @@ THRESHOLD = 0.01
 
 
 def get_default_template2() -> dict:
-    template2 = dict(page_settings=[dict(background=image.new(mode='RGB', size=DEFAULT_SIZE,
-                                                              color="white"),
-                                         box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
+    template2 = dict(page_settings=[dict(background=image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
+                                         margin={"left": 50, "top": 100, "right": 50, "bottom": 100},
                                          font_size=30,
                                          font_size_sigma=0,
                                          line_spacing=6),
                                     dict(background=image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)'),
-                                         box=(50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100),
+                                         margin={"left": 50, "top": 100, "right": 50, "bottom": 100},
                                          font_size=20,
                                          font_size_sigma=0,
                                          line_spacing=16)],
@@ -32,14 +31,14 @@ def get_default_template2() -> dict:
 
 def test_one_background():
     background = image.new(mode='RGB', size=DEFAULT_SIZE, color="white")
-    box = (50, 100, DEFAULT_WIDTH - 50, DEFAULT_HEIGHT - 100)
+    margin = {"left": 50, "top": 100, "right": 50, "bottom": 100}
     font = get_default_font()
     font_size = 30
     font_size_sigma = 0
 
     text = get_long_text()
-    template = dict(background=background, box=box, font=font, font_size=font_size, font_size_sigma=font_size_sigma)
-    template2 = dict(page_settings=[dict(background=background, box=box, font_size=font_size,
+    template = dict(background=background, margin=margin, font=font, font_size=font_size, font_size_sigma=font_size_sigma)
+    template2 = dict(page_settings=[dict(background=background, margin=margin, font_size=font_size,
                                          font_size_sigma=font_size_sigma), ],
                      font=font,)
     images1 = handwrite(text, template, seed=SEED)
@@ -55,8 +54,8 @@ def test_even_odd():
     for i in range(2):
         font_size = template2['page_settings'][i]['font_size']
         standard_image = template2['page_settings'][i]['background'].copy()
-        image_draw.Draw(standard_image).text(xy=(template2['page_settings'][i]['box'][0],
-                                                 template2['page_settings'][i]['box'][1]),
+        image_draw.Draw(standard_image).text(xy=(template2['page_settings'][i]['margin']["left"] + 1,
+                                                 template2['page_settings'][i]['margin']["top"] + 1),
                                              text=text,
                                              fill=template2['color'],
                                              font=template2['font'].font_variant(size=font_size))

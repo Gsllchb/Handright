@@ -3,6 +3,7 @@
 
 
 ## unreleased
+* __移除`template`和`template2`的参数`box`，取而代之以新参数`margin`__
 * __废除参数`worker`可为非正数的特性，但默认值保持不变__
 * __废除抗锯齿特性，移除可选参数`anti_aliasing`__
 * __`handwrite()`和`handwrite2()`的可选参数（即：`worker`和`seed`）改为强制以keyword的形式传入__

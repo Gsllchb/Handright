@@ -29,9 +29,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             background: A Pillow's Image instance.
 
-            box: A bounding box as a 4-tuple defining the left, upper, right, and lower pixel coordinate. The module
-            uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. Note that this function do
-            not guarantee the drawn texts will completely in the box.
+            margin: #TODO
 
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font instance.
 
@@ -75,7 +73,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     """
     page_setting = {}
     page_setting["background"] = template["background"]
-    page_setting["box"] = template["box"]
+    page_setting["margin"] = template["margin"]
     page_setting["font_size"] = template["font_size"]
     if "word_spacing" in template:
         page_setting["word_spacing"] = template["word_spacing"]
@@ -116,9 +114,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
 
                 background: A Pillow's Image instance.
 
-                box: A bounding box as a 4-tuple defining the left, upper, right and lower pixel coordinate. The module
-                uses a Cartesian pixel coordinate system, with (0,0) in the upper left corner. This function do not
-                guarantee the drawn texts will completely in the box.
+                margin: #TODO
 
                 font_size: A int as the average font size in pixel. Note that (box[3] - box[1]) and (box[2] - box[0])
                 both must be greater than font_size.

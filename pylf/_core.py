@@ -30,16 +30,7 @@ def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char, i
 
 
 def _draw_text(text: str, page_settings: tuple, font, is_half_char, is_end_char, seed) -> list:
-    """Draws the text randomly in black images with white color. Note that (box[3] - box[1]) and (box[2] - box[0]) both
-    must be greater than corresponding font_size.
-    """
-    # Avoid dead loops
-    for page_setting in page_settings:
-        if not page_setting['box'][3] - page_setting['box'][1] > page_setting['font_size']:
-            raise ValueError("(box[3] - box[1]) must be greater than corresponding font_size.")
-        if not page_setting['box'][2] - page_setting['box'][0] > page_setting['font_size']:
-            raise ValueError("(box[2] - box[0]) must be greater than corresponding font_size.")
-
+    """Draws the text randomly in black images with white color."""
     rand = random.Random(x=seed)
     length = len(page_settings)
     chars = iter(text)
@@ -49,11 +40,14 @@ def _draw_text(text: str, page_settings: tuple, font, is_half_char, is_end_char,
         index = 0
         while True:
             page_setting = page_settings[index % length]
-            size, box = page_setting["background"].size, page_setting["box"]
+            size, margin = page_setting["background"].size, page_setting["margin"]
             font_size, font_size_sigma = page_setting["font_size"], page_setting["font_size_sigma"]
             word_spacing, word_spacing_sigma = page_setting["word_spacing"], page_setting["word_spacing_sigma"]
             line_spacing, line_spacing_sigma = page_setting["line_spacing"], page_setting["line_spacing_sigma"]
-            left, upper, right, lower = box
+            left = margin["left"] + 1
+            upper = margin["top"] + 1
+            right = size[0] - margin["right"]
+            lower = size[1] - margin["bottom"]
             page = _page.Page(_INTERNAL_MODE, size, _BLACK, index)
             draw = page.draw
             y = upper
