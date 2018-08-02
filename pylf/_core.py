@@ -17,10 +17,10 @@ _BLACK = 0
 _NEWLINE = '\n'
 
 
-def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char, is_end_char, alpha: tuple, worker: int,
+def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple, worker: int,
               seed) -> list:
     """Do the real stuffs for handwriting simulating."""
-    pages = _draw_text(text, page_settings, font, is_half_char, is_end_char, seed)
+    pages = _draw_text(text, page_settings, font, is_half_char_fn, is_end_char_fn, seed)
     if not pages:
         return pages
     renderer = _Renderer(page_settings, color, alpha, seed)
@@ -29,7 +29,7 @@ def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char, i
     return images
 
 
-def _draw_text(text: str, page_settings: tuple, font, is_half_char, is_end_char, seed) -> list:
+def _draw_text(text: str, page_settings: tuple, font, is_half_char_fn, is_end_char_fn, seed) -> list:
     """Draws the text randomly in black images with white color."""
     rand = random.Random(x=seed)
     length = len(page_settings)
@@ -58,13 +58,13 @@ def _draw_text(text: str, page_settings: tuple, font, is_half_char, is_end_char,
                         if char == _NEWLINE:
                             char = next(chars)
                             break
-                        if x >= right - font_size and not is_end_char(char):
+                        if x >= right - font_size and not is_end_char_fn(char):
                             break
                         actual_font_size = max(int(rand.gauss(font_size, font_size_sigma)), 0)
                         xy = (x, int(rand.gauss(y, line_spacing_sigma)))
                         font = font.font_variant(size=actual_font_size)
                         offset = _draw_char(draw, char, xy, font)
-                        x_step = word_spacing + offset * (0.5 if is_half_char(char) else 1)
+                        x_step = word_spacing + offset * (0.5 if is_half_char_fn(char) else 1)
                         x += int(rand.gauss(x_step, word_spacing_sigma))
                         char = next(chars)
                     y += line_spacing + font_size

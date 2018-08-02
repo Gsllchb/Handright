@@ -14,8 +14,8 @@ _DEFAULT_END_CHARS = frozenset("，。》、？；：’”】｝、！％）" +
 
 _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
-_DEFAULT_IS_HALF_CHAR = lambda c: False
-_DEFAULT_IS_END_CHAR = lambda c: c in _DEFAULT_END_CHARS
+_DEFAULT_IS_HALF_CHAR_FN = lambda c: False
+_DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_ALPHA = (0.1, 0.1)
 
 
@@ -51,10 +51,10 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
             line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing. Default:
             font_size / 256.
 
-            is_half_char: A function judging whether or not a char only take up half of its original width. The function
+            is_half_char_fn: A function judging whether or not a char only take up half of its original width. The function
             must take a char parameter and return a boolean value. Default: (lambda c: False).
 
-            is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
+            is_end_char_fn: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
             '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
             (lambda c: c in _DEFAULT_END_CHARS).
 
@@ -91,10 +91,10 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     template2["font"] = template["font"]
     if "color" in template:
         template2["color"] = template["color"]
-    if "is_half_char" in template:
-        template2["is_half_char"] = template["is_half_char"]
-    if "is_end_char" in template:
-        template2["is_end_char"] = template["is_end_char"]
+    if "is_half_char_fn" in template:
+        template2["is_half_char_fn"] = template["is_half_char_fn"]
+    if "is_end_char_fn" in template:
+        template2["is_end_char_fn"] = template["is_end_char_fn"]
     if "alpha" in template:
         template2["alpha"] = template["alpha"]
 
@@ -137,10 +137,10 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
             color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
             Default: "black".
 
-            is_half_char: A function judging whether or not a char only take up half of its original width. The function
+            is_half_char_fn: A function judging whether or not a char only take up half of its original width. The function
             must take a char parameter and return a boolean value. Default: (lambda c: False).
 
-            is_end_char: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
+            is_end_char_fn: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
             '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
             (lambda c: c in _DEFAULT_END_CHARS).
 
@@ -170,8 +170,8 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
                            page_settings=page_settings,
                            font=template2["font"],
                            color=template2.get("color", _DEFAULT_COLOR),
-                           is_half_char=template2.get("is_half_char", _DEFAULT_IS_HALF_CHAR),
-                           is_end_char=template2.get("is_end_char", _DEFAULT_IS_END_CHAR),
+                           is_half_char_fn=template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN),
+                           is_end_char_fn=template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN),
                            alpha=template2.get("alpha", _DEFAULT_ALPHA),
                            worker=worker,
                            seed=seed)

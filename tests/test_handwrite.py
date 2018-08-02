@@ -143,11 +143,11 @@ def test_font_size():
         assert diff_histogram(standard_image, images[0]) < THRESHOLD
 
 
-def test_is_half_char():
+def test_is_half_char_fn():
     text = '。' * 30
     template = get_default_template()
     template["color"] = "black"
-    template['is_half_char'] = lambda c: True
+    template['is_half_char_fn'] = lambda c: True
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
@@ -157,11 +157,11 @@ def test_is_half_char():
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
 
 
-def test_is_end_char():
+def test_is_end_char_fn():
     text = '。' * 30
     template = get_default_template()
     template['color'] = "black"
-    template['is_end_char'] = lambda c: False
+    template['is_end_char_fn'] = lambda c: False
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
