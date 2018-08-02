@@ -4,7 +4,6 @@ import math
 import multiprocessing
 import random
 
-from PIL import Image as image
 from PIL import ImageDraw as image_draw
 
 from pylf import _page
