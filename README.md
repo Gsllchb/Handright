@@ -44,7 +44,7 @@ from multiprocessing import freeze_support  # 非Windows用户可删除此行
 
 
 def main():
-    template = {"background": Image.new(mode='RGB', size=(800, 1000), color='rgb(255, 255, 255)'),
+    template = {"background": Image.new(mode="RGB", size=(800, 1000), color="white"),
                 "box": (100, 200, 800 - 100, 1000 - 200),  # 设置在背景图上的手写区域
                 "font": ImageFont.truetype("YOUR FONT PATH"),  # 填入您所使用字体文件的路径
                 "font_size": 50}
