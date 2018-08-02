@@ -16,8 +16,8 @@ _BLACK = 0
 _NEWLINE = '\n'
 
 
-def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple, worker: int,
-              seed) -> list:
+def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple,
+              worker: int, seed) -> list:
     """Do the real stuffs for handwriting simulating."""
     pages = _draw_text(text, page_settings, font, is_half_char_fn, is_end_char_fn, seed)
     if not pages:
@@ -49,7 +49,7 @@ def _draw_text(text: str, page_settings: tuple, font, is_half_char_fn, is_end_ch
             lower = size[1] - margin["bottom"]
             page = _page.Page(_INTERNAL_MODE, size, _BLACK, index)
             draw = page.draw
-            y = upper
+            y = upper + line_spacing - font_size
             try:
                 while y < lower - font_size:
                     x = left
@@ -66,7 +66,7 @@ def _draw_text(text: str, page_settings: tuple, font, is_half_char_fn, is_end_ch
                         x_step = word_spacing + offset * (0.5 if is_half_char_fn(char) else 1)
                         x += int(rand.gauss(x_step, word_spacing_sigma))
                         char = next(chars)
-                    y += line_spacing + font_size
+                    y += line_spacing
                 pages.append(page)
             except StopIteration:
                 pages.append(page)

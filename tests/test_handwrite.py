@@ -10,7 +10,6 @@ import pytest
 from util import *
 from pylf import handwrite
 
-
 BACKGROUND_COLOR = "white"
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500
@@ -20,11 +19,12 @@ THRESHOLD = 0.01
 
 
 def get_default_template() -> dict:
-    template = dict(background=image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-                    margin = {"left": 50, "top": 100, "right": 50, "bottom": 100},
-                    font=get_default_font(),
-                    font_size=30,
-                    font_size_sigma=0)
+    template = {"background": image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+                "margin": {"left": 50, "top": 94, "right": 50, "bottom": 100},
+                "line_spacing": 36,
+                "font": get_default_font(),
+                "font_size": 30,
+                "font_size_sigma": 0}
     return template
 
 

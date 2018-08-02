@@ -41,7 +41,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
 
-            line_spacing: A int as the average gap between two adjacent lines in pixel. Default: font_size // 5.
+            line_spacing: A int as the average gap between two adjacent lines in pixel.
 
             font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default: font_size / 256.
 
@@ -74,11 +74,10 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     page_setting = {}
     page_setting["background"] = template["background"]
     page_setting["margin"] = template["margin"]
+    page_setting["line_spacing"] = template["line_spacing"]
     page_setting["font_size"] = template["font_size"]
     if "word_spacing" in template:
         page_setting["word_spacing"] = template["word_spacing"]
-    if "line_spacing" in template:
-        page_setting["line_spacing"] = template["line_spacing"]
     if "font_size_sigma" in template:
         page_setting["font_size_sigma"] = template["font_size_sigma"]
     if "word_spacing_sigma" in template:
@@ -121,7 +120,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
 
                 word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
 
-                line_spacing: A int as the average gap between two adjacent lines in pixel. Default: font_size // 5.
+                line_spacing: A int as the average gap between two adjacent lines in pixel.
 
                 font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default:
                 font_size / 256.
@@ -161,7 +160,6 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     for page_setting in page_settings:
         font_size = page_setting["font_size"]
         page_setting.setdefault("word_spacing", _DEFAULT_WORD_SPACING)
-        page_setting.setdefault("line_spacing", font_size // 5)
         page_setting.setdefault("font_size_sigma", font_size / 256)
         page_setting.setdefault("word_spacing_sigma", font_size / 256)
         page_setting.setdefault("line_spacing_sigma", font_size / 256)
