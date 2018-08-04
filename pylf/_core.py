@@ -16,56 +16,64 @@ _BLACK = 0
 _NEWLINE = '\n'
 
 
-def handwrite(text: str, page_settings: tuple, font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple,
-              worker: int, seed) -> list:
-    """Do the real stuffs for handwriting simulating."""
-    pages = _draw_text(text, page_settings, font, is_half_char_fn, is_end_char_fn, seed)
+def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
+              word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
+              font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple, worker: int, seed) -> list:
+    pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), margins=margins,
+                       line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
+                       line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
+                       word_spacing_sigmas=word_spacing_sigmas, font=font, is_half_char_fn=is_half_char_fn,
+                       is_end_char_fn=is_end_char_fn, seed=seed)
     if not pages:
         return pages
-    renderer = _Renderer(page_settings, color, alpha, seed)
+    renderer = _Renderer(backgrounds, color, alpha, seed)
     with multiprocessing.Pool(min(worker, len(pages))) as pool:
         images = pool.map(renderer, pages)
     return images
 
 
-def _draw_text(text: str, page_settings: tuple, font, is_half_char_fn, is_end_char_fn, seed) -> list:
-    """Draws the text randomly in black images with white color."""
+def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
+               line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
+               is_end_char_fn, seed) -> list:
+    assert (len(sizes) == len(margins) == len(line_spacings) == len(font_sizes) == len(word_spacings)
+            == len(line_spacing_sigmas) == len(font_size_sigmas) == len(word_spacing_sigmas))
     rand = random.Random(x=seed)
-    length = len(page_settings)
-    chars = iter(text)
+    period = len(sizes)
+    iterator = iter(text)
     pages = []
     try:
-        char = next(chars)
+        char = next(iterator)
         index = 0
         while True:
-            page_setting = page_settings[index % length]
-            size, margin = page_setting["background"].size, page_setting["margin"]
-            font_size, font_size_sigma = page_setting["font_size"], page_setting["font_size_sigma"]
-            word_spacing, word_spacing_sigma = page_setting["word_spacing"], page_setting["word_spacing_sigma"]
-            line_spacing, line_spacing_sigma = page_setting["line_spacing"], page_setting["line_spacing_sigma"]
-            left = margin["left"] + 1
-            upper = margin["top"] + 1
-            right = size[0] - margin["right"]
-            lower = size[1] - margin["bottom"]
-            page = _page.Page(_INTERNAL_MODE, size, _BLACK, index)
+            width, height = sizes[index % period]
+            margin = margins[index % period]
+            line_spacing = line_spacings[index % period]
+            font_size = font_sizes[index % period]
+            word_spacing = word_spacings[index % period]
+            line_spacing_sigma = line_spacing_sigmas[index % period]
+            font_size_sigma = font_size_sigmas[index % period]
+            word_spacing_sigma = word_spacing_sigmas[index % period]
+            top, bottom, left, right = margin["top"], margin["bottom"], margin["left"], margin["right"]
+
+            page = _page.Page(mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index)
             draw = page.draw
-            y = upper + line_spacing - font_size
+
+            y = top + line_spacing - font_size
             try:
-                while y < lower - font_size:
+                while y < height - bottom - font_size:
                     x = left
                     while True:
                         if char == _NEWLINE:
-                            char = next(chars)
+                            char = next(iterator)
                             break
-                        if x >= right - font_size and not is_end_char_fn(char):
+                        if x >= width - right - font_size and not is_end_char_fn(char):
                             break
-                        actual_font_size = max(int(rand.gauss(font_size, font_size_sigma)), 0)
-                        xy = (x, int(rand.gauss(y, line_spacing_sigma)))
-                        font = font.font_variant(size=actual_font_size)
+                        xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
+                        font = font.font_variant(size=max(int(rand.gauss(font_size, font_size_sigma)), 0))
                         offset = _draw_char(draw, char, xy, font)
-                        x_step = word_spacing + offset * (0.5 if is_half_char_fn(char) else 1)
-                        x += int(rand.gauss(x_step, word_spacing_sigma))
-                        char = next(chars)
+                        dx = word_spacing + offset * (0.5 if is_half_char_fn(char) else 1)
+                        x += rand.gauss(dx, word_spacing_sigma)
+                        char = next(iterator)
                     y += line_spacing
                 pages.append(page)
             except StopIteration:
@@ -78,6 +86,7 @@ def _draw_text(text: str, page_settings: tuple, font, is_half_char_fn, is_end_ch
 
 def _draw_char(draw, char: str, xy: tuple, font) -> int:
     """Draws a single char with the parameters and white color, and returns the offset."""
+    assert len(char) == 1
     draw.text(xy, char, fill=_WHITE, font=font)
     return font.getsize(char)[0]
 
@@ -85,8 +94,8 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
 class _Renderer(object):
     """A function-like object rendering the foreground that was drawn text and returning rendered image."""
 
-    def __init__(self, page_settings: tuple, color: str, alpha: tuple, seed):
-        self._page_settings = page_settings
+    def __init__(self, backgrounds: tuple, color: str, alpha: tuple, seed):
+        self._backgrounds = backgrounds
         self._color = color
         self._alpha = alpha
         self._rand = random.Random()
@@ -99,36 +108,12 @@ class _Renderer(object):
         if self._hashed_seed is None:
             self._rand.seed()  # avoid different processes sharing the same random state
         else:
-            self._rand.seed(a=self._hashed_seed + page.index)
+            self._rand.seed(a=self._hashed_seed + page.num)
         self._perturb(page)
         return self._merge(page)
 
     def _perturb(self, page: _page.Page) -> None:
-        """'perturbs' the image and generally makes the glyphs from same chars, if any, seems different. Note that
-        self._alpha[0] and self._alpha[1] both must be between 0 (inclusive) and 1 (inclusive).
-        """
-        if not 0 <= self._alpha[0] <= 1:
-            raise ValueError("alpha[0] must be between 0 (inclusive) and 1 (inclusive).")
-        if not 0 <= self._alpha[1] <= 1:
-            raise ValueError("alpha[1] must be between 0 (inclusive) and 1 (inclusive).")
-
-        wavelength = 2 * self._page_settings[page.index % len(self._page_settings)]['font_size']
-        if wavelength == 0:
-            return
-        alpha_x, alpha_y = self._alpha
-        matrix = page.matrix
-
-        for i in range((page.width + wavelength) // wavelength + 1):
-            x0 = self._rand.randrange(-wavelength, page.width)
-            for j in range(max(0, -x0), min(wavelength, page.width - x0)):
-                offset = int(alpha_x * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self._slide_x(matrix, x0 + j, offset, page.height)
-
-        for i in range((page.height + wavelength) // wavelength + 1):
-            y0 = self._rand.randrange(-wavelength, page.height)
-            for j in range(max(0, -y0), min(wavelength, page.height - y0)):
-                offset = int(alpha_y * wavelength / (2 * math.pi) * (1 - math.cos(2 * math.pi * j / wavelength)))
-                self._slide_y(matrix, y0 + j, offset, page.width)
+        pass
 
     @staticmethod
     def _slide_x(matrix, x: int, offset: int, height: int) -> None:
@@ -148,7 +133,7 @@ class _Renderer(object):
 
     def _merge(self, page: _page.Page):
         """Merges the foreground and the background and returns merged raw image."""
-        res = self._page_settings[page.index % len(self._page_settings)]['background'].copy()
+        res = self._backgrounds[page.num % len(self._backgrounds)].copy()
         draw = image_draw.Draw(res)
         draw.bitmap(xy=(0, 0), bitmap=page.image, fill=self._color)
         return res

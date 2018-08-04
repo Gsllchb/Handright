@@ -28,43 +28,6 @@ def get_default_template() -> dict:
     return template
 
 
-def test_error_alpha():
-    text = get_short_text()
-    template = get_default_template()
-
-    template['alpha'] = (-1, 0)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (-1, -1)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (0, -1)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (2, 0)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (2, 2)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (0, 2)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (-1, 2)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-    template['alpha'] = (2, -1)
-    with pytest.raises(ValueError):
-        handwrite(text, template)
-
-
 def test_side_effect():
     text = get_short_text()
     template = get_default_template()
