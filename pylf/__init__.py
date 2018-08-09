@@ -71,9 +71,6 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
     Returns:
         A list of drawn images with the same size and mode as the background image.
-
-    Raises:
-        ValueError: When the parameters are not be set properly.
     """
     template2 = dict(template)
     template2["backgrounds"] = (template["background"], )
@@ -116,7 +113,6 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # +                                            Parameter checking                                                      +
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# TODO : test
 def _check_parameters(text, template2, worker, seed) -> None:
     _check_text(text)
     _check_template2(template2)
@@ -134,6 +130,9 @@ def _check_template2(template2) -> None:
         raise TypeError("'template2' must be mapping")
 
     length = len(template2["backgrounds"])
+    if length <= 0:
+        raise ValueError("The length of 'backgrounds' must be at least 1")
+
     if not (length == len(template2["margins"]) == len(template2["line_spacings"]) == len(template2["font_sizes"])):
         raise ValueError("'backgrounds', 'margins', 'line_spacings' and 'font_sizes' must have the same length")
 
@@ -186,6 +185,8 @@ def _check_template2(template2) -> None:
 
     for sigmas in ("line_spacing_sigmas", "font_size_sigmas", "word_spacing_sigmas"):
         if sigmas in template2:
+            if len(template2[sigmas]) != length:
+                raise ValueError("'{}' and 'backgrounds' must have the same length".format(sigmas))
             for s in template2[sigmas]:
                 if not isinstance(s, (int, float)):
                     raise TypeError("'{}' must be int or float".format(sigmas[:-1]))

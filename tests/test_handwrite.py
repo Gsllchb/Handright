@@ -94,7 +94,7 @@ def test_font_size():
     text = get_short_text()
     template = get_default_template()
     template['color'] = 'black'
-    for font_size in (0, 1, 10, 30):
+    for font_size in (1, 10, 30):
         standard_image = template['background'].copy()
         image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                              text=text, fill=template['color'],
