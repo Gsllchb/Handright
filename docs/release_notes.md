@@ -12,6 +12,7 @@
 * __废除抗锯齿特性，移除可选参数`anti_aliasing`__
 * __`handwrite()`和`handwrite2()`的可选参数（即：`worker`和`seed`）改为强制以keyword的形式传入__
 * __为使排版更合理，调整竖直方向上的排版方式。由`margin["top"] + font_size + GAP + ... + font_size + GAP + margin["bottom"]`的方式改为`margin["top"] + GAP + font_size + ... + GAP + font_size + margin["bottom"]`的方式，其中`GAP`为相邻两行字间的间隙宽度。__
+* 添加参数检查，提供更友好的异常信息
 
 
 ## v1.4.0 (2018-7-30)
