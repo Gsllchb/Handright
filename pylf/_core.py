@@ -113,6 +113,7 @@ class _Renderer(object):
         return self._merge(page)
 
     def _perturb(self, page: _page.Page) -> None:
+        # TODO
         pass
 
     @staticmethod
