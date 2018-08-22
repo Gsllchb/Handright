@@ -39,9 +39,9 @@ def get_short_text() -> str:
 
 def get_long_text() -> str:
     """ Return a article """
-    with open(get_path("data/texts/荷塘月色.txt"), encoding='utf-8') as f:
+    with open(get_path("texts/荷塘月色.txt"), encoding='utf-8') as f:
         return f.read()
 
 
 def get_default_font():
-    return image_font.truetype(get_path("data/fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
+    return image_font.truetype(get_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
