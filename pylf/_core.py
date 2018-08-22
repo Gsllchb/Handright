@@ -1,12 +1,10 @@
 # coding: utf-8
 """The core module"""
-import math
 import multiprocessing
 import random
 
-from PIL import ImageDraw as image_draw
-
 from pylf import _page
+from pylf import _numeric_ordered_set as _nos
 
 # While changing following constants, it is necessary to consider to rewrite the relevant codes.
 _INTERNAL_MODE = '1'  # The mode for internal computation
@@ -18,7 +16,8 @@ _NEWLINE = '\n'
 
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
               word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
-              font, color: str, is_half_char_fn, is_end_char_fn, alpha: tuple, worker: int, seed) -> list:
+              font, color: str, is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
+              worker: int, seed) -> list:
     pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), margins=margins,
                        line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
                        line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
@@ -26,9 +25,11 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
                        is_end_char_fn=is_end_char_fn, seed=seed)
     if not pages:
         return pages
-    renderer = _Renderer(backgrounds, color, alpha, seed)
+
+    renderer = _Renderer(backgrounds, color, perturb_x_sigmas, perturb_y_sigmas, seed)
     with multiprocessing.Pool(min(worker, len(pages))) as pool:
         images = pool.map(renderer, pages)
+
     return images
 
 
@@ -37,8 +38,10 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
                is_end_char_fn, seed) -> list:
     assert (len(sizes) == len(margins) == len(line_spacings) == len(font_sizes) == len(word_spacings)
             == len(line_spacing_sigmas) == len(font_size_sigmas) == len(word_spacing_sigmas))
+
     rand = random.Random(x=seed)
     period = len(sizes)
+
     iterator = iter(text)
     pages = []
     try:
@@ -47,12 +50,15 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
         while True:
             width, height = sizes[index % period]
             margin = margins[index % period]
+
             line_spacing = line_spacings[index % period]
             font_size = font_sizes[index % period]
             word_spacing = word_spacings[index % period]
+
             line_spacing_sigma = line_spacing_sigmas[index % period]
             font_size_sigma = font_size_sigmas[index % period]
             word_spacing_sigma = word_spacing_sigmas[index % period]
+
             top, bottom, left, right = margin["top"], margin["bottom"], margin["left"], margin["right"]
 
             page = _page.Page(mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index)
@@ -94,10 +100,13 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
 class _Renderer(object):
     """A function-like object rendering the foreground that was drawn text and returning rendered image."""
 
-    def __init__(self, backgrounds: tuple, color: str, alpha: tuple, seed):
+    def __init__(self, backgrounds: tuple, color: str, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple, seed):
+        assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas)
+        self._period = len(backgrounds)
         self._backgrounds = backgrounds
         self._color = color
-        self._alpha = alpha
+        self._perturb_x_sigmas = perturb_x_sigmas
+        self._perturb_y_sigmas = perturb_y_sigmas
         self._rand = random.Random()
         if seed is None:
             self._hashed_seed = None
@@ -109,32 +118,22 @@ class _Renderer(object):
             self._rand.seed()  # avoid different processes sharing the same random state
         else:
             self._rand.seed(a=self._hashed_seed + page.num)
-        self._perturb(page)
-        return self._merge(page)
+        return self._perturb_and_merge(page)
 
-    def _perturb(self, page: _page.Page) -> None:
+    def _perturb_and_merge(self, page: _page.Page):
+        strokes = self._extract_strokes(page.image)
+        x_sigma = self._perturb_x_sigmas[page.num % self._period]
+        y_sigma = self._perturb_y_sigmas[page.num % self._period]
+        canvas = self._backgrounds[page.num % self._period].copy()
+        self._draw_strokes(canvas, strokes, x_sigma, y_sigma)
+        return canvas
+
+    @staticmethod
+    def _extract_strokes(bitmap) -> _nos.NumericOrderedSet:
         # TODO
         pass
 
     @staticmethod
-    def _slide_x(matrix, x: int, offset: int, height: int) -> None:
-        """Slides one given column."""
-        for i in range(height - offset):
-            matrix[x, i] = matrix[x, i + offset]
-        for i in range(height - offset, height):
-            matrix[x, i] = _BLACK
-
-    @staticmethod
-    def _slide_y(matrix, y: int, offset: int, width: int) -> None:
-        """Slides one given row."""
-        for i in range(width - offset):
-            matrix[i, y] = matrix[i + offset, y]
-        for i in range(width - offset, width):
-            matrix[i, y] = _BLACK
-
-    def _merge(self, page: _page.Page):
-        """Merges the foreground and the background and returns merged raw image."""
-        res = self._backgrounds[page.num % len(self._backgrounds)].copy()
-        draw = image_draw.Draw(res)
-        draw.bitmap(xy=(0, 0), bitmap=page.image, fill=self._color)
-        return res
+    def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, x_sigma: float, y_sigma: float) -> None:
+        # TODO
+        pass

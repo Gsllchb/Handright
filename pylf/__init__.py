@@ -34,7 +34,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             background: A Pillow's Image instance.
 
-            margin: #TODO
+            margin: TODO
 
             line_spacing: A int as the average gap between two adjacent lines in pixel.
 
@@ -62,8 +62,9 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
             '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
             (lambda c: c in _DEFAULT_END_CHARS).
 
-            alpha: A tuple of two floats as the degree of the distortion in the horizontal and vertical direction in
-            order. Both values must be between 0.0 (inclusive) and 1.0 (inclusive). Default: (0.1, 0.1).
+            perturb_x_sigma: TODO
+
+            perturb_y_sigma: TODO
 
         worker: A int as the number of worker. Default: multiprocessing.cpu_count().
 
@@ -73,18 +74,27 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
         A list of drawn images with the same size and mode as the background image.
     """
     template2 = dict(template)
+
     template2["backgrounds"] = (template["background"], )
     template2["margins"] = (template["margin"], )
     template2["line_spacings"] = (template["line_spacing"], )
     template2["font_sizes"] = (template["font_size"], )
+
     if "word_spacing" in template:
         template2["word_spacings"] = (template["word_spacing"], )
+
     if "line_spacing_sigma" in template:
         template2["line_spacing_sigmas"] = (template["line_spacing_sigma"], )
     if "font_size_sigma" in template:
         template2["font_size_sigmas"] = (template["font_size_sigma"], )
     if "word_spacing_sigma" in template:
         template2["word_spacing_sigmas"] = (template["word_spacing_sigma"], )
+
+    if "perturb_x_sigma" in template:
+        template2["perturb_x_sigmas"] = (template["perturb_x_sigma"], )
+    if "perturb_y_sigma" in template:
+        template2["perturb_y_sigmas"] = (template["perturb_y_sigma"], )
+
     return handwrite2(text, template2, worker=worker, seed=seed)
 
 
@@ -94,20 +104,28 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     """
     if _CHECK_PARAMETERS:
         _check_parameters(text, template2, worker, seed)
+
     word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in template2["backgrounds"]))
+
     line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
     font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
     word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
+
     color = template2.get("color", _DEFAULT_COLOR)
+
     is_half_char_fn = template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN)
     is_end_char_fn = template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN)
-    alpha = template2.get("alpha", _DEFAULT_ALPHA)
+
+    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 500 for i in template2["font_sizes"]))
+    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 500 for i in template2["font_sizes"]))
+
     return _core.handwrite(text=text, backgrounds=template2["backgrounds"], margins=template2["margins"],
                            line_spacings=template2["line_spacings"], font_sizes=template2["font_sizes"],
                            word_spacings=word_spacings, line_spacing_sigmas=line_spacing_sigmas,
                            font_size_sigmas=font_size_sigmas, word_spacing_sigmas=word_spacing_sigmas,
                            font=template2["font"], color=color, is_half_char_fn=is_half_char_fn,
-                           is_end_char_fn=is_end_char_fn, alpha=alpha, worker=worker, seed=seed)
+                           is_end_char_fn=is_end_char_fn, perturb_x_sigmas=perturb_x_sigmas,
+                           perturb_y_sigmas=perturb_y_sigmas, worker=worker, seed=seed)
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -183,7 +201,8 @@ def _check_template2(template2) -> None:
         if not isinstance(template2["color"], str):
             raise TypeError("'color' must be str")
 
-    for sigmas in ("line_spacing_sigmas", "font_size_sigmas", "word_spacing_sigmas"):
+    for sigmas in ("line_spacing_sigmas", "font_size_sigmas", "word_spacing_sigmas", "perturb_x_sigmas",
+                   "perturb_y_sigmas"):
         if sigmas in template2:
             if len(template2[sigmas]) != length:
                 raise ValueError("'{}' and 'backgrounds' must have the same length".format(sigmas))
@@ -197,15 +216,6 @@ def _check_template2(template2) -> None:
         if fn in template2:
             if not callable(template2[fn]):
                 raise TypeError("'{}' must be callable".format(fn))
-
-    if "alpha" in template2:
-        if len(template2["alpha"]) != 2:
-            raise ValueError("The length of 'alpha' must be 2")
-        for i, a in enumerate(template2["alpha"]):
-            if not isinstance(a, (int, float)):
-                raise TypeError("'alpha[{}]' must be int or float".format(i))
-            if not 0.0 <= a <= 1.0:
-                raise ValueError("'alpha[{}]' must be between 0.0 (inclusive) and 1.0 (inclusive)".format(i))
 
 
 def _check_worker(worker) -> None:
