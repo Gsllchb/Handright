@@ -31,7 +31,7 @@ def main():
                      version=VERSION,
                      author='Gsllchb',
                      author_email="Gsllchb@gmail.com",
-                     packages=setuptools.find_packages(exclude=("*.test_*", )),
+                     packages=setuptools.find_packages(exclude=("*.tests", )),
                      install_requires=INSTALL_REQUIRES,
                      setup_requires=SETUP_REQUIRES,
                      python_requires='>=3.4',
