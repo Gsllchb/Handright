@@ -4,11 +4,9 @@ import multiprocessing
 
 from PIL import Image as image
 from PIL import ImageDraw as image_draw
-from PIL import ImageFont as image_font
-import pytest
 
-from util import *
 from pylf import handwrite
+from tests.util import *
 
 BACKGROUND_COLOR = "white"
 DEFAULT_WIDTH = 500

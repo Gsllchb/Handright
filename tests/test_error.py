@@ -1,9 +1,9 @@
 # coding: utf-8
-from PIL import Image as image
 import pytest
+from PIL import Image as image
 
-from util import *
 from pylf import *
+from tests.util import *
 
 BACKGROUND_COLOR = "white"
 DEFAULT_WIDTH = 500

@@ -1,4 +1,5 @@
 graft pylf
+graft tests
 include LICENSE
 include MANIFEST.in
 include README.md

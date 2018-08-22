@@ -2,8 +2,8 @@
 from PIL import Image as image
 from PIL import ImageDraw as image_draw
 
-from util import *
 from pylf import *
+from tests.util import *
 
 DEFAULT_WIDTH = 500
 DEFAULT_HEIGHT = 500

@@ -4,7 +4,7 @@ import pathlib
 
 from PIL import Image as image
 
-from util import *
+from tests.util import *
 from pylf import *
 
 SEED = "PyLf"
