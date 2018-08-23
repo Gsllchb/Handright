@@ -3,8 +3,10 @@
 import multiprocessing
 import random
 
-from pylf import _page
+from PIL import ImageColor
+
 from pylf import _numeric_ordered_set as _nos
+from pylf import _page
 
 # While changing following constants, it is necessary to consider to rewrite the relevant codes.
 _INTERNAL_MODE = '1'  # The mode for internal computation
@@ -12,6 +14,9 @@ _WHITE = 1
 _BLACK = 0
 
 _NEWLINE = '\n'
+_SIGNED_INT4 = 'l'
+_MAX_INT2 = 0xFFFF
+_STROKE_END = 0xFFFFFFFF
 
 
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
@@ -124,21 +129,52 @@ class _Renderer(object):
         return self._perturb_and_merge(page)
 
     def _perturb_and_merge(self, page: _page.Page):
-        strokes = self._extract_strokes(page.image)
+        strokes = _extract_strokes(page.matrix, page.image.getbbox())
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
-        self._draw_strokes(canvas, strokes, x_sigma, y_sigma, theta_sigma)
+        fill = ImageColor.getcolor(self._color, page.image.mode)
+        _draw_strokes(canvas, strokes, fill, x_sigma, y_sigma, theta_sigma)
         return canvas
 
-    @staticmethod
-    def _extract_strokes(bitmap) -> _nos.NumericOrderedSet:
-        # TODO
-        pass
 
-    @staticmethod
-    def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, x_sigma: float, y_sigma: float,
-                      theta_sigma: float) -> None:
-        # TODO
-        pass
+def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
+    assert len(bbox) == 4
+    left, upper, right, lower = bbox
+    assert left >= 0 and upper >= 0
+    assert right <= _MAX_INT2 and lower < _MAX_INT2  # reserve 0xFFFFFFFF as _STROKE_END
+    strokes = _nos.NumericOrderedSet(_SIGNED_INT4)
+    for y in range(upper, lower):
+        for x in range(left, right):
+            if bitmap[y, x] and strokes.add(_xy(x, y)):
+                _dfs(bitmap, (x, y), strokes, bbox)
+                strokes.add(_STROKE_END)
+    return strokes
+
+
+def _dfs(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> None:
+    """Helper function of _extract_strokes() which uses depth first search to find the pixels of a glyph."""
+    left, upper, right, lower = bbox
+    stack = []
+    stack.append(start)
+    while stack:
+        x, y = stack.pop()
+        if y - 1 >= upper and bitmap[y - 1, x] and strokes.add(_xy(x, y - 1)):
+            stack.append((x, y - 1))
+        if y + 1 < lower and bitmap[y + 1, x] and strokes.add(_xy(x, y + 1)):
+            stack.append((x, y + 1))
+        if x - 1 >= left and bitmap[y, x - 1] and strokes.add(_xy(x - 1, y)):
+            stack.append((x - 1, y))
+        if x + 1 < right and bitmap[y, x + 1] and strokes.add(_xy(x + 1, y)):
+            stack.append((x + 1, y))
+
+
+def _xy(x: int, y: int) -> int:
+    return (x << 4) + y
+
+
+def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
+                  theta_sigma: float) -> None:
+    # TODO
+    pass
