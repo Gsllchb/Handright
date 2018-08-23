@@ -17,7 +17,7 @@ _NEWLINE = '\n'
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
               word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
               font, color: str, is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
-              worker: int, seed) -> list:
+              perturb_theta_sigmas: tuple, worker: int, seed) -> list:
     pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), margins=margins,
                        line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
                        line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
@@ -26,7 +26,8 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
     if not pages:
         return pages
 
-    renderer = _Renderer(backgrounds, color, perturb_x_sigmas, perturb_y_sigmas, seed)
+    renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
+                         perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
     with multiprocessing.Pool(min(worker, len(pages))) as pool:
         images = pool.map(renderer, pages)
 
@@ -100,13 +101,15 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
 class _Renderer(object):
     """A function-like object rendering the foreground that was drawn text and returning rendered image."""
 
-    def __init__(self, backgrounds: tuple, color: str, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple, seed):
-        assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas)
+    def __init__(self, backgrounds: tuple, color: str, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
+                 perturb_theta_sigmas: tuple, seed):
+        assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
         self._period = len(backgrounds)
         self._backgrounds = backgrounds
         self._color = color
         self._perturb_x_sigmas = perturb_x_sigmas
         self._perturb_y_sigmas = perturb_y_sigmas
+        self._perturb_theta_sigmas = perturb_theta_sigmas
         self._rand = random.Random()
         if seed is None:
             self._hashed_seed = None
@@ -124,8 +127,9 @@ class _Renderer(object):
         strokes = self._extract_strokes(page.image)
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
+        theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
-        self._draw_strokes(canvas, strokes, x_sigma, y_sigma)
+        self._draw_strokes(canvas, strokes, x_sigma, y_sigma, theta_sigma)
         return canvas
 
     @staticmethod
@@ -134,6 +138,7 @@ class _Renderer(object):
         pass
 
     @staticmethod
-    def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, x_sigma: float, y_sigma: float) -> None:
+    def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, x_sigma: float, y_sigma: float,
+                      theta_sigma: float) -> None:
         # TODO
         pass

@@ -21,7 +21,7 @@ _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
 _DEFAULT_IS_HALF_CHAR_FN = lambda c: False
 _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
-_DEFAULT_ALPHA = (0.1, 0.1)
+_DEFAULT_PERTURB_THETA_SIGMA = 1.0  # TODO: tune this value
 
 
 def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
@@ -66,6 +66,8 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             perturb_y_sigma: TODO
 
+            perturb_theta_sigma: TODO
+
         worker: A int as the number of worker. Default: multiprocessing.cpu_count().
 
         seed: The seed of the internal random generators. Default: None.
@@ -94,6 +96,8 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
         template2["perturb_x_sigmas"] = (template["perturb_x_sigma"], )
     if "perturb_y_sigma" in template:
         template2["perturb_y_sigmas"] = (template["perturb_y_sigma"], )
+    if "perturb_theta_sigma" in template:
+        template2["perturb_theta_sigmas"] = (template["perturb_theta_sigma"], )
 
     return handwrite2(text, template2, worker=worker, seed=seed)
 
@@ -105,27 +109,42 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     if _CHECK_PARAMETERS:
         _check_parameters(text, template2, worker, seed)
 
-    word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in template2["backgrounds"]))
+    font_sizes = template2["font_sizes"]
 
-    line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
-    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
-    word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 256 for i in template2["font_sizes"]))
+    word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes))
+
+    line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 256 for i in font_sizes))
+    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 256 for i in font_sizes))
+    word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 256 for i in font_sizes))
 
     color = template2.get("color", _DEFAULT_COLOR)
 
     is_half_char_fn = template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN)
     is_end_char_fn = template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN)
 
-    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 500 for i in template2["font_sizes"]))
-    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 500 for i in template2["font_sizes"]))
+    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 500 for i in font_sizes))
+    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 500 for i in font_sizes))
+    perturb_theta_sigmas = template2.get("perturb_theta_sigmas",
+                                         tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes))
 
-    return _core.handwrite(text=text, backgrounds=template2["backgrounds"], margins=template2["margins"],
-                           line_spacings=template2["line_spacings"], font_sizes=template2["font_sizes"],
-                           word_spacings=word_spacings, line_spacing_sigmas=line_spacing_sigmas,
-                           font_size_sigmas=font_size_sigmas, word_spacing_sigmas=word_spacing_sigmas,
-                           font=template2["font"], color=color, is_half_char_fn=is_half_char_fn,
-                           is_end_char_fn=is_end_char_fn, perturb_x_sigmas=perturb_x_sigmas,
-                           perturb_y_sigmas=perturb_y_sigmas, worker=worker, seed=seed)
+    return _core.handwrite(text=text,
+                           backgrounds=template2["backgrounds"],
+                           margins=template2["margins"],
+                           line_spacings=template2["line_spacings"],
+                           font_sizes=template2["font_sizes"],
+                           word_spacings=word_spacings,
+                           line_spacing_sigmas=line_spacing_sigmas,
+                           font_size_sigmas=font_size_sigmas,
+                           word_spacing_sigmas=word_spacing_sigmas,
+                           font=template2["font"],
+                           color=color,
+                           is_half_char_fn=is_half_char_fn,
+                           is_end_char_fn=is_end_char_fn,
+                           perturb_x_sigmas=perturb_x_sigmas,
+                           perturb_y_sigmas=perturb_y_sigmas,
+                           perturb_theta_sigmas=perturb_theta_sigmas,
+                           worker=worker,
+                           seed=seed)
 
 
 ########################################################################################################################
@@ -202,7 +221,7 @@ def _check_template2(template2) -> None:
             raise TypeError("'color' must be str")
 
     for sigmas in ("line_spacing_sigmas", "font_size_sigmas", "word_spacing_sigmas", "perturb_x_sigmas",
-                   "perturb_y_sigmas"):
+                   "perturb_y_sigmas", "perturb_theta_sigmas"):
         if sigmas in template2:
             if len(template2[sigmas]) != length:
                 raise ValueError("'{}' and 'backgrounds' must have the same length".format(sigmas))
