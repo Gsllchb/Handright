@@ -149,7 +149,7 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
         for x in range(left, right):
             if bitmap[y, x] and strokes.add(_xy(x, y)):
                 _dfs(bitmap, (x, y), strokes, bbox)
-                strokes.add(_STROKE_END)
+                strokes.add(_STROKE_END)  # FIXME
     return strokes
 
 
