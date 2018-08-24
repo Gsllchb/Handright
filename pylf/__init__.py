@@ -32,7 +32,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
         template: A dict-like object containing following parameters.
 
-            background: A Pillow's Image instance.
+            background: A Pillow's Image instance. Recommended mode: "1", "L", "RGB".
 
             margin: TODO
 
