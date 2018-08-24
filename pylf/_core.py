@@ -132,11 +132,13 @@ class _Renderer(object):
 
     def _perturb_and_merge(self, page: _page.Page):
         strokes = _extract_strokes(page.matrix, page.image.getbbox())
+
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
         fill = ImageColor.getcolor(self._color, page.image.mode)
+
         _draw_strokes(canvas, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma, rand=self._rand)
         return canvas
 
@@ -198,7 +200,7 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
                 new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y + dy
                 if new_x < 0 or new_x >= width or new_y < 0 or new_y >= height:
                     continue
-                bitmap[new_x, new_y] = fill
+                bitmap[new_x, new_y] = fill  # bitmap's indexes can be float
 
             min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
             max_x, max_y = 0, 0
