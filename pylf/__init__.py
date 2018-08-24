@@ -21,7 +21,7 @@ _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
 _DEFAULT_IS_HALF_CHAR_FN = lambda c: False
 _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
-_DEFAULT_PERTURB_THETA_SIGMA = 0.1  # TODO: tune this value
+_DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
 def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
@@ -55,8 +55,8 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
             word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing. Default:
             font_size / 256.
 
-            is_half_char_fn: A function judging whether or not a char only take up half of its original width. The function
-            must take a char parameter and return a boolean value. Default: (lambda c: False).
+            is_half_char_fn: A function judging whether or not a char only take up half of its original width. The
+            function must take a char parameter and return a boolean value. Default: (lambda c: False).
 
             is_end_char_fn: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
             '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
@@ -113,17 +113,17 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
 
     word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes))
 
-    line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 256 for i in font_sizes))
-    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 256 for i in font_sizes))
-    word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 256 for i in font_sizes))
+    line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 32 for i in font_sizes))
+    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 32 for i in font_sizes))
+    word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 32 for i in font_sizes))
 
     color = template2.get("color", _DEFAULT_COLOR)
 
     is_half_char_fn = template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN)
     is_end_char_fn = template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN)
 
-    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 500 for i in font_sizes))
-    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 500 for i in font_sizes))
+    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 32 for i in font_sizes))
+    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 32 for i in font_sizes))
     perturb_theta_sigmas = template2.get("perturb_theta_sigmas",
                                          tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes))
 
