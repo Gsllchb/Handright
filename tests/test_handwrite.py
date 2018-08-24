@@ -9,8 +9,8 @@ from pylf import handwrite
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
-DEFAULT_WIDTH = 500
-DEFAULT_HEIGHT = 500
+DEFAULT_WIDTH = 2000
+DEFAULT_HEIGHT = 2000
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 SEED = "PyLf"
 THRESHOLD = 0.01
@@ -18,10 +18,10 @@ THRESHOLD = 0.01
 
 def get_default_template() -> dict:
     template = {"background": image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
-                "margin": {"left": 50, "top": 94, "right": 50, "bottom": 100},
-                "line_spacing": 36,
+                "margin": {"left": 200, "top": 376, "right": 200, "bottom": 400},
+                "line_spacing": 144,
                 "font": get_default_font(),
-                "font_size": 30,
+                "font_size": 120,
                 "font_size_sigma": 0}
     return template
 

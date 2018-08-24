@@ -11,12 +11,14 @@ SEED = "PyLf"
 
 
 def test_handwrite2():
-    template2 = {"backgrounds": (image.open(get_path("backgrounds/even-odd-letter/村庄信笺纸.jpg")),
-                                 image.open(get_path("backgrounds/even-odd-letter/树信笺纸.jpg"))),
-                 "margins": ({"left": 20, "top": 100, "right": 15, "bottom": 280},
-                             {"left": 20, "top": 100, "right": 15, "bottom": 490}),
-                 "line_spacings": (44, 44),
-                 "font_sizes": (37, 37),
+    images = (image.open(get_path("backgrounds/even-odd-letter/村庄信笺纸.jpg")),
+              image.open(get_path("backgrounds/even-odd-letter/树信笺纸.jpg")))
+
+    template2 = {"backgrounds": [im.resize(size=(im.size[0] * 2, im.size[1] * 2)) for im in images],
+                 "margins": ({"left": 40, "top": 200, "right": 30, "bottom": 560},
+                             {"left": 40, "top": 200, "right": 30, "bottom": 980}),
+                 "line_spacings": (88, 88),
+                 "font_sizes": (74, 74),
                  "font": get_default_font()}
     for file in pathlib.Path(get_path("texts")).iterdir():
         print(file)

@@ -80,17 +80,13 @@ def test_template_error():
 
     template_error_helper("color", 0, TypeError)
 
-    for sigma in ("line_spacing_sigma", "font_size_sigma", "word_spacing_sigma"):
+    for sigma in ("line_spacing_sigma", "font_size_sigma", "word_spacing_sigma", "perturb_x_sigma", "perturb_y_sigma",
+                  "perturb_theta_sigma"):
         template_error_helper(sigma, "1", TypeError)
         template_error_helper(sigma, -1, ValueError)
 
     for fn in ("is_half_char_fn", "is_end_char_fn"):
         template_error_helper(fn, 0, TypeError)
-
-    template_error_helper("alpha", (1, ), ValueError)
-    template_error_helper("alpha", ("", 0), TypeError)
-    template_error_helper("alpha", (-1, 0), ValueError)
-    template_error_helper("alpha", (2, 0), ValueError)
 
 
 def template_error_helper(key: str, value, error_type) -> None:
