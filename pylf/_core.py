@@ -14,8 +14,9 @@ _WHITE = 1
 _BLACK = 0
 
 _NEWLINE = '\n'
-_SIGNED_INT4 = 'l'
-_MAX_INT2 = 0xFFFF
+
+_UNSIGNED_INT4 = 'L'
+_MAX_INT2_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
 
@@ -143,13 +144,13 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     assert len(bbox) == 4
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
-    assert right <= _MAX_INT2 and lower < _MAX_INT2  # reserve 0xFFFFFFFF as _STROKE_END
-    strokes = _nos.NumericOrderedSet(_SIGNED_INT4)
+    assert right <= _MAX_INT2_VALUE and lower < _MAX_INT2_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
+    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT4, flag=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[y, x] and strokes.add(_xy(x, y)):
                 _dfs(bitmap, (x, y), strokes, bbox)
-                strokes.add(_STROKE_END)  # FIXME
+                strokes.add_flag()
     return strokes
 
 
@@ -171,7 +172,7 @@ def _dfs(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> 
 
 
 def _xy(x: int, y: int) -> int:
-    return (x << 4) + y
+    return (x << 16) + y
 
 
 def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
