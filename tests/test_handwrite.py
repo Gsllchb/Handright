@@ -73,10 +73,10 @@ def test_randomness():
 def test_mode_and_color():
     text = get_short_text()
     template = get_default_template()
-    for mode in ('L', 'RGB', 'RGBA'):
-        for background_color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
+    for mode in ('L', 'RGB'):
+        for background_color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)'):
             template['background'] = image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
-            for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)', 'rgb(250, 128, 1)'):
+            for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)'):
                 template['color'] = color
                 standard_image = template['background'].copy()
                 image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
@@ -155,7 +155,7 @@ def test_worker():
                                          text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
-    for worker in {1, cpu_count // 2, cpu_count, 2 * cpu_count, 2 * cpu_count + 1}:
+    for worker in {1, cpu_count // 2, cpu_count, 2 * cpu_count}:
         images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker)
         for i in images:
             assert diff_histogram(standard_image, i) < THRESHOLD
@@ -165,7 +165,7 @@ def test_seed():
     text = get_short_text() * 50
     template = get_default_template()
     worker = 2
-    for seed in (-666, "PyLf", 0.5, (6, 6), 666):
+    for seed in ("PyLf", 0.5, 666):
         ims1 = handwrite(text, template, worker=worker, seed=seed)
         ims2 = handwrite(text, template, worker=worker, seed=seed)
         for im1, im2 in zip(ims1, ims2):
