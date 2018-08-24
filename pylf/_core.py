@@ -1,5 +1,6 @@
 # coding: utf-8
 """The core module"""
+import math
 import multiprocessing
 import random
 
@@ -136,19 +137,18 @@ class _Renderer(object):
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
         fill = ImageColor.getcolor(self._color, page.image.mode)
-        _draw_strokes(canvas, strokes, fill, x_sigma, y_sigma, theta_sigma)
+        _draw_strokes(canvas, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma, rand=self._rand)
         return canvas
 
 
 def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
-    assert len(bbox) == 4
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
     assert right <= _MAX_INT2_VALUE and lower < _MAX_INT2_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
     strokes = _nos.NumericOrderedSet(_UNSIGNED_INT4, flag=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
-            if bitmap[y, x] and strokes.add(_xy(x, y)):
+            if bitmap[x, y] and strokes.add(_xy(x, y)):
                 _dfs(bitmap, (x, y), strokes, bbox)
                 strokes.add_flag()
     return strokes
@@ -161,13 +161,13 @@ def _dfs(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> 
     stack.append(start)
     while stack:
         x, y = stack.pop()
-        if y - 1 >= upper and bitmap[y - 1, x] and strokes.add(_xy(x, y - 1)):
+        if y - 1 >= upper and bitmap[x, y - 1] and strokes.add(_xy(x, y - 1)):
             stack.append((x, y - 1))
-        if y + 1 < lower and bitmap[y + 1, x] and strokes.add(_xy(x, y + 1)):
+        if y + 1 < lower and bitmap[x, y + 1] and strokes.add(_xy(x, y + 1)):
             stack.append((x, y + 1))
-        if x - 1 >= left and bitmap[y, x - 1] and strokes.add(_xy(x - 1, y)):
+        if x - 1 >= left and bitmap[x - 1, y] and strokes.add(_xy(x - 1, y)):
             stack.append((x - 1, y))
-        if x + 1 < right and bitmap[y, x + 1] and strokes.add(_xy(x + 1, y)):
+        if x + 1 < right and bitmap[x + 1, y] and strokes.add(_xy(x + 1, y)):
             stack.append((x + 1, y))
 
 
@@ -175,7 +175,42 @@ def _xy(x: int, y: int) -> int:
     return (x << 16) + y
 
 
+def _x_y(xy: int) -> tuple:
+    return xy >> 16, xy & 0xFFFF
+
+
 def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
-                  theta_sigma: float) -> None:
-    # TODO
-    pass
+                  theta_sigma: float, rand) -> None:
+    bitmap = canvas.load()
+    width, height = canvas.size
+    stroke = []
+    min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
+    max_x, max_y = 0, 0
+    for xy in strokes:
+        if xy == _STROKE_END:
+            center_x = (min_x + max_x) // 2
+            center_y = (min_y + max_y) // 2
+            dx = rand.gauss(0, x_sigma)
+            dy = rand.gauss(0, y_sigma)
+            theta = rand.gauss(0, theta_sigma)
+            for x, y in stroke:
+                new_x = (x - center_x) * math.cos(theta) + (y - center_y) * math.sin(theta) + center_x + dx
+                new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y + dy
+                if new_x < 0 or new_x >= width or new_y < 0 or new_y >= height:
+                    continue
+                bitmap[new_x, new_y] = fill
+
+            min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
+            max_x, max_y = 0, 0
+            stroke.clear()
+            continue
+        x, y = _x_y(xy)
+        if x < min_x:
+            min_x = x
+        if x > max_x:
+            max_x = x
+        if y < min_y:
+            min_y = y
+        if y > max_y:
+            max_y = y
+        stroke.append((x, y))

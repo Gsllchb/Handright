@@ -21,7 +21,7 @@ _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
 _DEFAULT_IS_HALF_CHAR_FN = lambda c: False
 _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
-_DEFAULT_PERTURB_THETA_SIGMA = 1.0  # TODO: tune this value
+_DEFAULT_PERTURB_THETA_SIGMA = 0.1  # TODO: tune this value
 
 
 def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
