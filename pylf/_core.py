@@ -190,17 +190,18 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
     max_x, max_y = 0, 0
     for xy in strokes:
         if xy == _STROKE_END:
-            center_x = (min_x + max_x) // 2
-            center_y = (min_y + max_y) // 2
+            center_x = (min_x + max_x) / 2
+            center_y = (min_y + max_y) / 2
             dx = rand.gauss(0, x_sigma)
             dy = rand.gauss(0, y_sigma)
             theta = rand.gauss(0, theta_sigma)
             for x, y in stroke:
-                new_x = (x - center_x) * math.cos(theta) + (y - center_y) * math.sin(theta) + center_x + dx
-                new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y + dy
+                new_x, new_y = _rotate(center_x, center_y, x, y, theta)
+                new_x += dx
+                new_y += dy
                 if new_x < 0 or new_x >= width or new_y < 0 or new_y >= height:
                     continue
-                bitmap[new_x, new_y] = fill  # bitmap's indexes can be float
+                bitmap[new_x, new_y] = fill  # bitmap's index can be float
 
             min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
             max_x, max_y = 0, 0
@@ -216,3 +217,9 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
         if y > max_y:
             max_y = y
         stroke.append((x, y))
+
+
+def _rotate(center_x: float, center_y: float, x: float, y: float, theta: float) -> tuple:
+    new_x = (x - center_x) * math.cos(theta) + (y - center_y) * math.sin(theta) + center_x
+    new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y
+    return new_x, new_y
