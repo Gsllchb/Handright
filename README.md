@@ -77,7 +77,7 @@ if __name__ == '__main__':
 | 设置在行末不换行的字符集（如：'。', '》', ')', ']'）     | is_end_char                                             |
 | 设置在排版时只占其宽度一半的字符集（如：'，', '。', '！'） | is_half_char                                            |
 | 抗锯齿                                              | anti_aliasing                                           |
-| 多线程加速                                           | worker                                                  |
+| 并行加速                                             | worker                                                  |
 | 周期性模板                                           | template2（详情：pylf.handwrite2）                       |
 
 
