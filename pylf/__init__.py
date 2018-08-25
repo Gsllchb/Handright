@@ -32,48 +32,50 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
         template: A dict-like object containing following parameters.
 
-            background: A Pillow's Image instance. Recommended mode: "1", "L", "RGB".
+            background: A Pillow's Image instance. Recommended mode: "1", "L" and "RGB".
 
-            margin: TODO
+            margin: A dict-like object. margin["top"], margin["bottom"], margin["left"] and margin["right"] are used
+            together to define the handwritten area in background (unit: pixel).
 
-            line_spacing: A int as the average gap between two adjacent lines in pixel.
+            line_spacing: The average gap between two adjacent lines in pixel.
 
-            font_size: A int as the average font size in pixel.
+            font_size: Average font size in pixel.
 
-            word_spacing: A int as the average gap between two adjacent chars in pixel. Default: 0.
+            word_spacing: The average gap between two adjacent chars in pixel. This value must be greater than
+            (-font_size // 2). Default: 0.
 
             font: A Pillow's font instance. Note that this function do not use the size attribute of the font instance.
 
-            color: A str as Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+            color: A Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
             Default: "black".
 
-            line_spacing_sigma: A float as the sigma of the gauss distribution of the line spacing. Default:
-            font_size / 256.
+            line_spacing_sigma: The sigma of the gauss distribution of line spacing. Default: font_size / 32.
 
-            font_size_sigma: A float as the sigma of the gauss distribution of the font size. Default: font_size / 256.
+            font_size_sigma: The sigma of the gauss distribution of font size. Default: font_size / 64.
 
-            word_spacing_sigma: A float as the sigma of the gauss distribution of the word spacing. Default:
-            font_size / 256.
+            word_spacing_sigma: The sigma of the gauss distribution of word spacing. Default: font_size / 32.
 
             is_half_char_fn: A function judging whether or not a char only take up half of its original width. The
-            function must take a char parameter and return a boolean value. Default: (lambda c: False).
+            function must take a char parameter and return a bool value. Default: (lambda c: False).
 
             is_end_char_fn: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
-            '。', '》', ')', ']'). The function must take a char parameter and return a boolean value. Default:
+            '。', '》', ')', ']'). It must take a char parameter and return a bool value. Default:
             (lambda c: c in _DEFAULT_END_CHARS).
 
-            perturb_x_sigma: TODO
+            perturb_x_sigma: The sigma of the gauss distribution of the horizontal position of strokes. Default:
+            font_size / 32.
 
-            perturb_y_sigma: TODO
+            perturb_y_sigma: The sigma of the gauss distribution of the vertical position of strokes. Default:
+            font_size / 32.
 
-            perturb_theta_sigma: TODO
+            perturb_theta_sigma: The sigma of the gauss distribution of the rotation of strokes. Default: 0.07.
 
         worker: A int as the number of worker. Default: multiprocessing.cpu_count().
 
-        seed: The seed of the internal random generators. Default: None.
+        seed: The seed of internal random generators. Default: None.
 
     Returns:
-        A list of drawn images with the same size and mode as the background image.
+        A list of drawn images with the same size and mode as background image.
     """
     template2 = dict(template)
 
