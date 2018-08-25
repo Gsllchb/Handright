@@ -66,9 +66,8 @@ def test_even_odd():
 def test_seed():
     text = get_short_text() * 50
     template2 = get_default_template2()
-    worker = 2
     seed = 0
-    ims1 = handwrite2(text, template2, worker=worker, seed=seed)
-    ims2 = handwrite2(text, template2, worker=worker, seed=seed)
+    ims1 = handwrite2(text, template2, seed=seed)
+    ims2 = handwrite2(text, template2, seed=seed)
     for im1, im2 in zip(ims1, ims2):
         assert im1 == im2
