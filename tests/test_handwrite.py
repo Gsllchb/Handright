@@ -132,20 +132,6 @@ def test_is_end_char_fn():
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
 
 
-def test_multiprocessing():
-    text = get_short_text()
-    template = get_default_template()
-    template['color'] = 'rgb(0, 0, 0)'
-    standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-                                         text=text, fill=template['color'],
-                                         font=template['font'].font_variant(size=template['font_size']))
-    for worker in {1, multiprocessing.cpu_count()}:
-        images = handwrite((text + '\n' * 8) * 3 * worker, template, worker=worker)
-        for i in images:
-            assert diff_histogram(standard_image, i) < THRESHOLD
-
-
 def test_worker():
     text = get_short_text()
     template = get_default_template()
@@ -155,7 +141,9 @@ def test_worker():
                                          text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
-    for worker in {1, cpu_count // 2, cpu_count, 2 * cpu_count}:
+    workers = {1, cpu_count // 2, cpu_count, 2 * cpu_count}
+    workers.discard(0)
+    for worker in workers:
         images = handwrite((text + '\n' * 8) * max(worker, cpu_count), template, worker=worker)
         for i in images:
             assert diff_histogram(standard_image, i) < THRESHOLD
