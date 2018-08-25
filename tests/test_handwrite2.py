@@ -67,8 +67,8 @@ def test_seed():
     text = get_short_text() * 50
     template2 = get_default_template2()
     worker = 2
-    for seed in (-1.6, 0, 1, "pylf"):
-        ims1 = handwrite2(text, template2, worker=worker, seed=seed)
-        ims2 = handwrite2(text, template2, worker=worker, seed=seed)
-        for im1, im2 in zip(ims1, ims2):
-            assert im1 == im2
+    seed = 0
+    ims1 = handwrite2(text, template2, worker=worker, seed=seed)
+    ims2 = handwrite2(text, template2, worker=worker, seed=seed)
+    for im1, im2 in zip(ims1, ims2):
+        assert im1 == im2
