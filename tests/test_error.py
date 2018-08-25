@@ -76,7 +76,7 @@ def test_template_error():
     template_error_helper("font_size", DEFAULT_WIDTH * 2, ValueError)
 
     template_error_helper("word_spacing", 1.2, TypeError)
-    template_error_helper("word_spacing", -1, ValueError)
+    template_error_helper("word_spacing", (-get_default_template()["font_size"] // 2), ValueError)
 
     template_error_helper("color", 0, TypeError)
 
