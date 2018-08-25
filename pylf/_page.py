@@ -7,7 +7,7 @@ from PIL import ImageDraw as image_draw
 class Page(object):
     """A simple wrapper for Pillow Image Object"""
 
-    def __init__(self, mode: str, size: tuple, color: str, num: int):
+    def __init__(self, mode: str, size: tuple, color, num: int):
         self.image = image.new(mode, size, color)
         self.num = num
 
