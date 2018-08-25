@@ -213,7 +213,7 @@ def _check_template2(template2) -> None:
         for ws, fs in zip(template2["word_spacings"], template2["font_sizes"]):
             if not isinstance(ws, int):
                 raise TypeError("'word_spacing' must be int")
-            if not ws > -fs / 2:
+            if not ws > -fs // 2:
                 raise ValueError("'word_spacing' must be greater than (-font_size / 2)")
 
     # TODO: check font
