@@ -114,7 +114,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes))
 
     line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 32 for i in font_sizes))
-    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 32 for i in font_sizes))
+    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 64 for i in font_sizes))
     word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 32 for i in font_sizes))
 
     color = template2.get("color", _DEFAULT_COLOR)
