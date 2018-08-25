@@ -210,11 +210,11 @@ def _check_template2(template2) -> None:
     if "word_spacings" in template2:
         if len(template2["word_spacings"]) != length:
             raise ValueError("'word_spacings' and 'backgrounds' must have the same length")
-        for ws in template2["word_spacings"]:
+        for ws, fs in zip(template2["word_spacings"], template2["font_sizes"]):
             if not isinstance(ws, int):
                 raise TypeError("'word_spacing' must be int")
-            if ws < 0:
-                raise ValueError("'word_spacing' must be at least 0")
+            if not ws > -fs / 2:
+                raise ValueError("'word_spacing' must be greater than (-font_size / 2)")
 
     # TODO: check font
 
