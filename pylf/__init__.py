@@ -1,7 +1,14 @@
 # coding: utf-8
-"""PyLf is a lightweight Python library for simulating Chinese handwriting. It introduces a great deal of randomness in
-the process of Chinese handwriting to simulate the uncertainty of glyphs written by human beings. Currently, PyLf is
-built on the top of Pillow library.
+"""A lightweight Python library for simulating Chinese handwriting
+
+Vision: Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and easy-to-use interfaces.
+
+Algorithm: Randomly perturb each character as a whole in horizontal position, vertical position and font size. Then,
+Randomly perturb each stroke of a character in horizontal position, vertical position and rotation angle.
+
+Implementation: Develop on the top of Pillow and use multiprocessing for internal parallel acceleration.
+
+Homepage: https://github.com/Gsllchb/PyLf
 """
 import multiprocessing
 from collections import abc
@@ -77,6 +84,27 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
     Returns:
         A list of drawn images with the same size and mode as background image.
+
+    Example:
+    >>> from PIL import Image, ImageFont
+    >>> from pylf import handwrite
+    >>> from multiprocessing import freeze_support  # Non-Windows users can delete this line
+    >>>
+    >>>
+    >>> def main():
+    >>>     template = {"background": Image.new(mode="1", size=(2000, 2000), color="white"),
+    >>>                 "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
+    >>>                 "line_spacing": 150,
+    >>>                 "font_size": 100,
+    >>>                 "font": ImageFont.truetype("path/to/your/font.ttf")}
+    >>>     for image in handwrite("我能吞下玻璃而不伤身体。", template):
+    >>>         image.show()
+    >>>
+    >>>
+    >>> if __name__ == '__main__':
+    >>>    freeze_support()  # Non-Windows users can delete this line
+    >>>    main()
+    >>>
     """
     template2 = dict(template)
 
@@ -107,7 +135,49 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
 def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite().
-    TODO
+    The parameters of handwrite2() and handwrite() are similar. The difference is that some of the parameters in the
+    template of handwrite() are replaced with their plural form in template2. These 'plural' parameters become a
+    sequence of the corresponding original parameters. And these 'plural' parameters in template2 will be use
+    periodically in the sequence of handwritten images.
+
+    The original parameters and their corresponding 'plural' parameters as well as their default values, if any, are
+    listed below.
+    background -> backgrounds
+    margin -> margins
+    line_spacing -> line_spacings
+    font_size -> font_sizes
+    word_spacing -> word_spacings (Default: a list of 0)
+    line_spacing_sigma -> line_spacing_sigmas (Default: [i / 32 for i in font_sizes])
+    font_size_sigma -> font_size_sigmas (Default: [i / 64 for i in font_sizes])
+    word_spacing_sigma -> word_spacing_sigmas (Default: [i / 32 for i in font_sizes])
+    perturb_x_sigma -> perturb_x_sigmas (Default: [i / 32 for i in font_sizes])
+    perturb_y_sigma -> perturb_y_sigmas (Default: [i / 32 for i in font_sizes])
+    perturb_theta_sigma -> perturb_theta_sigmas (Default: a list of 0.07)
+
+    Note that, all of these 'plural' parameters must have the same length.
+
+    Example:
+    >>> from PIL import Image, ImageFont
+    >>> from pylf import handwrite2
+    >>> from multiprocessing import freeze_support  # Non-Windows users can delete this line
+    >>>
+    >>>
+    >>> def main():
+    >>>     template2 = {"backgrounds": [Image.new(mode="1", size=(2000, 2000), color="white"),
+    >>>                                  Image.new(mode="RGB", size=(1000, 3000), color="green")],
+    >>>                  "margins": [{"left": 150, "right": 150, "top": 200, "bottom": 200},
+    >>>                              {"left": 100, "right": 100, "top": 300, "bottom": 300}],
+    >>>                  "line_spacings": [150, 200],
+    >>>                  "font_sizes": [100, 90],
+    >>>                  "font": ImageFont.truetype("path/to/your/font.ttf")}
+    >>>     for image in handwrite2("我能吞下玻璃而不伤身体。\\n" * 30, template2):
+    >>>         image.show()
+    >>>
+    >>>
+    >>> if __name__ == '__main__':
+    >>>    freeze_support()  # Non-Windows users can delete this line
+    >>>    main()
+    >>>
     """
     if _CHECK_PARAMETERS:
         _check_parameters(text, template2, worker, seed)
