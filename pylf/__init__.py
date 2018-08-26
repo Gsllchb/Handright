@@ -32,19 +32,20 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
         template: A dict-like object containing following parameters.
 
-            background: A Pillow's Image instance. Recommended mode: "1", "L" and "RGB".
+            background: A Pillow's Image instance. Recommended mode: "1", "L" and "RGB". The width and height of the
+            image cannot exceed 65534.
 
             margin: A dict-like object. margin["top"], margin["bottom"], margin["left"] and margin["right"] are used
-            together to define the handwritten area in background (unit: pixel).
+            together to define the handwritten area in background. (unit: pixel)
 
-            line_spacing: The average gap between two adjacent lines in pixel.
+            line_spacing: The average gap between two adjacent lines. (unit: pixel)
 
-            font_size: Average font size in pixel.
+            font_size: Average font size. (unit: pixel)
 
-            word_spacing: The average gap between two adjacent chars in pixel. This value must be greater than
-            (-font_size // 2). Default: 0.
+            word_spacing: The average gap between two adjacent chars. This value must be greater than (-font_size // 2).
+            Default: 0. (unit: pixel)
 
-            font: A Pillow's font instance. Note that this function do not use the size attribute of the font instance.
+            font: A Pillow's font instance. The size attribute of the font instance will be ignored here.
 
             color: A Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
             Default: "black".
@@ -58,7 +59,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
             is_half_char_fn: A function judging whether or not a char only take up half of its original width. The
             function must take a char parameter and return a bool value. Default: (lambda c: False).
 
-            is_end_char_fn: A function judging whether or not a char can NOT be in the beginning of the lines (e.g. '，',
+            is_end_char_fn: A function judging whether or not a char cannot be in the beginning of the lines (e.g. '，',
             '。', '》', ')', ']'). It must take a char parameter and return a bool value. Default:
             (lambda c: c in _DEFAULT_END_CHARS).
 
@@ -70,7 +71,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             perturb_theta_sigma: The sigma of the gauss distribution of the rotation of strokes. Default: 0.07.
 
-        worker: A int as the number of worker. Default: multiprocessing.cpu_count().
+        worker: The number of worker. Default: multiprocessing.cpu_count().
 
         seed: The seed of internal random generators. Default: None.
 
