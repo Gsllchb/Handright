@@ -176,10 +176,17 @@ def _check_template2(template2) -> None:
     if not (length == len(template2["margins"]) == len(template2["line_spacings"]) == len(template2["font_sizes"])):
         raise ValueError("'backgrounds', 'margins', 'line_spacings' and 'font_sizes' must have the same length")
 
+    # check backgrounds
+    width_height_limit = 65534
     for b in template2["backgrounds"]:
         if not isinstance(b, Image.Image):
             raise TypeError("'background' must be Pillow's image")
+        if b.width > width_height_limit:
+            raise ValueError("The width of background cannot exceed {}".format(width_height_limit))
+        if b.height > width_height_limit:
+            raise ValueError("The height of background cannot exceed {}".format(width_height_limit))
 
+    # check margins
     for m in template2["margins"]:
         for key in ("top", "bottom", "left", "right"):
             if not isinstance(m[key], int):
@@ -187,6 +194,7 @@ def _check_template2(template2) -> None:
             if m[key] < 0:
                 raise ValueError("'margin[\"{}\"]' must be at least 0".format(key))
 
+    # check line_spacings
     for b, m, ls in zip(template2["backgrounds"], template2["margins"], template2["line_spacings"]):
         if not isinstance(ls, int):
             raise TypeError("'line_spacing' must be int")
@@ -196,6 +204,7 @@ def _check_template2(template2) -> None:
             raise ValueError("'margin[\"top\"] + line_spacing + margin[\"bottom\"]' "
                              "can not be greater than background's height")
 
+    # check font_sizes
     for b, m, ls, fs in zip(template2["backgrounds"], template2["margins"], template2["line_spacings"],
                             template2["font_sizes"]):
         if not isinstance(fs, int):
@@ -208,6 +217,7 @@ def _check_template2(template2) -> None:
             raise ValueError("'margin[\"left\"] + font_size + margin[\"right\"]' "
                              "can not be greater than background's width")
 
+    # check word_spacings
     if "word_spacings" in template2:
         if len(template2["word_spacings"]) != length:
             raise ValueError("'word_spacings' and 'backgrounds' must have the same length")
@@ -215,14 +225,16 @@ def _check_template2(template2) -> None:
             if not isinstance(ws, int):
                 raise TypeError("'word_spacing' must be int")
             if not ws > -fs // 2:
-                raise ValueError("'word_spacing' must be greater than (-font_size / 2)")
+                raise ValueError("'word_spacing' must be greater than (-font_size // 2)")
 
     # TODO: check font
 
+    # check color
     if "color" in template2:
         if not isinstance(template2["color"], str):
             raise TypeError("'color' must be str")
 
+    # check *_sigmas
     for sigmas in ("line_spacing_sigmas", "font_size_sigmas", "word_spacing_sigmas", "perturb_x_sigmas",
                    "perturb_y_sigmas", "perturb_theta_sigmas"):
         if sigmas in template2:
@@ -234,6 +246,7 @@ def _check_template2(template2) -> None:
                 if s < 0:
                     raise ValueError("'{}' must be at least 0")
 
+    # check *_fn
     for fn in ("is_half_char_fn", "is_end_char_fn"):
         if fn in template2:
             if not callable(template2[fn]):
