@@ -28,7 +28,7 @@ def equal(image1, image2) -> bool:
     return image1.tobytes() == image2.tobytes()
 
 
-def get_path(path:str) -> str:
+def get_path(path: str) -> str:
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
 
 
