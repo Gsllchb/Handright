@@ -96,7 +96,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     >>>                 "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
     >>>                 "line_spacing": 150,
     >>>                 "font_size": 100,
-    >>>                 "font": ImageFont.truetype("path/to/your/font.ttf")}
+    >>>                 "font": ImageFont.truetype("path/to/my/font.ttf")}
     >>>     for image in handwrite("我能吞下玻璃而不伤身体。", template):
     >>>         image.show()
     >>>
@@ -169,7 +169,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     >>>                              {"left": 100, "right": 100, "top": 300, "bottom": 300}],
     >>>                  "line_spacings": [150, 200],
     >>>                  "font_sizes": [100, 90],
-    >>>                  "font": ImageFont.truetype("path/to/your/font.ttf")}
+    >>>                  "font": ImageFont.truetype("path/to/my/font.ttf")}
     >>>     for image in handwrite2("我能吞下玻璃而不伤身体。\\n" * 30, template2):
     >>>         image.show()
     >>>
