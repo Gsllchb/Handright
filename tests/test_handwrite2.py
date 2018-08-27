@@ -13,13 +13,13 @@ THRESHOLD = 0.01
 
 
 def get_default_template2() -> dict:
-    template2 = {"backgrounds": (image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
-                                 image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')),
-                 "margins": ({"left": 200, "top": 376, "right": 200, "bottom": 400},
-                            {"left": 200, "top": 384, "right": 200, "bottom": 400}),
-                 "line_spacings": (144, 96),
-                 "font_sizes": (120, 80),
-                 "font_size_sigma": (0, 0),
+    template2 = {"backgrounds": [image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
+                                 image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')],
+                 "margins": [{"left": 200, "top": 376, "right": 200, "bottom": 400},
+                             {"left": 200, "top": 384, "right": 200, "bottom": 400}],
+                 "line_spacings": [144, 96],
+                 "font_sizes": [120, 80],
+                 "font_size_sigma": [0, 0],
                  "font": get_default_font(),
                  "color": "black"}
     return template2
