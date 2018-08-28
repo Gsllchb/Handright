@@ -36,7 +36,7 @@ pip install pylf
 ```
 
 
-## Quickstart
+## Quick Start
 ```python
 from PIL import Image, ImageFont
 from pylf import handwrite
