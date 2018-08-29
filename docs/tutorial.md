@@ -1,6 +1,12 @@
 # Tutorial
 本文讲述如何生成并打印出足以媲美真人手写的文档。
 
+### 查看API文档
+您可通过[pydoc](https://docs.python.org/3/library/pydoc.html)查看PyLf的完整API文档：
+```console
+python -m pydoc pylf
+```
+
 ### Windows用户须知
 Windows用户在使用本库的时候不能将代码直接写在脚本的顶层。而须写成如下形式：
 ```python
