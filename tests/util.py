@@ -28,7 +28,7 @@ def equal(image1, image2) -> bool:
     return image1.tobytes() == image2.tobytes()
 
 
-def get_path(path: str) -> str:
+def abs_path(path: str) -> str:
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
 
 
@@ -39,9 +39,9 @@ def get_short_text() -> str:
 
 def get_long_text() -> str:
     """ Return a article """
-    with open(get_path("texts/荷塘月色.txt"), encoding='utf-8') as f:
+    with open(abs_path("texts/荷塘月色.txt"), encoding='utf-8') as f:
         return f.read()
 
 
 def get_default_font():
-    return image_font.truetype(get_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
+    return image_font.truetype(abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))

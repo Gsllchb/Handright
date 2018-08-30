@@ -11,8 +11,8 @@ SEED = "PyLf"
 
 
 def test_handwrite2():
-    images = (image.open(get_path("backgrounds/even-odd-letter/村庄信笺纸.jpg")),
-              image.open(get_path("backgrounds/even-odd-letter/树信笺纸.jpg")))
+    images = (image.open(abs_path("backgrounds/even-odd-letter/村庄信笺纸.jpg")),
+              image.open(abs_path("backgrounds/even-odd-letter/树信笺纸.jpg")))
 
     template2 = {"backgrounds": [im.resize(size=(im.size[0] * 2, im.size[1] * 2)) for im in images],
                  "margins": ({"left": 40, "top": 200, "right": 30, "bottom": 560},
@@ -20,7 +20,7 @@ def test_handwrite2():
                  "line_spacings": (88, 88),
                  "font_sizes": (74, 74),
                  "font": get_default_font()}
-    for file in pathlib.Path(get_path("texts")).iterdir():
+    for file in pathlib.Path(abs_path("texts")).iterdir():
         print(file)
         with file.open(encoding='utf-8') as f:
             text = f.read()
