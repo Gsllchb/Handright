@@ -8,6 +8,7 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
 [![Build Status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
 
+[Tutorial][tutorial-link] |
 [Examples][examples-homepage] |
 [Release Notes][release-notes-link] |
 [Contributing][contributing-link]
@@ -20,7 +21,7 @@ Reveal the nature of Chinese handwriting and use it to implement beautiful, simp
 
 
 ## Algorithm & Implementation
-首先，在每个字形的横坐标、纵坐标以及字体大小三个自由度上使用高斯分布随机数做随机扰动。然后，对图片做像素级的随机扰动，使任意两个来自同一个汉字的字形不（在数学意义上）相似并具有手写特征。
+首先，在水平位置、竖直位置和字体大小三个自由度上，对每个字的整体做随机扰动。随后，在水平位置、竖直位置和旋转角度三个自由度上，对每个字的每个笔画做随机扰动。
 
 目前，PyLf基于[Pillow][Pillow-homepage]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
 
@@ -44,41 +45,35 @@ from multiprocessing import freeze_support  # 非Windows用户可删除此行
 
 
 def main():
-    template = {"background": Image.new(mode="RGB", size=(800, 1000), color="white"),
-                "box": (100, 200, 800 - 100, 1000 - 200),  # 设置在背景图上的手写区域
-                "font": ImageFont.truetype("path/to/my/font.ttf"),
-                "font_size": 50}
-    text = "我能吞下玻璃而不伤身体。"
-    images = handwrite(text, template)
-    for image in images:
+    template = {"background": Image.new(mode="1", size=(2000, 2000), color="white"),
+                "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
+                "line_spacing": 150,
+                "font_size": 100,
+                "font": ImageFont.truetype("path/to/my/font.ttf")}
+    for image in handwrite("我能吞下玻璃而不伤身体。", template):
         image.show()
 
 
 if __name__ == '__main__':
     freeze_support()  # 非Windows用户可删除此行
     main()
-    
+
 ```
-首先，您可通过使用[pydoc](https://docs.python.org/3/library/pydoc.html)来查看PyLf的完整API文档。
-
-如以上代码所示，函数`pylf.handwrite`是整个PyLf库的核心。而模板`template`则是本库的一个重要概念。模板包含着在手写模仿过程中所需的背景、排版设置、字体、随机性强度等参数。这些参数通常因背景图和用户书写习惯的不同而不同。一般情况下，在第一次使用某个背景时，您需要根据自己的手写特征创建特定的模板（往往需要经历不断的调试）。
-
-另外，请您在更新PyLf后及时参阅[Release Notes][release-notes-link]，以了解新版本的变化，特别是在主版本更新的时候（其中往往蕴含着不后向兼容的改动）。
+请参阅[Tutorial][tutorial-link]。
 
 
 ## Features
-|                         特性                        |               相关参数                                  |              
-| :------------------------------------------------- | :----------------------------------------------------- |
-| 设置背景                                            | background                                              |
-| 设置字体及其大小、颜色                                | font, font_size, color                                  |
-| 设置手写区域、行间距、字间距                           | box, line_spacing, word_spacing                         |
-| 调节排版随机化的强弱                                  | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
-| 调节页面随机扰动的强弱                                 | alpha                                                  |
-| 设置在行末不换行的字符集（如：'。', '》', ')', ']'）     | is_end_char                                             |
-| 设置在排版时只占其宽度一半的字符集（如：'，', '。', '！'） | is_half_char                                            |
-| 抗锯齿                                              | anti_aliasing                                           |
+|                         特性                        |               相关参数                                   |              
+| :-------------------------------------------------- | :------------------------------------------------------ |
+| 设置背景                                             | background                                              |
+| 设置字体及其大小、颜色                                 | font, font_size, color                                  |
+| 设置页边距、行间距、字间距                             | margin, line_spacing, word_spacing                       |
+| 调节排版随机化的强弱                                   | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
+| 调节笔画随机扰动的强弱                                 | perturb_x_sigma, perturb_y_sigma, perturb_theta_sigma   |
+| 设置在行末不换行的字符集（如：'。', '》', ')', ']'）     | is_end_char_fn                                          |
+| 设置在排版时只占其宽度一半的字符集（如：'，', '。', '！'） | is_half_char_fn                                         |
 | 并行加速                                             | worker                                                  |
-| 周期性模板                                           | template2（详情：pylf.handwrite2）                       |
+| 周期性模板                                            | template2（详情：pylf.handwrite2）                       |
 
 
 ## Examples
@@ -110,6 +105,7 @@ if __name__ == '__main__':
 __欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
 
 
+[tutorial-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: http://python-pillow.org/
 [examples-homepage]: https://github.com/Gsllchb/PyLf-examples
