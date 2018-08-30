@@ -16,8 +16,8 @@ _BLACK = 0
 
 _NEWLINE = '\n'
 
-_UNSIGNED_INT4 = 'L'
-_MAX_INT2_VALUE = 0xFFFF
+_UNSIGNED_INT32 = 'L'
+_MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
 
@@ -146,8 +146,8 @@ class _Renderer(object):
 def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
-    assert right <= _MAX_INT2_VALUE and lower < _MAX_INT2_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
-    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT4, flag=_STROKE_END)
+    assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
+    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32, flag=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
@@ -186,7 +186,7 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
     bitmap = canvas.load()
     width, height = canvas.size
     stroke = []
-    min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
+    min_x, min_y = _MAX_INT16_VALUE, _MAX_INT16_VALUE
     max_x, max_y = 0, 0
     for xy in strokes:
         if xy == _STROKE_END:
@@ -203,7 +203,7 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
                     continue
                 bitmap[new_x, new_y] = fill  # bitmap's index can be float
 
-            min_x, min_y = _MAX_INT2_VALUE, _MAX_INT2_VALUE
+            min_x, min_y = _MAX_INT16_VALUE, _MAX_INT16_VALUE
             max_x, max_y = 0, 0
             stroke.clear()
             continue
