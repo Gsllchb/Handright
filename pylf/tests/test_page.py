@@ -1,6 +1,5 @@
 # coding: utf-8
 from PIL import Image as image
-from PIL import ImageDraw as image_draw
 
 from pylf._page import Page
 
