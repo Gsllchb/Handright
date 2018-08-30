@@ -13,7 +13,7 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [Release Notes][release-notes-link] |
 [Contributing][contributing-link]
 
-![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/slogan.png)
+![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v2/out/slogan.png)
 
 
 ## Vision
