@@ -1,4 +1,6 @@
 # coding: utf-8
+import os
+
 import setuptools
 
 import pylf
@@ -20,7 +22,7 @@ SETUP_REQUIRES = ('setuptools>=38.6.0', )
 
 
 def get_long_description() -> str:
-    with open('README.md', encoding='utf-8') as f:
+    with open(abs_path("README.md"), encoding='utf-8') as f:
         return f.read()
 
 
@@ -41,6 +43,10 @@ def main():
                      keywords="simulating Chinese handwriting",
                      url="https://github.com/Gsllchb/PyLf",
                      zip_safe=True)
+
+
+def abs_path(path: str) -> str:
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
 
 
 if __name__ == '__main__':
