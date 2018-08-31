@@ -76,35 +76,6 @@ if __name__ == '__main__':
 | 周期性模板                                            | template2（详情：pylf.handwrite2）                       |
 
 
-## Examples
-**注**：以下某些图片中之所以缺少个别字，是因为所使用生成该图片的字体本身缺少这些字。
-
-* __《荷塘月色》__
-
-示例代码：[article.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/article.py)
-
-<div align="center">
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/0.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/1.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/2.png" width="436" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/荷塘月色/3.png" width="436" />
-</div>
-
-* __《从百草园到三味书屋》__
-
-示例代码：[even_odd.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/even_odd.py)
-
-<div align="center">
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/0.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/1.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/2.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/3.png" width="174" />
-    <img src="https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v1/out/从百草园到三味书屋/4.png" width="174" />
-</div>
-
-__欲查看更多示例请前往[PyLf-examples][examples-homepage]。__
-
-
 [tutorial-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
 [PIL-homepage]: http://www.pythonware.com/products/pil/
 [Pillow-homepage]: http://python-pillow.org/
