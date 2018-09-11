@@ -17,7 +17,8 @@ class NumericOrderedSet(object):
 
     def add(self, item) -> bool:
         """This has no effect and would return False if the item is already present"""
-        assert item != self._flag
+        if item == self._flag:
+            raise ValueError("'item' cannot be equal to 'flag'")
         if item in self._set:
             return False
         self._set.add(item)
