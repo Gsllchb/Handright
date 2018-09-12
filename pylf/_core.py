@@ -20,6 +20,8 @@ _UNSIGNED_INT32 = 'L'
 _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
+_MULTIPROCESSING_THRESHOLD = 2
+
 
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
               word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
@@ -35,10 +37,10 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
 
     renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
+    if len(pages) < _MULTIPROCESSING_THRESHOLD:
+        return list(map(renderer, pages))
     with multiprocessing.Pool(min(worker, len(pages))) as pool:
-        images = pool.map(renderer, pages)
-
-    return images
+        return pool.map(renderer, pages)
 
 
 def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
