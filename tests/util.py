@@ -3,7 +3,6 @@
 This module provides the essential functionality for the whole test suite.
 WARNING: Do not change the location of this file!
 """
-import math
 import os
 
 from PIL import ImageFont as image_font
