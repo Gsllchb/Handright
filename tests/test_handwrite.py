@@ -157,3 +157,9 @@ def test_seed():
     ims2 = handwrite(text, template, seed=seed)
     for im1, im2 in zip(ims1, ims2):
         assert im1 == im2
+
+
+def test_result():
+    assert isinstance(handwrite('', get_default_template()), list)
+    assert isinstance(handwrite(get_short_text(), get_default_template()), list)
+    assert isinstance(handwrite(get_long_text(), get_default_template()), list)

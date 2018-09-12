@@ -2,7 +2,7 @@
 from PIL import Image as image
 from PIL import ImageDraw as image_draw
 
-from pylf import *
+from pylf import handwrite2, handwrite
 from tests.util import *
 
 DEFAULT_WIDTH = 2000
@@ -71,3 +71,9 @@ def test_seed():
     ims2 = handwrite2(text, template2, seed=seed)
     for im1, im2 in zip(ims1, ims2):
         assert im1 == im2
+
+
+def test_result():
+    assert isinstance(handwrite2('', get_default_template2()), list)
+    assert isinstance(handwrite2(get_short_text(), get_default_template2()), list)
+    assert isinstance(handwrite2(get_long_text(), get_default_template2()), list)
