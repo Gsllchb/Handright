@@ -17,7 +17,7 @@ from PIL import Image
 
 from pylf import _core
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 
 _CHECK_PARAMETERS = True
 
