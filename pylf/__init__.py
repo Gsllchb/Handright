@@ -201,6 +201,8 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
                                          tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes))
 
     return _core.handwrite(text=text,
+                           # If template2["backgrounds"] is already a tuple, CPython will share it instead of creating
+                           # a new copy of it.
                            backgrounds=tuple(template2["backgrounds"]),
                            margins=tuple(template2["margins"]),
                            line_spacings=tuple(template2["line_spacings"]),
