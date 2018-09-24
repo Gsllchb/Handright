@@ -109,6 +109,8 @@ def _draw_char(draw, char: str, xy: tuple, font) -> int:
 
 class _Renderer(object):
     """A function-like object rendering the foreground that was drawn text and returning rendered image."""
+    __slots__ = ("_period", "_backgrounds", "_color", "_perturb_x_sigmas", "_perturb_y_sigmas", "_perturb_theta_sigmas",
+                 "_rand", "_hashed_seed")
 
     def __init__(self, backgrounds: tuple, color: str, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
                  perturb_theta_sigmas: tuple, seed):

@@ -5,6 +5,7 @@ import array
 
 class NumericOrderedSet(object):
     """This data structure only support storing numeric elements"""
+    __slots__ = ("_typecode", "_flag", "_array", "_set")
 
     def __init__(self, typecode: str, flag):
         """More info about typecode: https://docs.python.org/3/library/array.html#module-array
