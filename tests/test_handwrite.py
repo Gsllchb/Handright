@@ -152,11 +152,11 @@ def test_worker():
 def test_seed():
     text = get_short_text() * 50
     template = get_default_template()
-    seed = "PyLf"
-    ims1 = handwrite(text, template, seed=seed)
-    ims2 = handwrite(text, template, seed=seed)
-    for im1, im2 in zip(ims1, ims2):
-        assert im1 == im2
+    for seed in (0, "PyLf"):
+        ims1 = handwrite(text, template, seed=seed)
+        ims2 = handwrite(text, template, seed=seed)
+        for im1, im2 in zip(ims1, ims2):
+            assert im1 == im2
 
 
 def test_result():
