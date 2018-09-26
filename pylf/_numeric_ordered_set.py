@@ -4,8 +4,8 @@ import array
 from collections import abc
 
 
-# This class is intended not to inherit from abc.MutableSet.
-# Unfortunately, we cannot directly use abc.Collection here. Because, abc.Collection is added after Python3.5.
+# This class is intended to inherit from abc.Collection instead of abc.MutableSet. Unfortunately, we cannot directly
+# use abc.Collection here. Because, abc.Collection is added after Python3.5.
 class NumericOrderedSet(abc.Sized, abc.Iterable, abc.Container):
     """This data structure only support storing numeric elements"""
     __slots__ = ("_typecode", "_flag", "_array", "_set")
