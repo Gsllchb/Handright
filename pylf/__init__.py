@@ -11,6 +11,7 @@ Implementation: Develop on the top of Pillow and use multiprocessing for interna
 Homepage: https://github.com/Gsllchb/PyLf
 """
 import multiprocessing
+import numbers
 from collections import abc
 
 from PIL import Image
@@ -20,6 +21,8 @@ from pylf import _core
 __version__ = "2.1.0"
 
 _CHECK_PARAMETERS = True
+
+_MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1  # 65534
 
 # Chinese, English and other end chars
 _DEFAULT_END_CHARS = frozenset("，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉")
@@ -249,14 +252,13 @@ def _check_template2(template2) -> None:
         raise ValueError("'backgrounds', 'margins', 'line_spacings' and 'font_sizes' must have the same length")
 
     # check backgrounds
-    width_height_limit = 65534
     for b in template2["backgrounds"]:
         if not isinstance(b, Image.Image):
             raise TypeError("'background' must be Pillow's image")
-        if b.width > width_height_limit:
-            raise ValueError("The width of background cannot exceed {}".format(width_height_limit))
-        if b.height > width_height_limit:
-            raise ValueError("The height of background cannot exceed {}".format(width_height_limit))
+        if b.width > _MAX_IMAGE_SIDE_LENGTH:
+            raise ValueError("The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH))
+        if b.height > _MAX_IMAGE_SIDE_LENGTH:
+            raise ValueError("The height of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH))
 
     # check margins
     for m in template2["margins"]:
