@@ -7,7 +7,9 @@ from collections import abc
 # This class is intended to inherit from abc.Collection instead of abc.MutableSet. Unfortunately, we cannot directly
 # use abc.Collection here. Because, abc.Collection is added after Python3.5.
 class NumericOrderedSet(abc.Sized, abc.Iterable, abc.Container):
-    """This data structure only support storing numeric elements"""
+    """A mutable set storing numeric value that remembers its elements insert order. Note that, this data structure has
+    not implemented the full interfaces of abc.MutableSet or abc.Set. For simplicity, it only implements abc.Collection,
+    add method and other customized methods."""
     __slots__ = ("_typecode", "_flag", "_array", "_set")
 
     def __init__(self, typecode: str, flag):
