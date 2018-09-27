@@ -47,12 +47,6 @@ class NumericOrderedSet(abc.Sized, abc.Iterable, abc.Container):
     def __len__(self):
         return len(self._array)
 
-    def __eq__(self, other) -> bool:
-        return (type(self) == type(other)
-                and self._flag == other._flag
-                and self._typecode == other._typecode
-                and self._array == other._array)
-
     @property
     def typecode(self) -> str:
         return self._typecode
