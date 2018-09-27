@@ -14,7 +14,7 @@ import multiprocessing
 import numbers
 from collections import abc
 
-from PIL import Image
+from PIL import Image as image
 
 from pylf import _core
 
@@ -253,7 +253,7 @@ def _check_template2(template2) -> None:
 
     # check backgrounds
     for b in template2["backgrounds"]:
-        if not isinstance(b, Image.Image):
+        if not isinstance(b, image.Image):
             raise TypeError("'background' must be Pillow's image")
         if b.width > _MAX_IMAGE_SIDE_LENGTH:
             raise ValueError("The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH))
