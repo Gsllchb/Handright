@@ -28,8 +28,8 @@ class Page(object):
 
     @property
     def width(self) -> int:
-        return self.image.size[0]
+        return self.image.width
 
     @property
     def height(self) -> int:
-        return self.image.size[1]
+        return self.image.height
