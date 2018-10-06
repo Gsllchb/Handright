@@ -32,8 +32,6 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
                        line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
                        word_spacing_sigmas=word_spacing_sigmas, font=font, is_half_char_fn=is_half_char_fn,
                        is_end_char_fn=is_end_char_fn, seed=seed)
-    if not pages:
-        return pages
 
     renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
