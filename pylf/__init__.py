@@ -18,6 +18,7 @@ from PIL import Image as image
 
 from pylf import _core
 
+__all__ = ("handwrite", "handwrite2")
 __version__ = "2.1.0"
 
 _CHECK_PARAMETERS = True
