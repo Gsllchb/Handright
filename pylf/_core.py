@@ -20,7 +20,7 @@ _UNSIGNED_INT32_TYPECODE = 'L'
 _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
-_MULTIPROCESSING_THRESHOLD = 2
+_MP_THRESHOLD = 2
 
 
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
@@ -35,7 +35,7 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
 
     renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
-    if len(pages) < _MULTIPROCESSING_THRESHOLD:
+    if len(pages) < _MP_THRESHOLD:
         return list(map(renderer, pages))
     mp_context = multiprocessing.get_context()
     with mp_context.Pool(min(worker, len(pages))) as pool:
