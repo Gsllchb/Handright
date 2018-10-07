@@ -16,7 +16,7 @@ _BLACK = 0
 
 _NEWLINE = '\n'
 
-_UNSIGNED_INT32 = 'L'
+_UNSIGNED_INT32_TYPECODE = 'L'
 _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
@@ -153,7 +153,7 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
     assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
-    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32, privileged=_STROKE_END)
+    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32_TYPECODE, privileged=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
