@@ -37,7 +37,8 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
     if len(pages) < _MULTIPROCESSING_THRESHOLD:
         return list(map(renderer, pages))
-    with multiprocessing.Pool(min(worker, len(pages))) as pool:
+    mp_context = multiprocessing.get_context()
+    with mp_context.Pool(min(worker, len(pages))) as pool:
         return pool.map(renderer, pages)
 
 
