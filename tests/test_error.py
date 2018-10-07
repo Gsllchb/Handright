@@ -1,6 +1,6 @@
 # coding: utf-8
+import PIL.Image
 import pytest
-from PIL import Image as image
 
 from pylf import *
 from tests.util import *
@@ -14,7 +14,7 @@ THRESHOLD = 0.01
 
 
 def get_default_template() -> dict:
-    template = {"background": image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+    template = {"background": PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
                 "margin": {"left": 50, "top": 94, "right": 50, "bottom": 100},
                 "line_spacing": 36,
                 "font": get_default_font(),
@@ -24,8 +24,8 @@ def get_default_template() -> dict:
 
 
 def get_default_template2() -> dict:
-    template2 = {"backgrounds": (image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
-                                 image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')),
+    template2 = {"backgrounds": (PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
+                                 PIL.Image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')),
                  "margins": ({"left": 50, "top": 94, "right": 50, "bottom": 100},
                             {"left": 50, "top": 96, "right": 50, "bottom": 100}),
                  "line_spacings": (36, 24),

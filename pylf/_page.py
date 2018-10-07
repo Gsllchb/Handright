@@ -1,7 +1,7 @@
 # coding: utf-8
 """A wrapper for Pillow Image Object"""
-from PIL import Image as image
-from PIL import ImageDraw as image_draw
+import PIL.Image
+import PIL.ImageDraw
 
 
 # You may think dynamic attribute attachment is a more pythonic solution, but, at least here, actually a more
@@ -11,12 +11,12 @@ class Page(object):
     __slots__ = ("image", "num")
 
     def __init__(self, mode: str, size: tuple, color, num: int):
-        self.image = image.new(mode, size, color)
+        self.image = PIL.Image.new(mode, size, color)
         self.num = num
 
     @property
     def draw(self):
-        return image_draw.Draw(self.image)
+        return PIL.ImageDraw.Draw(self.image)
 
     @property
     def matrix(self):

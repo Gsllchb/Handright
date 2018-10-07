@@ -1,6 +1,6 @@
 # coding: utf-8
-from PIL import Image as image
-from PIL import ImageDraw as image_draw
+import PIL.Image
+import PIL.ImageDraw
 
 from pylf import handwrite2, handwrite
 from tests.util import *
@@ -13,8 +13,8 @@ THRESHOLD = 0.01
 
 
 def get_default_template2() -> dict:
-    template2 = {"backgrounds": [image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
-                                 image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')],
+    template2 = {"backgrounds": [PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color="white"),
+                                 PIL.Image.new(mode='RGBA', size=DEFAULT_SIZE, color='rgb(0, 128, 255)')],
                  "margins": [{"left": 200, "top": 376, "right": 200, "bottom": 400},
                              {"left": 200, "top": 384, "right": 200, "bottom": 400}],
                  "line_spacings": [144, 96],
@@ -26,7 +26,7 @@ def get_default_template2() -> dict:
 
 
 def test_one_background():
-    background = image.new(mode='RGB', size=DEFAULT_SIZE, color="white")
+    background = PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color="white")
     margin = {"left": 200, "top": 376, "right": 200, "bottom": 400}
     line_spacing = 144
     font = get_default_font()
@@ -54,7 +54,7 @@ def test_even_odd():
         standard_image = template2['backgrounds'][i].copy()
         xy = (template2['margins'][i]["left"],
               template2['margins'][i]["top"] + template2['line_spacings'][i] - template2["font_sizes"][i])
-        image_draw.Draw(standard_image).text(xy=xy, text=text, fill=template2['color'],
+        PIL.ImageDraw.Draw(standard_image).text(xy=xy, text=text, fill=template2['color'],
                                              font=template2['font'].font_variant(size=font_size))
         standard_images.append(standard_image)
 

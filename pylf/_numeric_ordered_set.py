@@ -1,15 +1,16 @@
 # coding: utf-8
 """A customized data structure for perturbation algorithm"""
 import array
-from collections import abc
+import collections.abc
 
 
-# This class is intended to inherit from abc.Collection instead of abc.MutableSet. Unfortunately, we cannot directly
-# use abc.Collection here. Because, abc.Collection is added after Python3.5.
-class NumericOrderedSet(abc.Sized, abc.Iterable, abc.Container):
+# This class is intended to inherit from collections.abc.Collection instead of collections.abc.MutableSet.
+# Unfortunately, we cannot directly use collections.abc.Collection here. Because, collections.abc.Collection is added
+# after Python3.5.
+class NumericOrderedSet(collections.abc.Sized, collections.abc.Iterable, collections.abc.Container):
     """A mutable set storing numeric value that remembers its elements insert order. Note that, this data structure has
-    not implemented the full interfaces of abc.MutableSet or abc.Set. For simplicity, it only implements abc.Collection,
-    add method and other customized methods."""
+    not implemented the full interfaces of collections.abc.MutableSet or collections.abc.Set. For simplicity, it only
+    implements collections.abc.Collection, add method and other customized methods."""
     __slots__ = ("_typecode", "_flag", "_array", "_set")
 
     def __init__(self, typecode: str, flag):

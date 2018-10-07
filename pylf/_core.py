@@ -4,7 +4,7 @@ import math
 import multiprocessing
 import random
 
-from PIL import ImageColor as image_color
+import PIL.ImageColor
 
 from pylf import _numeric_ordered_set as _nos
 from pylf import _page
@@ -139,7 +139,7 @@ class _Renderer(object):
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
-        fill = image_color.getcolor(self._color, page.image.mode)
+        fill = PIL.ImageColor.getcolor(self._color, page.image.mode)
 
         _draw_strokes(canvas, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma, rand=self._rand)
         return canvas

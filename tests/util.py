@@ -5,7 +5,7 @@ WARNING: Do not change the location of this file!
 """
 import os
 
-from PIL import ImageFont as image_font
+import PIL.ImageFont
 
 
 def diff_histogram(image1, image2) -> float:
@@ -43,4 +43,4 @@ def get_long_text() -> str:
 
 
 def get_default_font():
-    return image_font.truetype(abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
+    return PIL.ImageFont.truetype(abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))

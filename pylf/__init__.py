@@ -12,9 +12,9 @@ Homepage: https://github.com/Gsllchb/PyLf
 """
 import multiprocessing
 import numbers
-from collections import abc
+import collections.abc
 
-from PIL import Image as image
+import PIL.Image
 
 from pylf import _core
 
@@ -112,27 +112,27 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     """
     template2 = dict(template)
 
-    template2["backgrounds"] = (template["background"], )
-    template2["margins"] = (template["margin"], )
-    template2["line_spacings"] = (template["line_spacing"], )
-    template2["font_sizes"] = (template["font_size"], )
+    template2["backgrounds"] = (template["background"],)
+    template2["margins"] = (template["margin"],)
+    template2["line_spacings"] = (template["line_spacing"],)
+    template2["font_sizes"] = (template["font_size"],)
 
     if "word_spacing" in template:
-        template2["word_spacings"] = (template["word_spacing"], )
+        template2["word_spacings"] = (template["word_spacing"],)
 
     if "line_spacing_sigma" in template:
-        template2["line_spacing_sigmas"] = (template["line_spacing_sigma"], )
+        template2["line_spacing_sigmas"] = (template["line_spacing_sigma"],)
     if "font_size_sigma" in template:
-        template2["font_size_sigmas"] = (template["font_size_sigma"], )
+        template2["font_size_sigmas"] = (template["font_size_sigma"],)
     if "word_spacing_sigma" in template:
-        template2["word_spacing_sigmas"] = (template["word_spacing_sigma"], )
+        template2["word_spacing_sigmas"] = (template["word_spacing_sigma"],)
 
     if "perturb_x_sigma" in template:
-        template2["perturb_x_sigmas"] = (template["perturb_x_sigma"], )
+        template2["perturb_x_sigmas"] = (template["perturb_x_sigma"],)
     if "perturb_y_sigma" in template:
-        template2["perturb_y_sigmas"] = (template["perturb_y_sigma"], )
+        template2["perturb_y_sigmas"] = (template["perturb_y_sigma"],)
     if "perturb_theta_sigma" in template:
-        template2["perturb_theta_sigmas"] = (template["perturb_theta_sigma"], )
+        template2["perturb_theta_sigmas"] = (template["perturb_theta_sigma"],)
 
     return handwrite2(text, template2, worker=worker, seed=seed)
 
@@ -237,12 +237,12 @@ def _check_parameters(text, template2, worker, seed) -> None:
 
 
 def _check_text(text) -> None:
-    if not isinstance(text, abc.Iterable):
+    if not isinstance(text, collections.abc.Iterable):
         raise TypeError("'text' must be char Iterable")
 
 
 def _check_template2(template2) -> None:
-    if not isinstance(template2, abc.Mapping):
+    if not isinstance(template2, collections.abc.Mapping):
         raise TypeError("'template2' must be Mapping")
 
     length = len(template2["backgrounds"])
@@ -254,7 +254,7 @@ def _check_template2(template2) -> None:
 
     # check backgrounds
     for b in template2["backgrounds"]:
-        if not isinstance(b, image.Image):
+        if not isinstance(b, PIL.Image.Image):
             raise TypeError("'background' must be Pillow's Image")
         if b.width > _MAX_IMAGE_SIDE_LENGTH:
             raise ValueError("The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH))
@@ -324,7 +324,7 @@ def _check_template2(template2) -> None:
     # check *_fn
     for fn in ("is_half_char_fn", "is_end_char_fn"):
         if fn in template2:
-            if not isinstance(template2[fn], abc.Callable):
+            if not isinstance(template2[fn], collections.abc.Callable):
                 raise TypeError("'{}' must be Callable".format(fn))
 
 
@@ -336,5 +336,5 @@ def _check_worker(worker) -> None:
 
 
 def _check_seed(seed) -> None:
-    if not isinstance(seed, abc.Hashable):
+    if not isinstance(seed, collections.abc.Hashable):
         raise TypeError("'seed' must be Hashable")

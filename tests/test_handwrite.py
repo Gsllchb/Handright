@@ -2,8 +2,8 @@
 import copy
 import multiprocessing
 
-from PIL import Image as image
-from PIL import ImageDraw as image_draw
+import PIL.Image
+import PIL.ImageDraw
 
 from pylf import handwrite
 from tests.util import *
@@ -17,7 +17,7 @@ THRESHOLD = 0.01
 
 
 def get_default_template() -> dict:
-    template = {"background": image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
+    template = {"background": PIL.Image.new(mode='RGB', size=DEFAULT_SIZE, color=BACKGROUND_COLOR),
                 "margin": {"left": 200, "top": 376, "right": 200, "bottom": 400},
                 "line_spacing": 144,
                 "font": get_default_font(),
@@ -75,11 +75,11 @@ def test_mode_and_color():
     template = get_default_template()
     for mode in ('L', 'RGB'):
         for background_color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)'):
-            template['background'] = image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
+            template['background'] = PIL.Image.new(mode=mode, size=DEFAULT_SIZE, color=background_color)
             for color in ('rgb(0, 0, 0)', 'rgb(255, 0, 0)', 'rgb(255, 255, 255)'):
                 template['color'] = color
                 standard_image = template['background'].copy()
-                image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+                PIL.ImageDraw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                                      text=text, fill=color,
                                                      font=template['font'].font_variant(size=template['font_size']))
 
@@ -94,7 +94,7 @@ def test_font_size():
     template['color'] = 'black'
     for font_size in (1, 10, 30):
         standard_image = template['background'].copy()
-        image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+        PIL.ImageDraw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                              text=text, fill=template['color'],
                                              font=template['font'].font_variant(size=font_size))
 
@@ -112,7 +112,7 @@ def test_is_half_char_fn():
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+    PIL.ImageDraw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                                    text=('。' * 6 + '\n') * 5, fill=template['color'],
                                                    font=template['font'].font_variant(size=template['font_size']))
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
@@ -126,7 +126,7 @@ def test_is_end_char_fn():
     images = handwrite(text, template)
     assert len(images) == 1
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+    PIL.ImageDraw.Draw(standard_image).multiline_text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                                    text=('。' * 6 + '\n') * 5, fill=template['color'],
                                                    font=template['font'].font_variant(size=template['font_size']))
     assert diff_histogram(standard_image, images[0]) < THRESHOLD
@@ -137,7 +137,7 @@ def test_worker():
     template = get_default_template()
     template['color'] = 'rgb(0, 0, 0)'
     standard_image = template['background'].copy()
-    image_draw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
+    PIL.ImageDraw.Draw(standard_image).text(xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
                                          text=text, fill=template['color'],
                                          font=template['font'].font_variant(size=template['font_size']))
     cpu_count = multiprocessing.cpu_count()
