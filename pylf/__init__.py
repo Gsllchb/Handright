@@ -13,7 +13,7 @@ Homepage: https://github.com/Gsllchb/PyLf
 import multiprocessing
 
 from pylf import _core
-from pylf import _check_param
+from pylf import _check_params
 
 
 __all__ = ("handwrite", "handwrite2")
@@ -180,7 +180,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     >>>
     """
     if _CHECK_PARAMETERS:
-        _check_param.check_params(text, template2, worker, seed)
+        _check_params.check_params(text, template2, worker, seed)
 
     font_sizes = template2["font_sizes"]
 
