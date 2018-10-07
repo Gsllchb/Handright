@@ -104,8 +104,10 @@ def _check_template2(template2) -> None:
 
 
 def _check_worker(worker) -> None:
+    if worker is None:
+        return
     if not isinstance(worker, numbers.Integral):
-        raise TypeError("'worker' must be Integral")
+        raise TypeError("'worker' must be Integral or None")
     if worker <= 0:
         raise ValueError("'worker' must be at least 1")
 

@@ -31,7 +31,7 @@ _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
-def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
+def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> list:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -78,7 +78,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
 
             perturb_theta_sigma: The sigma of the gauss distribution of the rotation of strokes. Default: 0.07.
 
-        worker: The number of worker. Default: multiprocessing.cpu_count().
+        worker: The maximum number of concurrently running jobs. Default: multiprocessing.cpu_count().
 
         seed: The seed of internal random generators. Default: None.
 
@@ -133,7 +133,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     return handwrite2(text, template2, worker=worker, seed=seed)
 
 
-def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_count(), seed=None) -> list:
+def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> list:
     """The 'periodic' version of handwrite. See also handwrite().
     The parameters of handwrite2() and handwrite() are similar. The difference is that some of the parameters in the
     template of handwrite() are replaced with their plural form in template2. These 'plural' parameters become a
@@ -199,6 +199,9 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 32 for i in font_sizes))
     perturb_theta_sigmas = template2.get("perturb_theta_sigmas",
                                          tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes))
+
+    if worker is None:
+        worker = multiprocessing.cpu_count()
 
     return _core.handwrite(text=text,
                            # If template2["backgrounds"] is already a tuple, CPython will share it instead of creating
