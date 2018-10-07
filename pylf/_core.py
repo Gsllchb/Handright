@@ -152,12 +152,12 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
     assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
-    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32, flag=_STROKE_END)
+    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32, privileged=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
                 _dfs(bitmap, (x, y), strokes, bbox)
-                strokes.add_flag()
+                strokes.add(_STROKE_END)
     return strokes
 
 

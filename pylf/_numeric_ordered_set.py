@@ -11,29 +11,25 @@ class NumericOrderedSet(collections.abc.Sized, collections.abc.Iterable, collect
     """A mutable set storing numeric value that remembers its elements insert order. Note that, this data structure has
     not implemented the full interfaces of collections.abc.MutableSet or collections.abc.Set. For simplicity, it only
     implements collections.abc.Collection, add method and other customized methods."""
-    __slots__ = ("_typecode", "_flag", "_array", "_set")
+    __slots__ = ("_typecode", "_privileged", "_array", "_set")
 
-    def __init__(self, typecode: str, flag):
+    def __init__(self, typecode: str, privileged=None):
         """More info about typecode: https://docs.python.org/3/library/array.html#module-array
-        The value of flag must be within the typecode's range. Flag is invisible in set operations, but it will appear
-        in the ordered sequence."""
+        The value of privileged must be within the typecode's range. The privileged can be successfully added more than
+        one time to this data structure and appear more than one time in the ordered sequence."""
         self._typecode = typecode
-        self._flag = flag
+        self._privileged = privileged
         self._array = array.array(typecode)
         self._set = set()
 
     def add(self, item) -> bool:
-        """This has no effect and would return False if the item is already present"""
-        if item == self._flag:
-            raise ValueError("'item' cannot be equal to 'flag'")
-        if item in self._set:
+        """This has no effect and would return False if the item is not equal to privileged and already present.
+        Otherwise, it will adds the item and returns True."""
+        if item != self._privileged and item in self._set:
             return False
         self._set.add(item)
         self._array.append(item)
         return True
-
-    def add_flag(self) -> None:
-        self._array.append(self._flag)
 
     def __contains__(self, item) -> bool:
         return item in self._set
@@ -45,7 +41,8 @@ class NumericOrderedSet(collections.abc.Sized, collections.abc.Iterable, collect
         self._set.clear()
         self._array = array.array(self._typecode)
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """The length of ordered sequence"""
         return len(self._array)
 
     @property
@@ -53,5 +50,5 @@ class NumericOrderedSet(collections.abc.Sized, collections.abc.Iterable, collect
         return self._typecode
 
     @property
-    def flag(self):
-        return self._flag
+    def privileged(self):
+        return self._privileged
