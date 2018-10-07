@@ -67,7 +67,10 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
             font_size_sigma = font_size_sigmas[index % period]
             word_spacing_sigma = word_spacing_sigmas[index % period]
 
-            top, bottom, left, right = margin["top"], margin["bottom"], margin["left"], margin["right"]
+            top = margin["top"]
+            bottom = margin["bottom"]
+            left = margin["left"]
+            right = margin["right"]
 
             page = _page.Page(mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index)
             draw = page.draw
