@@ -9,7 +9,7 @@ import PIL.Image
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1  # 65534
 
 
-def check_param(text, template2, worker, seed) -> None:
+def check_params(text, template2, worker, seed) -> None:
     _check_text(text)
     _check_template2(template2)
     _check_worker(worker)

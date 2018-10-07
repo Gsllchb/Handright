@@ -180,7 +180,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = multiprocessing.cpu_
     >>>
     """
     if _CHECK_PARAMETERS:
-        _check_param.check_param(text, template2, worker, seed)
+        _check_param.check_params(text, template2, worker, seed)
 
     font_sizes = template2["font_sizes"]
 
