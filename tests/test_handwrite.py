@@ -39,28 +39,6 @@ def test_null_text():
     assert handwrite('', get_default_template()) == []
 
 
-def test_text_iterable():
-    template = get_default_template()
-
-    text = get_short_text()
-    ims1 = handwrite(text, template, seed=SEED)
-
-    text = list(get_short_text())
-    ims2 = handwrite(text, template, seed=SEED)
-    for im1, im2 in zip(ims1, ims2):
-        assert im1 == im2
-
-    text = tuple(get_short_text())
-    ims2 = handwrite(text, template, seed=SEED)
-    for im1, im2 in zip(ims1, ims2):
-        assert im1 == im2
-
-    text = (c for c in get_short_text())
-    ims2 = handwrite(text, template, seed=SEED)
-    for im1, im2 in zip(ims1, ims2):
-        assert im1 == im2
-
-
 def test_randomness():
     text = get_short_text()
     template = get_default_template()

@@ -35,7 +35,7 @@ def handwrite(text: str, template: dict, *, worker: int = multiprocessing.cpu_co
     """Handwrite the text with the parameters in the template.
 
     Args:
-        text: A char iterable.
+        text: A str.
 
         template: A dict-like object containing following parameters.
 

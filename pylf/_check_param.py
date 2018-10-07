@@ -17,8 +17,8 @@ def check_param(text, template2, worker, seed) -> None:
 
 
 def _check_text(text) -> None:
-    if not isinstance(text, collections.abc.Iterable):
-        raise TypeError("'text' must be char Iterable")
+    if not isinstance(text, str):
+        raise TypeError("'text' must be a str")
 
 
 def _check_template2(template2) -> None:
