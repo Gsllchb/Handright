@@ -54,8 +54,8 @@ def test_even_odd():
         standard_image = template2['backgrounds'][i].copy()
         xy = (template2['margins'][i]["left"],
               template2['margins'][i]["top"] + template2['line_spacings'][i] - template2["font_sizes"][i])
-        PIL.ImageDraw.Draw(standard_image).text(xy=xy, text=text, fill=template2['color'],
-                                             font=template2['font'].font_variant(size=font_size))
+        draw = PIL.ImageDraw.Draw(standard_image)
+        draw.text(xy=xy, text=text, fill=template2['color'], font=template2['font'].font_variant(size=font_size))
         standard_images.append(standard_image)
 
     images2 = handwrite2((text + '\n' * 8) * 6, template2)
