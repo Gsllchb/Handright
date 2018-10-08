@@ -78,8 +78,8 @@ def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> li
 
             perturb_theta_sigma: The sigma of the gauss distribution of the rotation of strokes. Default: 0.07.
 
-        worker: The maximum number of concurrently running jobs. Especially, when worker equals 1 or the number of
-        output image is 1, it will use a single-threaded algorithm instead. Default: multiprocessing.cpu_count().
+        worker: The maximum number of concurrently running jobs. Especially, when worker equals 1, it will use a
+        single-threaded algorithm instead. Default: multiprocessing.cpu_count().
 
         seed: The seed of internal random generators. Default: None.
 

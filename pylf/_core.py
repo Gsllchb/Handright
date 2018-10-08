@@ -20,8 +20,6 @@ _UNSIGNED_INT32_TYPECODE = 'L'
 _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
-_MP_THRESHOLD = 2
-
 
 def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
               word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
@@ -35,16 +33,16 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
 
     renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
-    if len(pages) < _MP_THRESHOLD or worker == 1:
+    if worker == 1:
         return list(map(renderer, pages))
     mp_context = multiprocessing.get_context()
-    with mp_context.Pool(min(worker, len(pages))) as pool:
+    with mp_context.Pool(worker) as pool:
         return pool.map(renderer, pages)
 
 
 def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
                line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
-               is_end_char_fn, seed) -> list:
+               is_end_char_fn, seed):
     assert (len(sizes) == len(margins) == len(line_spacings) == len(font_sizes) == len(word_spacings)
             == len(line_spacing_sigmas) == len(font_size_sigmas) == len(word_spacing_sigmas))
 
@@ -52,7 +50,6 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
     period = len(sizes)
 
     iterator = iter(text)
-    pages = []
     try:
         char = next(iterator)
         index = 0
@@ -93,13 +90,13 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
                         x += rand.gauss(dx, word_spacing_sigma)
                         char = next(iterator)
                     y += line_spacing
-                pages.append(page)
+                yield page
             except StopIteration:
-                pages.append(page)
+                yield page
                 raise StopIteration()
             index += 1
     except StopIteration:
-        return pages
+        pass
 
 
 def _draw_char(draw, char: str, xy: tuple, font) -> int:
