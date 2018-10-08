@@ -164,7 +164,7 @@ def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> 
     >>>                  "line_spacings": [150, 200],
     >>>                  "font_sizes": [100, 90],
     >>>                  "font": ImageFont.truetype("path/to/my/font.ttf")}
-    >>>     for image in handwrite2("我能吞下玻璃而不伤身体。\\n" * 30, template2):
+    >>>     for image in handwrite2("我能吞下玻璃而不伤身体。" * 30, template2):
     >>>         image.show()
     >>>
     """
