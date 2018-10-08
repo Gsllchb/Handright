@@ -89,10 +89,9 @@ def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> li
     Example:
     >>> from PIL import Image, ImageFont
     >>> from pylf import handwrite
-    >>> from multiprocessing import freeze_support  # Non-Windows users can delete this line
     >>>
     >>>
-    >>> def main():
+    >>> if __name__ == '__main__':
     >>>     template = {"background": Image.new(mode="1", size=(2000, 2000), color="white"),
     >>>                 "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
     >>>                 "line_spacing": 150,
@@ -100,11 +99,6 @@ def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> li
     >>>                 "font": ImageFont.truetype("path/to/my/font.ttf")}
     >>>     for image in handwrite("我能吞下玻璃而不伤身体。", template):
     >>>         image.show()
-    >>>
-    >>>
-    >>> if __name__ == '__main__':
-    >>>    freeze_support()  # Non-Windows users can delete this line
-    >>>    main()
     >>>
     """
     template2 = dict(template)
@@ -160,10 +154,9 @@ def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> 
     Example:
     >>> from PIL import Image, ImageFont
     >>> from pylf import handwrite2
-    >>> from multiprocessing import freeze_support  # Non-Windows users can delete this line
     >>>
     >>>
-    >>> def main():
+    >>> if __name__ == '__main__':
     >>>     template2 = {"backgrounds": [Image.new(mode="1", size=(2000, 2000), color="white"),
     >>>                                  Image.new(mode="RGB", size=(1000, 3000), color="green")],
     >>>                  "margins": [{"left": 150, "right": 150, "top": 200, "bottom": 200},
@@ -173,11 +166,6 @@ def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> 
     >>>                  "font": ImageFont.truetype("path/to/my/font.ttf")}
     >>>     for image in handwrite2("我能吞下玻璃而不伤身体。\\n" * 30, template2):
     >>>         image.show()
-    >>>
-    >>>
-    >>> if __name__ == '__main__':
-    >>>    freeze_support()  # Non-Windows users can delete this line
-    >>>    main()
     >>>
     """
     if _CHECK_PARAMETERS:
