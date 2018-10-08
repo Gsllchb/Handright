@@ -6,7 +6,6 @@
 * __`text`的类型改为仅可以为`str`__
 * 当`worker == 1`时，改为使用单线程算法。
 * `worker`改为可为`None`，此时`worker`取默认值。
-* 略微减小内存占用，略微提升性能
 * 提供更恰当的参数检查
 * Local multiprocessing context is used.
 
