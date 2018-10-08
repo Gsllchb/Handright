@@ -9,6 +9,7 @@
 * `worker`改为可为`None`，此时`worker`取默认值。
 * 提供更恰当的参数检查
 * Local multiprocessing context is used.
+* 细微修改示例代码
 
 
 ## v2.1.0 (2018-9-20)
