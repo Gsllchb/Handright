@@ -121,9 +121,8 @@ class _Renderer(object):
         self._perturb_y_sigmas = perturb_y_sigmas
         self._perturb_theta_sigmas = perturb_theta_sigmas
         self._rand = random.Random()
-        if seed is None:
-            self._hashed_seed = None
-        else:
+        self._hashed_seed = None
+        if seed is not None:
             self._hashed_seed = hash(seed)
 
     def __call__(self, page: _page.Page):
