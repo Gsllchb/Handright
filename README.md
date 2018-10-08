@@ -41,10 +41,9 @@ pip install pylf
 ```python
 from PIL import Image, ImageFont
 from pylf import handwrite
-from multiprocessing import freeze_support  # 非Windows用户可删除此行
 
 
-def main():
+if __name__ == '__main__':
     template = {"background": Image.new(mode="1", size=(2000, 2000), color="white"),
                 "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
                 "line_spacing": 150,
@@ -52,11 +51,6 @@ def main():
                 "font": ImageFont.truetype("path/to/my/font.ttf")}
     for image in handwrite("我能吞下玻璃而不伤身体。", template):
         image.show()
-
-
-if __name__ == '__main__':
-    freeze_support()  # 非Windows用户可删除此行
-    main()
 
 ```
 请参阅[Tutorial][tutorial-link]。

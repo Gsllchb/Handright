@@ -12,17 +12,10 @@ Windows用户在使用本库的时候不能将代码直接写在脚本的顶层�
 ```python
 from PIL import Image, ImageFont
 from pylf import handwrite
-from multiprocessing import freeze_support
-
-
-def main():
-    # write your code here
-    ...
 
 
 if __name__ == '__main__':
-    freeze_support()
-    main()
+    ...
     
 ```
 
