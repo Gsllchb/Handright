@@ -141,8 +141,8 @@ class _Renderer(object):
         canvas = self._backgrounds[page.num % self._period].copy()
         fill = PIL.ImageColor.getcolor(self._color, page.image.mode)
 
-        _draw_strokes(page.matrix, page.size, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma,
-                      rand=self._rand)
+        _draw_strokes(canvas.load(), canvas.size, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma,
+                      theta_sigma=theta_sigma, rand=self._rand)
         return canvas
 
 
@@ -185,18 +185,9 @@ def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_
     max_y = 0
     for xy in strokes:
         if xy == _STROKE_END:
-            center_x = (min_x + max_x) / 2
-            center_y = (min_y + max_y) / 2
-            dx = rand.gauss(0, x_sigma)
-            dy = rand.gauss(0, y_sigma)
-            theta = rand.gauss(0, theta_sigma)
-            for x, y in stroke:
-                new_x, new_y = _rotate(center_x, center_y, x, y, theta)
-                new_x += dx
-                new_y += dy
-                if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
-                    bitmap[new_x, new_y] = fill  # bitmap's index can be float
-
+            center = ((min_x + max_x) / 2, (min_y + max_y) / 2)
+            _draw_stroke(bitmap, size, stroke, center=center, fill=fill, x_sigma=x_sigma, y_sigma=y_sigma,
+                         theta_sigma=theta_sigma, rand=rand)
             min_x = _MAX_INT16_VALUE
             min_y = _MAX_INT16_VALUE
             max_x = 0
@@ -211,9 +202,22 @@ def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_
         stroke.append((x, y))
 
 
-def _rotate(center_x: float, center_y: float, x: float, y: float, theta: float) -> tuple:
-    new_x = (x - center_x) * math.cos(theta) + (y - center_y) * math.sin(theta) + center_x
-    new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y
+def _draw_stroke(bitmap, size: tuple, stroke: list, center: tuple, fill, x_sigma: float, y_sigma: float,
+                 theta_sigma: float, rand) -> None:
+    dx = rand.gauss(0, x_sigma)
+    dy = rand.gauss(0, y_sigma)
+    theta = rand.gauss(0, theta_sigma)
+    for x, y in stroke:
+        new_x, new_y = _rotate(center, x, y, theta)
+        new_x += dx
+        new_y += dy
+        if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
+            bitmap[new_x, new_y] = fill  # bitmap's index can be float
+
+
+def _rotate(center: tuple, x: float, y: float, theta: float) -> tuple:
+    new_x = (x - center[0]) * math.cos(theta) + (y - center[1]) * math.sin(theta) + center[0]
+    new_y = (y - center[1]) * math.cos(theta) - (x - center[0]) * math.sin(theta) + center[1]
     return new_x, new_y
 
 
