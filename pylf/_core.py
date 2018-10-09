@@ -212,7 +212,7 @@ def _draw_stroke(bitmap, size: tuple, stroke: list, center: tuple, fill, x_sigma
         new_x += dx
         new_y += dy
         if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
-            bitmap[new_x, new_y] = fill  # bitmap's index can be float
+            bitmap[int(new_x), int(new_y)] = fill  # bitmap's index can be float
 
 
 def _rotate(center: tuple, x: float, y: float, theta: float) -> tuple:
