@@ -176,14 +176,6 @@ def _extract_stroke(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox:
             stack.append((x + 1, y))
 
 
-def _xy(x: int, y: int) -> int:
-    return (x << 16) + y
-
-
-def _x_y(xy: int) -> tuple:
-    return xy >> 16, xy & 0xFFFF
-
-
 def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
                   theta_sigma: float, rand) -> None:
     stroke = []
@@ -223,3 +215,11 @@ def _rotate(center_x: float, center_y: float, x: float, y: float, theta: float) 
     new_x = (x - center_x) * math.cos(theta) + (y - center_y) * math.sin(theta) + center_x
     new_y = (y - center_y) * math.cos(theta) - (x - center_x) * math.sin(theta) + center_y
     return new_x, new_y
+
+
+def _xy(x: int, y: int) -> int:
+    return (x << 16) + y
+
+
+def _x_y(xy: int) -> tuple:
+    return xy >> 16, xy & 0xFFFF
