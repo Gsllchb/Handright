@@ -188,8 +188,10 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
     bitmap = canvas.load()
     width, height = canvas.size
     stroke = []
-    min_x, min_y = _MAX_INT16_VALUE, _MAX_INT16_VALUE
-    max_x, max_y = 0, 0
+    min_x = _MAX_INT16_VALUE
+    min_y = _MAX_INT16_VALUE
+    max_x = 0
+    max_y = 0
     for xy in strokes:
         if xy == _STROKE_END:
             center_x = (min_x + max_x) / 2
@@ -201,23 +203,20 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
                 new_x, new_y = _rotate(center_x, center_y, x, y, theta)
                 new_x += dx
                 new_y += dy
-                if new_x < 0 or new_x >= width or new_y < 0 or new_y >= height:
-                    continue
-                bitmap[new_x, new_y] = fill  # bitmap's index can be float
+                if 0 <= new_x < width and 0 <= new_y < height:
+                    bitmap[new_x, new_y] = fill  # bitmap's index can be float
 
-            min_x, min_y = _MAX_INT16_VALUE, _MAX_INT16_VALUE
-            max_x, max_y = 0, 0
+            min_x = _MAX_INT16_VALUE
+            min_y = _MAX_INT16_VALUE
+            max_x = 0
+            max_y = 0
             stroke.clear()
             continue
         x, y = _x_y(xy)
-        if x < min_x:
-            min_x = x
-        if x > max_x:
-            max_x = x
-        if y < min_y:
-            min_y = y
-        if y > max_y:
-            max_y = y
+        min_x = min(x, min_x)
+        max_x = max(x, max_x)
+        min_y = min(y, min_y)
+        max_y = max(y, max_y)
         stroke.append((x, y))
 
 
