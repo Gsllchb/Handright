@@ -141,7 +141,8 @@ class _Renderer(object):
         canvas = self._backgrounds[page.num % self._period].copy()
         fill = PIL.ImageColor.getcolor(self._color, page.image.mode)
 
-        _draw_strokes(canvas, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma, rand=self._rand)
+        _draw_strokes(page.matrix, page.size, strokes, fill, x_sigma=x_sigma, y_sigma=y_sigma, theta_sigma=theta_sigma,
+                      rand=self._rand)
         return canvas
 
 
@@ -183,10 +184,8 @@ def _x_y(xy: int) -> tuple:
     return xy >> 16, xy & 0xFFFF
 
 
-def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
+def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
                   theta_sigma: float, rand) -> None:
-    bitmap = canvas.load()
-    width, height = canvas.size
     stroke = []
     min_x = _MAX_INT16_VALUE
     min_y = _MAX_INT16_VALUE
@@ -203,7 +202,7 @@ def _draw_strokes(canvas, strokes: _nos.NumericOrderedSet, fill, x_sigma: float,
                 new_x, new_y = _rotate(center_x, center_y, x, y, theta)
                 new_x += dx
                 new_y += dy
-                if 0 <= new_x < width and 0 <= new_y < height:
+                if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
                     bitmap[new_x, new_y] = fill  # bitmap's index can be float
 
             min_x = _MAX_INT16_VALUE
