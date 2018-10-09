@@ -153,12 +153,12 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
-                _dfs(bitmap, (x, y), strokes, bbox)
+                _extract_stroke(bitmap, (x, y), strokes, bbox)
                 strokes.add(_STROKE_END)
     return strokes
 
 
-def _dfs(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> None:
+def _extract_stroke(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> None:
     """Helper function of _extract_strokes() which uses depth first search to find the pixels of a glyph."""
     left, upper, right, lower = bbox
     stack = []
