@@ -26,12 +26,12 @@ def handwrite(text: str, backgrounds: tuple, top_margins: tuple, bottom_margins:
               line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, color: str,
               is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
               perturb_theta_sigmas: tuple, worker: int, seed) -> list:
-    pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), top_margins=top_margins,
-                       bottom_margins=bottom_margins, left_margins=left_margins, right_margins=right_margins,
-                       line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
-                       line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
-                       word_spacing_sigmas=word_spacing_sigmas, font=font, is_half_char_fn=is_half_char_fn,
-                       is_end_char_fn=is_end_char_fn, seed=seed)
+    pages = _draw_pages(text=text, sizes=tuple(i.size for i in backgrounds), top_margins=top_margins,
+                        bottom_margins=bottom_margins, left_margins=left_margins, right_margins=right_margins,
+                        line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
+                        line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
+                        word_spacing_sigmas=word_spacing_sigmas, font=font, is_half_char_fn=is_half_char_fn,
+                        is_end_char_fn=is_end_char_fn, seed=seed)
 
     renderer = _Renderer(backgrounds=backgrounds, color=color, perturb_x_sigmas=perturb_x_sigmas,
                          perturb_y_sigmas=perturb_y_sigmas, perturb_theta_sigmas=perturb_theta_sigmas, seed=seed)
@@ -42,10 +42,10 @@ def handwrite(text: str, backgrounds: tuple, top_margins: tuple, bottom_margins:
         return pool.map(renderer, pages)
 
 
-def _draw_text(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
-               right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
-               line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
-               is_end_char_fn, seed):
+def _draw_pages(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
+                right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
+                line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
+                is_end_char_fn, seed):
     assert (len(sizes) == len(top_margins) == len(bottom_margins) == len(left_margins) == len(right_margins)
             == len(line_spacings) == len(font_sizes) == len(word_spacings) == len(line_spacing_sigmas)
             == len(font_size_sigmas) == len(word_spacing_sigmas))
