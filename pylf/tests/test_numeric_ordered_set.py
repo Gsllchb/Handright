@@ -3,7 +3,7 @@ import pytest
 
 from pylf import _numeric_ordered_set as _nos
 
-UNSIGNED_INT32 = 'L'
+UNSIGNED_INT32 = "L"
 MAX_UNSIGNED_INT32_VALUE = 0xFFFFFFFF
 
 
@@ -28,7 +28,7 @@ def test_order_with_privileged():
     nos.add(privileged)
     for i in seq2:
         nos.add(i)
-    assert list(nos) == seq1 + [privileged, ] + seq2
+    assert list(nos) == seq1 + [privileged] + seq2
 
 
 def test_order():

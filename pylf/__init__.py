@@ -33,11 +33,13 @@ _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
-def handwrite(text: str,
-              template: Mapping[str, Any],
-              *,
-              worker: Optional[int] = None,
-              seed: Optional[Hashable] = None) -> List[PIL.Image.Image]:
+def handwrite(
+    text: str,
+    template: Mapping[str, Any],
+    *,
+    worker: Optional[int] = None,
+    seed: Optional[Hashable] = None
+) -> List[PIL.Image.Image]:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -134,11 +136,13 @@ def handwrite(text: str,
     return handwrite2(text, template2, worker=worker, seed=seed)
 
 
-def handwrite2(text: str,
-               template2: Mapping[str, Any],
-               *,
-               worker: Optional[int] = None,
-               seed: Optional[Hashable] = None) -> List[PIL.Image.Image]:
+def handwrite2(
+    text: str,
+    template2: Mapping[str, Any],
+    *,
+    worker: Optional[int] = None,
+    seed: Optional[Hashable] = None
+) -> List[PIL.Image.Image]:
     """The 'periodic' version of handwrite. See also handwrite().
     The parameters of handwrite2() and handwrite() are similar. The difference is that some of the parameters in the
     template of handwrite() are replaced with their plural form in template2. These 'plural' parameters become a
@@ -183,45 +187,60 @@ def handwrite2(text: str,
 
     font_sizes = template2["font_sizes"]
 
-    word_spacings = template2.get("word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes))
+    word_spacings = template2.get(
+        "word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes)
+    )
 
-    line_spacing_sigmas = template2.get("line_spacing_sigmas", tuple(i / 32 for i in font_sizes))
-    font_size_sigmas = template2.get("font_size_sigmas", tuple(i / 64 for i in font_sizes))
-    word_spacing_sigmas = template2.get("word_spacing_sigmas", tuple(i / 32 for i in font_sizes))
+    line_spacing_sigmas = template2.get(
+        "line_spacing_sigmas", tuple(i / 32 for i in font_sizes)
+    )
+    font_size_sigmas = template2.get(
+        "font_size_sigmas", tuple(i / 64 for i in font_sizes)
+    )
+    word_spacing_sigmas = template2.get(
+        "word_spacing_sigmas", tuple(i / 32 for i in font_sizes)
+    )
 
     color = template2.get("color", _DEFAULT_COLOR)
 
     is_half_char_fn = template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN)
     is_end_char_fn = template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN)
 
-    perturb_x_sigmas = template2.get("perturb_x_sigmas", tuple(i / 32 for i in font_sizes))
-    perturb_y_sigmas = template2.get("perturb_y_sigmas", tuple(i / 32 for i in font_sizes))
-    perturb_theta_sigmas = template2.get("perturb_theta_sigmas",
-                                         tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes))
+    perturb_x_sigmas = template2.get(
+        "perturb_x_sigmas", tuple(i / 32 for i in font_sizes)
+    )
+    perturb_y_sigmas = template2.get(
+        "perturb_y_sigmas", tuple(i / 32 for i in font_sizes)
+    )
+    perturb_theta_sigmas = template2.get(
+        "perturb_theta_sigmas", tuple(_DEFAULT_PERTURB_THETA_SIGMA for _ in font_sizes)
+    )
 
     if worker is None:
         worker = multiprocessing.cpu_count()
 
-    return _core.handwrite(text=text,
-                           # If template2["backgrounds"] is already a tuple, CPython will share it instead of creating
-                           # a new copy of it.
-                           backgrounds=tuple(template2["backgrounds"]),
-                           top_margins=tuple(m["top"] for m in template2["margins"]),
-                           bottom_margins=tuple(m["bottom"] for m in template2["margins"]),
-                           left_margins=tuple(m["left"] for m in template2["margins"]),
-                           right_margins=tuple(m["right"] for m in template2["margins"]),
-                           line_spacings=tuple(template2["line_spacings"]),
-                           font_sizes=tuple(font_sizes),
-                           word_spacings=tuple(word_spacings),
-                           line_spacing_sigmas=tuple(line_spacing_sigmas),
-                           font_size_sigmas=tuple(font_size_sigmas),
-                           word_spacing_sigmas=tuple(word_spacing_sigmas),
-                           font=template2["font"],
-                           color=color,
-                           is_half_char_fn=is_half_char_fn,
-                           is_end_char_fn=is_end_char_fn,
-                           perturb_x_sigmas=tuple(perturb_x_sigmas),
-                           perturb_y_sigmas=tuple(perturb_y_sigmas),
-                           perturb_theta_sigmas=tuple(perturb_theta_sigmas),
-                           worker=worker,
-                           seed=seed)
+    return _core.handwrite(
+        text=text,
+        # If template2["backgrounds"] is already a tuple, CPython will share it instead of creating
+        # a new copy of it.
+        backgrounds=tuple(template2["backgrounds"]),
+        top_margins=tuple(m["top"] for m in template2["margins"]),
+        bottom_margins=tuple(m["bottom"] for m in template2["margins"]),
+        left_margins=tuple(m["left"] for m in template2["margins"]),
+        right_margins=tuple(m["right"] for m in template2["margins"]),
+        line_spacings=tuple(template2["line_spacings"]),
+        font_sizes=tuple(font_sizes),
+        word_spacings=tuple(word_spacings),
+        line_spacing_sigmas=tuple(line_spacing_sigmas),
+        font_size_sigmas=tuple(font_size_sigmas),
+        word_spacing_sigmas=tuple(word_spacing_sigmas),
+        font=template2["font"],
+        color=color,
+        is_half_char_fn=is_half_char_fn,
+        is_end_char_fn=is_end_char_fn,
+        perturb_x_sigmas=tuple(perturb_x_sigmas),
+        perturb_y_sigmas=tuple(perturb_y_sigmas),
+        perturb_theta_sigmas=tuple(perturb_theta_sigmas),
+        worker=worker,
+        seed=seed,
+    )

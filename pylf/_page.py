@@ -10,6 +10,7 @@ import PIL.ImageDraw
 # problematic one.
 class Page(object):
     """A simple wrapper for Pillow Image Object"""
+
     __slots__ = ("image", "num")
 
     def __init__(self, mode: str, size: Tuple[int, int], color, num: int) -> None:
