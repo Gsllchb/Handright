@@ -3,7 +3,9 @@
 import math
 import multiprocessing
 import random
+from typing import *
 
+import PIL.Image
 import PIL.ImageColor
 
 from pylf import _numeric_ordered_set as _nos
@@ -21,11 +23,27 @@ _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
 
-def handwrite(text: str, backgrounds: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
-              right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
-              line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, color: str,
-              is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
-              perturb_theta_sigmas: tuple, worker: int, seed) -> list:
+def handwrite(text: str,
+              backgrounds: Sequence[PIL.Image.Image],
+              top_margins: Sequence[int],
+              bottom_margins: Sequence[int],
+              left_margins: Sequence[int],
+              right_margins: Sequence[int],
+              line_spacings: Sequence[int],
+              font_sizes: Sequence[int],
+              word_spacings: Sequence[int],
+              line_spacing_sigmas: Sequence[float],
+              font_size_sigmas: Sequence[float],
+              word_spacing_sigmas: Sequence[float],
+              font,
+              color: str,
+              is_half_char_fn: Callable[[str], bool],
+              is_end_char_fn: Callable[[str], bool],
+              perturb_x_sigmas: Sequence[float],
+              perturb_y_sigmas: Sequence[float],
+              perturb_theta_sigmas: Sequence[float],
+              worker: int,
+              seed: Optional[Hashable]) -> List[PIL.Image.Image]:
     pages = _draw_pages(text=text, sizes=tuple(i.size for i in backgrounds), top_margins=top_margins,
                         bottom_margins=bottom_margins, left_margins=left_margins, right_margins=right_margins,
                         line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
@@ -42,10 +60,22 @@ def handwrite(text: str, backgrounds: tuple, top_margins: tuple, bottom_margins:
         return pool.map(renderer, pages)
 
 
-def _draw_pages(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
-                right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
-                line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
-                is_end_char_fn, seed):
+def _draw_pages(text: str,
+                sizes: Sequence[Tuple[int, int]],
+                top_margins: Sequence[int],
+                bottom_margins: Sequence[int],
+                left_margins: Sequence[int],
+                right_margins: Sequence[int],
+                line_spacings: Sequence[int],
+                font_sizes: Sequence[int],
+                word_spacings: Sequence[int],
+                line_spacing_sigmas: Sequence[float],
+                font_size_sigmas: Sequence[float],
+                word_spacing_sigmas: Sequence[float],
+                font,
+                is_half_char_fn: Callable[[str], bool],
+                is_end_char_fn: Callable[[str], bool],
+                seed: Optional[Hashable]) -> Iterator[_page.Page]:
     assert (len(sizes) == len(top_margins) == len(bottom_margins) == len(left_margins) == len(right_margins)
             == len(line_spacings) == len(font_sizes) == len(word_spacings) == len(line_spacing_sigmas)
             == len(font_size_sigmas) == len(word_spacing_sigmas))
@@ -79,7 +109,7 @@ def _draw_pages(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tup
             y = top + line_spacing - font_size
             try:
                 while y < height - bottom - font_size:
-                    x = left
+                    x = float(left)
                     while True:
                         if char == _NEWLINE:
                             char = next(iterator)
@@ -100,7 +130,7 @@ def _draw_pages(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tup
         pass
 
 
-def _draw_char(draw, char: str, xy: tuple, font) -> int:
+def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     """Draws a single char with the parameters and white color, and returns the offset."""
     assert len(char) == 1
     draw.text(xy, char, fill=_WHITE, font=font)
@@ -112,8 +142,13 @@ class _Renderer(object):
     __slots__ = ("_period", "_backgrounds", "_color", "_perturb_x_sigmas", "_perturb_y_sigmas", "_perturb_theta_sigmas",
                  "_rand", "_hashed_seed")
 
-    def __init__(self, backgrounds: tuple, color: str, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
-                 perturb_theta_sigmas: tuple, seed):
+    def __init__(self,
+                 backgrounds: Sequence[PIL.Image.Image],
+                 color: str,
+                 perturb_x_sigmas: Sequence[float],
+                 perturb_y_sigmas: Sequence[float],
+                 perturb_theta_sigmas: Sequence[float],
+                 seed: Optional[Hashable]) -> None:
         assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
         self._period = len(backgrounds)
         self._backgrounds = backgrounds
@@ -126,14 +161,14 @@ class _Renderer(object):
         if seed is not None:
             self._hashed_seed = hash(seed)
 
-    def __call__(self, page: _page.Page):
+    def __call__(self, page: _page.Page) -> PIL.Image.Image:
         if self._hashed_seed is None:
             self._rand.seed()  # avoid different processes sharing the same random state
         else:
             self._rand.seed(a=self._hashed_seed + page.num)
         return self._perturb_and_merge(page)
 
-    def _perturb_and_merge(self, page: _page.Page):
+    def _perturb_and_merge(self, page: _page.Page) -> PIL.Image.Image:
         strokes = _extract_strokes(page.matrix, page.image.getbbox())
 
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
@@ -147,7 +182,7 @@ class _Renderer(object):
         return canvas
 
 
-def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
+def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]) -> _nos.NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
     assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE  # reserve 0xFFFFFFFF as _STROKE_END
@@ -160,7 +195,10 @@ def _extract_strokes(bitmap, bbox: tuple) -> _nos.NumericOrderedSet:
     return strokes
 
 
-def _extract_stroke(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox: tuple) -> None:
+def _extract_stroke(bitmap,
+                    start: Tuple[int, int],
+                    strokes: _nos.NumericOrderedSet,
+                    bbox: Tuple[int, int, int, int]) -> None:
     """Helper function of _extract_strokes() which uses depth first search to find the pixels of a glyph."""
     left, upper, right, lower = bbox
     stack = []
@@ -177,8 +215,14 @@ def _extract_stroke(bitmap, start: tuple, strokes: _nos.NumericOrderedSet, bbox:
             stack.append((x + 1, y))
 
 
-def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_sigma: float, y_sigma: float,
-                  theta_sigma: float, rand) -> None:
+def _draw_strokes(bitmap,
+                  size: Tuple[int, int],
+                  strokes: _nos.NumericOrderedSet,
+                  fill,
+                  x_sigma: float,
+                  y_sigma: float,
+                  theta_sigma: float,
+                  rand: random.Random) -> None:
     stroke = []
     min_x = _MAX_INT16_VALUE
     min_y = _MAX_INT16_VALUE
@@ -203,8 +247,15 @@ def _draw_strokes(bitmap, size: tuple, strokes: _nos.NumericOrderedSet, fill, x_
         stroke.append((x, y))
 
 
-def _draw_stroke(bitmap, size: tuple, stroke: list, center: tuple, fill, x_sigma: float, y_sigma: float,
-                 theta_sigma: float, rand) -> None:
+def _draw_stroke(bitmap,
+                 size: Tuple[int, int],
+                 stroke: Sequence[Tuple[int, int]],
+                 center: Tuple[float, float],
+                 fill,
+                 x_sigma: float,
+                 y_sigma: float,
+                 theta_sigma: float,
+                 rand: random.Random) -> None:
     dx = rand.gauss(0, x_sigma)
     dy = rand.gauss(0, y_sigma)
     theta = rand.gauss(0, theta_sigma)
@@ -216,7 +267,7 @@ def _draw_stroke(bitmap, size: tuple, stroke: list, center: tuple, fill, x_sigma
             bitmap[int(new_x), int(new_y)] = fill
 
 
-def _rotate(center: tuple, x: float, y: float, theta: float) -> tuple:
+def _rotate(center: Tuple[float, float], x: float, y: float, theta: float) -> Tuple[float, float]:
     new_x = (x - center[0]) * math.cos(theta) + (y - center[1]) * math.sin(theta) + center[0]
     new_y = (y - center[1]) * math.cos(theta) - (x - center[0]) * math.sin(theta) + center[1]
     return new_x, new_y
@@ -226,5 +277,5 @@ def _xy(x: int, y: int) -> int:
     return (x << 16) + y
 
 
-def _x_y(xy: int) -> tuple:
+def _x_y(xy: int) -> Tuple[int, int]:
     return xy >> 16, xy & 0xFFFF

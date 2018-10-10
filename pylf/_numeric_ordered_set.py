@@ -13,7 +13,7 @@ class NumericOrderedSet(collections.abc.Sized, collections.abc.Iterable, collect
     implements collections.abc.Collection, add method and other customized methods."""
     __slots__ = ("_typecode", "_privileged", "_array", "_set")
 
-    def __init__(self, typecode: str, privileged=None):
+    def __init__(self, typecode: str, privileged=None) -> None:
         """More info about typecode: https://docs.python.org/3/library/array.html#module-array
         The value of privileged must be within the typecode's range. The privileged can be successfully added more than
         one time to this data structure and appear more than one time in the ordered sequence."""

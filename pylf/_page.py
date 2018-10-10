@@ -1,5 +1,7 @@
 # coding: utf-8
 """A wrapper for Pillow Image Object"""
+from typing import *
+
 import PIL.Image
 import PIL.ImageDraw
 
@@ -10,7 +12,7 @@ class Page(object):
     """A simple wrapper for Pillow Image Object"""
     __slots__ = ("image", "num")
 
-    def __init__(self, mode: str, size: tuple, color, num: int):
+    def __init__(self, mode: str, size: Tuple[int, int], color, num: int) -> None:
         self.image = PIL.Image.new(mode, size, color)
         self.num = num
 
@@ -23,7 +25,7 @@ class Page(object):
         return self.image.load()
 
     @property
-    def size(self) -> tuple:
+    def size(self) -> Tuple[int, int]:
         return self.image.size
 
     @property

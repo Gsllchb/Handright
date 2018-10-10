@@ -5,7 +5,6 @@ import numbers
 
 import PIL.Image
 
-
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1  # 65534
 
 
@@ -99,7 +98,7 @@ def _check_template2(template2) -> None:
 
     # check *_fn
     for fn in ("is_half_char_fn", "is_end_char_fn"):
-        if fn in template2 and not isinstance(template2[fn], collections.abc.Callable):
+        if fn in template2 and not callable(template2[fn]):
             raise TypeError("'{}' must be Callable".format(fn))
 
 

@@ -11,9 +11,12 @@ Implementation: Develop on the top of Pillow and use multiprocessing for interna
 Homepage: https://github.com/Gsllchb/PyLf
 """
 import multiprocessing
+from typing import *
 
-from pylf import _core
+import PIL.Image
+
 from pylf import _check_params
+from pylf import _core
 
 __all__ = ("handwrite", "handwrite2")
 __version__ = "2.1.0"
@@ -30,7 +33,11 @@ _DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
-def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> list:
+def handwrite(text: str,
+              template: Mapping[str, Any],
+              *,
+              worker: Optional[int] = None,
+              seed: Optional[Hashable] = None) -> List[PIL.Image.Image]:
     """Handwrite the text with the parameters in the template.
 
     Args:
@@ -127,7 +134,11 @@ def handwrite(text: str, template: dict, *, worker: int = None, seed=None) -> li
     return handwrite2(text, template2, worker=worker, seed=seed)
 
 
-def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> list:
+def handwrite2(text: str,
+               template2: Mapping[str, Any],
+               *,
+               worker: Optional[int] = None,
+               seed: Optional[Hashable] = None) -> List[PIL.Image.Image]:
     """The 'periodic' version of handwrite. See also handwrite().
     The parameters of handwrite2() and handwrite() are similar. The difference is that some of the parameters in the
     template of handwrite() are replaced with their plural form in template2. These 'plural' parameters become a
