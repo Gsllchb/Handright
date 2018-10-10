@@ -7,6 +7,7 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [![gitter](https://badges.gitter.im/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 [![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
 [![Build Status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 [Tutorial][tutorial-link] |
 [Examples][examples-homepage] |
