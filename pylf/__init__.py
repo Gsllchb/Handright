@@ -101,7 +101,7 @@ def handwrite(
         equals 1, it will use a single-threaded algorithm instead. Default:
         multiprocessing.cpu_count().
 
-        seed: The seed of internal random generators. Default: None.
+        seed: The seed for internal random generators. Default: None.
 
     Returns:
         A list of drawn images with the same size and mode as background image.
