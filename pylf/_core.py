@@ -93,10 +93,8 @@ def _draw_text(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tupl
                         x += rand.gauss(dx, word_spacing_sigma)
                         char = next(iterator)
                     y += line_spacing
+            finally:
                 yield page
-            except StopIteration:
-                yield page
-                raise StopIteration()
             index += 1
     except StopIteration:
         pass
