@@ -18,17 +18,21 @@ ___A lightweight Python library for simulating Chinese handwriting___
 
 
 ## Vision
-Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and easy-to-use interfaces.
+Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and
+easy-to-use interfaces.
 
 
 ## Algorithm & Implementation
-首先，在水平位置、竖直位置和字体大小三个自由度上，对每个字的整体做随机扰动。随后，在水平位置、竖直位置和旋转角度三个自由度上，对每个字的每个笔画做随机扰动。
+首先，在水平位置、竖直位置和字体大小三个自由度上，对每个字的整体做随机扰动。随后，在水平位置、竖直位置
+和旋转角度三个自由度上，对每个字的每个笔画做随机扰动。
 
-目前，PyLf基于[Pillow][Pillow-homepage]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
+目前，PyLf基于[Pillow][Pillow-homepage]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)
+做并行加速。
 
 
 ## Installation
-由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，因此如若您已安装[PIL][PIL-homepage]，请先**手动卸载**：
+由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，因此如若您已安装
+[PIL][PIL-homepage]，请先**手动卸载**：
 ```console
 pip uninstall PIL
 ```
