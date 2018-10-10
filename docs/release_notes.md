@@ -3,6 +3,7 @@
 
 
 ## unreleased
+* __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)的支持__
 * __`text`的类型改为仅可以为`str`__
 * 去除示例代码中的`freeze_support()`。
 * 当`worker == 1`时，改为使用单线程算法。
