@@ -15,7 +15,6 @@ import multiprocessing
 from pylf import _core
 from pylf import _check_params
 
-
 __all__ = ("handwrite", "handwrite2")
 __version__ = "2.1.0"
 
@@ -196,7 +195,10 @@ def handwrite2(text: str, template2: dict, *, worker: int = None, seed=None) -> 
                            # If template2["backgrounds"] is already a tuple, CPython will share it instead of creating
                            # a new copy of it.
                            backgrounds=tuple(template2["backgrounds"]),
-                           margins=tuple(template2["margins"]),
+                           top_margins=tuple(m["top"] for m in template2["margins"]),
+                           bottom_margins=tuple(m["bottom"] for m in template2["margins"]),
+                           left_margins=tuple(m["left"] for m in template2["margins"]),
+                           right_margins=tuple(m["right"] for m in template2["margins"]),
                            line_spacings=tuple(template2["line_spacings"]),
                            font_sizes=tuple(font_sizes),
                            word_spacings=tuple(word_spacings),

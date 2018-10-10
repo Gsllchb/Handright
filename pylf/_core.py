@@ -21,11 +21,13 @@ _MAX_INT16_VALUE = 0xFFFF
 _STROKE_END = 0xFFFFFFFF
 
 
-def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple,
-              word_spacings: tuple, line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple,
-              font, color: str, is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
+def handwrite(text: str, backgrounds: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
+              right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
+              line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, color: str,
+              is_half_char_fn, is_end_char_fn, perturb_x_sigmas: tuple, perturb_y_sigmas: tuple,
               perturb_theta_sigmas: tuple, worker: int, seed) -> list:
-    pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), margins=margins,
+    pages = _draw_text(text=text, sizes=tuple(i.size for i in backgrounds), top_margins=top_margins,
+                       bottom_margins=bottom_margins, left_margins=left_margins, right_margins=right_margins,
                        line_spacings=line_spacings, font_sizes=font_sizes, word_spacings=word_spacings,
                        line_spacing_sigmas=line_spacing_sigmas, font_size_sigmas=font_size_sigmas,
                        word_spacing_sigmas=word_spacing_sigmas, font=font, is_half_char_fn=is_half_char_fn,
@@ -40,11 +42,13 @@ def handwrite(text: str, backgrounds: tuple, margins: tuple, line_spacings: tupl
         return pool.map(renderer, pages)
 
 
-def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
+def _draw_text(text: str, sizes: tuple, top_margins: tuple, bottom_margins: tuple, left_margins: tuple,
+               right_margins: tuple, line_spacings: tuple, font_sizes: tuple, word_spacings: tuple,
                line_spacing_sigmas: tuple, font_size_sigmas: tuple, word_spacing_sigmas: tuple, font, is_half_char_fn,
                is_end_char_fn, seed):
-    assert (len(sizes) == len(margins) == len(line_spacings) == len(font_sizes) == len(word_spacings)
-            == len(line_spacing_sigmas) == len(font_size_sigmas) == len(word_spacing_sigmas))
+    assert (len(sizes) == len(top_margins) == len(bottom_margins) == len(left_margins) == len(right_margins)
+            == len(line_spacings) == len(font_sizes) == len(word_spacings) == len(line_spacing_sigmas)
+            == len(font_size_sigmas) == len(word_spacing_sigmas))
 
     rand = random.Random(x=seed)
     period = len(sizes)
@@ -55,7 +59,11 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
         index = 0
         while True:
             width, height = sizes[index % period]
-            margin = margins[index % period]
+
+            top = top_margins[index % period]
+            bottom = bottom_margins[index % period]
+            left = left_margins[index % period]
+            right = right_margins[index % period]
 
             line_spacing = line_spacings[index % period]
             font_size = font_sizes[index % period]
@@ -64,11 +72,6 @@ def _draw_text(text: str, sizes: tuple, margins: tuple, line_spacings: tuple, fo
             line_spacing_sigma = line_spacing_sigmas[index % period]
             font_size_sigma = font_size_sigmas[index % period]
             word_spacing_sigma = word_spacing_sigmas[index % period]
-
-            top = margin["top"]
-            bottom = margin["bottom"]
-            left = margin["left"]
-            right = margin["right"]
 
             page = _page.Page(mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index)
             draw = page.draw
