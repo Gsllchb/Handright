@@ -49,11 +49,13 @@ from pylf import handwrite
 
 
 if __name__ == '__main__':
-    template = {"background": Image.new(mode="1", size=(2000, 2000), color="white"),
-                "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
-                "line_spacing": 150,
-                "font_size": 100,
-                "font": ImageFont.truetype("path/to/my/font.ttf")}
+    template = {
+        "background": Image.new(mode="1", size=(2000, 2000), color="white"),
+        "margin": {"left": 150, "right": 150, "top": 200, "bottom": 200},
+        "line_spacing": 150,
+        "font_size": 100,
+        "font": ImageFont.truetype("path/to/my/font.ttf")
+    }
     for image in handwrite("我能吞下玻璃而不伤身体。", template):
         image.show()
 
