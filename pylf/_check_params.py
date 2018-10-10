@@ -35,7 +35,8 @@ def _check_template2(template2) -> None:
         == len(template2["font_sizes"])
     ):
         raise ValueError(
-            "'backgrounds', 'margins', 'line_spacings' and 'font_sizes' must have the same length"
+            "'backgrounds', 'margins', 'line_spacings' and 'font_sizes'"
+            " must have the same length"
         )
 
     # check backgrounds

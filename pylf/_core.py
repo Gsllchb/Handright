@@ -11,7 +11,8 @@ import PIL.ImageColor
 from pylf import _numeric_ordered_set as _nos
 from pylf import _page
 
-# While changing following constants, it is necessary to consider to rewrite the relevant codes.
+# While changing following constants, it is necessary to consider to rewrite the
+# relevant codes.
 _INTERNAL_MODE = "1"  # The mode for internal computation
 _WHITE = 1
 _BLACK = 0
@@ -169,14 +170,16 @@ def _draw_pages(
 
 
 def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
-    """Draws a single char with the parameters and white color, and returns the offset."""
+    """Draws a single char with the parameters and white color, and returns the
+    offset."""
     assert len(char) == 1
     draw.text(xy, char, fill=_WHITE, font=font)
     return font.getsize(char)[0]
 
 
 class _Renderer(object):
-    """A callable object rendering the foreground that was drawn text and returning rendered image."""
+    """A callable object rendering the foreground that was drawn text and returning
+    rendered image."""
 
     __slots__ = (
         "_period",
@@ -265,7 +268,8 @@ def _extract_stroke(
     strokes: _nos.NumericOrderedSet,
     bbox: Tuple[int, int, int, int],
 ) -> None:
-    """Helper function of _extract_strokes() which uses depth first search to find the pixels of a glyph."""
+    """Helper function of _extract_strokes() which uses depth first search to find the
+    pixels of a glyph."""
     left, upper, right, lower = bbox
     stack = []
     stack.append(start)

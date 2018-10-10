@@ -6,8 +6,8 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-# You may think dynamic attribute attachment is a more pythonic solution, but, at least here, actually a more
-# problematic one.
+# You may think dynamic attribute attachment is a more pythonic solution, but, at least
+# here, actually a more problematic one.
 class Page(object):
     """A simple wrapper for Pillow Image Object"""
 
