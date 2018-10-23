@@ -5,9 +5,12 @@
 
 
 ## unreleased
+* __添加异常类`LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行排版时取代原异
+常`ValueError`抛出。__
 * __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)
 的支持__
 * __`text`的类型改为仅可以为`str`__
+* 修复异常信息中的bug，并使异常信息更友好
 * 去除示例代码中的`freeze_support()`。
 * 当`worker == 1`时，改为使用单线程算法。
 * `worker`改为可为`None`，此时`worker`取默认值。
