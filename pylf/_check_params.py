@@ -39,78 +39,173 @@ def _check_template2(template2) -> None:
             " must have the same length"
         )
 
-    # check backgrounds
-    if not all(isinstance(b, PIL.Image.Image) for b in template2["backgrounds"]):
-        raise TypeError("'background' must be Pillow's Image")
-    if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in template2["backgrounds"]):
-        raise ValueError(
-            "The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
-        )
-    if not all(b.height <= _MAX_IMAGE_SIDE_LENGTH for b in template2["backgrounds"]):
-        raise ValueError(
-            "The height of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
-        )
+    _check_backgrounds(template2["backgrounds"])
+    _check_margins(template2["margins"])
+    _check_line_spacings(template2["line_spacings"])
+    _check_font_sizes(template2["font_sizes"])
 
-    # check margins
-    for m in template2["margins"]:
-        for key in ("top", "bottom", "left", "right"):
-            if not isinstance(m[key], numbers.Integral):
-                raise TypeError("'margin[\"{}\"]' must be Integral".format(key))
-            if m[key] < 0:
-                raise ValueError("'margin[\"{}\"]' must be at least 0".format(key))
-
-    # check line_spacings
-    if not all(isinstance(ls, numbers.Integral) for ls in template2["line_spacings"]):
-        raise TypeError("'line_spacing' must be Integral")
-    if not all(ls >= 1 for ls in template2["line_spacings"]):
-        raise ValueError("'line_spacing' must be at least 1")
-
-    # check font_sizes
-    if not all(isinstance(fs, numbers.Integral) for fs in template2["font_sizes"]):
-        raise TypeError("'line_spacing' must be Integral")
-    if not all(fs >= 1 for fs in template2["font_sizes"]):
-        raise ValueError("'font_size' must be at least 1")
-
-    # check word_spacings
     if "word_spacings" in template2:
         if len(template2["word_spacings"]) != length:
             raise ValueError(
                 "'word_spacings' and 'backgrounds' must have the same length"
             )
-        if not all(
-            isinstance(ws, numbers.Integral) for ws in template2["word_spacings"]
-        ):
-            raise TypeError("'word_spacing' must be Integral")
+        _check_word_spacings(template2["word_spacings"])
 
-    # TODO: check font
+    _check_font(template2["font"])
 
-    # check color
-    if "color" in template2 and not isinstance(template2["color"], str):
+    if "color" in template2:
+        _check_color(template2["color"])
+
+    if "line_spacing_sigmas" in template2:
+        if len(template2["line_spacing_sigmas"]) != length:
+            raise ValueError(
+                "'line_spacing_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_line_spacing_sigmas(template2["line_spacing_sigmas"])
+
+    if "font_size_sigmas" in template2:
+        if len(template2["font_size_sigmas"]) != length:
+            raise ValueError(
+                "'font_size_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_font_size_sigmas(template2["font_size_sigmas"])
+
+    if "word_spacing_sigmas" in template2:
+        if len(template2["word_spacing_sigmas"]) != length:
+            raise ValueError(
+                "'word_spacing_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_word_spacing_sigmas(template2["word_spacing_sigmas"])
+
+    if "perturb_x_sigmas" in template2:
+        if len(template2["perturb_x_sigmas"]) != length:
+            raise ValueError(
+                "'perturb_x_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_perturb_x_sigmas(template2["perturb_x_sigmas"])
+
+    if "perturb_y_sigmas" in template2:
+        if len(template2["perturb_y_sigmas"]) != length:
+            raise ValueError(
+                "'perturb_y_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_perturb_y_sigmas(template2["perturb_y_sigmas"])
+
+    if "perturb_theta_sigmas" in template2:
+        if len(template2["perturb_theta_sigmas"]) != length:
+            raise ValueError(
+                "'perturb_theta_sigmas' and 'backgrounds' must have the same length"
+            )
+        _check_perturb_theta_sigmas(template2["perturb_theta_sigmas"])
+
+    if "is_half_char_fn" in template2:
+        _check_is_half_char_fn(template2["is_half_char_fn"])
+
+    if "is_end_char_fn" in template2:
+        _check_is_end_char_fn(template2["is_end_char_fn"])
+
+
+def _check_backgrounds(backgrounds) -> None:
+    if not all(isinstance(b, PIL.Image.Image) for b in backgrounds):
+        raise TypeError("background must be Pillow's Image")
+    if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
+        raise ValueError(
+            "The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
+        )
+    if not all(b.height <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
+        raise ValueError(
+            "The height of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
+        )
+
+
+def _check_margins(margins) -> None:
+    for m in margins:
+        for key in ("top", "bottom", "left", "right"):
+            if not isinstance(m[key], numbers.Integral):
+                raise TypeError("{} margin must be Integral".format(key))
+            if m[key] < 0:
+                raise ValueError("{} margin must be at least 0".format(key))
+
+
+def _check_line_spacings(line_spacings) -> None:
+    if not all(isinstance(ls, numbers.Integral) for ls in line_spacings):
+        raise TypeError("Line spacing must be Integral")
+    if not all(ls >= 1 for ls in line_spacings):
+        raise ValueError("Line spacing must be at least 1")
+
+
+def _check_font_sizes(font_sizes) -> None:
+    if not all(isinstance(fs, numbers.Integral) for fs in font_sizes):
+        raise TypeError("Font size must be Integral")
+    if not all(fs >= 1 for fs in font_sizes):
+        raise ValueError("Font size must be at least 1")
+
+
+def _check_word_spacings(word_spacings) -> None:
+    if not all(isinstance(ws, numbers.Integral) for ws in word_spacings):
+        raise TypeError("Word spacing must be Integral")
+
+
+def _check_font(font) -> None:
+    # FIXME
+    pass
+
+
+def _check_color(color) -> None:
+    if not isinstance(color, str):
         raise TypeError("'color' must be str")
 
-    # check *_sigmas
-    for sigmas in (
-        "line_spacing_sigmas",
-        "font_size_sigmas",
-        "word_spacing_sigmas",
-        "perturb_x_sigmas",
-        "perturb_y_sigmas",
-        "perturb_theta_sigmas",
-    ):
-        if sigmas in template2:
-            if len(template2[sigmas]) != length:
-                raise ValueError(
-                    "'{}' and 'backgrounds' must have the same length".format(sigmas)
-                )
-            if not all(isinstance(s, numbers.Real) for s in template2[sigmas]):
-                raise TypeError("'{}' must be Real".format(sigmas[:-1]))
-            if not all(s >= 0.0 for s in template2[sigmas]):
-                raise ValueError("'{}' must be at least 0.0")
 
-    # check *_fn
-    for fn in ("is_half_char_fn", "is_end_char_fn"):
-        if fn in template2 and not callable(template2[fn]):
-            raise TypeError("'{}' must be Callable".format(fn))
+def _check_line_spacing_sigmas(line_spacing_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in line_spacing_sigmas):
+        raise TypeError("'line_spacing_sigma' must be Real")
+    if not all(s >= 0.0 for s in line_spacing_sigmas):
+        raise ValueError("'line_spacing_sigma' must be at least 0.0")
+
+
+def _check_font_size_sigmas(font_size_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in font_size_sigmas):
+        raise TypeError("'font_size_sigma' must be Real")
+    if not all(s >= 0.0 for s in font_size_sigmas):
+        raise ValueError("'font_size_sigma' must be at least 0.0")
+
+
+def _check_word_spacing_sigmas(word_spacing_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in word_spacing_sigmas):
+        raise TypeError("'word_spacing_sigma' must be Real")
+    if not all(s >= 0.0 for s in word_spacing_sigmas):
+        raise ValueError("'word_spacing_sigma' must be at least 0.0")
+
+
+def _check_perturb_x_sigmas(perturb_x_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in perturb_x_sigmas):
+        raise TypeError("'perturb_x_sigma' must be Real")
+    if not all(s >= 0.0 for s in perturb_x_sigmas):
+        raise ValueError("'perturb_x_sigma' must be at least 0.0")
+
+
+def _check_perturb_y_sigmas(perturb_y_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in perturb_y_sigmas):
+        raise TypeError("'perturb_y_sigma' must be Real")
+    if not all(s >= 0.0 for s in perturb_y_sigmas):
+        raise ValueError("'perturb_y_sigma' must be at least 0.0")
+
+
+def _check_perturb_theta_sigmas(perturb_theta_sigmas) -> None:
+    if not all(isinstance(s, numbers.Real) for s in perturb_theta_sigmas):
+        raise TypeError("'perturb_theta_sigma' must be Real")
+    if not all(s >= 0.0 for s in perturb_theta_sigmas):
+        raise ValueError("'perturb_theta_sigma' must be at least 0.0")
+
+
+def _check_is_half_char_fn(is_half_char_fn) -> None:
+    if not callable(is_half_char_fn):
+        raise TypeError("'is_half_char_fn' must be Callable")
+
+
+def _check_is_end_char_fn(is_end_char_fn) -> None:
+    if not callable(is_end_char_fn):
+        raise TypeError("'is_end_char_fn' must be Callable")
 
 
 def _check_worker(worker) -> None:
