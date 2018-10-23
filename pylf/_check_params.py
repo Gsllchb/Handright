@@ -64,37 +64,12 @@ def _check_template2(template2) -> None:
         raise TypeError("'line_spacing' must be Integral")
     if not all(ls >= 1 for ls in template2["line_spacings"]):
         raise ValueError("'line_spacing' must be at least 1")
-    if not all(
-        b.height >= m["top"] + ls + m["bottom"]
-        for b, m, ls in zip(
-            template2["backgrounds"], template2["margins"], template2["line_spacings"]
-        )
-    ):
-        raise ValueError(
-            '\'margin["top"] + line_spacing + margin["bottom"]\''
-            " can not be greater than background's height"
-        )
 
     # check font_sizes
     if not all(isinstance(fs, numbers.Integral) for fs in template2["font_sizes"]):
         raise TypeError("'line_spacing' must be Integral")
     if not all(fs >= 1 for fs in template2["font_sizes"]):
         raise ValueError("'font_size' must be at least 1")
-    if not all(
-        fs <= ls for fs, ls in zip(template2["font_sizes"], template2["line_spacings"])
-    ):
-        raise ValueError("'font_size' can not be greater than 'line_spacing'")
-
-    if not all(
-        b.width >= m["left"] + fs + m["right"]
-        for b, m, fs in zip(
-            template2["backgrounds"], template2["margins"], template2["font_sizes"]
-        )
-    ):
-        raise ValueError(
-            '\'margin["left"] + font_size + margin["right"]\''
-            " can not be greater than background's width"
-        )
 
     # check word_spacings
     if "word_spacings" in template2:
@@ -106,11 +81,6 @@ def _check_template2(template2) -> None:
             isinstance(ws, numbers.Integral) for ws in template2["word_spacings"]
         ):
             raise TypeError("'word_spacing' must be Integral")
-        if not all(
-            ws > -fs // 2
-            for ws, fs in zip(template2["word_spacings"], template2["font_sizes"])
-        ):
-            raise ValueError("'word_spacing' must be greater than (-font_size // 2)")
 
     # TODO: check font
 

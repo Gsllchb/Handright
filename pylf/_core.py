@@ -8,6 +8,7 @@ from typing import *
 import PIL.Image
 import PIL.ImageColor
 
+from pylf import _exceptions
 from pylf import _numeric_ordered_set as _nos
 from pylf import _page
 
@@ -135,6 +136,28 @@ def _draw_pages(
             line_spacing_sigma = line_spacing_sigmas[index % period]
             font_size_sigma = font_size_sigmas[index % period]
             word_spacing_sigma = word_spacing_sigmas[index % period]
+
+            if height < top + line_spacing + bottom:
+                raise _exceptions.LayoutError(
+                    "The sum of top margin, line spacing and bottom margin"
+                    " can not be greater than background's height"
+                )
+
+            if font_size > line_spacing:
+                raise _exceptions.LayoutError(
+                    "Font size can not be greater than line spacing"
+                )
+
+            if width < left + font_size + right:
+                raise _exceptions.LayoutError(
+                    "The sum of left margin, font size and right margin"
+                    " can not be greater than background's width"
+                )
+
+            if word_spacing <= -font_size // 2:
+                raise _exceptions.LayoutError(
+                    "Word spacing must be greater than (-font_size // 2)"
+                )
 
             page = _page.Page(
                 mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index
