@@ -5,8 +5,8 @@
 
 
 ## unreleased
-* __添加异常类`LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行排版时取代原异
-常`ValueError`抛出。__
+* __添加异常类`pylf.LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行排版时取
+代原异常`ValueError`抛出。__
 * __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)
 的支持__
 * __`text`的类型改为仅可以为`str`__
