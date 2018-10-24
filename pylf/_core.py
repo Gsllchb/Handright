@@ -255,7 +255,7 @@ class _Renderer(object):
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
         canvas = self._backgrounds[page.num % self._period].copy()
-        fill = PIL.ImageColor.getcolor(self._color, page.image.mode)
+        fill = PIL.ImageColor.getcolor(self._color, canvas.mode)
 
         _draw_strokes(
             canvas.load(),
