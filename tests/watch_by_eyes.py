@@ -39,9 +39,9 @@ def test_handwrite2():
 
 
 if __name__ == "__main__":
-    print("""Test by naked eyes:""")
     print(
-        """======================================
-    Test: pylf.handwrite2"""
+        "Test by naked eyes:\n"
+        "======================================\n"
+        "Test: pylf.handwrite2"
     )
     test_handwrite2()

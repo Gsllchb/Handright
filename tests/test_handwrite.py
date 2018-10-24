@@ -9,11 +9,10 @@ from pylf import handwrite
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
-DEFAULT_WIDTH = 2000
-DEFAULT_HEIGHT = 2000
+DEFAULT_WIDTH = 200
+DEFAULT_HEIGHT = 200
 DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
 SEED = "PyLf"
-THRESHOLD = 0.006
 
 
 def get_default_template() -> dict:
@@ -21,10 +20,10 @@ def get_default_template() -> dict:
         "background": PIL.Image.new(
             mode="RGB", size=DEFAULT_SIZE, color=BACKGROUND_COLOR
         ),
-        "margin": {"left": 200, "top": 376, "right": 200, "bottom": 400},
-        "line_spacing": 144,
+        "margin": {"left": 20, "top": 37, "right": 20, "bottom": 40},
+        "line_spacing": 14,
         "font": get_default_font(),
-        "font_size": 120,
+        "font_size": 12,
         "font_size_sigma": 0,
     }
     return template
@@ -43,128 +42,29 @@ def test_null_text():
     assert handwrite("", get_default_template()) == []
 
 
-def test_randomness():
-    text = get_short_text()
-    template = get_default_template()
-    ims1 = handwrite(text, template)
-    ims2 = handwrite(text, template)
-    for im1, im2 in zip(ims1, ims2):
-        assert diff_histogram(im1, im2) < THRESHOLD
-
-
-def test_mode_and_color():
-    text = get_short_text()
-    template = get_default_template()
-    for mode in ("L", "RGB"):
-        for background_color in (
-            "rgb(0, 0, 0)",
-            "rgb(255, 0, 0)",
-            "rgb(255, 255, 255)",
-        ):
-            template["background"] = PIL.Image.new(
-                mode=mode, size=DEFAULT_SIZE, color=background_color
-            )
-            for color in ("rgb(0, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 255, 255)"):
-                template["color"] = color
-                standard_image = template["background"].copy()
-                draw = PIL.ImageDraw.Draw(standard_image)
-                draw.text(
-                    xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-                    text=text,
-                    fill=color,
-                    font=template["font"].font_variant(size=template["font_size"]),
-                )
-                images = handwrite(text, template)
-                assert len(images) == 1
-                assert diff_histogram(standard_image, images[0]) < THRESHOLD
-
-
-def test_font_size():
-    text = get_short_text()
-    template = get_default_template()
-    template["color"] = "black"
-    for font_size in (1, 10, 30):
-        standard_image = template["background"].copy()
-        draw = PIL.ImageDraw.Draw(standard_image)
-        draw.text(
-            xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-            text=text,
-            fill=template["color"],
-            font=template["font"].font_variant(size=font_size),
-        )
-        template["font_size"] = font_size
-        images = handwrite(text, template)
-        assert len(images) == 1
-        assert diff_histogram(standard_image, images[0]) < THRESHOLD
-
-
-def test_is_half_char_fn():
-    text = "。" * 30
-    template = get_default_template()
-    template["color"] = "black"
-    template["is_half_char_fn"] = lambda c: True
-    images = handwrite(text, template)
-    assert len(images) == 1
-    standard_image = template["background"].copy()
-    draw = PIL.ImageDraw.Draw(standard_image)
-    draw.multiline_text(
-        xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-        text=("。" * 6 + "\n") * 5,
-        fill=template["color"],
-        font=template["font"].font_variant(size=template["font_size"]),
-    )
-    assert diff_histogram(standard_image, images[0]) < THRESHOLD
-
-
-def test_is_end_char_fn():
-    text = "。" * 30
-    template = get_default_template()
-    template["color"] = "black"
-    template["is_end_char_fn"] = lambda c: False
-    images = handwrite(text, template)
-    assert len(images) == 1
-    standard_image = template["background"].copy()
-    draw = PIL.ImageDraw.Draw(standard_image)
-    draw.multiline_text(
-        xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-        text=("。" * 6 + "\n") * 5,
-        fill=template["color"],
-        font=template["font"].font_variant(size=template["font_size"]),
-    )
-    assert diff_histogram(standard_image, images[0]) < THRESHOLD
-
-
 def test_worker():
-    text = get_short_text()
+    text = get_long_text()
     template = get_default_template()
-    template["color"] = "rgb(0, 0, 0)"
-    standard_image = template["background"].copy()
-    draw = PIL.ImageDraw.Draw(standard_image)
-    draw.text(
-        xy=(template["margin"]["left"] + 1, template["margin"]["top"] + 1),
-        text=text,
-        fill=template["color"],
-        font=template["font"].font_variant(size=template["font_size"]),
-    )
     cpu_count = multiprocessing.cpu_count()
     workers = {1, cpu_count // 2, cpu_count, 2 * cpu_count}
     workers.discard(0)
+    workers.discard(1)
+    prev_images = None
     for worker in workers:
-        images = handwrite(
-            (text + "\n" * 8) * max(worker, cpu_count), template, worker=worker
-        )
-        for i in images:
-            assert diff_histogram(standard_image, i) < THRESHOLD
+        images = handwrite(text, template, worker=worker, seed=SEED)
+        if prev_images is not None:
+            assert len(prev_images) == len(images)
+            assert all(im1 == im2 for im1, im2 in zip(prev_images, images))
+        prev_images = images
 
 
 def test_seed():
-    text = get_short_text() * 50
+    text = get_long_text()
     template = get_default_template()
     for seed in (0, "PyLf"):
         ims1 = handwrite(text, template, seed=seed)
         ims2 = handwrite(text, template, seed=seed)
-        for im1, im2 in zip(ims1, ims2):
-            assert im1 == im2
+        assert all(im1 == im2 for im1, im2 in zip(ims1, ims2))
 
 
 def test_result():
