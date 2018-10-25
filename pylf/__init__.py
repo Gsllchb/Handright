@@ -51,8 +51,9 @@ def handwrite(
 
         template: A dict-like object containing following parameters.
 
-            background: A Pillow's Image instance. Recommended mode: "1", "L" and "RGB".
-            The width and height of the image cannot exceed 65534.
+            background: A Pillow's Image instance. The mode must be one of "1", "L",
+            "I", "F", "RGB" and "RGBA". The width and the height of the image cannot
+            exceed 65534.
 
             margin: A dict-like object. margin["top"], margin["bottom"], margin["left"]
             and margin["right"] are used together to define the handwritten area in

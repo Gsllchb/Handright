@@ -5,6 +5,8 @@ import numbers
 
 import PIL.Image
 
+
+_SUPPORTED_MODES = ("1", "L", "I", "F", "RGB", "RGBA")
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 assert 0xFFFF - 1 == 65534
 
@@ -108,7 +110,16 @@ def _check_template2(template2) -> None:
 
 def _check_backgrounds(backgrounds) -> None:
     if not all(isinstance(b, PIL.Image.Image) for b in backgrounds):
-        raise TypeError("background must be Pillow's Image")
+        raise TypeError("Background must be Pillow's Image")
+    for b in backgrounds:
+        if b.mode not in _SUPPORTED_MODES:
+            raise NotImplementedError(
+                "'{}' mode is not supported yet. Currently supported modes are '1', "
+                "'L', 'I', 'F', 'RGB' and 'RGBA'. See how to convert a image's mode: "
+                "https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert".format(
+                    b.mode
+                )
+            )
     if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
         raise ValueError(
             "The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
