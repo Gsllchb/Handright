@@ -1,6 +1,5 @@
 # coding: utf-8
 import PIL.Image
-import PIL.ImageDraw
 
 from pylf import handwrite2, handwrite
 from tests.util import *
@@ -25,7 +24,6 @@ def get_default_template2() -> dict:
         "font_sizes": [12, 8],
         "font_size_sigma": [0, 0],
         "font": get_default_font(),
-        "color": "black",
     }
     return template2
 
@@ -73,3 +71,82 @@ def test_result():
     assert isinstance(handwrite2("", get_default_template2()), list)
     assert isinstance(handwrite2(get_short_text(), get_default_template2()), list)
     assert isinstance(handwrite2(get_long_text(), get_default_template2()), list)
+
+
+def test_grey_image():
+    text = get_long_text()
+    template2 = get_default_template2()
+    template2["color"] = "orange"
+    template2["backgrounds"] = [
+        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
+    ]
+    criterion = handwrite2(text, template2, seed=SEED)
+    for mode in ("I", "F"):
+        template2["backgrounds"] = [
+            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
+            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
+        ]
+        images = handwrite2(text, template2, seed=SEED)
+        images = [image.convert("L") for image in images]
+        assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+
+
+def test_1_image():
+    text = get_long_text()
+    template2 = get_default_template2()
+    template2["backgrounds"] = [
+        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
+    ]
+    criterion = handwrite2(text, template2, seed=SEED)
+    template2["backgrounds"] = [
+        PIL.Image.new("1", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("1", DEFAULT_SIZE, color="white"),
+    ]
+    images = handwrite2(text, template2, seed=SEED)
+    criterion = [image.convert("1") for image in criterion]
+    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+
+
+def test_l_image():
+    text = get_long_text()
+    template2 = get_default_template2()
+    template2["color"] = "orange"
+    template2["backgrounds"] = [
+        PIL.Image.new("RGB", DEFAULT_SIZE, color="yellow"),
+        PIL.Image.new("RGB", DEFAULT_SIZE, color="black"),
+    ]
+    criterion = handwrite2(text, template2, seed=SEED)
+    template2["backgrounds"] = [
+        PIL.Image.new("L", DEFAULT_SIZE, color="yellow"),
+        PIL.Image.new("L", DEFAULT_SIZE, color="black"),
+    ]
+    images = handwrite2(text, template2, seed=SEED)
+    criterion = [image.convert("L") for image in criterion]
+    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+
+
+def test_color_image():
+    text = get_long_text()
+    template2 = get_default_template2()
+    template2["color"] = "red"
+    template2["backgrounds"] = [
+        PIL.Image.new("RGB", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("RGB", DEFAULT_SIZE, color="pink"),
+    ]
+    criterion = handwrite2(text, template2, seed=SEED)
+    for mode in ("RGBA", ):
+        template2["backgrounds"] = [
+            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
+            PIL.Image.new(mode, DEFAULT_SIZE, color="pink"),
+        ]
+        images = handwrite2(text, template2, seed=SEED)
+        images = [image.convert("RGB") for image in images]
+        assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+
+
+def test_rgb_image():
+    # Test by human beings' naked eyes.
+    # Please run watch.py
+    pass
