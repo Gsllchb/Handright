@@ -114,10 +114,10 @@ def _check_backgrounds(backgrounds) -> None:
     for b in backgrounds:
         if b.mode not in _SUPPORTED_MODES:
             raise NotImplementedError(
-                "'{}' mode is not supported yet. Currently supported modes are '1', "
-                "'L', 'I', 'F', 'RGB' and 'RGBA'. See how to convert a image's mode: "
+                "'{}' mode is not supported yet. Currently supported modes are {}. See "
+                "how to convert a image's mode: "
                 "https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert".format(
-                    b.mode
+                    b.mode, str(_SUPPORTED_MODES)[1:-1]
                 )
             )
     if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
