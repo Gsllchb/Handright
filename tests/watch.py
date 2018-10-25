@@ -11,10 +11,12 @@ SEED = "PyLf"
 
 
 def test_handwrite2():
-    images = (
-        PIL.Image.open(abs_path("backgrounds/even-odd-letter/村庄信笺纸.jpg")),
-        PIL.Image.open(abs_path("backgrounds/even-odd-letter/树信笺纸.jpg")),
-    )
+    path = "backgrounds/even-odd-letter/"
+    image1 = PIL.Image.open(abs_path(path + "村庄信笺纸.jpg"))
+    image2 = PIL.Image.open(abs_path(path + "树信笺纸.jpg"))
+    assert image1.mode == "RGB"
+    assert image2.mode == "RGB"
+    images = (image1, image2)
 
     template2 = {
         "backgrounds": [
