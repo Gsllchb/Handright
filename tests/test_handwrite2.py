@@ -136,7 +136,7 @@ def test_color_image():
         PIL.Image.new("RGB", DEFAULT_SIZE, color="pink"),
     ]
     criterion = handwrite2(text, template2, seed=SEED)
-    for mode in ("RGBA", ):
+    for mode in ("RGBA",):
         template2["backgrounds"] = [
             PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
             PIL.Image.new(mode, DEFAULT_SIZE, color="pink"),
