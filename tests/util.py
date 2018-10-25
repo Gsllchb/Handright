@@ -7,6 +7,9 @@ import os
 
 import PIL.ImageFont
 
+_long_text = None
+_font = None
+
 
 def abs_path(path: str) -> str:
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
@@ -19,13 +22,19 @@ def get_short_text() -> str:
 
 def get_long_text() -> str:
     """ Return a article """
-    with open(abs_path("texts/荷塘月色.txt"), encoding="utf-8") as f:
-        return f.read()
+    global _long_text
+    if _long_text is None:
+        with open(abs_path("texts/荷塘月色.txt"), encoding="utf-8") as f:
+            _long_text = f.read()
+    return _long_text
 
 
 def get_default_font():
-    return PIL.ImageFont.truetype(
-        abs_path(
-            "fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"
+    global _font
+    if _font is None:
+        _font = PIL.ImageFont.truetype(
+            abs_path(
+                "fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"
+            )
         )
-    )
+    return _font
