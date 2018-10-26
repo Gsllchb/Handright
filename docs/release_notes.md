@@ -4,17 +4,18 @@
 没事、充满好奇心或想全面了解新版本的用户看完所有新变化。
 
 
-## unreleased
+## v3.0.0(2018-10-26)
+本次更新是多个**不后向兼容**的小更新与其余更新的集合。
 * __添加异常类`pylf.LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行排版时取
 代原异常`ValueError`抛出。__
 * __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)
 的支持__
 * __当背景图片的`mode`不是`1`, `L`, `RGB`和`RGBA`之一时，将抛出`NotImplementedError`。__
+* __当`worker == 1`时，改为使用单线程算法。__
 * __`text`的类型改为仅可以为`str`__
 * __修复当使用非灰度背景，设置字体颜色为彩色时，生成图片中字迹为灰色的漏洞。__
 * 修复异常信息中的bug，并使异常信息更友好
 * 去除示例代码中的`freeze_support()`。
-* 当`worker == 1`时，改为使用单线程算法。
 * `worker`改为可为`None`，此时`worker`取默认值。
 * 提供更恰当的参数检查
 * Local multiprocessing context is used.

@@ -23,7 +23,7 @@ from pylf import _core
 from pylf._exceptions import LayoutError
 
 __all__ = ("handwrite", "handwrite2", "LayoutError")
-__version__ = "2.1.0"
+__version__ = "3.0.0"
 
 _CHECK_PARAMETERS = True
 
