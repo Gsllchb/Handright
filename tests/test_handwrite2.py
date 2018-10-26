@@ -73,25 +73,6 @@ def test_result():
     assert isinstance(handwrite2(get_long_text(), get_default_template2()), list)
 
 
-def test_grey_image():
-    text = get_long_text()
-    template2 = get_default_template2()
-    template2["color"] = "orange"
-    template2["backgrounds"] = [
-        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
-        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
-    ]
-    criterion = handwrite2(text, template2, seed=SEED)
-    for mode in ("I", "F"):
-        template2["backgrounds"] = [
-            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
-            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
-        ]
-        images = handwrite2(text, template2, seed=SEED)
-        images = [image.convert("L") for image in images]
-        assert all(im1 == im2 for im1, im2 in zip(criterion, images))
-
-
 def test_1_image():
     text = get_long_text()
     template2 = get_default_template2()
@@ -127,7 +108,7 @@ def test_l_image():
     assert all(im1 == im2 for im1, im2 in zip(criterion, images))
 
 
-def test_color_image():
+def test_rgba_image():
     text = get_long_text()
     template2 = get_default_template2()
     template2["color"] = "red"
@@ -136,14 +117,13 @@ def test_color_image():
         PIL.Image.new("RGB", DEFAULT_SIZE, color="pink"),
     ]
     criterion = handwrite2(text, template2, seed=SEED)
-    for mode in ("RGBA",):
-        template2["backgrounds"] = [
-            PIL.Image.new(mode, DEFAULT_SIZE, color="white"),
-            PIL.Image.new(mode, DEFAULT_SIZE, color="pink"),
-        ]
-        images = handwrite2(text, template2, seed=SEED)
-        images = [image.convert("RGB") for image in images]
-        assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+    template2["backgrounds"] = [
+        PIL.Image.new("RGBA", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("RGBA", DEFAULT_SIZE, color="pink"),
+    ]
+    images = handwrite2(text, template2, seed=SEED)
+    images = [image.convert("RGB") for image in images]
+    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
 
 
 def test_rgb_image():

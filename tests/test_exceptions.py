@@ -12,7 +12,7 @@ FONT_SIZE = 3
 
 SEED = "PyLf"
 
-SUPPORTED_MODES = ("1", "L", "I", "F", "RGB", "RGBA")
+SUPPORTED_MODES = ("1", "L", "RGB", "RGBA")
 
 MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 

@@ -9,8 +9,7 @@
 代原异常`ValueError`抛出。__
 * __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)
 的支持__
-* __当背景图片的`mode`不是`1`, `L`, `I`, `F`, `RGB`和`RGBA`之一时，将抛出
-`NotImplementedError`。__
+* __当背景图片的`mode`不是`1`, `L`, `RGB`和`RGBA`之一时，将抛出`NotImplementedError`。__
 * __`text`的类型改为仅可以为`str`__
 * __修复当使用非灰度背景，设置字体颜色为彩色时，生成图片中字迹为灰色的漏洞。__
 * 修复异常信息中的bug，并使异常信息更友好

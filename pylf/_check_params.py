@@ -6,7 +6,7 @@ import numbers
 import PIL.Image
 
 
-_SUPPORTED_MODES = ("1", "L", "I", "F", "RGB", "RGBA")
+_SUPPORTED_MODES = ("1", "L", "RGB", "RGBA")
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 assert 0xFFFF - 1 == 65534
 
