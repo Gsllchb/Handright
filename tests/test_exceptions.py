@@ -75,11 +75,6 @@ def test_background():
     helper("background", 1, TypeError)
     helper("background", PIL.Image.new("1", (MAX_IMAGE_SIDE_LENGTH + 1, 1)), ValueError)
     helper("background", PIL.Image.new("1", (1, MAX_IMAGE_SIDE_LENGTH + 1)), ValueError)
-    helper(
-        "background",
-        PIL.Image.new("1", (MAX_IMAGE_SIDE_LENGTH + 1, MAX_IMAGE_SIDE_LENGTH + 1)),
-        ValueError,
-    )
     for mode in PIL.Image.MODES:
         if mode in SUPPORTED_MODES:
             continue
