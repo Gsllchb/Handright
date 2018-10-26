@@ -66,6 +66,10 @@ def test_seed():
         images2 = handwrite2(text, template2, seed=seed)
         assert all(im1 == im2 for im1, im2 in zip(images1, images2))
 
+    images1 = handwrite2(text, template2, seed=None)
+    images2 = handwrite2(text, template2, seed=None)
+    assert not all(im1 == im2 for im1, im2 in zip(images1, images2))
+
 
 def test_result():
     assert isinstance(handwrite2("", get_default_template2()), list)
