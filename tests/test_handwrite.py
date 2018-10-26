@@ -9,17 +9,15 @@ from pylf import handwrite
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
-DEFAULT_WIDTH = 200
-DEFAULT_HEIGHT = 200
-DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
+WIDTH = 200
+HEIGHT = 200
+SIZE = (WIDTH, HEIGHT)
 SEED = "PyLf"
 
 
 def get_default_template() -> dict:
     template = {
-        "background": PIL.Image.new(
-            mode="RGB", size=DEFAULT_SIZE, color=BACKGROUND_COLOR
-        ),
+        "background": PIL.Image.new(mode="RGB", size=SIZE, color=BACKGROUND_COLOR),
         "margin": {"left": 20, "top": 37, "right": 20, "bottom": 40},
         "line_spacing": 14,
         "font": get_default_font(),

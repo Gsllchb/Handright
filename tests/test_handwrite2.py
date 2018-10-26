@@ -4,17 +4,17 @@ import PIL.Image
 from pylf import handwrite2, handwrite
 from tests.util import *
 
-DEFAULT_WIDTH = 200
-DEFAULT_HEIGHT = 200
-DEFAULT_SIZE = (DEFAULT_WIDTH, DEFAULT_HEIGHT)
+WIDTH = 200
+HEIGHT = 200
+SIZE = (WIDTH, HEIGHT)
 SEED = "PyLf"
 
 
 def get_default_template2() -> dict:
     template2 = {
         "backgrounds": [
-            PIL.Image.new(mode="RGB", size=DEFAULT_SIZE, color="white"),
-            PIL.Image.new(mode="RGBA", size=DEFAULT_SIZE, color="rgb(0, 128, 255)"),
+            PIL.Image.new(mode="RGB", size=SIZE, color="white"),
+            PIL.Image.new(mode="RGBA", size=SIZE, color="rgb(0, 128, 255)"),
         ],
         "margins": [
             {"left": 20, "top": 37, "right": 20, "bottom": 40},
@@ -29,7 +29,7 @@ def get_default_template2() -> dict:
 
 
 def test_one_background():
-    background = PIL.Image.new(mode="RGB", size=DEFAULT_SIZE, color="white")
+    background = PIL.Image.new(mode="RGB", size=SIZE, color="white")
     margin = {"left": 20, "top": 37, "right": 20, "bottom": 40}
     line_spacing = 14
     font = get_default_font()
@@ -77,13 +77,13 @@ def test_1_image():
     text = get_long_text()
     template2 = get_default_template2()
     template2["backgrounds"] = [
-        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
-        PIL.Image.new("L", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("L", SIZE, color="white"),
+        PIL.Image.new("L", SIZE, color="white"),
     ]
     criterion = handwrite2(text, template2, seed=SEED)
     template2["backgrounds"] = [
-        PIL.Image.new("1", DEFAULT_SIZE, color="white"),
-        PIL.Image.new("1", DEFAULT_SIZE, color="white"),
+        PIL.Image.new("1", SIZE, color="white"),
+        PIL.Image.new("1", SIZE, color="white"),
     ]
     images = handwrite2(text, template2, seed=SEED)
     criterion = [image.convert("1") for image in criterion]
@@ -95,13 +95,13 @@ def test_l_image():
     template2 = get_default_template2()
     template2["color"] = "orange"
     template2["backgrounds"] = [
-        PIL.Image.new("RGB", DEFAULT_SIZE, color="yellow"),
-        PIL.Image.new("RGB", DEFAULT_SIZE, color="black"),
+        PIL.Image.new("RGB", SIZE, color="yellow"),
+        PIL.Image.new("RGB", SIZE, color="black"),
     ]
     criterion = handwrite2(text, template2, seed=SEED)
     template2["backgrounds"] = [
-        PIL.Image.new("L", DEFAULT_SIZE, color="yellow"),
-        PIL.Image.new("L", DEFAULT_SIZE, color="black"),
+        PIL.Image.new("L", SIZE, color="yellow"),
+        PIL.Image.new("L", SIZE, color="black"),
     ]
     images = handwrite2(text, template2, seed=SEED)
     criterion = [image.convert("L") for image in criterion]
@@ -113,13 +113,13 @@ def test_rgba_image():
     template2 = get_default_template2()
     template2["color"] = "red"
     template2["backgrounds"] = [
-        PIL.Image.new("RGB", DEFAULT_SIZE, color="white"),
-        PIL.Image.new("RGB", DEFAULT_SIZE, color="pink"),
+        PIL.Image.new("RGB", SIZE, color="white"),
+        PIL.Image.new("RGB", SIZE, color="pink"),
     ]
     criterion = handwrite2(text, template2, seed=SEED)
     template2["backgrounds"] = [
-        PIL.Image.new("RGBA", DEFAULT_SIZE, color="white"),
-        PIL.Image.new("RGBA", DEFAULT_SIZE, color="pink"),
+        PIL.Image.new("RGBA", SIZE, color="white"),
+        PIL.Image.new("RGBA", SIZE, color="pink"),
     ]
     images = handwrite2(text, template2, seed=SEED)
     images = [image.convert("RGB") for image in images]
