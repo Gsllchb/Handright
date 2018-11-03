@@ -21,7 +21,6 @@ with default configuration;
 in mind;
 * One commit for one change;
 * Maximum line length is 88 characters;
-* Only can use English in source codes, except in comments;
 * Documentations and Examples both are for released versions; 
 * Otherwise follow [_Google Python Style Guide_](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#google-python-style-guide);
 * Contact me if you have any question.
