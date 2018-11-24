@@ -5,4 +5,3 @@ wheel
 tox
 pytest
 mypy
-black

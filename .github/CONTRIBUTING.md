@@ -10,10 +10,8 @@ or email) first.
 2. Run `pip install -r requirements.txt` to install the requirements;
 3. Do your contribution;
 4. Provide tests for any newly added code in `pylf` package;
-5. Run [*black*](https://github.com/ambv/black) on the file(s) you have changed or added
-with default configuration;
-6. Run `tox` in the project's root folder and run `tests/watch_by_eyes.py`;
-7. Create a pull request to pull the changes to the master branch.
+5. Run `tox` in the project's root folder and run `tests/watch_by_eyes.py`;
+6. Create a pull request to pull the changes to the master branch.
 
 
 ## Guidelines
