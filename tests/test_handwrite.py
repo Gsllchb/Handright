@@ -17,7 +17,11 @@ SEED = "PyLf"
 
 def get_default_template() -> dict:
     template = {
-        "background": PIL.Image.new(mode="RGB", size=SIZE, color=BACKGROUND_COLOR),
+        "background": PIL.Image.new(
+            mode="RGB",
+            size=SIZE,
+            color=BACKGROUND_COLOR
+        ),
         "margin": {"left": 10, "top": 18, "right": 10, "bottom": 20},
         "line_spacing": 7,
         "font": get_default_font(),

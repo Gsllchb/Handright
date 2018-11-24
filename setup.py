@@ -39,7 +39,8 @@ def main():
         install_requires=INSTALL_REQUIRES,
         setup_requires=SETUP_REQUIRES,
         python_requires=">= 3.5",
-        description="A lightweight Python library for simulating Chinese handwriting",
+        description="A lightweight Python library"
+                    " for simulating Chinese handwriting",
         long_description=get_long_description(),
         long_description_content_type="text/markdown",
         license="bsd-3-clause",

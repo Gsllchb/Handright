@@ -32,9 +32,5 @@ def get_long_text() -> str:
 def get_default_font():
     global _font
     if _font is None:
-        _font = PIL.ImageFont.truetype(
-            abs_path(
-                "fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"
-            )
-        )
+        _font = PIL.ImageFont.truetype(abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
     return _font

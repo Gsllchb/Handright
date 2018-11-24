@@ -6,14 +6,20 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-# You may think dynamic attribute attachment is a more pythonic solution, but, at least
-# here, actually a more problematic one.
+# You may think dynamic attribute attachment is a more pythonic solution, but,
+# at least here, actually a more problematic one.
 class Page(object):
     """A simple wrapper for Pillow Image Object"""
 
     __slots__ = ("image", "num")
 
-    def __init__(self, mode: str, size: Tuple[int, int], color, num: int) -> None:
+    def __init__(
+            self,
+            mode: str,
+            size: Tuple[int, int],
+            color,
+            num: int
+    ) -> None:
         self.image = PIL.Image.new(mode, size, color)
         self.num = num
 

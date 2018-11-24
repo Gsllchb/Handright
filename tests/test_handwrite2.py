@@ -73,8 +73,14 @@ def test_seed():
 
 def test_result():
     assert isinstance(handwrite2("", get_default_template2()), list)
-    assert isinstance(handwrite2(get_short_text(), get_default_template2()), list)
-    assert isinstance(handwrite2(get_long_text(), get_default_template2()), list)
+    assert isinstance(
+        handwrite2(get_short_text(), get_default_template2()),
+        list
+    )
+    assert isinstance(
+        handwrite2(get_long_text(), get_default_template2()),
+        list
+    )
 
 
 def test_1_image():

@@ -30,7 +30,10 @@ def get_default_template() -> dict:
 
 def get_default_template2() -> dict:
     template2 = {
-        "backgrounds": (PIL.Image.new("RGB", SIZE), PIL.Image.new("RGBA", SIZE)),
+        "backgrounds": (
+            PIL.Image.new("RGB", SIZE),
+            PIL.Image.new("RGBA", SIZE)
+        ),
         "margins": (
             {"left": 5, "top": 9, "right": 5, "bottom": 10},
             {"left": 5, "top": 10, "right": 5, "bottom": 10},
@@ -73,8 +76,16 @@ def test_seed():
 
 def test_background():
     helper("background", 1, TypeError)
-    helper("background", PIL.Image.new("1", (MAX_IMAGE_SIDE_LENGTH + 1, 1)), ValueError)
-    helper("background", PIL.Image.new("1", (1, MAX_IMAGE_SIDE_LENGTH + 1)), ValueError)
+    helper(
+        "background",
+        PIL.Image.new("1", (MAX_IMAGE_SIDE_LENGTH + 1, 1)),
+        ValueError
+    )
+    helper(
+        "background",
+        PIL.Image.new("1", (1, MAX_IMAGE_SIDE_LENGTH + 1)),
+        ValueError
+    )
     for mode in PIL.Image.MODES:
         if mode in SUPPORTED_MODES:
             continue
@@ -82,8 +93,16 @@ def test_background():
 
 
 def test_margin():
-    helper("margin", {"left": 3.3, "right": 0, "top": 0, "bottom": 0}, TypeError)
-    helper("margin", {"left": 0, "right": -1, "top": 0, "bottom": 0}, ValueError)
+    helper(
+        "margin",
+        {"left": 3.3, "right": 0, "top": 0, "bottom": 0},
+        TypeError
+    )
+    helper(
+        "margin",
+        {"left": 0, "right": -1, "top": 0, "bottom": 0},
+        ValueError
+    )
 
 
 def test_line_spacing():

@@ -197,7 +197,8 @@ def _draw_page(
                 size=max(int(rand.gauss(font_size, font_size_sigma)), 0)
             )
             offset = _draw_char(draw, text[start], xy, font)
-            dx = word_spacing + offset * (0.5 if is_half_char_fn(text[start]) else 1.0)
+            is_half_char = is_half_char_fn(text[start])
+            dx = word_spacing + offset * (0.5 if is_half_char else 1.0)
             x += rand.gauss(dx, word_spacing_sigma)
             start += 1
             if start == len(text):
@@ -215,8 +216,8 @@ def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
 
 
 class _Renderer(object):
-    """A callable object rendering the foreground that was drawn text and returning
-    rendered image."""
+    """A callable object rendering the foreground that was drawn text and
+    returning rendered image."""
 
     __slots__ = (
         "_period",
@@ -257,7 +258,8 @@ class _Renderer(object):
 
     def __call__(self, page: _page.Page) -> PIL.Image.Image:
         if self._hashed_seed is None:
-            self._rand.seed()  # avoid different processes sharing the same random state
+            # avoid different processes sharing the same random state
+            self._rand.seed()
         else:
             self._rand.seed(a=self._hashed_seed + page.num)
         return self._perturb_and_merge(page)
@@ -284,13 +286,18 @@ class _Renderer(object):
         return canvas
 
 
-def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]) -> _nos.NumericOrderedSet:
+def _extract_strokes(
+        bitmap,
+        bbox: Tuple[int, int, int, int]
+) -> _nos.NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
-    assert (
-        right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE
-    )  # reserve 0xFFFFFFFF as _STROKE_END
-    strokes = _nos.NumericOrderedSet(_UNSIGNED_INT32_TYPECODE, privileged=_STROKE_END)
+    # reserve 0xFFFFFFFF as _STROKE_END
+    assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE
+    strokes = _nos.NumericOrderedSet(
+        _UNSIGNED_INT32_TYPECODE,
+        privileged=_STROKE_END
+    )
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
@@ -305,8 +312,8 @@ def _extract_stroke(
     strokes: _nos.NumericOrderedSet,
     bbox: Tuple[int, int, int, int],
 ) -> None:
-    """Helper function of _extract_strokes() which uses depth first search to find the
-    pixels of a glyph."""
+    """Helper function of _extract_strokes() which uses depth first search to
+    find the pixels of a glyph."""
     left, upper, right, lower = bbox
     stack = []
     stack.append(start)
@@ -388,7 +395,10 @@ def _draw_stroke(
 
 
 def _rotate(
-    center: Tuple[float, float], x: float, y: float, theta: float
+    center: Tuple[float, float],
+    x: float,
+    y: float,
+    theta: float
 ) -> Tuple[float, float]:
     new_x = (
         (x - center[0]) * math.cos(theta)

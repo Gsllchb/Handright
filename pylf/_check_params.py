@@ -62,7 +62,8 @@ def _check_template2(template2) -> None:
     if "line_spacing_sigmas" in template2:
         if len(template2["line_spacing_sigmas"]) != length:
             raise ValueError(
-                "'line_spacing_sigmas' and 'backgrounds' must have the same length"
+                "'line_spacing_sigmas' and 'backgrounds'"
+                " must have the same length"
             )
         _check_line_spacing_sigmas(template2["line_spacing_sigmas"])
 
@@ -76,7 +77,8 @@ def _check_template2(template2) -> None:
     if "word_spacing_sigmas" in template2:
         if len(template2["word_spacing_sigmas"]) != length:
             raise ValueError(
-                "'word_spacing_sigmas' and 'backgrounds' must have the same length"
+                "'word_spacing_sigmas' and 'backgrounds'"
+                " must have the same length"
             )
         _check_word_spacing_sigmas(template2["word_spacing_sigmas"])
 
@@ -97,7 +99,8 @@ def _check_template2(template2) -> None:
     if "perturb_theta_sigmas" in template2:
         if len(template2["perturb_theta_sigmas"]) != length:
             raise ValueError(
-                "'perturb_theta_sigmas' and 'backgrounds' must have the same length"
+                "'perturb_theta_sigmas' and 'backgrounds'"
+                " must have the same length"
             )
         _check_perturb_theta_sigmas(template2["perturb_theta_sigmas"])
 
@@ -114,19 +117,21 @@ def _check_backgrounds(backgrounds) -> None:
     for b in backgrounds:
         if b.mode not in _SUPPORTED_MODES:
             raise NotImplementedError(
-                "'{}' mode is not supported yet. Currently supported modes are {}. See "
-                "how to convert a image's mode: "
+                "'{}' mode is not supported yet. Currently supported modes are"
+                " {}. See how to convert a image's mode: "
                 "https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert".format(
                     b.mode, str(_SUPPORTED_MODES)[1:-1]
                 )
             )
     if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
         raise ValueError(
-            "The width of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
+            "The width of background cannot exceed "
+            "{}".format(_MAX_IMAGE_SIDE_LENGTH)
         )
     if not all(b.height <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
         raise ValueError(
-            "The height of background cannot exceed {}".format(_MAX_IMAGE_SIDE_LENGTH)
+            "The height of background cannot exceed "
+            "{}".format(_MAX_IMAGE_SIDE_LENGTH)
         )
 
 
