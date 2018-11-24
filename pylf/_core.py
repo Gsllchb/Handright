@@ -315,8 +315,7 @@ def _extract_stroke(
     """Helper function of _extract_strokes() which uses depth first search to
     find the pixels of a glyph."""
     left, upper, right, lower = bbox
-    stack = []
-    stack.append(start)
+    stack = [start, ]
     while stack:
         x, y = stack.pop()
         if y - 1 >= upper and bitmap[x, y - 1] and strokes.add(_xy(x, y - 1)):
