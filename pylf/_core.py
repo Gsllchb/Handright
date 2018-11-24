@@ -2,6 +2,7 @@
 """The core module"""
 import math
 import multiprocessing
+import itertools
 import random
 from typing import *
 
@@ -100,96 +101,109 @@ def _draw_pages(
     is_end_char_fn: Callable[[str], bool],
     seed: Optional[Hashable],
 ) -> Iterator[_page.Page]:
-    assert (
-        len(sizes)
-        == len(top_margins)
-        == len(bottom_margins)
-        == len(left_margins)
-        == len(right_margins)
-        == len(line_spacings)
-        == len(font_sizes)
-        == len(word_spacings)
-        == len(line_spacing_sigmas)
-        == len(font_size_sigmas)
-        == len(word_spacing_sigmas)
-    )
+
+    sizes = itertools.cycle(sizes)
+    top_margins = itertools.cycle(top_margins)
+    bottom_margins = itertools.cycle(bottom_margins)
+    left_margins = itertools.cycle(left_margins)
+    right_margins = itertools.cycle(right_margins)
+    line_spacings = itertools.cycle(line_spacings)
+    font_sizes = itertools.cycle(font_sizes)
+    word_spacings = itertools.cycle(word_spacings)
+    line_spacing_sigmas = itertools.cycle(line_spacing_sigmas)
+    font_size_sigmas = itertools.cycle(font_size_sigmas)
+    word_spacing_sigmas = itertools.cycle(word_spacing_sigmas)
+    nums = itertools.count()
 
     rand = random.Random(x=seed)
-    period = len(sizes)
+    start = 0
+    while start < len(text):
+        page = _page.Page(_INTERNAL_MODE, next(sizes), _BLACK, next(nums))
+        start = _draw_page(
+            page,
+            text,
+            start,
+            top_margin=next(top_margins),
+            bottom_margin=next(bottom_margins),
+            left_margin=next(left_margins),
+            right_margin=next(right_margins),
+            line_spacing=next(line_spacings),
+            font_size=next(font_sizes),
+            word_spacing=next(word_spacings),
+            line_spacing_sigma=next(line_spacing_sigmas),
+            font_size_sigma=next(font_size_sigmas),
+            word_spacing_sigma=next(word_spacing_sigmas),
+            font=font,
+            is_half_char_fn=is_half_char_fn,
+            is_end_char_fn=is_end_char_fn,
+            rand=rand,
+        )
+        yield page
 
-    iterator = iter(text)
-    try:
-        char = next(iterator)
-        index = 0
+
+def _draw_page(
+    page: _page.Page,
+    text: str,
+    start: int,
+    top_margin: int,
+    bottom_margin: int,
+    left_margin: int,
+    right_margin: int,
+    line_spacing: int,
+    font_size: int,
+    word_spacing: int,
+    line_spacing_sigma: float,
+    font_size_sigma: float,
+    word_spacing_sigma: float,
+    font,
+    is_half_char_fn: Callable[[str], bool],
+    is_end_char_fn: Callable[[str], bool],
+    rand: random.Random,
+) -> int:
+    if page.height < top_margin + line_spacing + bottom_margin:
+        raise _exceptions.LayoutError(
+            "The sum of top margin, line spacing and bottom margin"
+            " can not be greater than background's height"
+        )
+    if font_size > line_spacing:
+        raise _exceptions.LayoutError(
+            "Font size can not be greater than line spacing"
+        )
+    if page.width < left_margin + font_size + right_margin:
+        raise _exceptions.LayoutError(
+            "The sum of left margin, font size and right margin"
+            " can not be greater than background's width"
+        )
+    if word_spacing <= -font_size // 2:
+        raise _exceptions.LayoutError(
+            "Word spacing must be greater than (-font_size // 2)"
+        )
+
+    draw = page.draw
+    y = top_margin + line_spacing - font_size
+    while y < page.height - bottom_margin - font_size:
+        x = float(left_margin)
         while True:
-            width, height = sizes[index % period]
-
-            top = top_margins[index % period]
-            bottom = bottom_margins[index % period]
-            left = left_margins[index % period]
-            right = right_margins[index % period]
-
-            line_spacing = line_spacings[index % period]
-            font_size = font_sizes[index % period]
-            word_spacing = word_spacings[index % period]
-
-            line_spacing_sigma = line_spacing_sigmas[index % period]
-            font_size_sigma = font_size_sigmas[index % period]
-            word_spacing_sigma = word_spacing_sigmas[index % period]
-
-            if height < top + line_spacing + bottom:
-                raise _exceptions.LayoutError(
-                    "The sum of top margin, line spacing and bottom margin"
-                    " can not be greater than background's height"
-                )
-
-            if font_size > line_spacing:
-                raise _exceptions.LayoutError(
-                    "Font size can not be greater than line spacing"
-                )
-
-            if width < left + font_size + right:
-                raise _exceptions.LayoutError(
-                    "The sum of left margin, font size and right margin"
-                    " can not be greater than background's width"
-                )
-
-            if word_spacing <= -font_size // 2:
-                raise _exceptions.LayoutError(
-                    "Word spacing must be greater than (-font_size // 2)"
-                )
-
-            page = _page.Page(
-                mode=_INTERNAL_MODE, size=(width, height), color=_BLACK, num=index
+            if text[start] == _NEWLINE:
+                start += 1
+                if start == len(text):
+                    return start
+                break
+            if (x >= page.width - right_margin - font_size
+                    and not is_end_char_fn(text[start])):
+                break
+            xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
+            font = font.font_variant(
+                size=max(int(rand.gauss(font_size, font_size_sigma)), 0)
             )
-            draw = page.draw
-
-            y = top + line_spacing - font_size
-            try:
-                while y < height - bottom - font_size:
-                    x = float(left)
-                    while True:
-                        if char == _NEWLINE:
-                            char = next(iterator)
-                            break
-                        if x >= width - right - font_size and not is_end_char_fn(char):
-                            break
-                        xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
-                        font = font.font_variant(
-                            size=max(int(rand.gauss(font_size, font_size_sigma)), 0)
-                        )
-                        offset = _draw_char(draw, char, xy, font)
-                        dx = word_spacing + offset * (
-                            0.5 if is_half_char_fn(char) else 1
-                        )
-                        x += rand.gauss(dx, word_spacing_sigma)
-                        char = next(iterator)
-                    y += line_spacing
-            finally:
-                yield page
-            index += 1
-    except StopIteration:
-        pass
+            offset = _draw_char(draw, text[start], xy, font)
+            dx = word_spacing + offset * (0.5 if is_half_char_fn(text[start]) else 1.0)
+            x += rand.gauss(dx, word_spacing_sigma)
+            start += 1
+            if start == len(text):
+                return start
+        y += line_spacing
+    return start
 
 
 def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
