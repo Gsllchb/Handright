@@ -104,7 +104,8 @@ def handwrite(
 
         worker: The maximum number of concurrently running jobs. Especially,
         when worker equals 1, it will use a single-threaded algorithm instead.
-        Default: multiprocessing.cpu_count().
+        Recommended not to be greater than multiprocessing.cpu_count(). Default:
+        multiprocessing.cpu_count().
 
         seed: The seed for internal random generators. Default: None.
 
