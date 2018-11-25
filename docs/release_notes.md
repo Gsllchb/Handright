@@ -6,6 +6,7 @@
 
 ## unreleased
 * Issue `UserWarning` while `worker > multiprocessing.cpu_count()`
+* 完善文档
 
 
 ## v3.0.0(2018-10-26)
