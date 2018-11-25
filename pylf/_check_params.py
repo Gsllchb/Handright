@@ -1,10 +1,11 @@
 # coding: utf-8
 """Check the parameters of public interfaces"""
 import collections.abc
+import multiprocessing
 import numbers
+import warnings
 
 import PIL.Image
-
 
 _SUPPORTED_MODES = ("1", "L", "RGB", "RGBA")
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
@@ -232,6 +233,12 @@ def _check_worker(worker) -> None:
         raise TypeError("'worker' must be Integral or None")
     if worker <= 0:
         raise ValueError("'worker' must be at least 1")
+    cpu_count = multiprocessing.cpu_count()
+    if worker > cpu_count:
+        warnings.warn(
+            "'worker' (got {}) is greater than the number of CPUs in the system"
+            " (got {})".format(worker, cpu_count)
+        )
 
 
 def _check_seed(seed) -> None:
