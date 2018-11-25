@@ -4,6 +4,10 @@
 即可。但还是建议闲得没事、充满好奇心或想全面了解新版本的用户看完所有新变化。
 
 
+## unreleased
+* Issue `UserWarning` while `worker > multiprocessing.cpu_count()`
+
+
 ## v3.0.0(2018-10-26)
 本次更新是多个**不后向兼容**的小更新与其余更新的集合。
 * __添加异常类`pylf.LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行
