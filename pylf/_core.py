@@ -179,7 +179,7 @@ def _draw_page(
             "Word spacing must be greater than (-font_size // 2)"
         )
 
-    draw = page.draw
+    draw = page.draw()
     y = top_margin + line_spacing - font_size
     while y < page.height - bottom_margin - font_size:
         x = float(left_margin)

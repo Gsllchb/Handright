@@ -23,7 +23,6 @@ class Page(object):
         self.image = PIL.Image.new(mode, size, color)
         self.num = num
 
-    @property
     def draw(self):
         return PIL.ImageDraw.Draw(self.image)
 
