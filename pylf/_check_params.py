@@ -117,32 +117,28 @@ def _check_backgrounds(backgrounds) -> None:
         raise TypeError("Background must be Pillow's Image")
     for b in backgrounds:
         if b.mode not in _SUPPORTED_MODES:
+            msg = ("'{}' mode is not supported yet. Currently supported modes "
+                   "are {}. See how to convert a image's mode: https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert")
             raise NotImplementedError(
-                "'{}' mode is not supported yet. Currently supported modes are"
-                " {}. See how to convert a image's mode: "
-                "https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert".format(
-                    b.mode, str(_SUPPORTED_MODES)[1:-1]
-                )
+                msg.format(b.mode, str(_SUPPORTED_MODES)[1:-1])
             )
     if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
-        raise ValueError(
-            "The width of background cannot exceed "
-            "{}".format(_MAX_IMAGE_SIDE_LENGTH)
-        )
+        msg = "The width of background cannot exceed {}"
+        raise ValueError(msg.format(_MAX_IMAGE_SIDE_LENGTH))
     if not all(b.height <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
-        raise ValueError(
-            "The height of background cannot exceed "
-            "{}".format(_MAX_IMAGE_SIDE_LENGTH)
-        )
+        msg = "The height of background cannot exceed {}"
+        raise ValueError(msg.format(_MAX_IMAGE_SIDE_LENGTH))
 
 
 def _check_margins(margins) -> None:
     for m in margins:
         for key in ("top", "bottom", "left", "right"):
             if not isinstance(m[key], numbers.Integral):
-                raise TypeError("{} margin must be Integral".format(key))
+                msg = "{} margin must be Integral"
+                raise TypeError(msg.format(key))
             if m[key] < 0:
-                raise ValueError("{} margin must be at least 0".format(key))
+                msg = "{} margin must be at least 0"
+                raise ValueError(msg.format(key))
 
 
 def _check_line_spacings(line_spacings) -> None:
@@ -235,10 +231,9 @@ def _check_worker(worker) -> None:
         raise ValueError("'worker' must be at least 1")
     cpu_count = multiprocessing.cpu_count()
     if worker > cpu_count:
-        warnings.warn(
-            "'worker' (got {}) is greater than the number of CPUs in the system"
-            " (got {})".format(worker, cpu_count)
-        )
+        msg = ("'worker' (got {}) is greater than the number of CPUs in the"
+               " system (got {})")
+        warnings.warn(msg.format(worker, cpu_count))
 
 
 def _check_seed(seed) -> None:
