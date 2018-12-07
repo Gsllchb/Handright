@@ -11,7 +11,7 @@ working, I strongly recommend that all of you notify and talk with me (via
 2. Run `pip install -r requirements.txt` to install the requirements;
 3. Do your contribution;
 4. Provide tests for any newly added code in `pylf` package;
-5. Run `tox` in the project's root folder and run `tests/watch_by_eyes.py`;
+5. Run `tox` in the project's root folder and run `tests/watch.py`;
 6. Create a pull request to pull the changes to the master branch.
 
 
