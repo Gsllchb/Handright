@@ -10,6 +10,7 @@ def run(*args):
     parser.add_argument("-q", "--quiet", action="store_true")
     parser.add_argument("path", help="path to handwriting project")
     parser.parse_args(args)
+    # TODO
 
 
 def main():
