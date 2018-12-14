@@ -63,17 +63,17 @@ if __name__ == '__main__':
 
 
 ## Features
-|                         特性                        |               相关参数                                   |              
-| :-------------------------------------------------- | :------------------------------------------------------ |
-| 设置背景                                             | background                                              |
-| 设置字体及其大小、颜色                                 | font, font_size, color                                  |
-| 设置页边距、行间距、字间距                             | margin, line_spacing, word_spacing                       |
-| 调节排版随机化的强弱                                   | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
-| 调节笔画随机扰动的强弱                                 | perturb_x_sigma, perturb_y_sigma, perturb_theta_sigma   |
-| 设置在行末不换行的字符集（如：'。', '》', ')', ']'）     | is_end_char_fn                                          |
-| 设置在排版时只占其宽度一半的字符集（如：'，', '。', '！'） | is_half_char_fn                                         |
-| 并行加速                                             | worker                                                  |
-| 周期性模板                                            | template2（详情：pylf.handwrite2）                       |
+|                         特性                |               相关参数                                   |              
+| :------------------------------------------ | :------------------------------------------------------ |
+| 设置背景                                     | background                                              |
+| 设置字体及其大小、颜色                         | font, font_size, color                                  |
+| 设置页边距、行间距、字间距                     | margin, line_spacing, word_spacing                      |
+| 调节排版随机化的强弱                          | font_size_sigma, line_spacing_sigma, word_spacing_sigma |
+| 调节笔画随机扰动的强弱                         | perturb_x_sigma, perturb_y_sigma, perturb_theta_sigma   |
+| 设置在行末不换行的字符集（如：`。》)]`）         | is_end_char_fn                                          |
+| 设置在排版时只占其宽度一半的字符集（如：`，。！`） | is_half_char_fn                                         |
+| 并行加速                                     | worker                                                  |
+| 周期性模板                                    | template2（详情：pylf.handwrite2）                       |
 
 
 ## Gallery
