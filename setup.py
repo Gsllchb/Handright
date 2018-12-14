@@ -47,6 +47,9 @@ def main():
         keywords="simulating Chinese handwriting",
         url="https://github.com/Gsllchb/PyLf",
         zip_safe=True,
+        entry_points={
+            'console_scripts': ['pylf = pylf.__main__:main', ],
+        }
     )
 
 

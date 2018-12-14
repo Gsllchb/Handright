@@ -12,5 +12,9 @@ def run(*args):
     parser.parse_args(args)
 
 
-if __name__ == '__main__':
+def main():
     run(*sys.argv[1:])
+
+
+if __name__ == '__main__':
+    main()
