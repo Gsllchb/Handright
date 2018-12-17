@@ -18,7 +18,10 @@ CLASSIFIERS = (
     "Programming Language :: Python :: Implementation :: CPython",
 )
 
-INSTALL_REQUIRES = ("pillow >= 5.2.0, < 6",)
+INSTALL_REQUIRES = (
+    "pillow >= 5.2.0, < 6",
+    "pyyaml >= 3.13, < 4"
+)
 
 SETUP_REQUIRES = ("setuptools>=38.6.0",)
 

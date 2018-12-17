@@ -1,18 +1,26 @@
 # coding: utf-8
 import argparse
-import datetime
-import os.path
+import os
 import sys
+import time
+
+import PIL.Image
+import PIL.ImageFont
+import yaml
 
 import pylf
 
-DESCRIPTION = """The cmd tool for PyLf"""
+DESCRIPTION = """The cmd tool for PyLf"""  # TODO
 
 ENCODING = "utf-8"
 
 TEXT_FILE = "content.txt"
 
-OUTPUT_DIRECTORY = "output"
+TEMPLATE_FILE = "template.yml"
+FONT_FILE = "font.ttf"
+BACKGROUND_FILE_PREFIX = "background."
+
+OUTPUT_DIRECTORY = "out"
 OUTPUT_FORMAT = "png"
 
 
@@ -39,24 +47,46 @@ def _get_text(directory: str):
 
 
 def _get_template(directory: str):
-    template = {}
-    # TODO
+    with open(
+            os.path.join(directory, TEMPLATE_FILE),
+            encoding=ENCODING
+    ) as file:
+        template = yaml.safe_load(file)
+
+    background_file = next(
+        (n for n in os.listdir(directory)
+         if n.startswith(BACKGROUND_FILE_PREFIX))
+    )
+    template["background"] = PIL.Image.open(
+        os.path.join(directory, background_file)
+    )
+
+    template["font"] = PIL.ImageFont.truetype(
+        os.path.join(directory, FONT_FILE)
+    )
     return template
 
 
 def _output(directory: str, images, quiet: bool):
+    path = _get_output_path(directory)
+    for index, image in enumerate(images):
+        image.save(
+            os.path.join(path, "{}.{}".format(index, OUTPUT_FORMAT))
+        )
+    if quiet:
+        return
+    msg = "{} page(s) successfully generated! Please check {}."
+    print(msg.format(len(images), path))
+
+
+def _get_output_path(directory: str) -> str:
     path = os.path.join(
         directory,
         OUTPUT_DIRECTORY,
-        str(datetime.datetime.now())
+        "{:.6f}".format(time.time()).replace('.', '')
     )
-    image_path_fmt = os.path.join(path, "{}.{fmt}".format(fmt=OUTPUT_FORMAT))
-    for index, image in enumerate(images):
-        image.save(image_path_fmt.format(index))
-    if quiet:
-        return
-    msg = "{} pages successfully generated! Please check {}."
-    print(msg.format(len(images), path))
+    os.makedirs(path, exist_ok=True)
+    return path
 
 
 def main():

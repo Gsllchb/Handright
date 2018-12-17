@@ -1,4 +1,6 @@
 pillow == 5.2.0
+pyyaml == 3.13
+
 twine >= 1.8.0
 setuptools >= 38.6.0
 wheel
