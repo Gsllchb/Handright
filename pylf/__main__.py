@@ -1,5 +1,6 @@
 # coding: utf-8
 import argparse
+import multiprocessing
 import os
 import sys
 import time
@@ -94,4 +95,5 @@ def main():
 
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     main()
