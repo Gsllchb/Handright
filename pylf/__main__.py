@@ -35,9 +35,30 @@ def run(*args):
 
 
 def _parse_args(args) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    parser.add_argument("-q", "--quiet", action="store_true")
-    parser.add_argument("dir", help="directory of handwriting project")
+    parser = argparse.ArgumentParser(
+        description=DESCRIPTION,
+        add_help=False
+    )
+    parser.add_argument(
+        "dir",
+        help="手写项目的路径"
+    )
+    parser.add_argument(
+        "-h", "--help",
+        action="help",
+        help="显示此帮助信息并退出"
+    )
+    parser.add_argument(
+        "-q", "--quiet",
+        action="store_true",
+        help="运行时关闭输出"
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="PyLf {}".format(pylf.__version__),
+        help="显示程序版本号并退出"
+    )
     return parser.parse_args(args)
 
 
