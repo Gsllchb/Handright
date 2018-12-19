@@ -10,18 +10,56 @@ import yaml
 
 import pylf
 
-DESCRIPTION = """The cmd tool for PyLf"""  # TODO
 
 ENCODING = "utf-8"
 
 TEXT_FILE = "content.txt"
 
 TEMPLATE_FILE = "template.yml"
-FONT_FILE = "font.ttf"
-BACKGROUND_FILE_PREFIX = "background."
+FONT_FILE_NAME = "font"
+BACKGROUND_FILE_NAME = "background"
 
 OUTPUT_DIRECTORY = "out"
 OUTPUT_FORMAT = "png"
+
+DESCRIPTION = """
+在预先配置好的手写项目上模拟手写
+
+手写项目须含以下文件：
+{text_file}\t\t\t待手写内容（须为UTF-8编码）
+{font_file_name}.[ttf|...]\t\t\t用于手写的字体，须为TrueType或OpenType字体文件
+{background_file_name}.[png|jpg|...]\t用于手写的背景图片，图片格式须被Pillow库和PyLf
+\t\t\t\t库所支持
+{template_file}\t\t\t用于手写的其余参数（须为UTF-8编码）
+{output_directory}\t\t\t\t存放生成图片的文件夹（此文件夹可由程序自动创建）
+
+{template_file}示例：
+================================================================================
+margin:  # 页边距（单位：像素）
+  left: 150
+  right: 150
+  top: 200
+  bottom: 200
+line_spacing: 150  # 行间距（单位：像素）
+font_size: 100  # 字体大小（单位：像素）
+word_spacing: 0  # 字间距，缺省值：0（单位：像素）
+color: "black"  # 字体颜色，缺省值："black"，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+
+# 以下为随机参数，用于调节相关量的随机性强弱，值越高相关量的随机性越明显
+line_spacing_sigma: 3.1  # 行间距的高斯分布的σ，缺省值：font_size / 32
+font_size_sigma: 1.6  # 字体大小的高斯分布的σ，缺省值：font_size / 64
+word_spacing_sigma: 3.1  # 字间距的高斯分布的σ，缺省值：font_size / 32
+perturb_x_sigma: 3.1  # 笔画水平位置的高斯分布的σ，缺省值：font_size / 32
+perturb_y_sigma: 3.1  # 笔画竖直位置的高斯分布的σ，缺省值：font_size / 32
+perturb_theta_sigma: 0.07  # 笔画旋转角度的高斯分布的σ，缺省值：0.07
+================================================================================
+""".format(
+    text_file=TEXT_FILE,
+    font_file_name=FONT_FILE_NAME,
+    background_file_name=BACKGROUND_FILE_NAME,
+    template_file=TEMPLATE_FILE,
+    output_directory=OUTPUT_DIRECTORY
+)
 
 
 def run(*args):
@@ -35,6 +73,7 @@ def run(*args):
 
 def _parse_args(args) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         description=DESCRIPTION,
         add_help=False
     )
@@ -74,18 +113,20 @@ def _get_template(parent: str):
     ) as file:
         template = yaml.safe_load(file)
 
-    background_file = next(
-        (n for n in os.listdir(parent)
-         if n.startswith(BACKGROUND_FILE_PREFIX))
-    )
     template["background"] = PIL.Image.open(
-        os.path.join(parent, background_file)
+        os.path.join(parent, _get_file(parent, BACKGROUND_FILE_NAME))
     )
 
     template["font"] = PIL.ImageFont.truetype(
-        os.path.join(parent, FONT_FILE)
+        os.path.join(parent, _get_file(parent, FONT_FILE_NAME))
     )
     return template
+
+
+def _get_file(parent: str, name: str) -> str:
+    return next(
+        (f for f in os.listdir(parent) if f.startswith(name + '.'))
+    )
 
 
 def _output(parent: str, images, quiet: bool):
@@ -96,7 +137,7 @@ def _output(parent: str, images, quiet: bool):
         )
     if quiet:
         return
-    msg = "{} page(s) successfully generated! Please check {}."
+    msg = "成功生成{}张图片！请查看文件夹{}。"
     print(msg.format(len(images), path))
 
 
