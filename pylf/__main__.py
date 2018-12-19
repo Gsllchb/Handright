@@ -42,8 +42,8 @@ margin:  # 页边距（单位：像素）
   bottom: 200
 line_spacing: 150  # 行间距（单位：像素）
 font_size: 100  # 字体大小（单位：像素）
-word_spacing: 0  # 字间距，缺省值：0（单位：像素）
-color: "black"  # 字体颜色，缺省值："black"，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+word_spacing: {default_word_spacing}  # 字间距，缺省值：{default_word_spacing}（单位：像素）
+color: {default_color}  # 字体颜色，缺省值：{default_color}，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
 
 # 以下为随机参数，用于调节相关量的随机性强弱，值越高相关量的随机性越明显
 line_spacing_sigma: 3.1  # 行间距的高斯分布的σ，缺省值：font_size / 32
@@ -51,14 +51,17 @@ font_size_sigma: 1.6  # 字体大小的高斯分布的σ，缺省值：font_size
 word_spacing_sigma: 3.1  # 字间距的高斯分布的σ，缺省值：font_size / 32
 perturb_x_sigma: 3.1  # 笔画水平位置的高斯分布的σ，缺省值：font_size / 32
 perturb_y_sigma: 3.1  # 笔画竖直位置的高斯分布的σ，缺省值：font_size / 32
-perturb_theta_sigma: 0.07  # 笔画旋转角度的高斯分布的σ，缺省值：0.07
+perturb_theta_sigma: {default_perturb_theta_sigma}  # 笔画旋转角度的高斯分布的σ，缺省值：{default_perturb_theta_sigma}
 ================================================================================
 """.format(
     text_file=TEXT_FILE,
     font_file_name=FONT_FILE_NAME,
     background_file_name=BACKGROUND_FILE_NAME,
     template_file=TEMPLATE_FILE,
-    output_directory=OUTPUT_DIRECTORY
+    output_directory=OUTPUT_DIRECTORY,
+    default_word_spacing=pylf._DEFAULT_WORD_SPACING,
+    default_color=pylf._DEFAULT_COLOR,
+    default_perturb_theta_sigma=pylf._DEFAULT_PERTURB_THETA_SIGMA
 )
 
 
