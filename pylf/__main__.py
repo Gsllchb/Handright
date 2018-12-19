@@ -61,35 +61,35 @@ def _parse_args(args) -> argparse.Namespace:
     return parser.parse_args(args)
 
 
-def _get_text(directory: str):
-    path = os.path.join(directory, TEXT_FILE)
+def _get_text(parent: str):
+    path = os.path.join(parent, TEXT_FILE)
     with open(path, encoding=ENCODING) as file:
         return file.read()
 
 
-def _get_template(directory: str):
+def _get_template(parent: str):
     with open(
-            os.path.join(directory, TEMPLATE_FILE),
+            os.path.join(parent, TEMPLATE_FILE),
             encoding=ENCODING
     ) as file:
         template = yaml.safe_load(file)
 
     background_file = next(
-        (n for n in os.listdir(directory)
+        (n for n in os.listdir(parent)
          if n.startswith(BACKGROUND_FILE_PREFIX))
     )
     template["background"] = PIL.Image.open(
-        os.path.join(directory, background_file)
+        os.path.join(parent, background_file)
     )
 
     template["font"] = PIL.ImageFont.truetype(
-        os.path.join(directory, FONT_FILE)
+        os.path.join(parent, FONT_FILE)
     )
     return template
 
 
-def _output(directory: str, images, quiet: bool):
-    path = _get_output_path(directory)
+def _output(parent: str, images, quiet: bool):
+    path = _get_output_path(parent)
     for index, image in enumerate(images):
         image.save(
             os.path.join(path, "{}.{}".format(index, OUTPUT_FORMAT))
@@ -100,9 +100,9 @@ def _output(directory: str, images, quiet: bool):
     print(msg.format(len(images), path))
 
 
-def _get_output_path(directory: str) -> str:
+def _get_output_path(parent: str) -> str:
     path = os.path.join(
-        directory,
+        parent,
         OUTPUT_DIRECTORY,
         "{:.6f}".format(time.time()).replace('.', '')
     )
