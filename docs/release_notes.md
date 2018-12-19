@@ -4,6 +4,10 @@
 即可。但还是建议闲得没事、充满好奇心或想全面了解新版本的用户看完所有新变化。
 
 
+# unreleased
+* __添加命令行工具pylf用于简单的手写任务__
+
+
 ## v3.1.0 (2018-11-26)
 * Issue `UserWarning` while `worker > multiprocessing.cpu_count()`
 * 完善文档
