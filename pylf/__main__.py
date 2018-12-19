@@ -27,10 +27,10 @@ OUTPUT_FORMAT = "png"
 def run(*args):
     args = _parse_args(args)
     images = pylf.handwrite(
-        _get_text(args.dir),
-        _get_template(args.dir)
+        _get_text(args.project),
+        _get_template(args.project)
     )
-    _output(args.dir, images, args.quiet)
+    _output(args.project, images, args.quiet)
 
 
 def _parse_args(args) -> argparse.Namespace:
@@ -39,7 +39,7 @@ def _parse_args(args) -> argparse.Namespace:
         add_help=False
     )
     parser.add_argument(
-        "dir",
+        "project",
         help="手写项目的路径"
     )
     parser.add_argument(
