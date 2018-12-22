@@ -22,6 +22,8 @@ BACKGROUND_FILE_NAME = "background"
 OUTPUT_DIRECTORY = "out"
 OUTPUT_FORMAT = "png"
 
+FEEDBACK_LINK = "https://github.com/Gsllchb/PyLf/issues"
+
 DESCRIPTION = """
 在预先配置好的手写项目上模拟手写
 
@@ -80,7 +82,8 @@ def _parse_args(args) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=DESCRIPTION,
-        add_help=False
+        add_help=False,
+        epilog="反馈：{}".format(FEEDBACK_LINK),
     )
     parser.add_argument(
         "project",
