@@ -69,7 +69,9 @@ def run(*args):
     args = _parse_args(args)
     images = pylf.handwrite(
         _get_text(args.project),
-        _get_template(args.project)
+        _get_template(args.project),
+        seed=args.seed,
+        worker=args.worker,
     )
     _output(args.project, images, args.quiet)
 
@@ -88,6 +90,18 @@ def _parse_args(args) -> argparse.Namespace:
         "-h", "--help",
         action="help",
         help="显示此帮助信息并退出"
+    )
+    parser.add_argument(
+        "-s", "--seed",
+        action="store_const",
+        const=None,
+        help="设置随机种子"
+    )
+    parser.add_argument(
+        "-w", "--worker",
+        action="store_const",
+        const=None,
+        help="允许的最大并行处理数，默认为当前系统的CPU数"
     )
     parser.add_argument(
         "-q", "--quiet",
