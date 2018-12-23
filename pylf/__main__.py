@@ -96,14 +96,11 @@ def _parse_args(args) -> argparse.Namespace:
     )
     parser.add_argument(
         "-s", "--seed",
-        action="store_const",
-        const=None,
         help="设置随机种子"
     )
     parser.add_argument(
         "-w", "--worker",
-        action="store_const",
-        const=None,
+        type=int,
         help="允许的最大并行处理数，默认为当前系统的CPU数"
     )
     parser.add_argument(
