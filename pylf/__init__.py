@@ -22,20 +22,25 @@ from pylf import _check_params
 from pylf import _core
 from pylf._exceptions import LayoutError
 
-__all__ = ("handwrite", "handwrite2", "LayoutError")
+__all__ = (
+    "handwrite",
+    "handwrite2",
+    "DEFAULT_HALF_CHARS",
+    "DEFAULT_END_CHARS",
+    "LayoutError",
+)
 __version__ = "3.1.0"
 
 _CHECK_PARAMETERS = True
 
+DEFAULT_HALF_CHARS = frozenset("")
 # Chinese, English and other end chars
-_DEFAULT_END_CHARS = frozenset(
+DEFAULT_END_CHARS = frozenset(
     "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
 )
 
 _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
-_DEFAULT_IS_HALF_CHAR_FN = lambda c: False
-_DEFAULT_IS_END_CHAR_FN = lambda c: c in _DEFAULT_END_CHARS
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
@@ -86,12 +91,13 @@ def handwrite(
 
             is_half_char_fn: A function judging whether or not a char only take
             up half of its original width. The function must take a char
-            parameter and return a bool value. Default: (lambda c: False).
+            parameter and return a bool value. Default:
+            (lambda c: c in DEFAULT_HALF_CHARS).
 
             is_end_char_fn: A function judging whether or not a char cannot be
             in the beginning of the lines (e.g. '，', '。', '》', ')', ']'). It
             must take a char parameter and return a bool value. Default:
-            (lambda c: c in _DEFAULT_END_CHARS).
+            (lambda c: c in DEFAULT_END_CHARS).
 
             perturb_x_sigma: The sigma of the gauss distribution of the
             horizontal position of strokes. Default: font_size / 32.
@@ -243,8 +249,14 @@ def handwrite2(
 
     color = template2.get("color", _DEFAULT_COLOR)
 
-    is_half_char_fn = template2.get("is_half_char_fn", _DEFAULT_IS_HALF_CHAR_FN)
-    is_end_char_fn = template2.get("is_end_char_fn", _DEFAULT_IS_END_CHAR_FN)
+    is_half_char_fn = template2.get(
+        "is_half_char_fn",
+        lambda c: c in DEFAULT_HALF_CHARS,
+    )
+    is_end_char_fn = template2.get(
+        "is_end_char_fn",
+        lambda c: c in DEFAULT_END_CHARS,
+    )
 
     perturb_x_sigmas = template2.get(
         "perturb_x_sigmas",

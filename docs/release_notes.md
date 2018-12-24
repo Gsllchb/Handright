@@ -6,6 +6,7 @@
 
 ## unreleased
 * __添加命令行工具pylf用于简单的手写任务__
+* __添加新常量`DEFAULT_HALF_CHARS`和`DEFAULT_END_CHARS`__
 
 
 ## v3.1.0 (2018-11-26)
