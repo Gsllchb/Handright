@@ -28,11 +28,11 @@ DESCRIPTION = """
 在预先配置好的手写项目上模拟手写
 
 手写项目须含以下文件：
-{text_file}\t\t\t待手写内容（须为UTF-8编码）
+{text_file}\t\t\t待手写内容（须为{encoding}编码）
 {font_file_name}.[ttf|...]\t\t\t用于手写的字体，须为TrueType或OpenType字体文件
 {background_file_name}.[png|jpg|...]\t用于手写的背景图片，图片格式须被Pillow库和PyLf
 \t\t\t\t库所支持
-{template_file}\t\t\t用于手写的其余参数（须为UTF-8编码）
+{template_file}\t\t\t用于手写的其余参数（须为{encoding}编码）
 {output_directory}\t\t\t\t存放生成图片的文件夹（此文件夹可由程序自动创建）
 
 {template_file}示例：
@@ -56,6 +56,7 @@ perturb_y_sigma: 3.1  # 笔画竖直位置的高斯分布的σ，缺省值：fon
 perturb_theta_sigma: {default_perturb_theta_sigma}  # 笔画旋转角度的高斯分布的σ，缺省值：{default_perturb_theta_sigma}
 ================================================================================
 """.format(
+    encoding=ENCODING,
     text_file=TEXT_FILE,
     font_file_name=FONT_FILE_NAME,
     background_file_name=BACKGROUND_FILE_NAME,
