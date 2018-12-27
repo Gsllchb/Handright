@@ -46,6 +46,8 @@ line_spacing: 150  # 行间距（单位：像素）
 font_size: 100  # 字体大小（单位：像素）
 word_spacing: {default_word_spacing}  # 字间距，缺省值：{default_word_spacing}（单位：像素）
 color: {default_color}  # 字体颜色，缺省值：{default_color}，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+half_chars: "{default_half_chars}"  # 排版时只占据其原宽度一半的字符集，缺省值："{default_half_chars}"
+end_chars: "{default_end_chars}"  # 不应出现于行首的字符集，缺省值："{default_end_chars}"
 
 # 以下为随机参数，用于调节相关量的随机性强弱，值越高相关量的随机性越明显
 line_spacing_sigma: 3.1  # 行间距的高斯分布的σ，缺省值：font_size / 32
@@ -64,7 +66,9 @@ perturb_theta_sigma: {default_perturb_theta_sigma}  # 笔画旋转角度的高�
     output_directory=OUTPUT_DIRECTORY,
     default_word_spacing=pylf._DEFAULT_WORD_SPACING,
     default_color=pylf._DEFAULT_COLOR,
-    default_perturb_theta_sigma=pylf._DEFAULT_PERTURB_THETA_SIGMA
+    default_perturb_theta_sigma=pylf._DEFAULT_PERTURB_THETA_SIGMA,
+    default_half_chars="".join(pylf.DEFAULT_HALF_CHARS),
+    default_end_chars="".join(pylf.DEFAULT_END_CHARS),
 )
 
 
@@ -130,6 +134,16 @@ def _get_template(parent: str):
             encoding=ENCODING
     ) as file:
         template = yaml.safe_load(file)
+
+    if "half_chars" in template:
+        half_chars = frozenset(template["half_chars"])
+        template["is_half_char_fn"] = lambda c: c in half_chars
+        del template["half_chars"]
+
+    if "end_chars" in template:
+        end_chars = frozenset(template["end_chars"])
+        template["is_end_char_fn"] = lambda c: c in end_chars
+        del template["end_chars"]
 
     template["background"] = PIL.Image.open(
         os.path.join(parent, _get_file(parent, BACKGROUND_FILE_NAME))
