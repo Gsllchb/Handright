@@ -37,25 +37,38 @@ DESCRIPTION = """
 
 {template_file}示例：
 ================================================================================
-margin:  # 页边距（单位：像素）
+# 页边距（单位：像素）
+margin:
   left: 150
   right: 150
   top: 200
   bottom: 200
-line_spacing: 150  # 行间距（单位：像素）
-font_size: 100  # 字体大小（单位：像素）
-word_spacing: {default_word_spacing}  # 字间距，缺省值：{default_word_spacing}（单位：像素）
-color: {default_color}  # 字体颜色，缺省值：{default_color}，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
-half_chars: "{default_half_chars}"  # 排版时只占据其原宽度一半的字符集，缺省值："{default_half_chars}"
-end_chars: "{default_end_chars}"  # 不应出现于行首的字符集，缺省值："{default_end_chars}"
+# 行间距（单位：像素）
+line_spacing: 150
+# 字体大小（单位：像素）
+font_size: 100
+# 字间距，缺省值：{default_word_spacing}（单位：像素）
+word_spacing: {default_word_spacing}
+# 字体颜色，缺省值：{default_color}，详情：https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
+color: {default_color}
 
-# 以下为随机参数，用于调节相关量的随机性强弱，值越高相关量的随机性越明显
-line_spacing_sigma: 3.1  # 行间距的高斯分布的σ，缺省值：font_size / 32
-font_size_sigma: 1.6  # 字体大小的高斯分布的σ，缺省值：font_size / 64
-word_spacing_sigma: 3.1  # 字间距的高斯分布的σ，缺省值：font_size / 32
-perturb_x_sigma: 3.1  # 笔画水平位置的高斯分布的σ，缺省值：font_size / 32
-perturb_y_sigma: 3.1  # 笔画竖直位置的高斯分布的σ，缺省值：font_size / 32
-perturb_theta_sigma: {default_perturb_theta_sigma}  # 笔画旋转角度的高斯分布的σ，缺省值：{default_perturb_theta_sigma}
+# 行间距的高斯分布的σ，缺省值：font_size / 32
+line_spacing_sigma: 3.1
+# 字体大小的高斯分布的σ，缺省值：font_size / 64
+font_size_sigma: 1.6
+# 字间距的高斯分布的σ，缺省值：font_size / 32
+word_spacing_sigma: 3.1
+# 笔画水平位置的高斯分布的σ，缺省值：font_size / 32
+perturb_x_sigma: 3.1
+# 笔画竖直位置的高斯分布的σ，缺省值：font_size / 32
+perturb_y_sigma: 3.1
+# 笔画旋转角度的高斯分布的σ，缺省值：{default_perturb_theta_sigma}
+perturb_theta_sigma: {default_perturb_theta_sigma}
+
+# 排版时只占据其原宽度一半的字符集，缺省值："{default_half_chars}"
+half_chars: "{default_half_chars}"
+# 不应出现于行首的字符集，缺省值："{default_end_chars}"
+end_chars: "{default_end_chars}"
 ================================================================================
 """.format(
     encoding=ENCODING,
