@@ -11,6 +11,12 @@ _long_text = None
 _font = None
 
 
+def visually_equal(image1, image2) -> bool:
+    return (image1.tobytes() == image2.tobytes()
+            and image1.mode == image2.mode
+            and image1.size == image2.size)
+
+
 def abs_path(*paths) -> str:
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *paths)
 
