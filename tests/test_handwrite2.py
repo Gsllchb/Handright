@@ -55,7 +55,7 @@ def test_one_background():
     }
     images1 = handwrite(text, template, seed=SEED)
     images2 = handwrite2(text, template2, seed=SEED)
-    assert all(im1 == im2 for im1, im2 in zip(images1, images2))
+    assert images1 == images2
 
 
 def test_seed():
@@ -64,11 +64,11 @@ def test_seed():
     for seed in (0, "PyLf"):
         images1 = handwrite2(text, template2, seed=seed)
         images2 = handwrite2(text, template2, seed=seed)
-        assert all(im1 == im2 for im1, im2 in zip(images1, images2))
+        assert images1 == images2
 
     images1 = handwrite2(text, template2, seed=None)
     images2 = handwrite2(text, template2, seed=None)
-    assert not all(im1 == im2 for im1, im2 in zip(images1, images2))
+    assert not images1 == images2
 
 
 def test_result():
@@ -97,7 +97,7 @@ def test_1_image():
     ]
     images = handwrite2(text, template2, seed=SEED)
     criterion = [image.convert("1") for image in criterion]
-    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+    assert criterion == images
 
 
 def test_l_image():
@@ -115,7 +115,7 @@ def test_l_image():
     ]
     images = handwrite2(text, template2, seed=SEED)
     criterion = [image.convert("L") for image in criterion]
-    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+    assert criterion == images
 
 
 def test_rgba_image():
@@ -133,7 +133,7 @@ def test_rgba_image():
     ]
     images = handwrite2(text, template2, seed=SEED)
     images = [image.convert("RGB") for image in images]
-    assert all(im1 == im2 for im1, im2 in zip(criterion, images))
+    assert criterion == images
 
 
 def test_rgb_image():

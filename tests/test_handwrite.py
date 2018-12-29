@@ -55,8 +55,7 @@ def test_worker():
     for worker in workers:
         images = handwrite(text, template, worker=worker, seed=SEED)
         if prev_images is not None:
-            assert len(prev_images) == len(images)
-            assert all(im1 == im2 for im1, im2 in zip(prev_images, images))
+            assert prev_images == images
         prev_images = images
 
 
@@ -66,7 +65,7 @@ def test_seed():
     for seed in (0, "PyLf"):
         ims1 = handwrite(text, template, seed=seed)
         ims2 = handwrite(text, template, seed=seed)
-        assert all(im1 == im2 for im1, im2 in zip(ims1, ims2))
+        assert ims1 == ims2
 
 
 def test_result():
