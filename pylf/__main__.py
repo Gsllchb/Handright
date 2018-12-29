@@ -182,7 +182,7 @@ def _output(parent: str, images, quiet: bool):
         )
     if quiet:
         return
-    msg = "成功生成{}张图片！请查看文件夹{}。"
+    msg = "成功生成{}张图片！请查看文件夹“{}”。"
     print(msg.format(len(images), path))
 
 
