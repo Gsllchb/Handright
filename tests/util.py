@@ -11,8 +11,8 @@ _long_text = None
 _font = None
 
 
-def abs_path(path: str) -> str:
-    return os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+def abs_path(*paths) -> str:
+    return os.path.join(os.path.abspath(os.path.dirname(__file__)), *paths)
 
 
 def get_short_text() -> str:
