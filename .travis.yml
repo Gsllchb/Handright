@@ -7,5 +7,5 @@ python:
   - "3.5"
   - "3.6"
   - "3.7-dev"
-install: pip install pytest pillow==5.2.0 pyyaml == 3.13
+install: pip install pytest pillow==5.2.0 pyyaml==3.13
 script: pytest
