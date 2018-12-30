@@ -23,7 +23,7 @@ def test_run():
 
     background = PIL.Image.new(
         mode="L",
-        size=(800, 1000),
+        size=(400, 500),
         color="white",
     )
     background.save(abs_path(TEMP_DIR, "background.png"))
@@ -41,13 +41,13 @@ def test_run():
 
     template = {
         "margin": {
-            "left": 50,
-            "right": 50,
-            "top": 100,
-            "bottom": 100
+            "left": 25,
+            "right": 25,
+            "top": 50,
+            "bottom": 50
         },
-        "line_spacing": 45,
-        "font_size": 40,
+        "line_spacing": 22,
+        "font_size": 20,
     }
     with open(
             abs_path(TEMP_DIR, "template.yml"),
