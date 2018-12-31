@@ -5,7 +5,7 @@
 
 
 ## unreleased
-* __添加命令行工具pylf用于简单的手写任务__
+* __为简单的手写任务推出CLI版本，请在命令行中运行`pylf`。__
 * __添加新常量`DEFAULT_HALF_CHARS`和`DEFAULT_END_CHARS`__
 
 
