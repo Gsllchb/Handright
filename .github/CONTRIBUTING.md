@@ -1,9 +1,5 @@
 # Contributing
-First of all, every participant should obey [_Contributor Covenant Code of Conduct_](CODE_OF_CONDUCT.md).
-In this project, Chinese and English both are welcoming. Besides, before 
-starting
-working, I strongly recommend that all of you notify and talk with me (via 
-[Gitter](https://gitter.im/Python-PyLf/PyLf) or email) first.
+First of all, every participant should obey [_Contributor Covenant Code of Conduct_](CODE_OF_CONDUCT.md). In this project, Chinese and English both are welcoming. Besides, before starting working, I strongly recommend that all of you notify and talk with me (via [Gitter](https://gitter.im/Python-PyLf/PyLf) or email) first.
 
 
 ## Workflow
@@ -16,8 +12,7 @@ working, I strongly recommend that all of you notify and talk with me (via
 
 
 ## Guidelines
-* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python)
-in mind;
+* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python) in mind;
 * One commit for one change;
 * Maximum line length is 80 characters;
 * Documentations and Examples both are for released versions; 
