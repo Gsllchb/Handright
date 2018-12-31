@@ -1,1 +1,1 @@
-请详尽地描述您做了什么，以及为什么要这样做。
+Please describe in detail what you did and why.
