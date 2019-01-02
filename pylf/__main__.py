@@ -98,6 +98,7 @@ def run(*args):
 
 def _parse_args(args) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
+        prog="pylf",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=DESCRIPTION,
         add_help=False,
