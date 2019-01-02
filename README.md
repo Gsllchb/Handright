@@ -4,8 +4,6 @@ ___A lightweight Python library for simulating Chinese handwriting___
 
 [![version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
 [![python](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
-[![implementation](https://img.shields.io/pypi/implementation/PyLf.svg)][pypi-homepage]
-[![gitter](https://badges.gitter.im/Python-PyLf/PyLf.svg)](https://gitter.im/Python-PyLf/PyLf)
 [![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
 [![Build Status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
 
@@ -57,7 +55,6 @@ if __name__ == '__main__':
     }
     for image in handwrite("我能吞下玻璃而不伤身体。", template):
         image.show()
-
 ```
 
 对于简单的手写任务，您可以使用更易用的CLI工具。请尝试在终端中运行`pylf --help`。
