@@ -2,10 +2,10 @@
 
 ___A lightweight Python library for simulating Chinese handwriting___
 
-[![version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
-[![python](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
+[![released version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
+[![Python version](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
 [![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
-[![Build Status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
+[![build status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
 
 [Tutorial][tutorial-link] |
 [Examples][examples-homepage] |
