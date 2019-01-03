@@ -39,6 +39,11 @@ class NumericOrderedSet(
         self._array.append(item)
         return True
 
+    def add_privileged(self) -> None:
+        """Equivalent to add(privileged)"""
+        self._set.add(self._privileged)
+        self._array.append(self._privileged)
+
     def __contains__(self, item) -> bool:
         return item in self._set
 

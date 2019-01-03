@@ -1,6 +1,4 @@
 # coding: utf-8
-import pytest
-
 from pylf import _numeric_ordered_set as _nos
 
 UNSIGNED_INT32 = "L"
@@ -25,7 +23,7 @@ def test_order_with_privileged():
     nos = _nos.NumericOrderedSet(UNSIGNED_INT32, privileged)
     for i in seq1:
         nos.add(i)
-    nos.add(privileged)
+    nos.add_privileged()
     for i in seq2:
         nos.add(i)
     assert list(nos) == seq1 + [privileged] + seq2
@@ -46,7 +44,7 @@ def test_len():
         assert len(nos) == i
         assert nos.add(i)
     assert len(nos) == length
-    nos.add(privileged)
+    nos.add_privileged()
     assert len(nos) == length + 1
     nos.add(privileged)
     assert len(nos) == length + 2

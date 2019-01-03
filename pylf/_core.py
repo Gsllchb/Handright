@@ -302,7 +302,7 @@ def _extract_strokes(
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
                 _extract_stroke(bitmap, (x, y), strokes, bbox)
-                strokes.add(_STROKE_END)
+                strokes.add_privileged()
     return strokes
 
 
