@@ -65,10 +65,8 @@ def test_run():
         "out",
         os.listdir(abs_path(TEMP_DIR, "out"))[0]
     )
-    images2 = [
-        PIL.Image.open(abs_path(images_dir, n))
-        for n in sorted(os.listdir(images_dir))
-    ]
+    images2 = [PIL.Image.open(abs_path(images_dir, n))
+               for n in sorted(os.listdir(images_dir))]
 
     assert all(map(visually_equal, images1, images2))
 

@@ -45,11 +45,11 @@ _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
 def handwrite(
-    text: str,
-    template: Mapping[str, Any],
-    *,
-    worker: Optional[int] = None,
-    seed: Optional[Hashable] = None
+        text: str,
+        template: Mapping[str, Any],
+        *,
+        worker: Optional[int] = None,
+        seed: Optional[Hashable] = None
 ) -> List[PIL.Image.Image]:
     """Handwrite the text with the parameters in the template.
 
@@ -172,11 +172,11 @@ def handwrite(
 
 
 def handwrite2(
-    text: str,
-    template2: Mapping[str, Any],
-    *,
-    worker: Optional[int] = None,
-    seed: Optional[Hashable] = None
+        text: str,
+        template2: Mapping[str, Any],
+        *,
+        worker: Optional[int] = None,
+        seed: Optional[Hashable] = None
 ) -> List[PIL.Image.Image]:
     """The 'periodic' version of handwrite. See also handwrite().
     The parameters of handwrite2() and handwrite() are similar. The difference
@@ -234,17 +234,21 @@ def handwrite2(
     font_sizes = template2["font_sizes"]
 
     word_spacings = template2.get(
-        "word_spacings", tuple(_DEFAULT_WORD_SPACING for _ in font_sizes)
+        "word_spacings",
+        tuple(_DEFAULT_WORD_SPACING for _ in font_sizes)
     )
 
     line_spacing_sigmas = template2.get(
-        "line_spacing_sigmas", tuple(i / 32 for i in font_sizes)
+        "line_spacing_sigmas",
+        tuple(i / 32 for i in font_sizes)
     )
     font_size_sigmas = template2.get(
-        "font_size_sigmas", tuple(i / 64 for i in font_sizes)
+        "font_size_sigmas",
+        tuple(i / 64 for i in font_sizes)
     )
     word_spacing_sigmas = template2.get(
-        "word_spacing_sigmas", tuple(i / 32 for i in font_sizes)
+        "word_spacing_sigmas",
+        tuple(i / 32 for i in font_sizes)
     )
 
     color = template2.get("color", _DEFAULT_COLOR)

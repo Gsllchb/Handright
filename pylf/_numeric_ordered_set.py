@@ -9,7 +9,9 @@ import collections.abc
 # collections.abc.Collection here. Because, collections.abc.Collection is added
 # after Python3.5.
 class NumericOrderedSet(
-    collections.abc.Sized, collections.abc.Iterable, collections.abc.Container
+    collections.abc.Sized,
+    collections.abc.Iterable,
+    collections.abc.Container
 ):
     """A mutable set storing numeric value that remembers its elements insert
     order. Note that, this data structure has not implemented the full

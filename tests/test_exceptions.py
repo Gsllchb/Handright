@@ -129,12 +129,12 @@ def test_color():
 
 def test_sigmas():
     for sigma in (
-        "line_spacing_sigma",
-        "font_size_sigma",
-        "word_spacing_sigma",
-        "perturb_x_sigma",
-        "perturb_y_sigma",
-        "perturb_theta_sigma",
+            "line_spacing_sigma",
+            "font_size_sigma",
+            "word_spacing_sigma",
+            "perturb_x_sigma",
+            "perturb_y_sigma",
+            "perturb_theta_sigma",
     ):
         helper(sigma, 1 + 2j, TypeError)
         helper(sigma, -1, ValueError)

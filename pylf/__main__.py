@@ -10,7 +10,6 @@ import yaml
 
 import pylf
 
-
 ENCODING = "utf-8"
 
 TEXT_FILE = "content.txt"
@@ -170,9 +169,7 @@ def _get_template(parent: str):
 
 
 def _get_file(parent: str, name: str) -> str:
-    return next(
-        (f for f in os.listdir(parent) if f.startswith(name + '.'))
-    )
+    return next((f for f in os.listdir(parent) if f.startswith(name + '.')))
 
 
 def _output(parent: str, images, quiet: bool):
@@ -203,5 +200,6 @@ def main():
 
 if __name__ == '__main__':
     import multiprocessing
+
     multiprocessing.freeze_support()
     main()
