@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v3.2.1 (2019-1-11)
 
 * 将Pyyaml版本限制改为`>= 3.13, < 5`
 * 轻微提升性能。
