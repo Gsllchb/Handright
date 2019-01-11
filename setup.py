@@ -16,7 +16,7 @@ CLASSIFIERS = (
 
 INSTALL_REQUIRES = (
     "pillow >= 5.2.0, < 6",
-    "pyyaml >= 3.13, < 4"
+    "pyyaml >= 3.13, < 5"
 )
 
 SETUP_REQUIRES = ("setuptools>=38.6.0",)
