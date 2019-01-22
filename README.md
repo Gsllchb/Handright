@@ -86,7 +86,7 @@ if __name__ == '__main__':
 卖艺不卖身o(*￣▽￣*)ブ
 |          微信         |         支付宝       |
 |:--------------------:|:--------------------:|
-| ![][wechat-donation] | ![][alipay-donation] |
+| <img src="https://gsllchb.github.io/donation/wechat.png" width="128" /> | <img src="https://gsllchb.github.io/donation/alipay.jpg" width="128" /> |
 
 [tutorial]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
