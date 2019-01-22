@@ -2,16 +2,16 @@
 
 ___A lightweight Python library for simulating Chinese handwriting___
 
-[![released version](https://img.shields.io/pypi/v/PyLf.svg)][pypi-homepage]
-[![Python version](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi-homepage]
-[![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license-link]
+[![released version](https://img.shields.io/pypi/v/PyLf.svg)][pypi]
+[![Python version](https://img.shields.io/pypi/pyversions/PyLf.svg)][pypi]
+[![license](https://img.shields.io/github/license/Gsllchb/PyLf.svg)][license]
 [![build status](https://travis-ci.org/Gsllchb/PyLf.svg?branch=master)](https://travis-ci.org/Gsllchb/PyLf)
 [![downloads](https://img.shields.io/pypi/dm/PyLf.svg)](https://pypistats.org/packages/pylf)
 
-[Tutorial][tutorial-link] |
-[Examples][examples-homepage] |
-[Release Notes][release-notes-link] |
-[Contributing][contributing-link]
+[Tutorial][tutorial] |
+[Examples][examples] |
+[Release Notes][release-notes] |
+[Contributing][contributing]
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v2/out/slogan.png)
 
@@ -23,11 +23,11 @@ Reveal the nature of Chinese handwriting and use it to implement beautiful, simp
 
 首先，在水平位置、竖直位置和字体大小三个自由度上，对每个字的整体做随机扰动。随后，在水平位置、竖直位置和旋转角度三个自由度上，对每个字的每个笔画做随机扰动。
 
-目前，PyLf基于[Pillow][Pillow-homepage]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
+目前，PyLf基于[Pillow][Pillow]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
 
 ## Installation
 
-由于PyLf的依赖项[Pillow][Pillow-homepage]会与[PIL][PIL-homepage]发生冲突，因此如若您已安装[PIL][PIL-homepage]，请先**手动卸载**：
+由于PyLf的依赖项[Pillow][Pillow]会与[PIL][PIL]发生冲突，因此如若您已安装[PIL][PIL]，请先**手动卸载**：
 
 ```console
 pip uninstall PIL
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
 对于简单的手写任务，您可以使用更易用的CLI工具。请尝试在终端中运行`pylf --help`。
 
-更多信息请参阅[Tutorial][tutorial-link]。
+更多信息请参阅[Tutorial][tutorial]。
 
 ## Features
 
@@ -82,11 +82,11 @@ if __name__ == '__main__':
 
 ![前出师表](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v3/out/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.png)
 
-[tutorial-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
-[PIL-homepage]: http://www.pythonware.com/products/pil/
-[Pillow-homepage]: http://python-pillow.org/
-[examples-homepage]: https://github.com/Gsllchb/PyLf-examples
-[release-notes-link]: https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md
-[pypi-homepage]: https://pypi.org/project/pylf/
-[license-link]: https://github.com/Gsllchb/PyLf/blob/master/LICENSE
-[contributing-link]: https://github.com/Gsllchb/PyLf/blob/master/.github/CONTRIBUTING.md
+[tutorial]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
+[PIL]: http://www.pythonware.com/products/pil/
+[Pillow]: http://python-pillow.org/
+[examples]: https://github.com/Gsllchb/PyLf-examples
+[release-notes]: https://github.com/Gsllchb/PyLf/blob/master/docs/release_notes.md
+[pypi]: https://pypi.org/project/pylf/
+[license]: https://github.com/Gsllchb/PyLf/blob/master/LICENSE
+[contributing]: https://github.com/Gsllchb/PyLf/blob/master/.github/CONTRIBUTING.md
