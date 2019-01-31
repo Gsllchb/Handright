@@ -11,7 +11,8 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [Tutorial][tutorial] |
 [Examples][examples] |
 [Release Notes][release-notes] |
-[Contributing][contributing]
+[Contributing][contributing] |
+[Donation](https://gsllchb.github.io/donation/)
 
 ![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v2/out/slogan.png)
 
@@ -82,12 +83,6 @@ if __name__ == '__main__':
 
 ![前出师表](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v3/out/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.png)
 
-## Donation
-卖艺不卖身o(*￣▽￣*)ブ
-
-|          微信      |         支付宝       |
-:-------------------:|:--------------------:
-![][wechat-donation] | ![][alipay-donation]
 
 [tutorial]: https://github.com/Gsllchb/PyLf/blob/master/docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
@@ -97,5 +92,3 @@ if __name__ == '__main__':
 [pypi]: https://pypi.org/project/pylf/
 [license]: https://github.com/Gsllchb/PyLf/blob/master/LICENSE
 [contributing]: https://github.com/Gsllchb/PyLf/blob/master/.github/CONTRIBUTING.md
-[alipay-donation]: https://gsllchb.github.io/donation/alipay.jpg
-[wechat-donation]: https://gsllchb.github.io/donation/wechat.png
