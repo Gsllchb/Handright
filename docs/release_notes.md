@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 将`LICENSE.txt`嵌入到二进制发行版中。
+
 ## v3.2.1 (2019-1-11)
 
 * 将Pyyaml版本限制改为`>= 3.13, < 5`
