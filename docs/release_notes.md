@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v3.2.2 (2019-2-13)
 * 将`LICENSE.txt`嵌入到二进制发行版中。
 
 ## v3.2.1 (2019-1-11)
