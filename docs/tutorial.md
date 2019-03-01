@@ -1,13 +1,6 @@
 # Tutorial
 本文讲述如何生成并打印出足以媲美真人手写的文档。
 
-### 查看API文档
-您可通过[pydoc](https://docs.python.org/3/library/pydoc.html)查看PyLf的完整API文档：
-
-```console
-python -m pydoc pylf
-```
-
 ### Windows用户须知
 Windows用户在以调用API的形式使用本库时不能将代码直接写在脚本的顶层。而须写成如下形式：
 
@@ -18,6 +11,13 @@ from pylf import handwrite
 
 if __name__ == '__main__':
     ...
+```
+
+### 查看API文档
+您可通过[pydoc](https://docs.python.org/3/library/pydoc.html)查看PyLf的完整API文档：
+
+```console
+python -m pydoc pylf
 ```
 
 ### 字体大小（font_size）
