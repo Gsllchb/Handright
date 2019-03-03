@@ -68,6 +68,20 @@ def test_seed():
         assert ims1 == ims2
 
 
+def test_line_and_page_breaks():
+    text = "哈" * 4
+    template = {
+        "background": PIL.Image.new(mode="L", size=(100, 100), color="white"),
+        "font": get_default_font(),
+        "margin": {"left": 10, "right": 10, "top": 10, "bottom": 10},
+        "line_spacing": 40,
+        "font_size": 40,
+        "word_spacing_sigma": 0,
+    }
+    images = handwrite(text, template)
+    assert len(images) == 1
+
+
 def test_result():
     assert isinstance(handwrite("", get_default_template()), list)
     assert isinstance(handwrite(get_short_text(), get_default_template()), list)
