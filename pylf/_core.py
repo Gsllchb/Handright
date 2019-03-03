@@ -180,7 +180,7 @@ def _draw_page(
 
     draw = page.draw()
     y = top_margin + line_spacing - font_size
-    while y < page.height - bottom_margin - font_size:
+    while y <= page.height - bottom_margin - font_size:
         x = float(left_margin)
         while True:
             if text[start] == _NEWLINE:
@@ -188,7 +188,7 @@ def _draw_page(
                 if start == len(text):
                     return start
                 break
-            if (x >= page.width - right_margin - font_size
+            if (x > page.width - right_margin - font_size
                     and not is_end_char_fn(text[start])):
                 break
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
