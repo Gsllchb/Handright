@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 修复在某些边界条件下，换行和换页过早的问题。
+
 ## v3.2.2 (2019-2-13)
 * 将`LICENSE.txt`嵌入到二进制发行版中。
 
