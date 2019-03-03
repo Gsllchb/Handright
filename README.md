@@ -14,7 +14,7 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [Contributing][contributing] |
 [Donation](https://gsllchb.github.io/donation/)
 
-![](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v2/out/slogan.png)
+![](https://github.com/Gsllchb/PyLf/blob/master/docs/images/slogan.png)
 
 ## Vision
 
