@@ -22,7 +22,6 @@ def get_default_template2() -> dict:
         ],
         "line_spacings": [7, 4],
         "font_sizes": [6, 4],
-        "font_size_sigma": [0, 0],
         "font": get_default_font(),
     }
     return template2
@@ -34,7 +33,6 @@ def test_one_background():
     line_spacing = 7
     font = get_default_font()
     font_size = 6
-    font_size_sigma = 0
 
     text = get_long_text()
     template = {
@@ -43,14 +41,12 @@ def test_one_background():
         "line_spacing": line_spacing,
         "font": font,
         "font_size": font_size,
-        "font_size_sigma": font_size_sigma,
     }
     template2 = {
         "backgrounds": (background,),
         "margins": (margin,),
         "line_spacings": (line_spacing,),
         "font_sizes": (font_size,),
-        "font_size_sigmas": (font_size_sigma,),
         "font": font,
     }
     images1 = handwrite(text, template, seed=SEED)
