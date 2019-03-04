@@ -29,8 +29,7 @@ DESCRIPTION = """
 手写项目须含以下文件：
 {text_file}\t\t\t待手写内容（{encoding}编码）
 {font_file_name}.[ttf|...]\t\t\t用于手写的字体，须为TrueType或OpenType字体文件
-{background_file_name}.[png|jpg|...]\t用于手写的背景图片，图片格式须被Pillow库和PyLf
-\t\t\t\t库所支持
+{background_file_name}.[png|jpg|...]\t用于手写的背景图片，图片格式须被Pillow库和PyLf库所支持
 {template_file}\t\t\t用于手写的其余参数（{encoding}编码）
 {output_directory}\t\t\t\t存放生成图片的文件夹（此文件夹可由程序自动创建）
 
@@ -142,29 +141,18 @@ def _get_text(parent: str):
 
 
 def _get_template(parent: str):
-    with open(
-            os.path.join(parent, TEMPLATE_FILE),
-            encoding=ENCODING
-    ) as file:
+    with open(os.path.join(parent, TEMPLATE_FILE), encoding=ENCODING) as file:
         template = yaml.safe_load(file)
-
     if "half_chars" in template:
         half_chars = frozenset(template["half_chars"])
         template["is_half_char_fn"] = lambda c: c in half_chars
         del template["half_chars"]
-
     if "end_chars" in template:
         end_chars = frozenset(template["end_chars"])
         template["is_end_char_fn"] = lambda c: c in end_chars
         del template["end_chars"]
-
-    template["background"] = PIL.Image.open(
-        os.path.join(parent, _get_file(parent, BACKGROUND_FILE_NAME))
-    )
-
-    template["font"] = PIL.ImageFont.truetype(
-        os.path.join(parent, _get_file(parent, FONT_FILE_NAME))
-    )
+    template["background"] = PIL.Image.open(os.path.join(parent, _get_file(parent, BACKGROUND_FILE_NAME)))
+    template["font"] = PIL.ImageFont.truetype(os.path.join(parent, _get_file(parent, FONT_FILE_NAME)))
     return template
 
 
@@ -175,9 +163,7 @@ def _get_file(parent: str, name: str) -> str:
 def _output(parent: str, images, quiet: bool):
     path = _get_output_path(parent)
     for index, image in enumerate(images):
-        image.save(
-            os.path.join(path, "{}.{}".format(index, OUTPUT_FORMAT))
-        )
+        image.save(os.path.join(path, "{}.{}".format(index, OUTPUT_FORMAT)))
     if quiet:
         return
     msg = "成功生成{}张图片！请查看文件夹“{}”。"

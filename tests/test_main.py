@@ -21,39 +21,22 @@ def test_run():
     shutil.rmtree(abs_path(TEMP_DIR), ignore_errors=True)
     os.makedirs(abs_path(TEMP_DIR), exist_ok=True)
 
-    background = PIL.Image.new(
-        mode="L",
-        size=(400, 500),
-        color="white",
-    )
+    background = PIL.Image.new(mode="L", size=(400, 500), color="white")
     background.save(abs_path(TEMP_DIR, "background.png"))
 
     font = PIL.ImageFont.truetype(abs_path(FONT_PATH))
     shutil.copy(abs_path(FONT_PATH), abs_path(TEMP_DIR, "font.ttf"))
 
     text = get_long_text()
-    with open(
-            abs_path(TEMP_DIR, "content.txt"),
-            mode="x",
-            encoding="utf-8"
-    ) as f:
+    with open(abs_path(TEMP_DIR, "content.txt"), mode="x", encoding="utf-8") as f:
         f.write(text)
 
     template = {
-        "margin": {
-            "left": 25,
-            "right": 25,
-            "top": 50,
-            "bottom": 50
-        },
+        "margin": {"left": 25, "right": 25, "top": 50, "bottom": 50},
         "line_spacing": 22,
         "font_size": 20,
     }
-    with open(
-            abs_path(TEMP_DIR, "template.yml"),
-            mode="x",
-            encoding="utf-8"
-    ) as f:
+    with open(abs_path(TEMP_DIR, "template.yml"), mode="x", encoding="utf-8") as f:
         f.write(yaml.safe_dump(template))
     template["background"] = background
     template["font"] = font
@@ -65,8 +48,7 @@ def test_run():
         "out",
         os.listdir(abs_path(TEMP_DIR, "out"))[0]
     )
-    images2 = [PIL.Image.open(abs_path(images_dir, n))
-               for n in sorted(os.listdir(images_dir))]
+    images2 = [PIL.Image.open(abs_path(images_dir, n)) for n in sorted(os.listdir(images_dir))]
 
     assert all(map(visually_equal, images1, images2))
 

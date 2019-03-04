@@ -12,9 +12,9 @@ First of all, every participant should obey [_Contributor Covenant Code of Condu
 
 
 ## Guidelines
-* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python) in mind;
-* One commit for one change;
-* Maximum line length is 80 characters;
-* Documentations and Examples both are for released versions; 
-* Otherwise follow [_Google Python Style Guide_](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#google-python-style-guide);
+* Keep [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/#the-zen-of-python) in mind.
+* One commit for one change.
+* The recommended line length is 80 characters, even though the line length can be up to 120 characters.
+* Documentations and Examples both are for released versions.
+* Otherwise follow [_Google Python Style Guide_](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#google-python-style-guide).
 * Contact me if you have any question.

@@ -14,10 +14,7 @@ CLASSIFIERS = (
     "Programming Language :: Python :: Implementation :: CPython",
 )
 
-INSTALL_REQUIRES = (
-    "pillow >= 5.2.0, < 6",
-    "pyyaml >= 3.13, < 5"
-)
+INSTALL_REQUIRES = ("pillow >= 5.2.0, < 6", "pyyaml >= 3.13, < 5")
 
 SETUP_REQUIRES = ("setuptools>=38.6.0",)
 
@@ -38,17 +35,14 @@ def main():
         install_requires=INSTALL_REQUIRES,
         setup_requires=SETUP_REQUIRES,
         python_requires=">= 3.5",
-        description="A lightweight Python library"
-                    " for simulating Chinese handwriting",
+        description="A lightweight Python library for simulating Chinese handwriting",
         long_description=get_long_description(),
         long_description_content_type="text/markdown",
         license="bsd-3-clause",
         keywords="simulating Chinese handwriting",
         url="https://github.com/Gsllchb/PyLf",
         zip_safe=True,
-        entry_points={
-            "console_scripts": ("pylf = pylf.__main__:main", ),
-        }
+        entry_points={"console_scripts": ("pylf = pylf.__main__:main", ), }
     )
 
 

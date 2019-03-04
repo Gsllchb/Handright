@@ -12,9 +12,7 @@ _font = None
 
 
 def visually_equal(image1, image2) -> bool:
-    return (image1.tobytes() == image2.tobytes()
-            and image1.mode == image2.mode
-            and image1.size == image2.size)
+    return image1.tobytes() == image2.tobytes() and image1.mode == image2.mode and image1.size == image2.size
 
 
 def abs_path(*paths) -> str:
@@ -38,7 +36,5 @@ def get_long_text() -> str:
 def get_default_font():
     global _font
     if _font is None:
-        _font = PIL.ImageFont.truetype(abs_path(
-            "fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"
-        ))
+        _font = PIL.ImageFont.truetype(abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"))
     return _font

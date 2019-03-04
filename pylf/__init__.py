@@ -36,7 +36,9 @@ _CHECK_PARAMETERS = True
 DEFAULT_HALF_CHARS = frozenset("")
 # Chinese, English and other end chars
 DEFAULT_END_CHARS = frozenset(
-    "，。》、？；：’”】｝、！％）" + ",.>?;:]}!%)" + "′″℃℉"
+    "，。》、？；：’”】｝、！％）"
+    ",.>?;:]}!%)"
+    "′″℃℉"
 )
 
 _DEFAULT_WORD_SPACING = 0
@@ -193,12 +195,9 @@ def handwrite2(
     line_spacing -> line_spacings
     font_size -> font_sizes
     word_spacing -> word_spacings (Default: a list of 0)
-    line_spacing_sigma -> line_spacing_sigmas
-    (Default: [i / 32 for i in font_sizes])
-    font_size_sigma -> font_size_sigmas
-    (Default: [i / 64 for i in font_sizes])
-    word_spacing_sigma -> word_spacing_sigmas
-    (Default: [i / 32 for i in font_sizes])
+    line_spacing_sigma -> line_spacing_sigmas (Default: [i / 32 for i in font_sizes])
+    font_size_sigma -> font_size_sigmas (Default: [i / 64 for i in font_sizes])
+    word_spacing_sigma -> word_spacing_sigmas (Default: [i / 32 for i in font_sizes])
     perturb_x_sigma -> perturb_x_sigmas (Default: [i / 32 for i in font_sizes])
     perturb_y_sigma -> perturb_y_sigmas (Default: [i / 32 for i in font_sizes])
     perturb_theta_sigma -> perturb_theta_sigmas (Default: a list of 0.07)

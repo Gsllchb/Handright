@@ -160,23 +160,17 @@ def _draw_page(
         rand: random.Random,
 ) -> int:
     if page.height < top_margin + line_spacing + bottom_margin:
-        raise _exceptions.LayoutError(
-            "The sum of top margin, line spacing and bottom margin"
-            " can not be greater than background's height"
-        )
+        msg = "The sum of top margin, line spacing and bottom margin can not be greater than background's height"
+        raise _exceptions.LayoutError(msg)
     if font_size > line_spacing:
-        raise _exceptions.LayoutError(
-            "Font size can not be greater than line spacing"
-        )
+        msg = "Font size can not be greater than line spacing"
+        raise _exceptions.LayoutError(msg)
     if page.width < left_margin + font_size + right_margin:
-        raise _exceptions.LayoutError(
-            "The sum of left margin, font size and right margin"
-            " can not be greater than background's width"
-        )
+        msg = "The sum of left margin, font size and right margin can not be greater than background's width"
+        raise _exceptions.LayoutError(msg)
     if word_spacing <= -font_size // 2:
-        raise _exceptions.LayoutError(
-            "Word spacing must be greater than (-font_size // 2)"
-        )
+        msg = "Word spacing must be greater than (-font_size // 2)"
+        raise _exceptions.LayoutError(msg)
 
     draw = page.draw()
     y = top_margin + line_spacing - font_size
@@ -188,13 +182,10 @@ def _draw_page(
                 if start == len(text):
                     return start
                 break
-            if (x > page.width - right_margin - font_size
-                    and not is_end_char_fn(text[start])):
+            if x > page.width - right_margin - font_size and not is_end_char_fn(text[start]):
                 break
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
-            font = font.font_variant(
-                size=max(int(rand.gauss(font_size, font_size_sigma)), 0)
-            )
+            font = font.font_variant(size=max(int(rand.gauss(font_size, font_size_sigma)), 0))
             offset = _draw_char(draw, text[start], xy, font)
             is_half_char = is_half_char_fn(text[start])
             dx = word_spacing + offset * (0.5 if is_half_char else 1.0)
@@ -238,8 +229,7 @@ class _Renderer(object):
             perturb_theta_sigmas: Sequence[float],
             seed: Optional[Hashable],
     ) -> None:
-        assert (len(backgrounds) == len(perturb_x_sigmas)
-                == len(perturb_y_sigmas) == len(perturb_theta_sigmas))
+        assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
         self._period = len(backgrounds)
         self._backgrounds = backgrounds
         self._color = color
@@ -394,12 +384,8 @@ def _rotate(
         y: float,
         theta: float
 ) -> Tuple[float, float]:
-    new_x = ((x - center[0]) * math.cos(theta)
-             + (y - center[1]) * math.sin(theta)
-             + center[0])
-    new_y = ((y - center[1]) * math.cos(theta)
-             - (x - center[0]) * math.sin(theta)
-             + center[1])
+    new_x = (x - center[0]) * math.cos(theta) + (y - center[1]) * math.sin(theta) + center[0]
+    new_y = (y - center[1]) * math.cos(theta) - (x - center[0]) * math.sin(theta) + center[1]
     return new_x, new_y
 
 

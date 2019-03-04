@@ -19,8 +19,7 @@ def test_handwrite2():
     images = (image1, image2)
 
     template2 = {
-        "backgrounds": [im.resize(size=(im.size[0] * 2, im.size[1] * 2))
-                        for im in images],
+        "backgrounds": [im.resize(size=(im.size[0] * 2, im.size[1] * 2)) for im in images],
         "margins": (
             {"left": 40, "top": 200, "right": 30, "bottom": 560},
             {"left": 40, "top": 200, "right": 30, "bottom": 980},
