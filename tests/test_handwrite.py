@@ -77,6 +77,7 @@ def test_line_and_page_breaks():
         "line_spacing": 40,
         "font_size": 40,
         "word_spacing_sigma": 0,
+        "font_size_sigma": 0,
     }
     images = handwrite(text, template)
     assert len(images) == 1
