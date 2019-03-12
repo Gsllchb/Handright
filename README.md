@@ -27,15 +27,6 @@ Reveal the nature of Chinese handwriting and use it to implement beautiful, simp
 目前，PyLf基于[Pillow][Pillow]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
 
 ## Installation
-
-由于PyLf的依赖项[Pillow][Pillow]会与[PIL][PIL]发生冲突，因此如若您已安装[PIL][PIL]，请先**手动卸载**：
-
-```console
-pip uninstall PIL
-```
-
-安装PyLf：
-
 ```console
 pip install pylf
 ```
