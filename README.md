@@ -1,5 +1,4 @@
 # PyLf
-
 ___A lightweight Python library for simulating Chinese handwriting___
 
 [![released version](https://img.shields.io/pypi/v/PyLf.svg)][pypi]
@@ -17,11 +16,9 @@ ___A lightweight Python library for simulating Chinese handwriting___
 ![](https://github.com/Gsllchb/PyLf/blob/master/docs/images/slogan.png)
 
 ## Vision
-
 Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and easy-to-use interfaces.
 
 ## Algorithm & Implementation
-
 首先，在水平位置、竖直位置和字体大小三个自由度上，对每个字的整体做随机扰动。随后，在水平位置、竖直位置和旋转角度三个自由度上，对每个字的每个笔画做随机扰动。
 
 目前，PyLf基于[Pillow][Pillow]开发，并在内部使用[multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html)做并行加速。
@@ -32,7 +29,6 @@ pip install pylf
 ```
 
 ## Quick Start
-
 ```python
 from PIL import Image, ImageFont
 from pylf import handwrite
@@ -49,13 +45,11 @@ if __name__ == '__main__':
     for image in handwrite("我能吞下玻璃而不伤身体。", template):
         image.show()
 ```
-
 对于简单的手写任务，您可以使用更易用的CLI工具。请尝试在终端中运行`pylf --help`。
 
 更多信息请参阅[Tutorial][tutorial]。
 
 ## Features
-
 | 特性                         | 相关参数                                                    |
 |:-------------------------- |:------------------------------------------------------- |
 | 设置背景                       | background                                              |
@@ -69,7 +63,6 @@ if __name__ == '__main__':
 | 周期性模板                      | template2（详情：pylf.handwrite2）                           |
 
 ## Gallery
-
 * [前出师表.py](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v3/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.py)
 
 ![前出师表](https://github.com/Gsllchb/PyLf-examples/blob/master/examples/v3/out/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.png)
