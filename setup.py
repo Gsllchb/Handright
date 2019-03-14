@@ -12,6 +12,7 @@ CLASSIFIERS = (
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 )
 
 INSTALL_REQUIRES = ("pillow >= 5.2.0, < 6", "pyyaml >= 3.13, < 5")
