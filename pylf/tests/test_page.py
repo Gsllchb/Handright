@@ -6,7 +6,7 @@ from pylf import _page
 
 def test_image():
     mode = "RGB"
-    size = (10, 10)
+    size = (1, 1)
     color = "white"
     im = PIL.Image.new(mode, size, color)
     page = _page.Page(mode, size, color, 0)
@@ -15,7 +15,7 @@ def test_image():
 
 def test_num():
     num = 3
-    page = _page.Page("L", (10, 10), "white", num)
+    page = _page.Page("L", (1, 1), "white", num)
     assert page.num == num
 
 
@@ -30,18 +30,18 @@ def test_matrix():
 
 
 def test_size():
-    size = (1, 10)
+    size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
     assert page.size == size
 
 
 def test_width():
-    size = (1, 10)
+    size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
     assert page.width == size[0]
 
 
 def test_height():
-    size = (100, 2)
+    size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
     assert page.height == size[1]

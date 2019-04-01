@@ -49,29 +49,19 @@ def test_text():
     with pytest.raises(TypeError):
         handwrite(1, get_default_template())
     with pytest.raises(TypeError):
-        handwrite2(None, get_default_template2())
-    with pytest.raises(TypeError):
         handwrite(list("123"), get_default_template())
-    with pytest.raises(TypeError):
-        handwrite2(tuple(""), get_default_template2())
 
 
 def test_worker():
     with pytest.raises(TypeError):
         handwrite("", get_default_template(), worker=3.3)
-    with pytest.raises(TypeError):
-        handwrite2("", get_default_template2(), worker=-3.3)
     with pytest.raises(ValueError):
         handwrite("", get_default_template(), worker=0)
-    with pytest.raises(ValueError):
-        handwrite2("", get_default_template2(), worker=-0)
 
 
 def test_seed():
     with pytest.raises(TypeError):
         handwrite("", get_default_template(), seed=[])
-    with pytest.raises(TypeError):
-        handwrite2("", get_default_template2(), seed={})
 
 
 def test_background():
