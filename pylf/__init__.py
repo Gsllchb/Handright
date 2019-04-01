@@ -51,7 +51,7 @@ def handwrite(
         template: Mapping[str, Any],
         *,
         worker: Optional[int] = None,
-        seed: Optional[Hashable] = None
+        seed: Hashable = None
 ) -> List[PIL.Image.Image]:
     """Handwrite the text with the parameters in the template.
 
@@ -178,7 +178,7 @@ def handwrite2(
         template2: Mapping[str, Any],
         *,
         worker: Optional[int] = None,
-        seed: Optional[Hashable] = None
+        seed: Hashable = None
 ) -> List[PIL.Image.Image]:
     """The 'periodic' version of handwrite. See also handwrite().
     The parameters of handwrite2() and handwrite() are similar. The difference

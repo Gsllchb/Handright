@@ -47,7 +47,7 @@ def handwrite(
         perturb_y_sigmas: Sequence[float],
         perturb_theta_sigmas: Sequence[float],
         worker: int,
-        seed: Optional[Hashable],
+        seed: Hashable,
 ) -> List[PIL.Image.Image]:
     pages = _draw_pages(
         text=text,
@@ -99,7 +99,7 @@ def _draw_pages(
         font,
         is_half_char_fn: Callable[[str], bool],
         is_end_char_fn: Callable[[str], bool],
-        seed: Optional[Hashable],
+        seed: Hashable,
 ) -> Iterator[_page.Page]:
     sizes = itertools.cycle(sizes)
     top_margins = itertools.cycle(top_margins)
@@ -227,7 +227,7 @@ class _Renderer(object):
             perturb_x_sigmas: Sequence[float],
             perturb_y_sigmas: Sequence[float],
             perturb_theta_sigmas: Sequence[float],
-            seed: Optional[Hashable],
+            seed: Hashable,
     ) -> None:
         assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
         self._period = len(backgrounds)
