@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 细微优化function annotation
+
 ## v3.3.0 (2019-3-16)
 * __提供对PyPy的官方支持__
 
