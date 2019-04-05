@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v3.3.1 (2019-4-5)
 * 细微优化function annotation
 
 ## v3.3.0 (2019-3-16)
