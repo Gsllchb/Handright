@@ -250,14 +250,15 @@ class _Renderer(object):
         return self._perturb_and_merge(page)
 
     def _perturb_and_merge(self, page: _page.Page) -> PIL.Image.Image:
-        strokes = _extract_strokes(page.matrix, page.image.getbbox())
-
+        canvas = self._backgrounds[page.num % self._period].copy()
+        bbox = page.image.getbbox()
+        if bbox is None:
+            return canvas
+        strokes = _extract_strokes(page.matrix, bbox)
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
-        canvas = self._backgrounds[page.num % self._period].copy()
         fill = PIL.ImageColor.getcolor(self._color, canvas.mode)
-
         _draw_strokes(
             canvas.load(),
             canvas.size,
