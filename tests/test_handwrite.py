@@ -44,6 +44,12 @@ def test_null_text():
     assert handwrite("", get_default_template()) == []
 
 
+def test_blank_text():
+    temp = get_default_template()
+    images = handwrite(" ", temp)
+    assert temp["background"] == images[0]
+
+
 def test_worker():
     text = get_long_text()
     template = get_default_template()
