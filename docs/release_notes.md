@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v3.3.2 (2019-4-8)
 * 修复已知的bug
 
 ## v3.3.1 (2019-4-5)

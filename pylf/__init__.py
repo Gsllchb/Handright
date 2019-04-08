@@ -29,7 +29,7 @@ __all__ = (
     "DEFAULT_END_CHARS",
     "LayoutError",
 )
-__version__ = "3.3.1"
+__version__ = "3.3.2"
 
 _CHECK_PARAMETERS = True
 
