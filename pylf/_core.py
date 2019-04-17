@@ -159,13 +159,13 @@ def _draw_page(
         is_end_char_fn: Callable[[str], bool],
         rand: random.Random,
 ) -> int:
-    if page.height < top_margin + line_spacing + bottom_margin:
+    if page.height() < top_margin + line_spacing + bottom_margin:
         msg = "The sum of top margin, line spacing and bottom margin can not be greater than background's height"
         raise _exceptions.LayoutError(msg)
     if font_size > line_spacing:
         msg = "Font size can not be greater than line spacing"
         raise _exceptions.LayoutError(msg)
-    if page.width < left_margin + font_size + right_margin:
+    if page.width() < left_margin + font_size + right_margin:
         msg = "The sum of left margin, font size and right margin can not be greater than background's width"
         raise _exceptions.LayoutError(msg)
     if word_spacing <= -font_size // 2:
@@ -174,7 +174,7 @@ def _draw_page(
 
     draw = page.draw()
     y = top_margin + line_spacing - font_size
-    while y <= page.height - bottom_margin - font_size:
+    while y <= page.height() - bottom_margin - font_size:
         x = float(left_margin)
         while True:
             if text[start] == _NEWLINE:
@@ -182,7 +182,7 @@ def _draw_page(
                 if start == len(text):
                     return start
                 break
-            if x > page.width - right_margin - font_size and not is_end_char_fn(text[start]):
+            if x > page.width() - right_margin - font_size and not is_end_char_fn(text[start]):
                 break
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
             font = font.font_variant(size=max(int(rand.gauss(font_size, font_size_sigma)), 0))
@@ -254,7 +254,7 @@ class _Renderer(object):
         bbox = page.image.getbbox()
         if bbox is None:
             return canvas
-        strokes = _extract_strokes(page.matrix, bbox)
+        strokes = _extract_strokes(page.matrix(), bbox)
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]

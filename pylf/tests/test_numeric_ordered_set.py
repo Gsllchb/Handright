@@ -8,12 +8,12 @@ MAX_UNSIGNED_INT32_VALUE = 0xFFFFFFFF
 def test_privileged():
     privileged = MAX_UNSIGNED_INT32_VALUE
     nos = _nos.NumericOrderedSet(UNSIGNED_INT32, privileged)
-    assert privileged == nos.privileged
+    assert privileged == nos.privileged()
 
 
 def test_typecode():
     nos = _nos.NumericOrderedSet(UNSIGNED_INT32)
-    assert nos.typecode == UNSIGNED_INT32
+    assert nos.typecode() == UNSIGNED_INT32
 
 
 def test_order_with_privileged():

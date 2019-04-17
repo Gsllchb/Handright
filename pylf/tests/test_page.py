@@ -32,16 +32,16 @@ def test_matrix():
 def test_size():
     size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
-    assert page.size == size
+    assert page.size() == size
 
 
 def test_width():
     size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
-    assert page.width == size[0]
+    assert page.width() == size[0]
 
 
 def test_height():
     size = (1, 2)
     page = _page.Page("CMYK", size, "white", 0)
-    assert page.height == size[1]
+    assert page.height() == size[1]

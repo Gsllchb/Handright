@@ -60,10 +60,8 @@ class NumericOrderedSet(
         """The length of ordered sequence"""
         return len(self._array)
 
-    @property
     def typecode(self) -> str:
         return self._typecode
 
-    @property
     def privileged(self):
         return self._privileged
