@@ -4,8 +4,8 @@ import PIL.Image
 from pylf import handwrite2, handwrite
 from tests.util import *
 
-WIDTH = 100
-HEIGHT = 100
+WIDTH = 32
+HEIGHT = 32
 SIZE = (WIDTH, HEIGHT)
 SEED = "PyLf"
 
@@ -17,11 +17,11 @@ def get_default_template2() -> dict:
             PIL.Image.new(mode="RGBA", size=SIZE, color="rgb(0, 128, 255)"),
         ],
         "margins": [
-            {"left": 10, "top": 18, "right": 10, "bottom": 20},
-            {"left": 10, "top": 19, "right": 10, "bottom": 20},
+            {"left": 3, "top": 6, "right": 3, "bottom": 6},
+            {"left": 3, "top": 7, "right": 3, "bottom": 6},
         ],
-        "line_spacings": [7, 4],
-        "font_sizes": [6, 4],
+        "line_spacings": [2, 1],
+        "font_sizes": [2, 1],
         "font": get_default_font(),
     }
     return template2
@@ -29,10 +29,10 @@ def get_default_template2() -> dict:
 
 def test_one_background():
     background = PIL.Image.new(mode="RGB", size=SIZE, color="white")
-    margin = {"left": 10, "top": 18, "right": 10, "bottom": 20}
-    line_spacing = 7
+    margin = {"left": 3, "top": 6, "right": 3, "bottom": 6}
+    line_spacing = 2
     font = get_default_font()
-    font_size = 6
+    font_size = 2
 
     text = get_long_text()
     template = {

@@ -9,8 +9,8 @@ from pylf import handwrite
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
-WIDTH = 100
-HEIGHT = 100
+WIDTH = 32
+HEIGHT = 32
 SIZE = (WIDTH, HEIGHT)
 SEED = "PyLf"
 
@@ -22,10 +22,10 @@ def get_default_template() -> dict:
             size=SIZE,
             color=BACKGROUND_COLOR
         ),
-        "margin": {"left": 10, "top": 18, "right": 10, "bottom": 20},
-        "line_spacing": 7,
+        "margin": {"left": 3, "top": 6, "right": 3, "bottom": 6},
+        "line_spacing": 2,
         "font": get_default_font(),
-        "font_size": 6,
+        "font_size": 2,
         "font_size_sigma": 0,
     }
     return template
@@ -77,11 +77,11 @@ def test_seed():
 def test_line_and_page_breaks():
     text = "哈" * 4
     template = {
-        "background": PIL.Image.new(mode="L", size=(100, 100), color="white"),
+        "background": PIL.Image.new(mode="L", size=(30, 30), color="white"),
         "font": get_default_font(),
-        "margin": {"left": 10, "right": 10, "top": 10, "bottom": 10},
-        "line_spacing": 40,
-        "font_size": 40,
+        "margin": {"left": 3, "right": 3, "top": 3, "bottom": 3},
+        "line_spacing": 12,
+        "font_size": 12,
         "word_spacing_sigma": 0,
         "font_size_sigma": 0,
     }

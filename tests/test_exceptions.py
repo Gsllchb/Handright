@@ -5,10 +5,10 @@ import pytest
 from pylf import *
 from tests.util import *
 
-WIDTH = 50
-HEIGHT = 50
+WIDTH = 8
+HEIGHT = 8
 SIZE = (WIDTH, HEIGHT)
-FONT_SIZE = 3
+FONT_SIZE = 1
 
 SEED = "PyLf"
 
@@ -20,8 +20,8 @@ MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 def get_default_template() -> dict:
     template = {
         "background": PIL.Image.new("RGB", SIZE),
-        "margin": {"left": 5, "top": 9, "right": 5, "bottom": 10},
-        "line_spacing": 4,
+        "margin": {"left": 1, "top": 1, "right": 1, "bottom": 2},
+        "line_spacing": 1,
         "font": get_default_font(),
         "font_size": FONT_SIZE,
     }
@@ -35,10 +35,10 @@ def get_default_template2() -> dict:
             PIL.Image.new("RGBA", SIZE)
         ),
         "margins": (
-            {"left": 5, "top": 9, "right": 5, "bottom": 10},
-            {"left": 5, "top": 10, "right": 5, "bottom": 10},
+            {"left": 1, "top": 1, "right": 1, "bottom": 2},
+            {"left": 1, "top": 2, "right": 1, "bottom": 2},
         ),
-        "line_spacings": (4, 2),
+        "line_spacings": (2, 1),
         "font_sizes": (FONT_SIZE, FONT_SIZE),
         "font": get_default_font(),
     }
@@ -114,7 +114,6 @@ def test_word_spacing():
 
 def test_color():
     helper("color", 0, TypeError)
-    helper("color", "2333333333", ValueError)
 
 
 def test_sigmas():
