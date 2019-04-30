@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* __Pillow版本限制放宽至`>= 5, < 7`__
+
 ## v3.3.2 (2019-4-8)
 * 修复已知的bug
 

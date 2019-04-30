@@ -29,7 +29,7 @@ def main():
             "Programming Language :: Python :: Implementation :: PyPy",
         ),
         install_requires=(
-            "pillow >= 5.2.0, < 6",
+            "pillow >= 5, < 7",
             "pyyaml >= 3.13, < 5",
         ),
         setup_requires=(
