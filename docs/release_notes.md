@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* __移除CLI工具__
+
 ## v3.4.0 (2019-5-1)
 * __Pillow版本限制放宽至`>= 5, < 7`__
 
