@@ -26,7 +26,6 @@ def main():
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: Implementation :: CPython",
-            "Programming Language :: Python :: Implementation :: PyPy",
         ),
         install_requires=("pillow >= 5, < 7",),
         setup_requires=("setuptools>=38.6.0",),
