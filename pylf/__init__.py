@@ -25,19 +25,14 @@ from pylf._exceptions import LayoutError
 __all__ = (
     "handwrite",
     "handwrite2",
-    "DEFAULT_END_CHARS",
     "LayoutError",
 )
 __version__ = "3.4.0"
 
 _CHECK_PARAMETERS = True
 
-# Chinese, English and other end chars
-DEFAULT_END_CHARS = frozenset(
-    "，。》、？；：’”】｝、！％）"
-    ",.>?;:]}!%)"
-    "′″℃℉"
-)
+_DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
+
 
 _DEFAULT_WORD_SPACING = 0
 _DEFAULT_COLOR = "black"
@@ -89,10 +84,7 @@ def handwrite(
             word_spacing_sigma: The sigma of the gauss distribution of word
             spacing. Default: font_size / 32.
 
-            is_end_char_fn: A function judging whether or not a char cannot be
-            in the beginning of the lines (e.g. '，', '。', '》', ')', ']'). It
-            must take a char parameter and return a bool value. Default:
-            (lambda c: c in DEFAULT_END_CHARS).
+            end_chars
 
             perturb_x_sigma: The sigma of the gauss distribution of the
             horizontal position of strokes. Default: font_size / 32.
@@ -245,9 +237,9 @@ def handwrite2(
 
     color = template2.get("color", _DEFAULT_COLOR)
 
-    is_end_char_fn = template2.get(
-        "is_end_char_fn",
-        lambda c: c in DEFAULT_END_CHARS,
+    end_chars = template2.get(
+        "end_chars",
+        _DEFAULT_END_CHARS,
     )
 
     perturb_x_sigmas = template2.get(
@@ -283,7 +275,7 @@ def handwrite2(
         word_spacing_sigmas=tuple(word_spacing_sigmas),
         font=template2["font"],
         color=color,
-        is_end_char_fn=is_end_char_fn,
+        end_chars=end_chars,
         perturb_x_sigmas=tuple(perturb_x_sigmas),
         perturb_y_sigmas=tuple(perturb_y_sigmas),
         perturb_theta_sigmas=tuple(perturb_theta_sigmas),

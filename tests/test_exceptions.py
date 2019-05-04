@@ -129,11 +129,6 @@ def test_sigmas():
         helper(sigma, -1, ValueError)
 
 
-def test_fns():
-    for fn in ("is_end_char_fn",):
-        helper(fn, 0, TypeError)
-
-
 def helper(key: str, value, exception_type) -> None:
     template = get_default_template()
     template[key] = value
