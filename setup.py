@@ -28,16 +28,8 @@ def main():
             "Programming Language :: Python :: Implementation :: CPython",
             "Programming Language :: Python :: Implementation :: PyPy",
         ),
-        install_requires=(
-            "pillow >= 5, < 7",
-            "pyyaml >= 3.13, < 5",
-        ),
-        setup_requires=(
-            "setuptools>=38.6.0",
-        ),
-        entry_points={
-            "console_scripts": ("pylf = pylf.__main__:main",),
-        }
+        install_requires=("pillow >= 5, < 7",),
+        setup_requires=("setuptools>=38.6.0",),
     )
 
 
