@@ -49,7 +49,7 @@ def handwrite(
         worker: int,
         seed: Hashable,
 ) -> List[PIL.Image.Image]:
-    pages = _draw_pages(
+    pages = _draft(
         text=text,
         sizes=tuple(i.size for i in backgrounds),
         top_margins=top_margins,
@@ -83,7 +83,7 @@ def handwrite(
         return pool.map(renderer, pages)
 
 
-def _draw_pages(
+def _draft(
         text: str,
         sizes: Sequence[Tuple[int, int]],
         top_margins: Sequence[int],
