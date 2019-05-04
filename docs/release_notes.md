@@ -3,6 +3,7 @@
 ## unreleased
 * __移除CLI工具__
 * __停止对PyPy的官方支持__
+* __移除参数`is_half_char_fn`以及相对应的常量`DEFAULT_HALF_CHARS`__
 
 ## v3.4.0 (2019-5-1)
 * __Pillow版本限制放宽至`>= 5, < 7`__

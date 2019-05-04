@@ -130,7 +130,7 @@ def test_sigmas():
 
 
 def test_fns():
-    for fn in ("is_half_char_fn", "is_end_char_fn"):
+    for fn in ("is_end_char_fn",):
         helper(fn, 0, TypeError)
 
 

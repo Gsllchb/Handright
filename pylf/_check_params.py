@@ -91,9 +91,6 @@ def _check_template2(template2) -> None:
             raise ValueError(msg)
         _check_perturb_theta_sigmas(template2["perturb_theta_sigmas"])
 
-    if "is_half_char_fn" in template2:
-        _check_is_half_char_fn(template2["is_half_char_fn"])
-
     if "is_end_char_fn" in template2:
         _check_is_end_char_fn(template2["is_end_char_fn"])
 
@@ -212,12 +209,6 @@ def _check_perturb_theta_sigmas(perturb_theta_sigmas) -> None:
     if not all(s >= 0.0 for s in perturb_theta_sigmas):
         msg = "'perturb_theta_sigma' must be at least 0.0"
         raise ValueError(msg)
-
-
-def _check_is_half_char_fn(is_half_char_fn) -> None:
-    if not callable(is_half_char_fn):
-        msg = "'is_half_char_fn' must be Callable"
-        raise TypeError(msg)
 
 
 def _check_is_end_char_fn(is_end_char_fn) -> None:

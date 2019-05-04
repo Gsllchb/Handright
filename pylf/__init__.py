@@ -25,7 +25,6 @@ from pylf._exceptions import LayoutError
 __all__ = (
     "handwrite",
     "handwrite2",
-    "DEFAULT_HALF_CHARS",
     "DEFAULT_END_CHARS",
     "LayoutError",
 )
@@ -33,7 +32,6 @@ __version__ = "3.4.0"
 
 _CHECK_PARAMETERS = True
 
-DEFAULT_HALF_CHARS = frozenset("")
 # Chinese, English and other end chars
 DEFAULT_END_CHARS = frozenset(
     "，。》、？；：’”】｝、！％）"
@@ -90,11 +88,6 @@ def handwrite(
 
             word_spacing_sigma: The sigma of the gauss distribution of word
             spacing. Default: font_size / 32.
-
-            is_half_char_fn: A function judging whether or not a char only take
-            up half of its original width. The function must take a char
-            parameter and return a bool value. Default:
-            (lambda c: c in DEFAULT_HALF_CHARS).
 
             is_end_char_fn: A function judging whether or not a char cannot be
             in the beginning of the lines (e.g. '，', '。', '》', ')', ']'). It
@@ -252,10 +245,6 @@ def handwrite2(
 
     color = template2.get("color", _DEFAULT_COLOR)
 
-    is_half_char_fn = template2.get(
-        "is_half_char_fn",
-        lambda c: c in DEFAULT_HALF_CHARS,
-    )
     is_end_char_fn = template2.get(
         "is_end_char_fn",
         lambda c: c in DEFAULT_END_CHARS,
@@ -294,7 +283,6 @@ def handwrite2(
         word_spacing_sigmas=tuple(word_spacing_sigmas),
         font=template2["font"],
         color=color,
-        is_half_char_fn=is_half_char_fn,
         is_end_char_fn=is_end_char_fn,
         perturb_x_sigmas=tuple(perturb_x_sigmas),
         perturb_y_sigmas=tuple(perturb_y_sigmas),

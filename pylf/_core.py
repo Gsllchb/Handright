@@ -41,7 +41,6 @@ def handwrite(
         word_spacing_sigmas: Sequence[float],
         font,
         color: str,
-        is_half_char_fn: Callable[[str], bool],
         is_end_char_fn: Callable[[str], bool],
         perturb_x_sigmas: Sequence[float],
         perturb_y_sigmas: Sequence[float],
@@ -63,7 +62,6 @@ def handwrite(
         font_size_sigmas=font_size_sigmas,
         word_spacing_sigmas=word_spacing_sigmas,
         font=font,
-        is_half_char_fn=is_half_char_fn,
         is_end_char_fn=is_end_char_fn,
         seed=seed,
     )
@@ -97,7 +95,6 @@ def _draft(
         font_size_sigmas: Sequence[float],
         word_spacing_sigmas: Sequence[float],
         font,
-        is_half_char_fn: Callable[[str], bool],
         is_end_char_fn: Callable[[str], bool],
         seed: Hashable,
 ) -> Iterator[_page.Page]:
@@ -133,7 +130,6 @@ def _draft(
             font_size_sigma=next(font_size_sigmas),
             word_spacing_sigma=next(word_spacing_sigmas),
             font=font,
-            is_half_char_fn=is_half_char_fn,
             is_end_char_fn=is_end_char_fn,
             rand=rand,
         )
@@ -155,7 +151,6 @@ def _draw_page(
         font_size_sigma: float,
         word_spacing_sigma: float,
         font,
-        is_half_char_fn: Callable[[str], bool],
         is_end_char_fn: Callable[[str], bool],
         rand: random.Random,
 ) -> int:
@@ -187,9 +182,7 @@ def _draw_page(
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
             font = font.font_variant(size=max(int(rand.gauss(font_size, font_size_sigma)), 0))
             offset = _draw_char(draw, text[start], xy, font)
-            is_half_char = is_half_char_fn(text[start])
-            dx = word_spacing + offset * (0.5 if is_half_char else 1.0)
-            x += rand.gauss(dx, word_spacing_sigma)
+            x += rand.gauss(word_spacing + offset, word_spacing_sigma)
             start += 1
             if start == len(text):
                 return start
