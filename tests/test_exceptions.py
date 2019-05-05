@@ -12,8 +12,6 @@ FONT_SIZE = 1
 
 SEED = "PyLf"
 
-SUPPORTED_MODES = ("1", "L", "RGB", "RGBA")
-
 MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 
 
@@ -33,7 +31,7 @@ def get_default_template2() -> dict:
     template2 = {
         "backgrounds": (
             PIL.Image.new("RGB", SIZE),
-            PIL.Image.new("RGBA", SIZE)
+            PIL.Image.new("RGB", SIZE)
         ),
         "margins": (
             {"left": 1, "top": 1, "right": 1, "bottom": 2},
@@ -78,10 +76,6 @@ def test_background():
         PIL.Image.new("1", (1, MAX_IMAGE_SIDE_LENGTH + 1)),
         ValueError
     )
-    for mode in PIL.Image.MODES:
-        if mode in SUPPORTED_MODES:
-            continue
-        helper("background", PIL.Image.new(mode, SIZE), NotImplementedError)
 
 
 def test_margin():

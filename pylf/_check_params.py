@@ -7,7 +7,6 @@ import warnings
 
 import PIL.Image
 
-_SUPPORTED_MODES = ("1", "L", "RGB", "RGBA")
 _MAX_IMAGE_SIDE_LENGTH = 0xFFFF - 1
 assert 0xFFFF - 1 == 65534
 
@@ -93,10 +92,6 @@ def _check_backgrounds(backgrounds) -> None:
     if not all(isinstance(b, PIL.Image.Image) for b in backgrounds):
         msg = "Background must be Pillow's Image"
         raise TypeError(msg)
-    for b in backgrounds:
-        if b.mode not in _SUPPORTED_MODES:
-            msg = "'{}' mode is not supported yet. Currently supported modes are {}. See how to convert a image's mode: https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert"
-            raise NotImplementedError(msg.format(b.mode, str(_SUPPORTED_MODES)[1:-1]))
     if not all(b.width <= _MAX_IMAGE_SIDE_LENGTH for b in backgrounds):
         msg = "The width of background cannot exceed {}"
         raise ValueError(msg.format(_MAX_IMAGE_SIDE_LENGTH))
