@@ -1,5 +1,7 @@
 # coding: utf-8
+class Error(Exception):
+    pass
 
 
-class LayoutError(Exception):
+class LayoutError(Error):
     pass

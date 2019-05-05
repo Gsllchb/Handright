@@ -7,7 +7,8 @@
 * __将参数`is_end_char_fn`替换为新参数`end_chars`，废除常量`DEFAULT_END_CHARS`。__
 * __将参数`color`替换为新参数`fill`__
 * __取消背景图片的`mode`限制，提供对全部`mode`的支持。__
-* __取消`worker`和`seed`必须以`keyword`形式传入的限制__
+* 取消`worker`和`seed`必须以`keyword`形式传入的限制
+* __创建PyLf的基异常类`Error`，并将`LayoutError`改为直接继承自该异常类。__
 
 ## v3.4.0 (2019-5-1)
 * __Pillow版本限制放宽至`>= 5, < 7`__
