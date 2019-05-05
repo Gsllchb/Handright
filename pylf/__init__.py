@@ -35,7 +35,6 @@ _DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）,.>?;:]}!%)�
 
 
 _DEFAULT_WORD_SPACING = 0
-_DEFAULT_COLOR = "black"
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
 
@@ -72,8 +71,7 @@ def handwrite(
             font: A Pillow's font instance. The size attribute of the font
             instance will be ignored here.
 
-            color: A Pillow's color name. More info: https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names
-            Default: "black".
+            fill
 
             line_spacing_sigma: The sigma of the gauss distribution of line
             spacing. Default: font_size / 32.
@@ -235,8 +233,6 @@ def handwrite2(
         tuple(i / 32 for i in font_sizes)
     )
 
-    color = template2.get("color", _DEFAULT_COLOR)
-
     end_chars = template2.get(
         "end_chars",
         _DEFAULT_END_CHARS,
@@ -274,7 +270,7 @@ def handwrite2(
         font_size_sigmas=tuple(font_size_sigmas),
         word_spacing_sigmas=tuple(word_spacing_sigmas),
         font=template2["font"],
-        color=color,
+        fill=template2["fill"],
         end_chars=end_chars,
         perturb_x_sigmas=tuple(perturb_x_sigmas),
         perturb_y_sigmas=tuple(perturb_y_sigmas),

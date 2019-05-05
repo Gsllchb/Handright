@@ -27,6 +27,7 @@ def get_default_template() -> dict:
         "font": get_default_font(),
         "font_size": 2,
         "font_size_sigma": 0,
+        "fill": (0, 0, 0),
     }
     return template
 
@@ -84,6 +85,7 @@ def test_line_and_page_breaks():
         "font_size": 12,
         "word_spacing_sigma": 0,
         "font_size_sigma": 0,
+        "fill": 0,
     }
     images = handwrite(text, template)
     assert len(images) == 1

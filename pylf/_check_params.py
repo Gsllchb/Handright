@@ -52,9 +52,6 @@ def _check_template2(template2) -> None:
 
     _check_font(template2["font"])
 
-    if "color" in template2:
-        _check_color(template2["color"])
-
     if "line_spacing_sigmas" in template2:
         if len(template2["line_spacing_sigmas"]) != length:
             msg = "'line_spacing_sigmas' and 'backgrounds' must have the same length"
@@ -146,12 +143,6 @@ def _check_word_spacings(word_spacings) -> None:
 def _check_font(font) -> None:
     # FIXME
     pass
-
-
-def _check_color(color) -> None:
-    if not isinstance(color, str):
-        msg = "'color' must be str"
-        raise TypeError(msg)
 
 
 def _check_line_spacing_sigmas(line_spacing_sigmas) -> None:

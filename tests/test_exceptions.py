@@ -24,6 +24,7 @@ def get_default_template() -> dict:
         "line_spacing": 1,
         "font": get_default_font(),
         "font_size": FONT_SIZE,
+        "fill": (0, 0, 0),
     }
     return template
 
@@ -41,6 +42,7 @@ def get_default_template2() -> dict:
         "line_spacings": (2, 1),
         "font_sizes": (FONT_SIZE, FONT_SIZE),
         "font": get_default_font(),
+        "fill": (0, 0, 0),
     }
     return template2
 
@@ -110,10 +112,6 @@ def test_font_size():
 def test_word_spacing():
     helper("word_spacing", 1.2, TypeError)
     helper("word_spacing", -FONT_SIZE // 2, LayoutError)
-
-
-def test_color():
-    helper("color", 0, TypeError)
 
 
 def test_sigmas():

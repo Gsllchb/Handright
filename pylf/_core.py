@@ -40,7 +40,7 @@ def handwrite(
         font_size_sigmas: Sequence[float],
         word_spacing_sigmas: Sequence[float],
         font,
-        color: str,
+        fill,
         end_chars: str,
         perturb_x_sigmas: Sequence[float],
         perturb_y_sigmas: Sequence[float],
@@ -68,7 +68,7 @@ def handwrite(
 
     renderer = _Renderer(
         backgrounds=backgrounds,
-        color=color,
+        fill=fill,
         perturb_x_sigmas=perturb_x_sigmas,
         perturb_y_sigmas=perturb_y_sigmas,
         perturb_theta_sigmas=perturb_theta_sigmas,
@@ -205,7 +205,7 @@ class _Renderer(object):
     __slots__ = (
         "_period",
         "_backgrounds",
-        "_color",
+        "_fill",
         "_perturb_x_sigmas",
         "_perturb_y_sigmas",
         "_perturb_theta_sigmas",
@@ -216,7 +216,7 @@ class _Renderer(object):
     def __init__(
             self,
             backgrounds: Sequence[PIL.Image.Image],
-            color: str,
+            fill,
             perturb_x_sigmas: Sequence[float],
             perturb_y_sigmas: Sequence[float],
             perturb_theta_sigmas: Sequence[float],
@@ -225,7 +225,7 @@ class _Renderer(object):
         assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
         self._period = len(backgrounds)
         self._backgrounds = backgrounds
-        self._color = color
+        self._fill = fill
         self._perturb_x_sigmas = perturb_x_sigmas
         self._perturb_y_sigmas = perturb_y_sigmas
         self._perturb_theta_sigmas = perturb_theta_sigmas
@@ -251,12 +251,11 @@ class _Renderer(object):
         x_sigma = self._perturb_x_sigmas[page.num % self._period]
         y_sigma = self._perturb_y_sigmas[page.num % self._period]
         theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
-        fill = PIL.ImageColor.getcolor(self._color, canvas.mode)
         _draw_strokes(
             canvas.load(),
             canvas.size,
             strokes,
-            fill,
+            fill=self._fill,
             x_sigma=x_sigma,
             y_sigma=y_sigma,
             theta_sigma=theta_sigma,

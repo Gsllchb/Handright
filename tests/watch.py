@@ -27,6 +27,7 @@ def test_handwrite2():
         "line_spacings": (88, 88),
         "font_sizes": (74, 74),
         "font": get_default_font(),
+        "fill": (0, 0, 0),
     }
     for file in pathlib.Path(abs_path("texts")).iterdir():
         print(file)
