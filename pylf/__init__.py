@@ -31,7 +31,7 @@ __version__ = "3.4.0"
 
 _CHECK_PARAMETERS = True
 
-_DEFAULT_END_CHARS = "，。》、？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
+_DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
 
 _DEFAULT_WORD_SPACING = 0
