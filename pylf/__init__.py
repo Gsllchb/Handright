@@ -41,7 +41,6 @@ _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 def handwrite(
         text: str,
         template: Mapping[str, Any],
-        *,
         worker: Optional[int] = None,
         seed: Hashable = None
 ) -> List[PIL.Image.Image]:
@@ -158,7 +157,6 @@ def handwrite(
 def handwrite2(
         text: str,
         template2: Mapping[str, Any],
-        *,
         worker: Optional[int] = None,
         seed: Hashable = None
 ) -> List[PIL.Image.Image]:
