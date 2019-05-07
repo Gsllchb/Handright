@@ -19,7 +19,7 @@ from typing import *
 import PIL.Image
 
 from pylf import _check_params
-from pylf import _core
+from pylf import core
 from pylf._exceptions import LayoutError
 
 __all__ = (
@@ -251,7 +251,7 @@ def handwrite2(
     if worker is None:
         worker = multiprocessing.cpu_count()
 
-    return _core.handwrite(
+    return core.handwrite(
         text=text,
         # If template2["backgrounds"] is already a tuple, CPython will share it
         # instead of creating a new copy of it.

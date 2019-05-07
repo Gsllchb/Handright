@@ -48,7 +48,7 @@ def handwrite(
         worker: int,
         seed: Hashable,
 ) -> List[PIL.Image.Image]:
-    pages = _draft(
+    pages = draft(
         text=text,
         sizes=tuple(i.size for i in backgrounds),
         top_margins=top_margins,
@@ -66,7 +66,7 @@ def handwrite(
         seed=seed,
     )
 
-    renderer = _Renderer(
+    renderer = Renderer(
         backgrounds=backgrounds,
         fill=fill,
         perturb_x_sigmas=perturb_x_sigmas,
@@ -81,7 +81,7 @@ def handwrite(
         return pool.map(renderer, pages)
 
 
-def _draft(
+def draft(
         text: str,
         sizes: Sequence[Tuple[int, int]],
         top_margins: Sequence[int],
@@ -198,7 +198,7 @@ def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     return font.getsize(char)[0]
 
 
-class _Renderer(object):
+class Renderer(object):
     """A callable object rendering the foreground that was drawn text and
     returning rendered image."""
 
