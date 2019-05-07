@@ -20,11 +20,12 @@ import PIL.Image
 
 from pylf import _check_params
 from pylf import core
-from pylf._exceptions import LayoutError
+from pylf._exceptions import Error, LayoutError
 
 __all__ = (
     "handwrite",
     "handwrite2",
+    "Error",
     "LayoutError",
 )
 __version__ = "3.4.0"
