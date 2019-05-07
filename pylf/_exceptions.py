@@ -5,3 +5,7 @@ class Error(Exception):
 
 class LayoutError(Error):
     pass
+
+
+class BackgroundTooLargeError(Error):
+    pass

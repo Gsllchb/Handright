@@ -5,7 +5,7 @@ import multiprocessing
 import PIL.Image
 import PIL.ImageDraw
 
-from pylf import handwrite
+from pylf import *
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
@@ -15,20 +15,22 @@ SIZE = (WIDTH, HEIGHT)
 SEED = "PyLf"
 
 
-def get_default_template() -> dict:
-    template = {
-        "background": PIL.Image.new(
+def get_default_template():
+    template = Template(
+        background=PIL.Image.new(
             mode="RGB",
             size=SIZE,
             color=BACKGROUND_COLOR
         ),
-        "margin": {"left": 3, "top": 6, "right": 3, "bottom": 6},
-        "line_spacing": 2,
-        "font": get_default_font(),
-        "font_size": 2,
-        "font_size_sigma": 0,
-        "fill": (0, 0, 0),
-    }
+        left_margin=3,
+        top_margin=6,
+        right_margin=3,
+        bottom_margin=6,
+        line_spacing=2,
+        font=get_default_font(),
+        font_size=2,
+        font_size_sigma=0,
+    )
     return template
 
 
@@ -48,7 +50,7 @@ def test_null_text():
 def test_blank_text():
     temp = get_default_template()
     images = handwrite(" ", temp)
-    assert temp["background"] == images[0]
+    assert temp.get_background() == images[0]
 
 
 def test_worker():
@@ -77,16 +79,18 @@ def test_seed():
 
 def test_line_and_page_breaks():
     text = "哈" * 4
-    template = {
-        "background": PIL.Image.new(mode="L", size=(30, 30), color="white"),
-        "font": get_default_font(),
-        "margin": {"left": 3, "right": 3, "top": 3, "bottom": 3},
-        "line_spacing": 12,
-        "font_size": 12,
-        "word_spacing_sigma": 0,
-        "font_size_sigma": 0,
-        "fill": 0,
-    }
+    template = Template(
+        background=PIL.Image.new(mode="L", size=(30, 30), color="white"),
+        font=get_default_font(),
+        left_margin=3,
+        right_margin=3,
+        top_margin=3,
+        bottom_margin=3,
+        line_spacing=12,
+        font_size=12,
+        word_spacing_sigma=0,
+        font_size_sigma=0,
+    )
     images = handwrite(text, template)
     assert len(images) == 1
 

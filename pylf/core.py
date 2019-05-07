@@ -1,16 +1,14 @@
 # coding: utf-8
-"""The core module"""
 import itertools
-import math
 import multiprocessing
 import random
-from typing import *
 
-import PIL.Image
+import math
 
-from pylf import _exceptions
-from pylf import _numeric_ordered_set as _nos
-from pylf import _page
+from pylf._exceptions import *
+from pylf._numeric_ordered_set import *
+from pylf._page import *
+from pylf._template import *
 
 # While changing following constants, it is necessary to consider to rewrite the
 # relevant codes.
@@ -27,50 +25,38 @@ _STROKE_END = 0xFFFFFFFF
 
 def handwrite(
         text: str,
-        backgrounds: Sequence[PIL.Image.Image],
-        top_margins: Sequence[int],
-        bottom_margins: Sequence[int],
-        left_margins: Sequence[int],
-        right_margins: Sequence[int],
-        line_spacings: Sequence[int],
-        font_sizes: Sequence[int],
-        word_spacings: Sequence[int],
-        line_spacing_sigmas: Sequence[float],
-        font_size_sigmas: Sequence[float],
-        word_spacing_sigmas: Sequence[float],
-        font,
-        fill,
-        end_chars: str,
-        perturb_x_sigmas: Sequence[float],
-        perturb_y_sigmas: Sequence[float],
-        perturb_theta_sigmas: Sequence[float],
-        worker: int,
-        seed: Hashable,
+        template: Union[Template, Sequence[Template]],
+        worker: Optional[int] = None,
+        seed: Hashable = None,
 ) -> List[PIL.Image.Image]:
+    if isinstance(template, Template):
+        templates = (template,)
+    else:
+        templates = template
     pages = draft(
         text=text,
-        sizes=tuple(i.size for i in backgrounds),
-        top_margins=top_margins,
-        bottom_margins=bottom_margins,
-        left_margins=left_margins,
-        right_margins=right_margins,
-        line_spacings=line_spacings,
-        font_sizes=font_sizes,
-        word_spacings=word_spacings,
-        line_spacing_sigmas=line_spacing_sigmas,
-        font_size_sigmas=font_size_sigmas,
-        word_spacing_sigmas=word_spacing_sigmas,
-        font=font,
-        end_chars=end_chars,
+        size=tuple(t.get_background().size for t in templates),
+        top_margin=tuple(t.get_top_margin() for t in templates),
+        bottom_margin=tuple(t.get_bottom_margin() for t in templates),
+        left_margin=tuple(t.get_left_margin() for t in templates),
+        right_margin=tuple(t.get_right_margin() for t in templates),
+        line_spacing=tuple(t.get_line_spacing() for t in templates),
+        font_size=tuple(t.get_font_size() for t in templates),
+        word_spacing=tuple(t.get_word_spacing() for t in templates),
+        line_spacing_sigma=tuple(t.get_line_spacing_sigma() for t in templates),
+        font_size_sigma=tuple(t.get_font_size_sigma() for t in templates),
+        word_spacing_sigma=tuple(t.get_word_spacing_sigma() for t in templates),
+        font=tuple(t.get_font() for t in templates),
+        end_chars=tuple(t.get_end_chars() for t in templates),
         seed=seed,
     )
 
     renderer = Renderer(
-        backgrounds=backgrounds,
-        fill=fill,
-        perturb_x_sigmas=perturb_x_sigmas,
-        perturb_y_sigmas=perturb_y_sigmas,
-        perturb_theta_sigmas=perturb_theta_sigmas,
+        background=tuple(t.get_background() for t in templates),
+        fill=tuple(t.get_fill() for t in templates),
+        perturb_x_sigma=tuple(t.get_perturb_x_sigma() for t in templates),
+        perturb_y_sigma=tuple(t.get_perturb_y_sigma() for t in templates),
+        perturb_theta_sigma=tuple(t.get_perturb_theta_sigma() for t in templates),
         seed=seed,
     )
     if worker == 1:
@@ -82,61 +68,63 @@ def handwrite(
 
 def draft(
         text: str,
-        sizes: Sequence[Tuple[int, int]],
-        top_margins: Sequence[int],
-        bottom_margins: Sequence[int],
-        left_margins: Sequence[int],
-        right_margins: Sequence[int],
-        line_spacings: Sequence[int],
-        font_sizes: Sequence[int],
-        word_spacings: Sequence[int],
-        line_spacing_sigmas: Sequence[float],
-        font_size_sigmas: Sequence[float],
-        word_spacing_sigmas: Sequence[float],
-        font,
-        end_chars: str,
-        seed: Hashable,
-) -> Iterator[_page.Page]:
-    sizes = itertools.cycle(sizes)
-    top_margins = itertools.cycle(top_margins)
-    bottom_margins = itertools.cycle(bottom_margins)
-    left_margins = itertools.cycle(left_margins)
-    right_margins = itertools.cycle(right_margins)
-    line_spacings = itertools.cycle(line_spacings)
-    font_sizes = itertools.cycle(font_sizes)
-    word_spacings = itertools.cycle(word_spacings)
-    line_spacing_sigmas = itertools.cycle(line_spacing_sigmas)
-    font_size_sigmas = itertools.cycle(font_size_sigmas)
-    word_spacing_sigmas = itertools.cycle(word_spacing_sigmas)
-    nums = itertools.count()
+        size: Sequence[Tuple[int, int]],
+        top_margin: Sequence[int],
+        bottom_margin: Sequence[int],
+        left_margin: Sequence[int],
+        right_margin: Sequence[int],
+        line_spacing: Sequence[int],
+        font_size: Sequence[int],
+        word_spacing: Sequence[int],
+        line_spacing_sigma: Sequence[float],
+        font_size_sigma: Sequence[float],
+        word_spacing_sigma: Sequence[float],
+        font: Sequence,
+        end_chars: Sequence[str],
+        seed: Hashable = None,
+) -> Iterator[Page]:
+    size = itertools.cycle(size)
+    top_margin = itertools.cycle(top_margin)
+    bottom_margin = itertools.cycle(bottom_margin)
+    left_margin = itertools.cycle(left_margin)
+    right_margin = itertools.cycle(right_margin)
+    line_spacing = itertools.cycle(line_spacing)
+    font_size = itertools.cycle(font_size)
+    word_spacing = itertools.cycle(word_spacing)
+    line_spacing_sigma = itertools.cycle(line_spacing_sigma)
+    font_size_sigma = itertools.cycle(font_size_sigma)
+    word_spacing_sigma = itertools.cycle(word_spacing_sigma)
+    font = itertools.cycle(font)
+    end_chars = itertools.cycle(end_chars)
 
+    num = itertools.count()
     rand = random.Random(x=seed)
     start = 0
     while start < len(text):
-        page = _page.Page(_INTERNAL_MODE, next(sizes), _BLACK, next(nums))
+        page = Page(_INTERNAL_MODE, next(size), _BLACK, next(num))
         start = _draw_page(
             page,
             text,
             start,
-            top_margin=next(top_margins),
-            bottom_margin=next(bottom_margins),
-            left_margin=next(left_margins),
-            right_margin=next(right_margins),
-            line_spacing=next(line_spacings),
-            font_size=next(font_sizes),
-            word_spacing=next(word_spacings),
-            line_spacing_sigma=next(line_spacing_sigmas),
-            font_size_sigma=next(font_size_sigmas),
-            word_spacing_sigma=next(word_spacing_sigmas),
-            font=font,
-            end_chars=end_chars,
+            top_margin=next(top_margin),
+            bottom_margin=next(bottom_margin),
+            left_margin=next(left_margin),
+            right_margin=next(right_margin),
+            line_spacing=next(line_spacing),
+            font_size=next(font_size),
+            word_spacing=next(word_spacing),
+            line_spacing_sigma=next(line_spacing_sigma),
+            font_size_sigma=next(font_size_sigma),
+            word_spacing_sigma=next(word_spacing_sigma),
+            font=next(font),
+            end_chars=next(end_chars),
             rand=rand,
         )
         yield page
 
 
 def _draw_page(
-        page: _page.Page,
+        page: Page,
         text: str,
         start: int,
         top_margin: int,
@@ -154,17 +142,13 @@ def _draw_page(
         rand: random.Random,
 ) -> int:
     if page.height() < top_margin + line_spacing + bottom_margin:
-        msg = "The sum of top margin, line spacing and bottom margin can not be greater than background's height"
-        raise _exceptions.LayoutError(msg)
+        raise LayoutError()
     if font_size > line_spacing:
-        msg = "Font size can not be greater than line spacing"
-        raise _exceptions.LayoutError(msg)
+        raise LayoutError()
     if page.width() < left_margin + font_size + right_margin:
-        msg = "The sum of left margin, font size and right margin can not be greater than background's width"
-        raise _exceptions.LayoutError(msg)
+        raise LayoutError()
     if word_spacing <= -font_size // 2:
-        msg = "Word spacing must be greater than (-font_size // 2)"
-        raise _exceptions.LayoutError(msg)
+        raise LayoutError()
 
     draw = page.draw()
     y = top_margin + line_spacing - font_size
@@ -192,7 +176,8 @@ def _draw_page(
 def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     """Draws a single char with the parameters and white color, and returns the
     offset."""
-    assert len(char) == 1
+    if len(char) != 1:
+        raise TypeError()
     draw.text(xy, char, fill=_WHITE, font=font)
     return font.getsize(char)[0]
 
@@ -203,37 +188,42 @@ class Renderer(object):
 
     __slots__ = (
         "_period",
-        "_backgrounds",
+        "_background",
         "_fill",
-        "_perturb_x_sigmas",
-        "_perturb_y_sigmas",
-        "_perturb_theta_sigmas",
+        "_perturb_x_sigma",
+        "_perturb_y_sigma",
+        "_perturb_theta_sigma",
         "_rand",
         "_hashed_seed",
     )
 
     def __init__(
             self,
-            backgrounds: Sequence[PIL.Image.Image],
-            fill,
-            perturb_x_sigmas: Sequence[float],
-            perturb_y_sigmas: Sequence[float],
-            perturb_theta_sigmas: Sequence[float],
-            seed: Hashable,
+            background: Sequence[PIL.Image.Image],
+            fill: Sequence,
+            perturb_x_sigma: Sequence[float],
+            perturb_y_sigma: Sequence[float],
+            perturb_theta_sigma: Sequence[float],
+            seed: Hashable = None,
     ) -> None:
-        assert len(backgrounds) == len(perturb_x_sigmas) == len(perturb_y_sigmas) == len(perturb_theta_sigmas)
-        self._period = len(backgrounds)
-        self._backgrounds = backgrounds
+        if not (len(background)
+                == len(fill)
+                == len(perturb_x_sigma)
+                == len(perturb_y_sigma)
+                == len(perturb_theta_sigma)):
+            raise ValueError()
+        self._period = len(background)
+        self._background = background
         self._fill = fill
-        self._perturb_x_sigmas = perturb_x_sigmas
-        self._perturb_y_sigmas = perturb_y_sigmas
-        self._perturb_theta_sigmas = perturb_theta_sigmas
+        self._perturb_x_sigma = perturb_x_sigma
+        self._perturb_y_sigma = perturb_y_sigma
+        self._perturb_theta_sigma = perturb_theta_sigma
         self._rand = random.Random()
         self._hashed_seed = None
         if seed is not None:
             self._hashed_seed = hash(seed)
 
-    def __call__(self, page: _page.Page) -> PIL.Image.Image:
+    def __call__(self, page: Page) -> PIL.Image.Image:
         if self._hashed_seed is None:
             # avoid different processes sharing the same random state
             self._rand.seed()
@@ -241,20 +231,21 @@ class Renderer(object):
             self._rand.seed(a=self._hashed_seed + page.num)
         return self._perturb_and_merge(page)
 
-    def _perturb_and_merge(self, page: _page.Page) -> PIL.Image.Image:
-        canvas = self._backgrounds[page.num % self._period].copy()
+    def _perturb_and_merge(self, page: Page) -> PIL.Image.Image:
+        canvas = self._background[page.num % self._period].copy()
         bbox = page.image.getbbox()
         if bbox is None:
             return canvas
         strokes = _extract_strokes(page.matrix(), bbox)
-        x_sigma = self._perturb_x_sigmas[page.num % self._period]
-        y_sigma = self._perturb_y_sigmas[page.num % self._period]
-        theta_sigma = self._perturb_theta_sigmas[page.num % self._period]
+        fill = self._fill[page.num % self._period]
+        x_sigma = self._perturb_x_sigma[page.num % self._period]
+        y_sigma = self._perturb_y_sigma[page.num % self._period]
+        theta_sigma = self._perturb_theta_sigma[page.num % self._period]
         _draw_strokes(
             canvas.load(),
             canvas.size,
             strokes,
-            fill=self._fill,
+            fill=fill,
             x_sigma=x_sigma,
             y_sigma=y_sigma,
             theta_sigma=theta_sigma,
@@ -266,12 +257,13 @@ class Renderer(object):
 def _extract_strokes(
         bitmap,
         bbox: Tuple[int, int, int, int]
-) -> _nos.NumericOrderedSet:
+) -> NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
     # reserve 0xFFFFFFFF as _STROKE_END
-    assert right <= _MAX_INT16_VALUE and lower < _MAX_INT16_VALUE
-    strokes = _nos.NumericOrderedSet(
+    if right >= _MAX_INT16_VALUE or lower >= _MAX_INT16_VALUE:
+        raise BackgroundTooLargeError()
+    strokes = NumericOrderedSet(
         _UNSIGNED_INT32_TYPECODE,
         privileged=_STROKE_END
     )
@@ -286,7 +278,7 @@ def _extract_strokes(
 def _extract_stroke(
         bitmap,
         start: Tuple[int, int],
-        strokes: _nos.NumericOrderedSet,
+        strokes: NumericOrderedSet,
         bbox: Tuple[int, int, int, int],
 ) -> None:
     """Helper function of _extract_strokes() which uses depth first search to
@@ -308,7 +300,7 @@ def _extract_stroke(
 def _draw_strokes(
         bitmap,
         size: Tuple[int, int],
-        strokes: _nos.NumericOrderedSet,
+        strokes: NumericOrderedSet,
         fill,
         x_sigma: float,
         y_sigma: float,

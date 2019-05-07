@@ -3,7 +3,7 @@ from typing import *
 
 import PIL.Image
 
-from pylf import _misc
+from pylf._misc import *
 
 _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
@@ -53,7 +53,28 @@ class Template(object):
         self.set_perturb_y_sigma(perturb_y_sigma)
         self.set_perturb_theta_sigma(perturb_theta_sigma)
 
-    # Setters
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Template):
+            return False
+        return (self.get_background() == other.get_background()
+                and self.get_line_spacing() == other.get_line_spacing()
+                and self.get_line_spacing_sigma() == other.get_line_spacing_sigma()
+                and self.get_font_size() == other.get_font_size()
+                and self.get_font_size_sigma() == other.get_font_size_sigma()
+                and self.get_font() == other.get_font()
+                and self.get_fill() == other.get_fill()
+                and self.get_left_margin() == other.get_left_margin()
+                and self.get_top_margin() == other.get_top_margin()
+                and self.get_right_margin() == other.get_right_margin()
+                and self.get_bottom_margin() == other.get_bottom_margin()
+                and self.get_word_spacing() == other.get_word_spacing()
+                and self.get_word_spacing_sigma() == other.get_word_spacing_sigma()
+                and self.get_end_chars() == other.get_end_chars()
+                and self.get_perturb_x_sigma() == other.get_perturb_x_sigma()
+                and self.get_perturb_y_sigma() == other.get_perturb_y_sigma()
+                and self.get_perturb_theta_sigma() == other.get_perturb_theta_sigma())
+
+        # Setters
     def set_background(self, background: PIL.Image.Image) -> None:
         self._background = background
 
@@ -68,7 +89,7 @@ class Template(object):
 
     def set_fill(self, fill=None) -> None:
         if fill is None:
-            n_bands = _misc.count_bands(self._background.mode)
+            n_bands = count_bands(self._background.mode)
             if n_bands == 1:
                 self._fill = 0
             else:
