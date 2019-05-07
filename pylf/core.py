@@ -7,7 +7,6 @@ import random
 from typing import *
 
 import PIL.Image
-import PIL.ImageColor
 
 from pylf import _exceptions
 from pylf import _numeric_ordered_set as _nos
