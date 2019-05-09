@@ -15,4 +15,4 @@ Homepage: https://github.com/Gsllchb/PyLf
 """
 from pylf.core import handwrite, Template, Error, LayoutError, BackgroundTooLargeError
 
-__version__ = "3.4.0"
+__version__ = "4.0.0.dev0"
