@@ -92,10 +92,4 @@ def test_line_and_page_breaks():
         font_size_sigma=0,
     )
     images = handwrite(text, template)
-    assert len(images) == 1
-
-
-def test_result():
-    assert isinstance(handwrite("", get_default_template()), list)
-    assert isinstance(handwrite(get_short_text(), get_default_template()), list)
-    assert isinstance(handwrite(get_long_text(), get_default_template()), list)
+    assert len(list(images)) == 1

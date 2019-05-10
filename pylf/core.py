@@ -28,7 +28,7 @@ def handwrite(
         template: Union[Template, Sequence[Template]],
         worker: Optional[int] = None,
         seed: Hashable = None,
-) -> List[PIL.Image.Image]:
+) -> Iterable[PIL.Image.Image]:
     if isinstance(template, Template):
         templates = (template,)
     else:
@@ -60,7 +60,7 @@ def handwrite(
         seed=seed,
     )
     if worker == 1:
-        return list(map(renderer, pages))
+        return map(renderer, pages)
     mp_context = multiprocessing.get_context()
     with mp_context.Pool(worker) as pool:
         return pool.map(renderer, pages)
