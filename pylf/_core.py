@@ -33,7 +33,7 @@ def handwrite(
         templates = (template,)
     else:
         templates = template
-    pages = draft(
+    pages = _draft(
         text=text,
         size=tuple(t.get_background().size for t in templates),
         top_margin=tuple(t.get_top_margin() for t in templates),
@@ -51,7 +51,7 @@ def handwrite(
         seed=seed,
     )
 
-    renderer = Renderer(
+    renderer = _Renderer(
         background=tuple(t.get_background() for t in templates),
         fill=tuple(t.get_fill() for t in templates),
         perturb_x_sigma=tuple(t.get_perturb_x_sigma() for t in templates),
@@ -66,7 +66,7 @@ def handwrite(
         return pool.map(renderer, pages)
 
 
-def draft(
+def _draft(
         text: str,
         size: Sequence[Tuple[int, int]],
         top_margin: Sequence[int],
@@ -182,7 +182,7 @@ def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     return font.getsize(char)[0]
 
 
-class Renderer(object):
+class _Renderer(object):
     """A callable object rendering the foreground that was drawn text and
     returning rendered image."""
 

@@ -10,7 +10,6 @@
 * 取消`worker`和`seed`必须以`keyword`形式传入的限制
 * 创建PyLf的基异常类`Error`，并将`LayoutError`改为直接继承自该异常类。
 * 创建新异常类`BackgroundTooLargeError`
-* __添加public module `pylf.core`__
 * __创建模板类`Template`，用于管理模板相关参数。__
 * __将`handwrite2()`合并入`handwrite()`__
 * __修改`handwrite()`的接口，使其接收`Template`类的实例。__
