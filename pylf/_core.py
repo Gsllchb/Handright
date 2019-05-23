@@ -359,7 +359,10 @@ def _draw_stroke(
         new_x += dx
         new_y += dy
         if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
-            bitmap[int(new_x), int(new_y)] = fill
+            bitmap[math.ceil(new_x), math.ceil(new_y)] = fill
+            bitmap[math.floor(new_x), math.floor(new_y)] = fill
+            bitmap[math.floor(new_x), math.ceil(new_y)] = fill
+            bitmap[math.ceil(new_x), math.floor(new_y)] = fill
 
 
 def _rotate(
