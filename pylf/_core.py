@@ -356,13 +356,10 @@ def _draw_stroke(
     theta = rand.gauss(0, theta_sigma)
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
-        new_x += dx
-        new_y += dy
+        new_x = round(new_x + dx)
+        new_y = round(new_y + dy)
         if 0 <= new_x < size[0] and 0 <= new_y < size[1]:
-            bitmap[math.ceil(new_x), math.ceil(new_y)] = fill
-            bitmap[math.floor(new_x), math.floor(new_y)] = fill
-            bitmap[math.floor(new_x), math.ceil(new_y)] = fill
-            bitmap[math.ceil(new_x), math.floor(new_y)] = fill
+            bitmap[new_x, new_y] = fill
 
 
 def _rotate(
