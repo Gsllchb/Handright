@@ -29,6 +29,21 @@ def handwrite(
         worker: Optional[int] = None,
         seed: Hashable = None,
 ) -> Iterable[PIL.Image.Image]:
+    """Handwrite the text with the configurations in the template, and return an
+    Iterable of Pillow's Images.
+
+    The template could be a Template instance or a Sequence of Template
+    instances. If pass a Template Sequence, the inside Template instances will
+    be applied cyclically to the output pages.
+
+    If explicitly set worker to 1, a single-threaded algorithm will be used, and
+    an Iterator, which generates the Images lazily, will be returned. Otherwise,
+    it will be used to create a worker pool to boost the internal computation,
+    and a List of Pillow's Images will be returned. By default, use all the CPUs
+    in the system.
+
+    The seed could be used for reproducibility.
+    """
     if isinstance(template, Template):
         templates = (template,)
     else:
