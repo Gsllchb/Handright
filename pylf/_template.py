@@ -54,9 +54,8 @@ class Template(object):
         self.set_perturb_theta_sigma(perturb_theta_sigma)
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, Template):
-            return False
-        return (self.get_background() == other.get_background()
+        return (isinstance(other, Template)
+                and self.get_background() == other.get_background()
                 and self.get_line_spacing() == other.get_line_spacing()
                 and self.get_line_spacing_sigma() == other.get_line_spacing_sigma()
                 and self.get_font_size() == other.get_font_size()
