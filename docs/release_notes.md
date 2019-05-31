@@ -7,13 +7,13 @@
 * __将参数`is_end_char_fn`替换为新参数`end_chars`，废除常量`DEFAULT_END_CHARS`。__
 * __将参数`color`替换为新参数`fill`__
 * __取消背景图片的`mode`限制，提供对全部`mode`的支持。__
-* 取消`worker`和`seed`必须以`keyword`形式传入的限制
+* 取消`seed`必须以`keyword`形式传入的限制
 * 创建PyLf的基异常类`Error`，并将`LayoutError`改为直接继承自该异常类。
 * 创建新异常类`BackgroundTooLargeError`
 * __创建模板类`Template`，用于管理模板相关参数。__
 * __将`handwrite2()`合并入`handwrite()`__
 * __修改`handwrite()`的接口，使其接收`Template`类的实例。__
-* __为支持惰性计算，返回类型由`List`改为`Iterable`。__
+* __废除参数`worker`，并添加新参数`mapper`。__
 
 ## v3.4.0 (2019-5-1)
 * __Pillow版本限制放宽至`>= 5, < 7`__
