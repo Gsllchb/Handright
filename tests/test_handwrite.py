@@ -44,28 +44,13 @@ def test_side_effect():
 
 
 def test_null_text():
-    assert handwrite("", get_default_template()) == []
+    assert list(handwrite("", get_default_template())) == []
 
 
 def test_blank_text():
     temp = get_default_template()
     images = handwrite(" ", temp)
-    assert temp.get_background() == images[0]
-
-
-def test_worker():
-    text = get_long_text()
-    template = get_default_template()
-    cpu_count = multiprocessing.cpu_count()
-    workers = {1, cpu_count // 2, cpu_count, 2 * cpu_count}
-    workers.discard(0)
-    workers.discard(1)
-    prev_images = None
-    for worker in workers:
-        images = handwrite(text, template, worker=worker, seed=SEED)
-        if prev_images is not None:
-            assert prev_images == images
-        prev_images = images
+    assert temp.get_background() == next(images)
 
 
 def test_seed():
@@ -74,7 +59,7 @@ def test_seed():
     for seed in (0, "PyLf"):
         ims1 = handwrite(text, template, seed=seed)
         ims2 = handwrite(text, template, seed=seed)
-        assert ims1 == ims2
+        assert list(ims1) == list(ims2)
 
 
 def test_line_and_page_breaks():

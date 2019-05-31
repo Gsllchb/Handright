@@ -51,27 +51,29 @@ def test_one_background():
     )
     images1 = handwrite(text, template, seed=SEED)
     images2 = handwrite(text, (template,), seed=SEED)
-    assert images1 == images2
+    assert list(images1) == list(images2)
 
 
 def test_seed():
     text = get_long_text()
     templates = get_default_templates()
-    for seed in (0, "PyLf"):
-        images1 = handwrite(text, templates, seed=seed)
-        images2 = handwrite(text, templates, seed=seed)
-        assert images1 == images2
+    images1 = handwrite(text, templates, seed=SEED)
+    images2 = handwrite(text, templates, seed=SEED)
+    assert list(images1) == list(images2)
 
     images1 = handwrite(text, templates, seed=None)
     images2 = handwrite(text, templates, seed=None)
-    assert not images1 == images2
+    assert not list(images1) == list(images2)
 
 
-def test_result():
+def test_mapper():
+    text = get_long_text()
     templates = get_default_templates()
-    assert isinstance(handwrite("", templates), list)
-    assert isinstance(handwrite(get_short_text(), templates), list)
-    assert isinstance(handwrite(get_long_text(), templates), list)
+    images1 = handwrite(text, templates, seed=SEED)
+    from multiprocessing import Pool
+    with Pool() as p:
+        images2 = handwrite(text, templates, seed=SEED, mapper=p.map)
+    assert list(images1) == list(images2)
 
 
 def test_1_image():
@@ -93,7 +95,7 @@ def test_1_image():
     templates[1].set_background(background)
 
     images = handwrite(text, templates, seed=SEED)
-    assert criterion == images
+    assert criterion == list(images)
 
 
 def test_l_image():
@@ -114,7 +116,7 @@ def test_l_image():
     templates[0].set_fill(fill)
     templates[1].set_fill(fill)
     images = handwrite(text, templates, seed=SEED)
-    assert criterion == images
+    assert criterion == list(images)
 
 
 def test_rgba_image():
@@ -134,7 +136,7 @@ def test_rgba_image():
     templates[1].set_background(PIL.Image.new("RGBA", SIZE, color="pink"))
     images = handwrite(text, templates, seed=SEED)
     images = [image.convert("RGB") for image in images]
-    assert criterion == images
+    assert list(criterion) == images
 
 
 def test_rgb_image():

@@ -1,6 +1,5 @@
 # coding: utf-8
 import itertools
-import multiprocessing
 import random
 
 import math
@@ -26,9 +25,9 @@ _STROKE_END = 0xFFFFFFFF
 def handwrite(
         text: str,
         template: Union[Template, Sequence[Template]],
-        worker: Optional[int] = None,
         seed: Hashable = None,
-) -> Iterable[PIL.Image.Image]:
+        mapper: Callable[[Callable, Iterable], Any] = map,
+):
     """Handwrite the text with the configurations in the template, and return an
     Iterable of Pillow's Images.
 
@@ -36,13 +35,9 @@ def handwrite(
     instances. If pass a Template Sequence, the inside Template instances will
     be applied cyclically to the output pages.
 
-    If explicitly set worker to 1, a single-threaded algorithm will be used, and
-    an Iterator, which generates the Images lazily, will be returned. Otherwise,
-    it will be used to create a worker pool to boost the internal computation,
-    and a List of Pillow's Images will be returned. By default, use all the CPUs
-    in the system.
-
     The seed could be used for reproducibility.
+
+    FIXME: mapper
     """
     if isinstance(template, Template):
         templates = (template,)
@@ -74,11 +69,7 @@ def handwrite(
         perturb_theta_sigma=tuple(t.get_perturb_theta_sigma() for t in templates),
         seed=seed,
     )
-    if worker == 1:
-        return map(renderer, pages)
-    mp_context = multiprocessing.get_context()
-    with mp_context.Pool(worker) as pool:
-        return pool.map(renderer, pages)
+    return mapper(renderer, pages)
 
 
 def _draft(
