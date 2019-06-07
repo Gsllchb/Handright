@@ -37,7 +37,9 @@ def handwrite(
 
     The seed could be used for reproducibility.
 
-    FIXME: mapper
+    A different implementation of map built-in function (only accept one
+    Iterable though) could be passed to the mapper to boost the page rendering
+    process, e.g. multiprocessing.Pool.map.
     """
     if isinstance(template, Template):
         templates = (template,)
