@@ -8,9 +8,6 @@ Algorithm: Randomly perturb each character as a whole in horizontal position,
 vertical position and font size. Then, Randomly perturb each stroke of a
 character in horizontal position, vertical position and rotation angle.
 
-Implementation: Develop on the top of Pillow and use multiprocessing for
-internal parallel acceleration.
-
 Homepage: https://github.com/Gsllchb/PyLf
 """
 from pylf._core import handwrite, Template, Error, LayoutError, BackgroundTooLargeError
