@@ -15,6 +15,7 @@ _DEFAULT_BOTTOM_MARGIN = 0
 
 
 class Template(object):
+    """The parameter class for pylf.handwrite."""
     def __init__(
             self,
             background: PIL.Image.Image,
@@ -35,6 +36,33 @@ class Template(object):
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
     ):
+        """Note that, all the Integer parameters are in pixels.
+
+        `font` should be a Pillow's font instance. However, the size attribute
+        of it will be ignored here.
+
+        `fill` is the pixel value filled to the background as font color, e.g.
+        `(255, 0, 0)` for the backgrounds with RGB mode and `0` for the
+        backgrounds with L mode. Default is filling all bands with `0`.
+
+        `word_spacing` can be less than `0`, but must be greater than
+        `-font_size // 2`.
+
+        `line_spacing_sigma`, `font_size_sigma` and `word_spacing_sigma` are the
+        sigmas of the gauss distributions of line spacing, font size and word
+        spacing, respectively. The default values of `line_spacing_sigma` and
+        `word_spacing_sigma` both are `font_size / 32`. The default value of
+        `font_size_sigma` is `font_size / 64`.
+
+        `end_chars` is the collection of Chars which cannot be placed in the
+        beginning of a line.
+
+        `perturb_x_sigma`, `perturb_y_sigma` and `perturb_theta_sigma` are the
+        sigmas of the gauss distributions of the horizontal position, the
+        vertical position and the rotation of strokes, respectively. The default
+        values of `perturb_x_sigma` and `perturb_y_sigma` both are
+        `font_size / 32`.
+        """
         self.set_background(background)
         self.set_line_spacing(line_spacing)
         self.set_font_size(font_size)
