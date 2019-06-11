@@ -28,18 +28,18 @@ def handwrite(
         seed: Hashable = None,
         mapper: Callable[[Callable, Iterable], Any] = map,
 ):
-    """Handwrite the text with the configurations in the template, and return an
+    """Handwrite `text` with the configurations in `template`, and return an
     Iterable of Pillow's Images.
 
-    The template could be a Template instance or a Sequence of Template
+    `template` could be a Template instance or a Sequence of Template
     instances. If pass a Template Sequence, the inside Template instances will
     be applied cyclically to the output pages.
 
-    The seed could be used for reproducibility.
+    `seed` could be used for reproducibility.
 
     A different implementation of map built-in function (only accept one
-    Iterable though) could be passed to the mapper to boost the page rendering
-    process, e.g. multiprocessing.Pool.map.
+    Iterable though) could be passed to `mapper` to boost the page rendering
+    process, e.g. `multiprocessing.Pool.map`.
     """
     if isinstance(template, Template):
         templates = (template,)
