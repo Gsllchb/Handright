@@ -1,6 +1,7 @@
 # Release Notes
 
 ## v4.0.0 (2019-6-12)
+__本次大更新重构了接口，但核心算法并未改变。__
 * __创建模板类`Template`，用于管理模板相关参数。__
 * __修改`handwrite()`的接口，使其接收`Template`类的实例。__
 * __将`handwrite2()`合并入`handwrite()`__
