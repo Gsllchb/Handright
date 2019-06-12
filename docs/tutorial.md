@@ -41,7 +41,7 @@ background = background.convert(mode="L")
 ### 随机参数（*_sigma)
 虽然上述随机参数是可选参数，但是仍建议您不要使用默认值，而是根据所需模仿手写特点设置合适的值。
 
-## 并行加速（mapper)
+### 并行加速（mapper)
 `mapper`是在页面渲染过程中使用的映射函数。其默认使用内置的`map`函数。您可以将其更换为其它更高效的实现，例如：
 ```python
 from multiprocessing import Pool
