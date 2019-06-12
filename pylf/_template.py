@@ -101,7 +101,6 @@ class Template(object):
                 and self.get_perturb_y_sigma() == other.get_perturb_y_sigma()
                 and self.get_perturb_theta_sigma() == other.get_perturb_theta_sigma())
 
-        # Setters
     def set_background(self, background: PIL.Image.Image) -> None:
         self._background = background
 
@@ -175,7 +174,6 @@ class Template(object):
     def set_perturb_theta_sigma(self, perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA) -> None:
         self._perturb_theta_sigma = perturb_theta_sigma
 
-    # Getters
     def get_background(self) -> PIL.Image.Image:
         return self._background
 
