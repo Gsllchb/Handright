@@ -29,7 +29,7 @@ pip install pylf
 ```python
 from PIL import Image, ImageFont
 
-from pylf import *
+from pylf import Template, handwrite
 
 text = "我能吞下玻璃而不伤身体。"
 template = Template(
