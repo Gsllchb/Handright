@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 为`line_spacing`提供缺省值，取值`font_size`。
+
 ## v4.0.0 (2019-6-12)
 __本次大更新重构了接口，但核心算法并未改变。__
 * __创建模板类`Template`，用于管理模板相关参数。__

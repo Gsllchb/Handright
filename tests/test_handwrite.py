@@ -1,6 +1,5 @@
 # coding: utf-8
 import copy
-import multiprocessing
 
 import PIL.Image
 import PIL.ImageDraw
@@ -71,7 +70,6 @@ def test_line_and_page_breaks():
         right_margin=3,
         top_margin=3,
         bottom_margin=3,
-        line_spacing=12,
         font_size=12,
         word_spacing_sigma=0,
         font_size_sigma=0,

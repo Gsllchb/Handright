@@ -19,9 +19,9 @@ class Template(object):
     def __init__(
             self,
             background: PIL.Image.Image,
-            line_spacing: int,
             font_size: int,
             font,
+            line_spacing: Optional[int] = None,
             fill=None,
             left_margin: int = _DEFAULT_LEFT_MARGIN,
             top_margin: int = _DEFAULT_TOP_MARGIN,
@@ -38,34 +38,34 @@ class Template(object):
     ):
         """Note that, all the Integer parameters are in pixels.
 
+        Although, it provides some reasonable default values for some
+        parameters, it is strongly recommended to explicitly set these
+        parameters according to the characteristic of a particular task.
+
         `font` should be a Pillow's font instance. However, the size attribute
         of it will be ignored here.
 
         `fill` is the pixel value filled to the background as font color, e.g.
         `(255, 0, 0)` for the backgrounds with RGB mode and `0` for the
-        backgrounds with L mode. Default is filling all bands with `0`.
+        backgrounds with L mode.
 
         `word_spacing` can be less than `0`, but must be greater than
         `-font_size // 2`.
 
         `line_spacing_sigma`, `font_size_sigma` and `word_spacing_sigma` are the
         sigmas of the gauss distributions of line spacing, font size and word
-        spacing, respectively. The default values of `line_spacing_sigma` and
-        `word_spacing_sigma` both are `font_size / 32`. The default value of
-        `font_size_sigma` is `font_size / 64`.
+        spacing, respectively.
 
         `end_chars` is the collection of Chars which cannot be placed in the
         beginning of a line.
 
         `perturb_x_sigma`, `perturb_y_sigma` and `perturb_theta_sigma` are the
         sigmas of the gauss distributions of the horizontal position, the
-        vertical position and the rotation of strokes, respectively. The default
-        values of `perturb_x_sigma` and `perturb_y_sigma` both are
-        `font_size / 32`.
+        vertical position and the rotation of strokes, respectively.
         """
         self.set_background(background)
-        self.set_line_spacing(line_spacing)
         self.set_font_size(font_size)
+        self.set_line_spacing(line_spacing)
         self.set_font(font)
         self.set_fill(fill)
         self.set_left_margin(left_margin)
@@ -104,11 +104,14 @@ class Template(object):
     def set_background(self, background: PIL.Image.Image) -> None:
         self._background = background
 
-    def set_line_spacing(self, line_spacing: int) -> None:
-        self._line_spacing = line_spacing
-
     def set_font_size(self, font_size: int) -> None:
         self._font_size = font_size
+
+    def set_line_spacing(self, line_spacing: Optional[int] = None) -> None:
+        if line_spacing is None:
+            self._line_spacing = self._font_size
+        else:
+            self._line_spacing = line_spacing
 
     def set_font(self, font) -> None:
         self._font = font
