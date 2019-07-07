@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v4.1.0 (2019-7-7)
 * 为`line_spacing`提供缺省值，取值`font_size`。
 
 ## v4.0.0 (2019-6-12)
