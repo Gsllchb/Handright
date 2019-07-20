@@ -12,7 +12,9 @@ _font = None
 
 
 def visually_equal(image1, image2) -> bool:
-    return image1.tobytes() == image2.tobytes() and image1.mode == image2.mode and image1.size == image2.size
+    return (image1.tobytes() == image2.tobytes()
+            and image1.mode == image2.mode
+            and image1.size == image2.size)
 
 
 def abs_path(*paths) -> str:

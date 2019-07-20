@@ -10,6 +10,10 @@ character in horizontal position, vertical position and rotation angle.
 
 Homepage: https://github.com/Gsllchb/PyLf
 """
-from pylf._core import handwrite, Template, Error, LayoutError, BackgroundTooLargeError
+from pylf._core import (handwrite,
+                        Template,
+                        Error,
+                        LayoutError,
+                        BackgroundTooLargeError)
 
 __version__ = "4.1.0"

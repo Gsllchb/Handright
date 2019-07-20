@@ -25,7 +25,9 @@ def get_default_templates() -> Tuple[Template, Template]:
         font=get_default_font(),
     )
     template2 = Template(
-        background=PIL.Image.new(mode="RGB", size=SIZE, color="rgb(0, 128, 255)"),
+        background=PIL.Image.new(
+            mode="RGB", size=SIZE, color="rgb(0, 128, 255)"
+        ),
         left_margin=3,
         top_margin=7,
         right_margin=3,

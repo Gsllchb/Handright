@@ -5,9 +5,8 @@ import random
 import math
 
 from pylf._exceptions import *
-from pylf._numeric_ordered_set import *
-from pylf._page import *
 from pylf._template import *
+from pylf._util import *
 
 # While changing following constants, it is necessary to consider to rewrite the
 # relevant codes.
@@ -68,7 +67,8 @@ def handwrite(
         fill=tuple(t.get_fill() for t in templates),
         perturb_x_sigma=tuple(t.get_perturb_x_sigma() for t in templates),
         perturb_y_sigma=tuple(t.get_perturb_y_sigma() for t in templates),
-        perturb_theta_sigma=tuple(t.get_perturb_theta_sigma() for t in templates),
+        perturb_theta_sigma=tuple(t.get_perturb_theta_sigma()
+                                  for t in templates),
         seed=seed,
     )
     return mapper(renderer, pages)
@@ -168,10 +168,13 @@ def _draw_page(
                 if start == len(text):
                     return start
                 break
-            if x > page.width() - right_margin - font_size and text[start] not in end_chars:
+            if (x > page.width() - right_margin - font_size
+                    and text[start] not in end_chars):
                 break
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
-            font = font.font_variant(size=max(int(rand.gauss(font_size, font_size_sigma)), 0))
+            font = font.font_variant(
+                size=max(int(rand.gauss(font_size, font_size_sigma)), 0),
+            )
             offset = _draw_char(draw, text[start], xy, font)
             x += rand.gauss(word_spacing + offset, word_spacing_sigma)
             start += 1
@@ -263,8 +266,7 @@ class _Renderer(object):
 
 
 def _extract_strokes(
-        bitmap,
-        bbox: Tuple[int, int, int, int]
+        bitmap, bbox: Tuple[int, int, int, int]
 ) -> NumericOrderedSet:
     left, upper, right, lower = bbox
     assert left >= 0 and upper >= 0
@@ -371,13 +373,14 @@ def _draw_stroke(
 
 
 def _rotate(
-        center: Tuple[float, float],
-        x: float,
-        y: float,
-        theta: float
+        center: Tuple[float, float], x: float, y: float, theta: float
 ) -> Tuple[float, float]:
-    new_x = (x - center[0]) * math.cos(theta) + (y - center[1]) * math.sin(theta) + center[0]
-    new_y = (y - center[1]) * math.cos(theta) - (x - center[0]) * math.sin(theta) + center[1]
+    new_x = ((x - center[0]) * math.cos(theta)
+             + (y - center[1]) * math.sin(theta)
+             + center[0])
+    new_y = ((y - center[1]) * math.cos(theta)
+             - (x - center[0]) * math.sin(theta)
+             + center[1])
     return new_x, new_y
 
 

@@ -1,9 +1,5 @@
 # coding: utf-8
-from typing import *
-
-import PIL.Image
-
-from pylf._misc import *
+from pylf._util import *
 
 _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
@@ -16,6 +12,7 @@ _DEFAULT_BOTTOM_MARGIN = 0
 
 class Template(object):
     """The parameter class for pylf.handwrite."""
+
     def __init__(
             self,
             background: PIL.Image.Image,
