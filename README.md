@@ -8,7 +8,6 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [![downloads](https://img.shields.io/pypi/dm/Handright.svg)](https://pypistats.org/packages/handright)
 
 [Tutorial][tutorial] |
-[Examples][examples] |
 [Release Notes][release-notes] |
 [Contributing][contributing]
 
@@ -43,16 +42,10 @@ for image in handwrite(text, template):
 ```
 更多信息请参阅[Tutorial][tutorial]。
 
-## Gallery
-* [前出师表.py](https://github.com/Gsllchb/Handright-examples/blob/master/examples/v3/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.py)
-
-![前出师表](https://github.com/Gsllchb/Handright-examples/blob/master/examples/v3/out/%E5%89%8D%E5%87%BA%E5%B8%88%E8%A1%A8.png)
-
 
 [tutorial]: https://github.com/Gsllchb/Handright/blob/master/docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
 [Pillow]: http://python-pillow.org/
-[examples]: https://github.com/Gsllchb/Handright-examples
 [release-notes]: https://github.com/Gsllchb/Handright/blob/master/docs/release_notes.md
 [pypi]: https://pypi.org/project/handright/
 [license]: https://github.com/Gsllchb/Handright/blob/master/LICENSE
