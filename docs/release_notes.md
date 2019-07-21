@@ -1,6 +1,6 @@
 # Release Notes
 
-## v5.0.0 (unreleased)
+## v5.0.0 (2019-7-21)
 * __将项目名由`PyLf`改为`Handright`，包名由`pylf`改为`handright`。__
 
 ## v4.1.0 (2019-7-7)
