@@ -5,7 +5,7 @@
 ![](images/params_visualizing.png)
 
 ### 字体大小（font_size）
-为了发挥出PyLf的优异效果，您需要设置较大的字体大小。往往设置越大的字体大小，生成的字形越平滑，锯齿越少。但是越大的字体大小往往需要越大的背景图片，计算量和内存占用也就越大。推荐从`80`开始尝试。
+为了发挥出Handright的优异效果，您需要设置较大的字体大小。往往设置越大的字体大小，生成的字形越平滑，锯齿越少。但是越大的字体大小往往需要越大的背景图片，计算量和内存占用也就越大。推荐从`80`开始尝试。
 
 ### 字体填充（fill）
 强烈建议若无特殊需要不要使用除纯黑外的其它颜色。黑色是打印机中最常见的颜色，它有对应颜色的墨水。而灰色和除个别颜色外的彩色都是需要多种颜色墨水和背景的白色调和形成的。
@@ -46,7 +46,7 @@ background = background.convert(mode="L")
 ```python
 from multiprocessing import Pool
 
-from pylf import *
+from handright import *
 
 if __name__ == "__main__":
     text = "我能吞下玻璃而不伤身体。"

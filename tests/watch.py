@@ -4,17 +4,17 @@ import pathlib
 
 import PIL.Image
 
-from pylf import *
+from handright import *
 from tests.util import *
 
-SEED = "PyLf"
+SEED = "Handright"
 
 
 def main():
     print(
         "Test by naked eyes:\n"
         "======================================\n"
-        "Test: pylf.handwrite2"
+        "Test: handright.handwrite2()"
     )
     path = "backgrounds/even-odd-letter/"
     image1 = PIL.Image.open(abs_path(path + "村庄信笺纸.jpg"))

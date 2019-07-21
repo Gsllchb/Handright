@@ -1,7 +1,7 @@
 # coding: utf-8
 import PIL.Image
 
-from pylf._util import *
+from handright._util import *
 
 UNSIGNED_INT32 = "L"
 MAX_UNSIGNED_INT32_VALUE = 0xFFFFFFFF

@@ -1,5 +1,8 @@
 # Release Notes
 
+## v5.0.0 (unreleased)
+* __将项目名由`PyLf`改为`Handright`，包名由`pylf`改为`handright`。__
+
 ## v4.1.0 (2019-7-7)
 * 为`line_spacing`提供缺省值，取值`font_size`。
 

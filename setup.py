@@ -3,20 +3,20 @@ import os
 
 import setuptools
 
-import pylf
+import handright
 
 
 def main():
     setuptools.setup(
-        name="pylf",
-        version=pylf.__version__,
+        name="handright",
+        version=handright.__version__,
         description="A lightweight Python library for simulating Chinese handwriting",
         license="bsd-3-clause",
         author="Gsllchb",
         author_email="Gsllchb@gmail.com",
         python_requires=">= 3.5",
         keywords="simulating Chinese handwriting",
-        url="https://github.com/Gsllchb/PyLf",
+        url="https://github.com/Gsllchb/Handright",
         long_description_content_type="text/markdown",
         long_description=get_long_description(),
         zip_safe=True,

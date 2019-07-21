@@ -7,13 +7,9 @@ beautiful, simple and easy-to-use interfaces.
 Algorithm: Randomly perturb each character as a whole in horizontal position,
 vertical position and font size. Then, Randomly perturb each stroke of a
 character in horizontal position, vertical position and rotation angle.
-
-Homepage: https://github.com/Gsllchb/PyLf
 """
-from pylf._core import (handwrite,
-                        Template,
-                        Error,
-                        LayoutError,
-                        BackgroundTooLargeError)
+from handright._core import (
+    handwrite, Template, Error, LayoutError, BackgroundTooLargeError
+)
 
 __version__ = "4.1.0"

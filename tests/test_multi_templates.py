@@ -4,13 +4,13 @@ from typing import *
 import PIL.Image
 import PIL.ImageColor
 
-from pylf import *
+from handright import *
 from tests.util import *
 
 WIDTH = 32
 HEIGHT = 32
 SIZE = (WIDTH, HEIGHT)
-SEED = "PyLf"
+SEED = "Handright"
 
 
 def get_default_templates() -> Tuple[Template, Template]:

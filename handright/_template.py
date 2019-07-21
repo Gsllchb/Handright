@@ -1,5 +1,5 @@
 # coding: utf-8
-from pylf._util import *
+from handright._util import *
 
 _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 _DEFAULT_PERTURB_THETA_SIGMA = 0.07
@@ -11,7 +11,7 @@ _DEFAULT_BOTTOM_MARGIN = 0
 
 
 class Template(object):
-    """The parameter class for pylf.handwrite."""
+    """The parameter class for `handright.handwrite()`."""
 
     def __init__(
             self,

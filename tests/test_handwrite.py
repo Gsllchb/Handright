@@ -4,14 +4,14 @@ import copy
 import PIL.Image
 import PIL.ImageDraw
 
-from pylf import *
+from handright import *
 from tests.util import *
 
 BACKGROUND_COLOR = "white"
 WIDTH = 32
 HEIGHT = 32
 SIZE = (WIDTH, HEIGHT)
-SEED = "PyLf"
+SEED = "Handright"
 
 
 def get_default_template():
@@ -55,7 +55,7 @@ def test_blank_text():
 def test_seed():
     text = get_long_text()
     template = get_default_template()
-    for seed in (0, "PyLf"):
+    for seed in (0, "Handright"):
         ims1 = handwrite(text, template, seed=seed)
         ims2 = handwrite(text, template, seed=seed)
         assert list(ims1) == list(ims2)

@@ -4,9 +4,9 @@ import random
 
 import math
 
-from pylf._exceptions import *
-from pylf._template import *
-from pylf._util import *
+from handright._exceptions import *
+from handright._template import *
+from handright._util import *
 
 # While changing following constants, it is necessary to consider to rewrite the
 # relevant codes.
