@@ -11,11 +11,7 @@ SEED = "Handright"
 
 
 def main():
-    print(
-        "Test by naked eyes:\n"
-        "======================================\n"
-        "Test: handright.handwrite2()"
-    )
+    print("Test by naked eyes:")
     path = "backgrounds/even-odd-letter/"
     image1 = PIL.Image.open(abs_path(path + "村庄信笺纸.jpg"))
     image2 = PIL.Image.open(abs_path(path + "树信笺纸.jpg"))
