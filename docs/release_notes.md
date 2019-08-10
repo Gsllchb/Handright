@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 为模板类`Template`添加新方法`get_size()`。
+
 ## v5.0.0 (2019-7-21)
 * __将项目名由`PyLf`改为`Handright`，包名由`pylf`改为`handright`。__
 

@@ -1,4 +1,6 @@
 # coding: utf-8
+import copy
+
 from handright._util import *
 
 _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
@@ -224,3 +226,10 @@ class Template(object):
 
     def get_perturb_theta_sigma(self) -> float:
         return self._perturb_theta_sigma
+
+    def get_size(self) -> Tuple[int, int]:
+        return self.get_background().size
+
+
+def copy_templates(templates: Iterable[Template]) -> Tuple[Template, ...]:
+    return tuple(map(copy.copy, templates))
