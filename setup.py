@@ -8,7 +8,7 @@ import handright
 
 def main():
     setuptools.setup(
-        name="handright",
+        name=handright.__name__,
         version=handright.__version__,
         description="A lightweight Python library for simulating Chinese handwriting",
         license="bsd-3-clause",
