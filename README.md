@@ -26,6 +26,7 @@ pip install handright
 
 ## Quick Start
 ```python
+# coding: utf-8
 from PIL import Image, ImageFont
 
 from handright import Template, handwrite
@@ -36,8 +37,10 @@ template = Template(
     font_size=100,
     font=ImageFont.truetype("path/to/my/font.ttf"),
 )
-for image in handwrite(text, template):
-    image.show()
+images = handwrite(text, template)
+for im in images:
+    assert isinstance(im, Image.Image)
+    im.show()
 
 ```
 更多信息请参阅[Tutorial][tutorial]。
