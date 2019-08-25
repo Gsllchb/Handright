@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* 优化function annotations
+
 ## v5.1.0 (2019-8-10)
 * 为模板类`Template`添加新方法`get_size()`。
 

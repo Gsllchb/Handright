@@ -25,8 +25,8 @@ def handwrite(
         text: str,
         template: Union[Template, Sequence[Template]],
         seed: Hashable = None,
-        mapper: Callable[[Callable, Iterable], Any] = map,
-):
+        mapper: Callable[[Callable, Iterable], Iterable] = map,
+) -> Iterable[PIL.Image.Image]:
     """Handwrite `text` with the configurations in `template`, and return an
     Iterable of Pillow's Images.
 
