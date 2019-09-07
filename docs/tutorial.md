@@ -1,6 +1,9 @@
 # Tutorial
 本文讲述如何生成并打印出足以媲美真人手写的文档。
 
+### API文档
+您可以使用[Pydoc](https://docs.python.org/3/library/pydoc.html)来查阅Handright的API文档。
+
 ### 排版参数关系图
 ![](images/params_visualizing.png)
 
