@@ -248,6 +248,18 @@ class Template(object):
     def get_size(self) -> Tuple[int, int]:
         return self.get_background().size
 
+    def release_font_resource(self) -> None:
+        self.set_font(None)
+
+    def release_resources(self) -> None:
+        self.release_font_resource()
+
+    def to_picklable(self, resources_released: bool = False) -> None:
+        if resources_released:
+            self.release_resources()
+        else:
+            raise NotImplementedError()
+
 
 def copy_templates(templates: Iterable[Template]) -> Tuple[Template, ...]:
     return tuple(map(copy.copy, templates))

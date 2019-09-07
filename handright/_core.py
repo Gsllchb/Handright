@@ -46,14 +46,10 @@ def handwrite(
         templates = template
     pages = _draft(text, templates, seed)
     templates = copy_templates(templates)
-    _release_font_resources(templates)
+    for t in templates:
+        t.to_picklable(resources_released=True)
     renderer = _Renderer(templates, seed)
     return mapper(renderer, pages)
-
-
-def _release_font_resources(templates) -> None:
-    for t in templates:
-        t.set_font(None)
 
 
 def _draft(text, templates, seed=None) -> Iterator[Page]:

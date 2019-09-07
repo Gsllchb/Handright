@@ -1,7 +1,8 @@
 # Release Notes
 
 ## unreleased
-* 优化function annotations
+* 优化function annotations。
+* 类`Template`添加`release_font_resource()`，`release_resources()`和`to_picklable()`方法。
 
 ## v5.1.0 (2019-8-10)
 * 为模板类`Template`添加新方法`get_size()`。
