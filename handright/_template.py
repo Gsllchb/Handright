@@ -279,6 +279,28 @@ class Template(object):
                      self._perturb_y_sigma,
                      self._perturb_theta_sigma))
 
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        return ("{class_name}("
+                "background={self._background}, "
+                "font_size={self._font_size}, "
+                "font={self._font}, "
+                "line_spacing={self._line_spacing}, "
+                "fill={self._fill}, "
+                "left_margin={self._left_margin}, "
+                "top_margin={self._top_margin}, "
+                "right_margin={self._right_margin}, "
+                "bottom_margin={self._bottom_margin}, "
+                "word_spacing={self._word_spacing}, "
+                "line_spacing_sigma={self._line_spacing_sigma}, "
+                "font_size_sigma={self._font_size_sigma}, "
+                "word_spacing_sigma={self._word_spacing_sigma}, "
+                "end_chars={self._end_chars}, "
+                "perturb_x_sigma={self._perturb_x_sigma}, "
+                "perturb_y_sigma={self._perturb_y_sigma}, "
+                "perturb_theta_sigma={self._perturb_theta_sigma})"
+                ).format(class_name=class_name, self=self)
+
 
 def copy_templates(templates: Iterable[Template]) -> Tuple[Template, ...]:
     return tuple(map(copy.copy, templates))
