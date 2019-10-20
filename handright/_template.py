@@ -14,6 +14,25 @@ _DEFAULT_BOTTOM_MARGIN = 0
 
 class Template(object):
     """The parameter class for `handright.handwrite()`."""
+    __slots__ = (
+        "_background",
+        "_font_size",
+        "_line_spacing",
+        "_font",
+        "_fill",
+        "_left_margin",
+        "_top_margin",
+        "_right_margin",
+        "_bottom_margin",
+        "_word_spacing",
+        "_line_spacing_sigma",
+        "_font_size_sigma",
+        "_word_spacing_sigma",
+        "_end_chars",
+        "_perturb_x_sigma",
+        "_perturb_y_sigma",
+        "_perturb_theta_sigma",
+    )
 
     def __init__(
             self,
