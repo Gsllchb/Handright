@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v5.2.0 (2019-10-20)
 * 优化function annotations。
 * 类`Template`添加`release_font_resource`和`__repr__`方法，`__slots__`属性。
 

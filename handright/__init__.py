@@ -12,4 +12,4 @@ from handright._core import (
     handwrite, Template, Error, LayoutError, BackgroundTooLargeError
 )
 
-__version__ = "5.1.0"
+__version__ = "5.2.0"
