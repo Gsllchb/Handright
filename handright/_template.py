@@ -249,35 +249,10 @@ class Template(object):
         return self.get_background().size
 
     def release_font_resource(self) -> None:
+        """This method should be called before pickling corresponding instances.
+        After that, the font property will become unavailable.
+        """
         self.set_font(None)
-
-    def release_resources(self) -> None:
-        self.release_font_resource()
-
-    def to_picklable(self, keep_resources: bool = True) -> None:
-        if keep_resources:
-            raise NotImplementedError()
-        else:
-            self.release_resources()
-
-    def __hash__(self) -> int:
-        return hash((self._background,
-                     self._line_spacing,
-                     self._line_spacing_sigma,
-                     self._font_size,
-                     self._font_size_sigma,
-                     self._font,
-                     self._fill,
-                     self._left_margin,
-                     self._top_margin,
-                     self._right_margin,
-                     self._bottom_margin,
-                     self._word_spacing,
-                     self._word_spacing_sigma,
-                     self._end_chars,
-                     self._perturb_x_sigma,
-                     self._perturb_y_sigma,
-                     self._perturb_theta_sigma))
 
     def __repr__(self) -> str:
         class_name = type(self).__name__

@@ -47,7 +47,7 @@ def handwrite(
     pages = _draft(text, templates, seed)
     templates = copy_templates(templates)
     for t in templates:
-        t.to_picklable(keep_resources=False)
+        t.release_font_resource()  # make the templates picklable.
     renderer = _Renderer(templates, seed)
     return mapper(renderer, pages)
 
