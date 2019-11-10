@@ -3,14 +3,6 @@ import copy
 
 from handright._util import *
 
-_DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
-_DEFAULT_PERTURB_THETA_SIGMA = 0.07
-_DEFAULT_WORD_SPACING = 0
-_DEFAULT_LEFT_MARGIN = 0
-_DEFAULT_TOP_MARGIN = 0
-_DEFAULT_RIGHT_MARGIN = 0
-_DEFAULT_BOTTOM_MARGIN = 0
-
 
 class Template(object):
     """The parameter class for `handright.handwrite()`."""
@@ -33,6 +25,17 @@ class Template(object):
         "_perturb_y_sigma",
         "_perturb_theta_sigma",
     )
+
+    _DEFAULT_WORD_SPACING = 0
+
+    _DEFAULT_LEFT_MARGIN = 0
+    _DEFAULT_TOP_MARGIN = 0
+    _DEFAULT_RIGHT_MARGIN = 0
+    _DEFAULT_BOTTOM_MARGIN = 0
+
+    _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
+
+    _DEFAULT_PERTURB_THETA_SIGMA = 0.07
 
     def __init__(
             self,
