@@ -110,9 +110,7 @@ def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
                     and text[start] not in end_chars):
                 break
             xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
-            font = font.font_variant(
-                size=max(int(rand.gauss(font_size, font_size_sigma)), 0),
-            )
+            font = resize_font(font, rand.gauss(font_size, font_size_sigma))
             offset = _draw_char(draw, text[start], xy, font)
             x += rand.gauss(word_spacing + offset, word_spacing_sigma)
             start += 1
