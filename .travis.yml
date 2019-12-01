@@ -6,7 +6,8 @@ os:
 python:
   - "3.5"
   - "3.6"
-  - "3.7-dev"
+  - "3.7"
+  - "3.8"
 env:
   - PILLOW_VERSION=5.0.0
   - PILLOW_VERSION=6.0.0
