@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v5.3.0 (2019-12-1)
 * __新增对Python3.8的官方支持。__
 * __新增对换行符CR（`\r`）和CRLF（`\r\n`）的支持。__
 * 修改Handright库docstring的描述。
