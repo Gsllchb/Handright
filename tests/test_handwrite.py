@@ -76,3 +76,21 @@ def test_line_and_page_breaks():
     )
     images = handwrite(text, template)
     assert len(list(images)) == 1
+
+
+def test_line_separators():
+    text1 = "a\nb\nc\n"
+    text2 = "a\rb\rc\r"
+    text3 = "a\r\nb\r\nc\r\n"
+    text4 = "a\rb\nc\r\n"
+    text5 = "a\rb\nc\r"
+    text6 = "a\r\nb\rc\r"
+    text7 = "a\r\nb\nc\n"
+    template = get_default_template()
+    assert (list(handwrite(text1, template, seed=SEED))
+            == list(handwrite(text2, template, seed=SEED))
+            == list(handwrite(text3, template, seed=SEED))
+            == list(handwrite(text4, template, seed=SEED))
+            == list(handwrite(text5, template, seed=SEED))
+            == list(handwrite(text6, template, seed=SEED))
+            == list(handwrite(text7, template, seed=SEED)))

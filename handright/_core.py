@@ -14,7 +14,9 @@ _INTERNAL_MODE = "1"  # The mode for internal computation
 _WHITE = 1
 _BLACK = 0
 
-_NEWLINE = "\n"
+_LF = "\n"
+_CR = "\r"
+_CRLF = "\r\n"
 
 _UNSIGNED_INT32_TYPECODE = "L"
 _MAX_INT16_VALUE = 0xFFFF
@@ -40,16 +42,33 @@ def handwrite(
     Iterable though) could be passed to `mapper` to boost the page rendering
     process, e.g. `multiprocessing.Pool.map`.
     """
+    text = _preprocess_text(text)
+    templates = _preprocess_template(template)
+    pages = _draft(text, templates, seed)
+    picklable_templates = to_picklable(templates)
+    renderer = _Renderer(picklable_templates, seed)
+    return mapper(renderer, pages)
+
+
+def _preprocess_text(text: str) -> str:
+    return text.replace(_CRLF, _LF).replace(_CR, _LF)
+
+
+def _preprocess_template(
+        template: Union[Template, Sequence[Template]]
+) -> Sequence[Template]:
     if isinstance(template, Template):
         templates = (template,)
     else:
         templates = template
-    pages = _draft(text, templates, seed)
+    return templates
+
+
+def to_picklable(templates: Sequence[Template]) -> Sequence[Template]:
     templates = copy_templates(templates)
     for t in templates:
-        t.release_font_resource()  # make the templates picklable.
-    renderer = _Renderer(templates, seed)
-    return mapper(renderer, pages)
+        t.release_font_resource()
+    return templates
 
 
 def _draft(text, templates, seed=None) -> Iterator[Page]:
@@ -101,7 +120,7 @@ def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
     while y <= height - bottom_margin - font_size:
         x = left_margin
         while True:
-            if text[start] == _NEWLINE:
+            if text[start] == _LF:
                 start += 1
                 if start == len(text):
                     return start
