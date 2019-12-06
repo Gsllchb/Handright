@@ -42,36 +42,17 @@ def handwrite(
     Iterable though) could be passed to `mapper` to boost the page rendering
     process, e.g. `multiprocessing.Pool.map`.
     """
-    text = _preprocess_text(text)
-    templates = _preprocess_template(template)
-    pages = _draft(text, templates, seed)
-    picklable_templates = to_picklable(templates)
-    renderer = _Renderer(picklable_templates, seed)
-    return mapper(renderer, pages)
-
-
-def _preprocess_text(text: str) -> str:
-    return text.replace(_CRLF, _LF).replace(_CR, _LF)
-
-
-def _preprocess_template(
-        template: Union[Template, Sequence[Template]]
-) -> Sequence[Template]:
     if isinstance(template, Template):
         templates = (template,)
     else:
         templates = template
-    return templates
-
-
-def to_picklable(templates: Sequence[Template]) -> Sequence[Template]:
-    templates = copy_templates(templates)
-    for t in templates:
-        t.release_font_resource()
-    return templates
+    pages = _draft(text, templates, seed)
+    renderer = _Renderer(templates, seed)
+    return mapper(renderer, pages)
 
 
 def _draft(text, templates, seed=None) -> Iterator[Page]:
+    text = _preprocess_text(text)
     template_iter = itertools.cycle(templates)
     num_iter = itertools.count()
     rand = random.Random(x=seed)
@@ -81,6 +62,10 @@ def _draft(text, templates, seed=None) -> Iterator[Page]:
         page = Page(_INTERNAL_MODE, template.get_size(), _BLACK, next(num_iter))
         start = _draw_page(page, text, start, template, rand)
         yield page
+
+
+def _preprocess_text(text: str) -> str:
+    return text.replace(_CRLF, _LF).replace(_CR, _LF)
 
 
 def _check_template(page, template) -> None:
@@ -159,7 +144,7 @@ class _Renderer(object):
     )
 
     def __init__(self, templates, seed=None) -> None:
-        self._templates = templates
+        self._templates = _to_picklable(templates)
         self._rand = random.Random()
         self._hashed_seed = None
         if seed is not None:
@@ -182,6 +167,13 @@ class _Renderer(object):
         strokes = _extract_strokes(page.matrix(), bbox)
         _draw_strokes(canvas.load(), strokes, template, self._rand)
         return canvas
+
+
+def _to_picklable(templates: Sequence[Template]) -> Sequence[Template]:
+    templates = copy_templates(templates)
+    for t in templates:
+        t.release_font_resource()
+    return templates
 
 
 def _get_template(templates, index):
