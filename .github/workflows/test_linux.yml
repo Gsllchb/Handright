@@ -1,14 +1,8 @@
-name: Test
-
+name: Test on Linux
 on: [push]
-
 jobs:
   build:
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-
+    runs-on: ubuntu-latest
     steps:
     - name: Install dependencies
       run: |
