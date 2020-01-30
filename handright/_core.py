@@ -71,14 +71,18 @@ def _preprocess_text(text: str) -> str:
 def _check_template(page, template) -> None:
     if page.height() < (template.get_top_margin() + template.get_line_spacing()
                         + template.get_bottom_margin()):
-        raise LayoutError()
+        msg = "for (height < top_margin + line_spacing + bottom_margin)"
+        raise LayoutError(msg)
     if template.get_font_size() > template.get_line_spacing():
-        raise LayoutError()
+        msg = "for (font_size > line_spacing)"
+        raise LayoutError(msg)
     if page.width() < (template.get_left_margin() + template.get_font_size()
                        + template.get_right_margin()):
-        raise LayoutError()
+        msg = "for (width < left_margin + font_size + right_margin)"
+        raise LayoutError(msg)
     if template.get_word_spacing() <= -template.get_font_size() // 2:
-        raise LayoutError()
+        msg = "for (word_spacing <= -font_size // 2)"
+        raise LayoutError(msg)
 
 
 def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
@@ -131,8 +135,6 @@ def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
 def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     """Draws a single char with the parameters and white color, and returns the
     offset."""
-    if len(char) != 1:
-        raise TypeError()
     draw.text(xy, char, fill=_WHITE, font=font)
     return font.getsize(char)[0]
 
@@ -189,7 +191,8 @@ def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]):
     assert left >= 0 and upper >= 0
     # reserve 0xFFFFFFFF as _STROKE_END
     if right >= _MAX_INT16_VALUE or lower >= _MAX_INT16_VALUE:
-        raise BackgroundTooLargeError()
+        msg = "the width or height of backgrounds can not exceed {}".format(_MAX_INT16_VALUE)
+        raise BackgroundTooLargeError(msg)
     strokes = NumericOrderedSet(
         _UNSIGNED_INT32_TYPECODE,
         privileged=_STROKE_END
