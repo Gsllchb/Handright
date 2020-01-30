@@ -113,8 +113,12 @@ def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
             if (x > width - right_margin - font_size
                     and text[start] not in end_chars):
                 break
-            xy = (int(x), int(rand.gauss(y, line_spacing_sigma)))
-            font = resize_font(font, rand.gauss(font_size, font_size_sigma))
+            xy = (round(x), round(rand.gauss(y, line_spacing_sigma)))
+            actual_font_size = max(
+                round(rand.gauss(font_size, font_size_sigma)), 0
+            )
+            if actual_font_size != font.size:
+                font = font.font_variant(size=actual_font_size)
             offset = _draw_char(draw, text[start], xy, font)
             x += rand.gauss(word_spacing + offset, word_spacing_sigma)
             start += 1
@@ -263,6 +267,8 @@ def _draw_stroke(
 def _rotate(
         center: Tuple[float, float], x: float, y: float, theta: float
 ) -> Tuple[float, float]:
+    if theta == 0:
+        return x, y
     new_x = ((x - center[0]) * math.cos(theta)
              + (y - center[1]) * math.sin(theta)
              + center[0])
@@ -273,7 +279,7 @@ def _rotate(
 
 
 def _xy(x: int, y: int) -> int:
-    return (x << 16) + y
+    return (x << 16) | y
 
 
 def _x_y(xy: int) -> Tuple[int, int]:

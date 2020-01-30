@@ -7,10 +7,6 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-def resize_font(font, size: float):
-    return font.font_variant(size=max(round(size), 0))
-
-
 def count_bands(mode: str) -> int:
     return sum(not c.islower() for c in mode)
 
