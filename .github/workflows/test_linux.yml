@@ -1,13 +1,27 @@
 name: Test on Linux
-on: [push]
+
+on: [push, pull_request]
+
 jobs:
   build:
+
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+        pillow-version: [5, 6, 7]
+
     steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install pillow==${{ matrix.pillow-version }}
+        pip install pytest
     - name: Test
       run: |
-        python3 -m tox
+        pytest
