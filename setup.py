@@ -28,7 +28,7 @@ def main():
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: Implementation :: CPython",
         ),
-        install_requires=("pillow >= 5, < 7",),
+        install_requires=("pillow >= 5, < 8",),
         setup_requires=("setuptools>=38.6.0",),
     )
 

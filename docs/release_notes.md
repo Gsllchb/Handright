@@ -1,6 +1,7 @@
 # Release Notes
 
 ## unreleased
+* __*Pillow*的依赖范围扩大至`>= 5, < 8`__。
 * 优化性能。
 * 微调排版算法。
 

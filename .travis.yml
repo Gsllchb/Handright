@@ -11,6 +11,7 @@ python:
 env:
   - PILLOW_VERSION=5.0.0
   - PILLOW_VERSION=6.0.0
+  - PILLOW_VERSION=7.0.0
 install:
   - pip install pillow==$PILLOW_VERSION pytest
   - python setup.py install
