@@ -8,7 +8,7 @@ First of all, every participant should obey [_Contributor Covenant Code of Condu
 3. Do your contribution;
 4. Provide tests for any newly added code in `handright` package;
 5. Run `pytest` in the project's root folder and run `tests/watch.py`;
-6. Create a pull request to pull the changes to the master branch.
+6. Create a pull request to pull the changes to the `dev` branch.
 
 
 ## Guidelines
