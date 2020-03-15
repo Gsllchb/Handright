@@ -19,7 +19,7 @@ images = handwrite(text, template)
 As can be seen, Handright is built on the top of Pillow. `handwrite`, as the
 core function, implements the feature of simulating handwriting, and `Template`
 is the auxiliary parameter class. The return value of `handwrite` is an
-`Iterable` of Pillow `Image`, so the images can be show, saved, or further
+`Iterable` of Pillow `Image`, so the images can be shown, saved, or further
 processed.
 """
 from handright._core import handwrite
