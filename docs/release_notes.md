@@ -1,7 +1,7 @@
 # Release Notes
 
 ## unreleased
-* 优化API文档：适配pydoc；
+* 优化API文档：适配pydoc、提供更详细的概述。
 
 ## v5.4.0 (2020-1-31)
 * __*Pillow*的依赖范围修改为`>= 6.2.1, < 8`。__
