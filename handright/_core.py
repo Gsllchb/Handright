@@ -41,6 +41,11 @@ def handwrite(
     A different implementation of map built-in function (only accept one
     Iterable though) could be passed to `mapper` to boost the page rendering
     process, e.g. `multiprocessing.Pool.map`.
+
+    Throw BackgroundTooLargeError, if the width or height of `background` in
+    `template` exceeds 65,534.
+    Throw LayoutError, if the settings are conflicting, which makes it
+    impossible to layout the `text`.
     """
     if isinstance(template, Template):
         templates = (template,)
