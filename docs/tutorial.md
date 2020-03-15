@@ -40,10 +40,11 @@ for i, im in enumerate(images):
     im.show()
     im.save("path/to/my/output/{}.webp".format(i))
 ```
+从上述示例可以看出，**Handright**建立于[Pillow](https://github.com/python-pillow/Pillow)库之上，`handwrite`作为最核心的函数实现了模拟手写的功能，而`Template`是与其相配套的参数类；`handwrite`的返回值为一个[Pillow](https://github.com/python-pillow/Pillow) `Image`的`Iterable`，您可以将这些`Image`展示、保存或者对其做进一步的图像处理。
 
 
 ### API文档
-您可以使用[Pydoc](https://docs.python.org/3/library/pydoc.html)来查阅Handright的API文档。
+您可以使用[Pydoc](https://docs.python.org/3/library/pydoc.html)来查阅**Handright**的API文档。
 
 ### 排版参数关系图
 ![](images/params_visualizing.png)
