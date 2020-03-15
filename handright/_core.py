@@ -191,7 +191,9 @@ def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]):
     assert left >= 0 and upper >= 0
     # reserve 0xFFFFFFFF as _STROKE_END
     if right >= _MAX_INT16_VALUE or lower >= _MAX_INT16_VALUE:
-        msg = "the width or height of backgrounds can not exceed {}".format(_MAX_INT16_VALUE)
+        msg = "the width or height of backgrounds can not exceed {}".format(
+            _MAX_INT16_VALUE - 1
+        )
         raise BackgroundTooLargeError(msg)
     strokes = NumericOrderedSet(
         _UNSIGNED_INT32_TYPECODE,
