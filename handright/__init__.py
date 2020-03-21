@@ -26,7 +26,7 @@ from handright._core import handwrite
 from handright._exceptions import Error, LayoutError, BackgroundTooLargeError
 from handright._template import Template
 
-__version__ = "5.4.0"
+__version__ = "5.5.0"
 
 __all__ = (
     "handwrite",
