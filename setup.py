@@ -13,7 +13,7 @@ def main():
         description="A lightweight Python library for simulating Chinese handwriting",
         license="bsd-3-clause",
         author="Chenghui Li (Gsllchb)",
-        author_email="Gsllchb@protonmail.com",
+        author_email="Gsllchb@qq.com",
         python_requires=">= 3.5",
         keywords="simulating Chinese handwriting",
         url="https://github.com/Gsllchb/Handright",
