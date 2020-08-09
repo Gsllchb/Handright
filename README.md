@@ -49,7 +49,7 @@ for im in images:
 
 
 ## Join Us
-扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入Handright社区。
+扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入Handright社区：
 ![手右](docs/images/zsxq.png)
 
 
