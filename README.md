@@ -55,13 +55,13 @@ for im in images:
 
 ## More
 
-### 基于Handright开发的第三方应用
-_免责声明：以下应用由第三方开发，其信息仅为便利而提供，使用以下第三方应用所产生的任何风险由您自行承担。_
-
+__基于Handright开发的第三方应用__
 | 应用                                                         | 简介                           |
 | ------------------------------------------------------------ | -------------------------------- |
 | [Handwriting Text](https://beta.rstudioconnect.com/content/9371/) | 一个用于模拟中文手写的简易Web应用 |
 | [Quick Hand](https://github.com/HaujetZhao/QuickHand)        | 一个用于模拟中文手写的Windows应用 |
+
+_免责声明：上述应用由第三方开发，其信息仅为便利而提供，我们不对上述信息的准确性、可靠性、时效性及完整性作任何保证，使用上述应用所产生的任何风险由您自行承担。_
 
 
 [tutorial]: docs/tutorial.md
