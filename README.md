@@ -48,6 +48,17 @@ for im in images:
 更多信息请参阅[Tutorial][tutorial]。
 
 
+## More
+### Handright社区
+[![手右](https://github.com/Gsllchb/Handright/blob/master/docs/images/zsxq.png)](https://t.zsxq.com/zzZfMJq)
+
+### 第三方应用
+| 链接                                                         | 简介                           |
+| ------------------------------------------------------------ | -------------------------------- |
+| [Handwriting Text](https://beta.rstudioconnect.com/content/9371/) | 基于Handright的简易Web UI |
+| [Quick Hand](https://github.com/HaujetZhao/QuickHand)        | 基于Handright的Windows应用 |
+
+
 [tutorial]: https://github.com/Gsllchb/Handright/blob/master/docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
 [Pillow]: http://python-pillow.org/
