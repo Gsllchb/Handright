@@ -48,17 +48,18 @@ for im in images:
 更多信息请参阅[Tutorial][tutorial]。
 
 
-## More
-### Handright社区
-扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入星球。
+## Join Us
+扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入Handright社区。
 ![手右](docs/images/zsxq.png)
 
-### 第三方应用
+
+## More
+### 基于Handright开发的第三方应用
 | 链接                                                         | 简介                           |
 | ------------------------------------------------------------ | -------------------------------- |
-| [Handwriting Text](https://beta.rstudioconnect.com/content/9371/) | 基于Handright的简易Web UI |
-| [Quick Hand](https://github.com/HaujetZhao/QuickHand)        | 基于Handright的Windows应用 |
-
+| [Handwriting Text](https://beta.rstudioconnect.com/content/9371/) | 一个用于模拟中文手写的简易Web应用 |
+| [Quick Hand](https://github.com/HaujetZhao/QuickHand)        | 一个用于模拟中文手写的Windows应用 |
+_免责声明：上述第三方应用信息仅为提供便利而设置，使用上述应用的风险由您自行承担。_
 
 [tutorial]: docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
