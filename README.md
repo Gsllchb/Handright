@@ -13,7 +13,7 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [Release Notes][release-notes] |
 [Contributing][contributing]
 
-![](https://github.com/Gsllchb/Handright/blob/master/docs/images/slogan.png)
+![](docs/images/slogan.png)
 
 ## Vision
 Reveal the nature of Chinese handwriting and use it to implement beautiful, simple and easy-to-use interfaces.
@@ -50,7 +50,8 @@ for im in images:
 
 ## More
 ### Handright社区
-[![手右](https://github.com/Gsllchb/Handright/blob/master/docs/images/zsxq.png)](https://t.zsxq.com/zzZfMJq)
+扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入星球。
+![手右](docs/images/zsxq.png)
 
 ### 第三方应用
 | 链接                                                         | 简介                           |
@@ -59,10 +60,10 @@ for im in images:
 | [Quick Hand](https://github.com/HaujetZhao/QuickHand)        | 基于Handright的Windows应用 |
 
 
-[tutorial]: https://github.com/Gsllchb/Handright/blob/master/docs/tutorial.md
+[tutorial]: docs/tutorial.md
 [PIL]: http://www.pythonware.com/products/pil/
 [Pillow]: http://python-pillow.org/
-[release-notes]: https://github.com/Gsllchb/Handright/blob/master/docs/release_notes.md
+[release-notes]: docs/release_notes.md
 [pypi]: https://pypi.org/project/handright/
-[license]: https://github.com/Gsllchb/Handright/blob/master/LICENSE
-[contributing]: https://github.com/Gsllchb/Handright/blob/master/.github/CONTRIBUTING.md
+[license]: LICENSE.txt
+[contributing]: .github/CONTRIBUTING.md
