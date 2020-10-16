@@ -22,10 +22,10 @@ def main():
         zip_safe=True,
         packages=setuptools.find_packages(exclude=("*.tests", "tests")),
         classifiers=(
-            "Programming Language :: Python :: 3.5",
             "Programming Language :: Python :: 3.6",
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: Implementation :: CPython",
         ),
         install_requires=("pillow >= 6.2.1, < 8",),
