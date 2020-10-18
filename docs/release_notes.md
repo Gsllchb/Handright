@@ -1,6 +1,6 @@
 # Release Notes
 
-## unreleased
+## v6.0.0 (2020-10-18)
 * 提供对Python3.9的支持
 * __停止对Python3.5的支持__
 * __Pillow的依赖范围修改为`>= 8.0.0, < 9`。__
