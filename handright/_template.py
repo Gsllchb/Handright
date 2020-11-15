@@ -4,6 +4,12 @@ import copy
 from handright._util import *
 
 
+class Layout(object):
+    """The constant class for `Template.layout`."""
+    # TODO: Add constants
+    ...
+
+
 class Template(object):
     """The parameter class for `handright.handwrite()`."""
     __slots__ = (
@@ -17,6 +23,7 @@ class Template(object):
         "_right_margin",
         "_bottom_margin",
         "_word_spacing",
+        "_layout",
         "_line_spacing_sigma",
         "_font_size_sigma",
         "_word_spacing_sigma",
@@ -32,6 +39,8 @@ class Template(object):
     _DEFAULT_TOP_MARGIN = 0
     _DEFAULT_RIGHT_MARGIN = 0
     _DEFAULT_BOTTOM_MARGIN = 0
+
+    _DEFAULT_LAYOUT = 0
 
     _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
@@ -49,6 +58,7 @@ class Template(object):
             right_margin: int = _DEFAULT_RIGHT_MARGIN,
             bottom_margin: int = _DEFAULT_BOTTOM_MARGIN,
             word_spacing: int = _DEFAULT_WORD_SPACING,
+            layout: int = _DEFAULT_LAYOUT,
             line_spacing_sigma: Optional[float] = None,
             font_size_sigma: Optional[float] = None,
             word_spacing_sigma: Optional[float] = None,
@@ -73,6 +83,9 @@ class Template(object):
         `word_spacing` can be less than `0`, but must be greater than
         `-font_size // 2`.
 
+        `layout` is an optional parameter to control layout, see
+        `handright.Layout`.
+
         `line_spacing_sigma`, `font_size_sigma` and `word_spacing_sigma` are the
         sigmas of the gauss distributions of line spacing, font size and word
         spacing, respectively.
@@ -94,6 +107,7 @@ class Template(object):
         self.set_right_margin(right_margin)
         self.set_bottom_margin(bottom_margin)
         self.set_word_spacing(word_spacing)
+        self.set_layout(layout)
         self.set_line_spacing_sigma(line_spacing_sigma)
         self.set_font_size_sigma(font_size_sigma)
         self.set_word_spacing_sigma(word_spacing_sigma)
@@ -116,6 +130,7 @@ class Template(object):
                 and self._right_margin == other._right_margin
                 and self._bottom_margin == other._bottom_margin
                 and self._word_spacing == other._word_spacing
+                and self._layout == other._layout
                 and self._word_spacing_sigma == other._word_spacing_sigma
                 and self._end_chars == other._end_chars
                 and self._perturb_x_sigma == other._perturb_x_sigma
@@ -167,6 +182,9 @@ class Template(object):
             self, word_spacing: int = _DEFAULT_WORD_SPACING
     ) -> None:
         self._word_spacing = word_spacing
+
+    def set_layout(self, layout: int = _DEFAULT_LAYOUT) -> None:
+        self._layout = layout
 
     def set_line_spacing_sigma(
             self, line_spacing_sigma: Optional[float] = None
@@ -246,6 +264,9 @@ class Template(object):
     def get_word_spacing(self) -> int:
         return self._word_spacing
 
+    def get_layout(self) -> int:
+        return self._layout
+
     def get_line_spacing_sigma(self) -> float:
         return self._line_spacing_sigma
 
@@ -289,6 +310,7 @@ class Template(object):
                 "right_margin={self._right_margin}, "
                 "bottom_margin={self._bottom_margin}, "
                 "word_spacing={self._word_spacing}, "
+                "layout=0b{self._layout:b}"
                 "line_spacing_sigma={self._line_spacing_sigma}, "
                 "font_size_sigma={self._font_size_sigma}, "
                 "word_spacing_sigma={self._word_spacing_sigma}, "

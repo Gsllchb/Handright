@@ -1,5 +1,8 @@
 # Release Notes
 
+## unreleased
+* __Template类中新增layout参数，以支持排版布局的灵活配置。__
+
 ## v6.0.0 (2020-10-18)
 * 提供对Python3.9的支持
 * __停止对Python3.5的支持__
