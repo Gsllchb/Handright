@@ -1,7 +1,27 @@
-pillow == 8.0.0
-
-twine >= 1.8.0
-setuptools >= 38.6.0
-wheel
-
-pytest
+attrs==20.2.0
+bleach==3.2.1
+certifi==2020.6.20
+chardet==3.0.4
+colorama==0.4.3
+docutils==0.16
+idna==2.10
+iniconfig==1.0.1
+keyring==21.4.0
+packaging==20.4
+Pillow==8.0.0
+pkginfo==1.5.0.1
+pluggy==0.13.1
+py==1.9.0
+Pygments==2.7.1
+pyparsing==2.4.7
+pytest==6.1.2
+readme-renderer==27.0
+requests==2.24.0
+requests-toolbelt==0.9.1
+rfc3986==1.4.0
+six==1.15.0
+toml==0.10.1
+tqdm==4.50.2
+twine==3.2.0
+urllib3==1.25.10
+webencodings==0.5.1
