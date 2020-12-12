@@ -6,8 +6,11 @@ from handright._util import *
 
 class Layout(object):
     """The constant class for `Template.layout`."""
-    # TODO: Add constants
-    ...
+    FLOW = 0b0
+    GRID = 0b1
+
+    LTR = 0b00
+    RTL = 0b10
 
 
 class Template(object):
