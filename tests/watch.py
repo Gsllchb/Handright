@@ -11,6 +11,7 @@ SEED = "Handright"
 
 
 def main():
+    # TODO: Add case for grid layout
     print("Test by naked eyes:")
     path = "backgrounds/even-odd-letter/"
     image1 = PIL.Image.open(abs_path(path + "村庄信笺纸.jpg"))

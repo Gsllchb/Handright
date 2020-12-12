@@ -1,8 +1,7 @@
 # coding: utf-8
 import itertools
-import random
-
 import math
+import random
 
 from handright._exceptions import *
 from handright._template import *
@@ -73,41 +72,37 @@ def _preprocess_text(text: str) -> str:
     return text.replace(_CRLF, _LF).replace(_CR, _LF)
 
 
-def _check_template(page, template) -> None:
-    if page.height() < (template.get_top_margin() + template.get_line_spacing()
-                        + template.get_bottom_margin()):
+def _check_template(page, tpl) -> None:
+    if page.height() < (tpl.get_top_margin() + tpl.get_line_spacing()
+                        + tpl.get_bottom_margin()):
         msg = "for (height < top_margin + line_spacing + bottom_margin)"
         raise LayoutError(msg)
-    if template.get_font_size() > template.get_line_spacing():
+    if tpl.get_font_size() > tpl.get_line_spacing():
         msg = "for (font_size > line_spacing)"
         raise LayoutError(msg)
-    if page.width() < (template.get_left_margin() + template.get_font_size()
-                       + template.get_right_margin()):
+    if page.width() < (tpl.get_left_margin() + tpl.get_font_size()
+                       + tpl.get_right_margin()):
         msg = "for (width < left_margin + font_size + right_margin)"
         raise LayoutError(msg)
-    if template.get_word_spacing() <= -template.get_font_size() // 2:
+    if tpl.get_word_spacing() <= -tpl.get_font_size() // 2:
         msg = "for (word_spacing <= -font_size // 2)"
         raise LayoutError(msg)
 
 
-def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
-    _check_template(page, template)
+def _draw_page(
+        page, text, start: int, tpl: Template, rand: random.Random
+) -> int:
+    _check_template(page, tpl)
 
     width = page.width()
     height = page.height()
-
-    font = template.get_font()
-    top_margin = template.get_top_margin()
-    bottom_margin = template.get_bottom_margin()
-    left_margin = template.get_left_margin()
-    right_margin = template.get_right_margin()
-    line_spacing = template.get_line_spacing()
-    font_size = template.get_font_size()
-    word_spacing = template.get_word_spacing()
-    end_chars = template.get_end_chars()
-    line_spacing_sigma = template.get_line_spacing_sigma()
-    font_size_sigma = template.get_font_size_sigma()
-    word_spacing_sigma = template.get_word_spacing_sigma()
+    top_margin = tpl.get_top_margin()
+    bottom_margin = tpl.get_bottom_margin()
+    left_margin = tpl.get_left_margin()
+    right_margin = tpl.get_right_margin()
+    line_spacing = tpl.get_line_spacing()
+    font_size = tpl.get_font_size()
+    end_chars = tpl.get_end_chars()
 
     draw = page.draw()
     y = top_margin + line_spacing - font_size
@@ -122,19 +117,48 @@ def _draw_page(page, text, start: int, template, rand: random.Random) -> int:
             if (x > width - right_margin - font_size
                     and text[start] not in end_chars):
                 break
-            xy = (round(x), round(rand.gauss(y, line_spacing_sigma)))
-            actual_font_size = max(
-                round(rand.gauss(font_size, font_size_sigma)), 0
-            )
-            if actual_font_size != font.size:
-                font = font.font_variant(size=actual_font_size)
-            offset = _draw_char(draw, text[start], xy, font)
-            x += rand.gauss(word_spacing + offset, word_spacing_sigma)
+            if tpl.get_layout() & Layout.GRID:
+                x = _grid_layout(draw, x, y, text[start], tpl, rand)
+            else:
+                x = _flow_layout(draw, x, y, text[start], tpl, rand)
             start += 1
             if start == len(text):
                 return start
         y += line_spacing
     return start
+
+
+def _flow_layout(
+        draw, x, y, char, tpl: Template, rand: random.Random
+) -> float:
+    xy = (round(x), round(rand.gauss(y, tpl.get_line_spacing_sigma())))
+    font = _get_font(tpl, rand)
+    offset = _draw_char(draw, char, xy, font)
+    x += rand.gauss(
+        tpl.get_word_spacing() + offset, tpl.get_word_spacing_sigma()
+    )
+    return x
+
+
+def _grid_layout(
+        draw, x, y, char, tpl: Template, rand: random.Random
+) -> float:
+    xy = (round(rand.gauss(x, tpl.get_word_spacing_sigma())),
+          round(rand.gauss(y, tpl.get_line_spacing_sigma())))
+    font = _get_font(tpl, rand)
+    _ = _draw_char(draw, char, xy, font)
+    x += tpl.get_word_spacing() + tpl.get_font_size()
+    return x
+
+
+def _get_font(tpl: Template, rand: random.Random):
+    font = tpl.get_font()
+    actual_font_size = max(round(
+        rand.gauss(tpl.get_font_size(), tpl.get_font_size_sigma())
+    ), 0)
+    if actual_font_size != font.size:
+        return font.font_variant(size=actual_font_size)
+    return font
 
 
 def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
@@ -231,7 +255,7 @@ def _extract_stroke(
             stack.append((x + 1, y))
 
 
-def _draw_strokes(bitmap, strokes, template, rand) -> None:
+def _draw_strokes(bitmap, strokes, tpl, rand) -> None:
     stroke = []
     min_x = _MAX_INT16_VALUE
     min_y = _MAX_INT16_VALUE
@@ -240,7 +264,7 @@ def _draw_strokes(bitmap, strokes, template, rand) -> None:
     for xy in strokes:
         if xy == _STROKE_END:
             center = ((min_x + max_x) / 2, (min_y + max_y) / 2)
-            _draw_stroke(bitmap, stroke, template, center, rand)
+            _draw_stroke(bitmap, stroke, tpl, center, rand)
             min_x = _MAX_INT16_VALUE
             min_y = _MAX_INT16_VALUE
             max_x = 0
@@ -258,20 +282,20 @@ def _draw_strokes(bitmap, strokes, template, rand) -> None:
 def _draw_stroke(
         bitmap,
         stroke: Sequence[Tuple[int, int]],
-        template,
+        tpl: Template,
         center: Tuple[float, float],
         rand
 ) -> None:
-    dx = rand.gauss(0, template.get_perturb_x_sigma())
-    dy = rand.gauss(0, template.get_perturb_y_sigma())
-    theta = rand.gauss(0, template.get_perturb_theta_sigma())
+    dx = rand.gauss(0, tpl.get_perturb_x_sigma())
+    dy = rand.gauss(0, tpl.get_perturb_y_sigma())
+    theta = rand.gauss(0, tpl.get_perturb_theta_sigma())
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
         new_x = round(new_x + dx)
         new_y = round(new_y + dy)
-        width, height = template.get_size()
+        width, height = tpl.get_size()
         if 0 <= new_x < width and 0 <= new_y < height:
-            bitmap[new_x, new_y] = template.get_fill()
+            bitmap[new_x, new_y] = tpl.get_fill()
 
 
 def _rotate(
