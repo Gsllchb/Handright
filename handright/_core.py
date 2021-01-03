@@ -1,7 +1,6 @@
 # coding: utf-8
 import itertools
 import math
-import random
 
 from handright._exceptions import *
 from handright._template import *
@@ -131,11 +130,13 @@ def _draw_page(
 def _flow_layout(
         draw, x, y, char, tpl: Template, rand: random.Random
 ) -> float:
-    xy = (round(x), round(rand.gauss(y, tpl.get_line_spacing_sigma())))
+    xy = (round(x), round(gauss(rand, y, tpl.get_line_spacing_sigma())))
     font = _get_font(tpl, rand)
     offset = _draw_char(draw, char, xy, font)
-    x += rand.gauss(
-        tpl.get_word_spacing() + offset, tpl.get_word_spacing_sigma()
+    x += gauss(
+        rand,
+        tpl.get_word_spacing() + offset,
+        tpl.get_word_spacing_sigma()
     )
     return x
 
@@ -143,8 +144,8 @@ def _flow_layout(
 def _grid_layout(
         draw, x, y, char, tpl: Template, rand: random.Random
 ) -> float:
-    xy = (round(rand.gauss(x, tpl.get_word_spacing_sigma())),
-          round(rand.gauss(y, tpl.get_line_spacing_sigma())))
+    xy = (round(gauss(rand, x, tpl.get_word_spacing_sigma())),
+          round(gauss(rand, y, tpl.get_line_spacing_sigma())))
     font = _get_font(tpl, rand)
     _ = _draw_char(draw, char, xy, font)
     x += tpl.get_word_spacing() + tpl.get_font().size
@@ -154,7 +155,7 @@ def _grid_layout(
 def _get_font(tpl: Template, rand: random.Random):
     font = tpl.get_font()
     actual_font_size = max(round(
-        rand.gauss(font.size, tpl.get_font_size_sigma())
+        gauss(rand, font.size, tpl.get_font_size_sigma())
     ), 0)
     if actual_font_size != font.size:
         return font.font_variant(size=actual_font_size)
@@ -286,9 +287,9 @@ def _draw_stroke(
         center: Tuple[float, float],
         rand
 ) -> None:
-    dx = rand.gauss(0, tpl.get_perturb_x_sigma())
-    dy = rand.gauss(0, tpl.get_perturb_y_sigma())
-    theta = rand.gauss(0, tpl.get_perturb_theta_sigma())
+    dx = gauss(rand, 0, tpl.get_perturb_x_sigma())
+    dy = gauss(rand, 0, tpl.get_perturb_y_sigma())
+    theta = gauss(rand, 0, tpl.get_perturb_theta_sigma())
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
         new_x = round(new_x + dx)

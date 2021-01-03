@@ -1,10 +1,17 @@
 # coding: utf-8
 import array
 import collections.abc
+import random
 from typing import *
 
 import PIL.Image
 import PIL.ImageDraw
+
+
+def gauss(rand: random.Random, mu, sigma):
+    if sigma == 0:
+        return mu
+    return rand.gauss(mu, sigma)
 
 
 def count_bands(mode: str) -> int:
