@@ -36,16 +36,6 @@ def test_page_num():
     assert page.num == num
 
 
-def test_page_draw():
-    # TODO
-    pass
-
-
-def test_page_matrix():
-    # TODO
-    pass
-
-
 def test_page_size():
     size = (1, 2)
     page = Page("CMYK", size, "white", 0)
