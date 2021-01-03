@@ -26,8 +26,7 @@ def get_default_template():
         right_margin=3,
         bottom_margin=6,
         line_spacing=2,
-        font=get_default_font(),
-        font_size=2,
+        font=get_default_font(2),
         font_size_sigma=0,
     )
     return template
@@ -65,12 +64,11 @@ def test_line_and_page_breaks():
     text = "哈" * 4
     template = Template(
         background=PIL.Image.new(mode="L", size=(30, 30), color="white"),
-        font=get_default_font(),
+        font=get_default_font(12),
         left_margin=3,
         right_margin=3,
         top_margin=3,
         bottom_margin=3,
-        font_size=12,
         word_spacing_sigma=0,
         font_size_sigma=0,
     )

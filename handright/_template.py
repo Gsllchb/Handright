@@ -17,9 +17,8 @@ class Template(object):
     """The parameter class for `handright.handwrite()`."""
     __slots__ = (
         "_background",
-        "_font_size",
-        "_line_spacing",
         "_font",
+        "_line_spacing",
         "_fill",
         "_left_margin",
         "_top_margin",
@@ -52,7 +51,6 @@ class Template(object):
     def __init__(
             self,
             background: PIL.Image.Image,
-            font_size: int,
             font,
             line_spacing: Optional[int] = None,
             fill=None,
@@ -76,15 +74,14 @@ class Template(object):
         parameters, it is strongly recommended to explicitly set these
         parameters according to the characteristic of a particular task.
 
-        `font` should be a Pillow's font instance. However, the size attribute
-        of it will be ignored here.
+        `font` should be a Pillow's font instance.
 
         `fill` is the pixel value filled to the background as font color, e.g.
         `(255, 0, 0)` for the backgrounds with RGB mode and `0` for the
         backgrounds with L mode.
 
         `word_spacing` can be less than `0`, but must be greater than
-        `-font_size // 2`.
+        `-font.size // 2`.
 
         `layout` is an optional parameter to control layout, see
         `handright.Layout`.
@@ -101,9 +98,8 @@ class Template(object):
         vertical position and the rotation of strokes, respectively.
         """
         self.set_background(background)
-        self.set_font_size(font_size)
-        self.set_line_spacing(line_spacing)
         self.set_font(font)
+        self.set_line_spacing(line_spacing)
         self.set_fill(fill)
         self.set_left_margin(left_margin)
         self.set_top_margin(top_margin)
@@ -124,7 +120,6 @@ class Template(object):
                 and self._background == other._background
                 and self._line_spacing == other._line_spacing
                 and self._line_spacing_sigma == other._line_spacing_sigma
-                and self._font_size == other._font_size
                 and self._font_size_sigma == other._font_size_sigma
                 and self._font == other._font
                 and self._fill == other._fill
@@ -143,12 +138,9 @@ class Template(object):
     def set_background(self, background: PIL.Image.Image) -> None:
         self._background = background
 
-    def set_font_size(self, font_size: int) -> None:
-        self._font_size = font_size
-
     def set_line_spacing(self, line_spacing: Optional[int] = None) -> None:
         if line_spacing is None:
-            self._line_spacing = self._font_size
+            self._line_spacing = self._font.size
         else:
             self._line_spacing = line_spacing
 
@@ -193,7 +185,7 @@ class Template(object):
             self, line_spacing_sigma: Optional[float] = None
     ) -> None:
         if line_spacing_sigma is None:
-            self._line_spacing_sigma = self._font_size / 32
+            self._line_spacing_sigma = self._font.size / 32
         else:
             self._line_spacing_sigma = line_spacing_sigma
 
@@ -201,7 +193,7 @@ class Template(object):
             self, font_size_sigma: Optional[float] = None
     ) -> None:
         if font_size_sigma is None:
-            self._font_size_sigma = self._font_size / 64
+            self._font_size_sigma = self._font.size / 64
         else:
             self._font_size_sigma = font_size_sigma
 
@@ -209,7 +201,7 @@ class Template(object):
             self, word_spacing_sigma: Optional[float] = None
     ) -> None:
         if word_spacing_sigma is None:
-            self._word_spacing_sigma = self._font_size / 32
+            self._word_spacing_sigma = self._font.size / 32
         else:
             self._word_spacing_sigma = word_spacing_sigma
 
@@ -220,7 +212,7 @@ class Template(object):
             self, perturb_x_sigma: Optional[float] = None
     ) -> None:
         if perturb_x_sigma is None:
-            self._perturb_x_sigma = self._font_size / 32
+            self._perturb_x_sigma = self._font.size / 32
         else:
             self._perturb_x_sigma = perturb_x_sigma
 
@@ -228,7 +220,7 @@ class Template(object):
             self, perturb_y_sigma: Optional[float] = None
     ) -> None:
         if perturb_y_sigma is None:
-            self._perturb_y_sigma = self._font_size / 32
+            self._perturb_y_sigma = self._font.size / 32
         else:
             self._perturb_y_sigma = perturb_y_sigma
 
@@ -242,9 +234,6 @@ class Template(object):
 
     def get_line_spacing(self) -> int:
         return self._line_spacing
-
-    def get_font_size(self) -> int:
-        return self._font_size
 
     def get_font(self):
         return self._font
@@ -304,7 +293,6 @@ class Template(object):
         class_name = type(self).__name__
         return ("{class_name}("
                 "background={self._background}, "
-                "font_size={self._font_size}, "
                 "font={self._font}, "
                 "line_spacing={self._line_spacing}, "
                 "fill={self._fill}, "

@@ -21,8 +21,7 @@ def get_default_templates() -> Tuple[Template, Template]:
         right_margin=3,
         bottom_margin=6,
         line_spacing=2,
-        font_size=2,
-        font=get_default_font(),
+        font=get_default_font(2),
     )
     template2 = Template(
         background=PIL.Image.new(
@@ -33,8 +32,7 @@ def get_default_templates() -> Tuple[Template, Template]:
         right_margin=3,
         bottom_margin=6,
         line_spacing=1,
-        font_size=1,
-        font=get_default_font(),
+        font=get_default_font(1),
     )
     return template1, template2
 
@@ -48,8 +46,7 @@ def test_one_background():
         right_margin=3,
         bottom_margin=6,
         line_spacing=2,
-        font=get_default_font(),
-        font_size=2,
+        font=get_default_font(2),
     )
     images1 = handwrite(text, template, seed=SEED)
     images2 = handwrite(text, (template,), seed=SEED)

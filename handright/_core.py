@@ -77,15 +77,15 @@ def _check_template(page, tpl) -> None:
                         + tpl.get_bottom_margin()):
         msg = "for (height < top_margin + line_spacing + bottom_margin)"
         raise LayoutError(msg)
-    if tpl.get_font_size() > tpl.get_line_spacing():
-        msg = "for (font_size > line_spacing)"
+    if tpl.get_font().size > tpl.get_line_spacing():
+        msg = "for (font.size > line_spacing)"
         raise LayoutError(msg)
-    if page.width() < (tpl.get_left_margin() + tpl.get_font_size()
+    if page.width() < (tpl.get_left_margin() + tpl.get_font().size
                        + tpl.get_right_margin()):
-        msg = "for (width < left_margin + font_size + right_margin)"
+        msg = "for (width < left_margin + font.size + right_margin)"
         raise LayoutError(msg)
-    if tpl.get_word_spacing() <= -tpl.get_font_size() // 2:
-        msg = "for (word_spacing <= -font_size // 2)"
+    if tpl.get_word_spacing() <= -tpl.get_font().size // 2:
+        msg = "for (word_spacing <= -font.size // 2)"
         raise LayoutError(msg)
 
 
@@ -101,7 +101,7 @@ def _draw_page(
     left_margin = tpl.get_left_margin()
     right_margin = tpl.get_right_margin()
     line_spacing = tpl.get_line_spacing()
-    font_size = tpl.get_font_size()
+    font_size = tpl.get_font().size
     end_chars = tpl.get_end_chars()
 
     draw = page.draw()
@@ -147,14 +147,14 @@ def _grid_layout(
           round(rand.gauss(y, tpl.get_line_spacing_sigma())))
     font = _get_font(tpl, rand)
     _ = _draw_char(draw, char, xy, font)
-    x += tpl.get_word_spacing() + tpl.get_font_size()
+    x += tpl.get_word_spacing() + tpl.get_font().size
     return x
 
 
 def _get_font(tpl: Template, rand: random.Random):
     font = tpl.get_font()
     actual_font_size = max(round(
-        rand.gauss(tpl.get_font_size(), tpl.get_font_size_sigma())
+        rand.gauss(font.size, tpl.get_font_size_sigma())
     ), 0)
     if actual_font_size != font.size:
         return font.font_variant(size=actual_font_size)

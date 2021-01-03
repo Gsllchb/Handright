@@ -26,8 +26,7 @@ def main():
         right_margin=30,
         bottom_margin=560,
         line_spacing=88,
-        font_size=74,
-        font=get_default_font(),
+        font=get_default_font(74),
     )
     template2 = Template(
         background=image2.resize(size=(image2.size[0] * 2, image2.size[1] * 2)),
@@ -36,8 +35,7 @@ def main():
         right_margin=30,
         bottom_margin=980,
         line_spacing=88,
-        font_size=74,
-        font=get_default_font(),
+        font=get_default_font(74),
     )
     templates = (template1, template2)
     for file in pathlib.Path(abs_path("texts")).iterdir():

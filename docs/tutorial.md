@@ -17,8 +17,7 @@ text = """
 
 template = Template(
     background=Image.new(mode="1", size=(900, 1000), color=1),
-    font_size=100,
-    font=ImageFont.truetype("path/to/my/font.ttf"),
+    font=ImageFont.truetype("path/to/my/font.ttf", size=100),
     line_spacing=150,
     fill=0,  # 字体“颜色”
     left_margin=100,
@@ -49,7 +48,7 @@ for i, im in enumerate(images):
 ### 排版参数关系图
 ![](images/params_visualizing.png)
 
-### 字体大小（font_size）
+### 字体大小（font.size）
 为了发挥出Handright的优异效果，您需要设置较大的字体大小。往往设置越大的字体大小，生成的字形越平滑，锯齿越少。但是越大的字体大小往往需要越大的背景图片，计算量和内存占用也就越大。推荐从`80`开始尝试。
 
 ### 字体填充（fill）

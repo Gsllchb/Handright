@@ -8,7 +8,6 @@ import os
 import PIL.ImageFont
 
 _long_text = None
-_font = None
 
 
 def visually_equal(image1, image2) -> bool:
@@ -35,10 +34,8 @@ def get_long_text() -> str:
     return _long_text
 
 
-def get_default_font():
-    global _font
-    if _font is None:
-        _font = PIL.ImageFont.truetype(abs_path(
-            "fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"
-        ))
-    return _font
+def get_default_font(size):
+    return PIL.ImageFont.truetype(
+        font=abs_path("fonts/Bo Le Locust Tree Handwriting Pen Chinese Font-Simplified Chinese Fonts.ttf"),
+        size=size,
+    )
