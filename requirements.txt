@@ -12,7 +12,7 @@ Pillow==8.0.0
 pkginfo==1.5.0.1
 pluggy==0.13.1
 py==1.9.0
-Pygments==2.7.1
+Pygments==2.7.4
 pyparsing==2.4.7
 pytest==6.1.2
 readme-renderer==27.0
