@@ -3,6 +3,7 @@
 ## unreleased
 * __Template类中新增layout参数，以支持排版布局的灵活配置。首期支持：GRID（网格布局），FLOW（流动布局）。__
 * __Template类移除font_size参数，字体大小改为使用font参数的size属性表示。__
+* 依赖变更`pillow >= 8.1.1, < 9`
 
 ## v6.0.0 (2020-10-18)
 * 提供对Python3.9的支持
