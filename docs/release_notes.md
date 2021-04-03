@@ -1,5 +1,5 @@
 # Release Notes
-以下__粗体部分__标注不后向兼容的改动。
+以下**粗体部分**标注不后向兼容的改动。
 
 ## unreleased
 * __移除Template.font_size参数，字体大小改为使用Template.font.size承载。__
