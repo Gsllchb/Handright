@@ -4,13 +4,12 @@ import copy
 from handright._util import *
 
 
-class Layout(object):
-    """The constant class for `Template.layout`."""
-    FLOW = 0b0
-    GRID = 0b1
-
-    LTR = 0b00
-    RTL = 0b10
+class Feature(object):
+    """**EXPERIMENT**
+    The extra features.
+    GRID_LAYOUT: use grid layout, default use flow layout.
+    """
+    GRID_LAYOUT = 1
 
 
 class Template(object):
@@ -25,7 +24,6 @@ class Template(object):
         "_right_margin",
         "_bottom_margin",
         "_word_spacing",
-        "_layout",
         "_line_spacing_sigma",
         "_font_size_sigma",
         "_word_spacing_sigma",
@@ -33,6 +31,7 @@ class Template(object):
         "_perturb_x_sigma",
         "_perturb_y_sigma",
         "_perturb_theta_sigma",
+        "_features",
     )
 
     _DEFAULT_WORD_SPACING = 0
@@ -42,11 +41,11 @@ class Template(object):
     _DEFAULT_RIGHT_MARGIN = 0
     _DEFAULT_BOTTOM_MARGIN = 0
 
-    _DEFAULT_LAYOUT = 0
-
     _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
     _DEFAULT_PERTURB_THETA_SIGMA = 0.07
+
+    _DEFAULT_FEATURES = frozenset()
 
     def __init__(
             self,
@@ -59,7 +58,6 @@ class Template(object):
             right_margin: int = _DEFAULT_RIGHT_MARGIN,
             bottom_margin: int = _DEFAULT_BOTTOM_MARGIN,
             word_spacing: int = _DEFAULT_WORD_SPACING,
-            layout: int = _DEFAULT_LAYOUT,
             line_spacing_sigma: Optional[float] = None,
             font_size_sigma: Optional[float] = None,
             word_spacing_sigma: Optional[float] = None,
@@ -67,6 +65,7 @@ class Template(object):
             perturb_x_sigma: Optional[float] = None,
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
+            features: Set = _DEFAULT_FEATURES,
     ):
         """Note that, all the Integer parameters are in pixels.
 
@@ -83,9 +82,6 @@ class Template(object):
         `word_spacing` can be less than `0`, but must be greater than
         `-font.size // 2`.
 
-        `layout` is an optional parameter to control layout, see
-        `handright.Layout`.
-
         `line_spacing_sigma`, `font_size_sigma` and `word_spacing_sigma` are the
         sigmas of the gauss distributions of line spacing, font size and word
         spacing, respectively.
@@ -96,6 +92,9 @@ class Template(object):
         `perturb_x_sigma`, `perturb_y_sigma` and `perturb_theta_sigma` are the
         sigmas of the gauss distributions of the horizontal position, the
         vertical position and the rotation of strokes, respectively.
+
+        **EXPERIMENT**
+        Use `features` to turn on the extra features, see `handright.Feature`.
         """
         self.set_background(background)
         self.set_font(font)
@@ -106,7 +105,6 @@ class Template(object):
         self.set_right_margin(right_margin)
         self.set_bottom_margin(bottom_margin)
         self.set_word_spacing(word_spacing)
-        self.set_layout(layout)
         self.set_line_spacing_sigma(line_spacing_sigma)
         self.set_font_size_sigma(font_size_sigma)
         self.set_word_spacing_sigma(word_spacing_sigma)
@@ -114,6 +112,7 @@ class Template(object):
         self.set_perturb_x_sigma(perturb_x_sigma)
         self.set_perturb_y_sigma(perturb_y_sigma)
         self.set_perturb_theta_sigma(perturb_theta_sigma)
+        self.set_features(features)
 
     def __eq__(self, other) -> bool:
         return (isinstance(other, Template)
@@ -128,7 +127,7 @@ class Template(object):
                 and self._right_margin == other._right_margin
                 and self._bottom_margin == other._bottom_margin
                 and self._word_spacing == other._word_spacing
-                and self._layout == other._layout
+                and self._features == other._features
                 and self._word_spacing_sigma == other._word_spacing_sigma
                 and self._end_chars == other._end_chars
                 and self._perturb_x_sigma == other._perturb_x_sigma
@@ -178,8 +177,8 @@ class Template(object):
     ) -> None:
         self._word_spacing = word_spacing
 
-    def set_layout(self, layout: int = _DEFAULT_LAYOUT) -> None:
-        self._layout = layout
+    def set_features(self, features: Set = _DEFAULT_FEATURES) -> None:
+        self._features = features
 
     def set_line_spacing_sigma(
             self, line_spacing_sigma: Optional[float] = None
@@ -256,8 +255,8 @@ class Template(object):
     def get_word_spacing(self) -> int:
         return self._word_spacing
 
-    def get_layout(self) -> int:
-        return self._layout
+    def get_features(self) -> Set:
+        return self._features
 
     def get_line_spacing_sigma(self) -> float:
         return self._line_spacing_sigma
@@ -301,7 +300,7 @@ class Template(object):
                 "right_margin={self._right_margin}, "
                 "bottom_margin={self._bottom_margin}, "
                 "word_spacing={self._word_spacing}, "
-                "layout=0b{self._layout:b}"
+                "features={self._features}, "
                 "line_spacing_sigma={self._line_spacing_sigma}, "
                 "font_size_sigma={self._font_size_sigma}, "
                 "word_spacing_sigma={self._word_spacing_sigma}, "

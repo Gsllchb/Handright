@@ -24,14 +24,14 @@ processed.
 """
 from handright._core import handwrite
 from handright._exceptions import Error, LayoutError, BackgroundTooLargeError
-from handright._template import Template, Layout
+from handright._template import Template, Feature
 
 __version__ = "6.0.0"
 
 __all__ = (
     "handwrite",
     "Template",
-    "Layout",
+    "Feature",
     "Error",
     "LayoutError",
     "BackgroundTooLargeError"

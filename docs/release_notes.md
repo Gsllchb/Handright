@@ -1,9 +1,10 @@
 # Release Notes
+以下__粗体部分__标注不后向兼容的改动。
 
 ## unreleased
-* __Template类中新增layout参数，以支持排版布局的灵活配置。首期支持：GRID（网格布局），FLOW（流动布局）。__
-* __Template类移除font_size参数，字体大小改为使用font参数的size属性表示。__
-* 依赖变更`pillow >= 8.1.1, < 9`
+* __移除Template.font_size参数，字体大小改为使用Template.font.size承载。__
+* __依赖变更`pillow >= 8.1.1, < 9`__
+* 【试验特性】新增Template.features，支持额外特性配置，目前支持特性：网格布局。
 
 ## v6.0.0 (2020-10-18)
 * 提供对Python3.9的支持
@@ -20,8 +21,8 @@
 * 微调排版算法。
 
 ## v5.3.0 (2019-12-1)
-* __新增对Python3.8的官方支持。__
-* __新增对换行符CR（`\r`）和CRLF（`\r\n`）的支持。__
+* 新增对Python3.8的官方支持。
+* 新增对换行符CR（`\r`）和CRLF（`\r\n`）的支持。
 * 修改Handright库docstring的描述。
 * 更新作者信息。
 
@@ -55,7 +56,7 @@ __本次大更新重构了接口，但核心算法并未改变。__
 * 创建新异常类`BackgroundTooLargeError`
 
 ## v3.4.0 (2019-5-1)
-* __Pillow版本限制放宽至`>= 5, < 7`__
+* Pillow版本限制放宽至`>= 5, < 7`
 
 ## v3.3.2 (2019-4-8)
 * 修复已知的bug
@@ -64,7 +65,7 @@ __本次大更新重构了接口，但核心算法并未改变。__
 * 细微优化function annotation
 
 ## v3.3.0 (2019-3-16)
-* __提供对PyPy的官方支持__
+* 提供对PyPy的官方支持
 
 ## v3.2.3 (2019-3-8)
 * 每行最大字符数限制由80改为120。
@@ -79,21 +80,21 @@ __本次大更新重构了接口，但核心算法并未改变。__
 * 硬编码CLI工具的程序名。
 
 ## v3.2.0 (2018-12-31)
-* __为简单的手写任务推出CLI工具。请尝试在命令行中运行`pylf --help`。__
-* __添加新常量`DEFAULT_HALF_CHARS`和`DEFAULT_END_CHARS`__
+* 为简单的手写任务推出CLI工具。请尝试在命令行中运行`pylf --help`。
+* 添加新常量`DEFAULT_HALF_CHARS`和`DEFAULT_END_CHARS`
 
 ## v3.1.0 (2018-11-26)
 * Issue `UserWarning` while `worker > multiprocessing.cpu_count()`
 * 完善文档
 
 ## v3.0.0 (2018-10-26)
-本次更新是多个**不后向兼容**的小更新与其余更新的集合。
+本次更新是多个不后向兼容的小更新与其余更新的集合。
 * __添加异常类`pylf.LayoutError`，当传入有关排版的参数不合理，程序无法根据这些参数进行排版时取代原异常`ValueError`抛出。__
-* __使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)的支持__
+* 使用[typing](https://docs.python.org/3/library/typing.html)描述接口，提供对[mypy](https://github.com/python/mypy)的支持。
 * __当背景图片的`mode`不是`1`, `L`, `RGB`和`RGBA`之一时，将抛出`NotImplementedError`。__
-* __当`worker == 1`时，改为使用单线程算法。__
+* 当`worker == 1`时，改为使用单线程算法。
 * __`text`的类型改为仅可以为`str`__
-* __修复当使用非灰度背景，设置字体颜色为彩色时，生成图片中字迹为灰色的漏洞。__
+* 修复当使用非灰度背景，设置字体颜色为彩色时，生成图片中字迹为灰色的漏洞。
 * 修复异常信息中的bug，并使异常信息更友好
 * 去除示例代码中的`freeze_support()`。
 * `worker`改为可为`None`，此时`worker`取默认值。
@@ -121,22 +122,22 @@ __本次大更新重构了接口，但核心算法并未改变。__
 * 提供更详尽的文档。
 
 ## v1.4.0 (2018-7-30)
-* __参数`seed`的类型由必须为`int`改为可为任一`hashable`__
-* __提供参数`color`对所有[Pillow Color Name](https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names)的支持__
+* 参数`seed`的类型由必须为`int`改为可为任一`hashable`。
+* 提供参数`color`对所有[Pillow Color Name](https://pillow.readthedocs.io/en/5.2.x/reference/ImageColor.html#color-names)的支持。
 * 完善文档
 * 轻微提升`handwrite()`和`handwrite2()`的性能
 
 ## v1.3.0 (2018-7-23)
 * 移除source distribution中的`docs`文件夹
-* __提供对Python3.7的支持，为此依赖项由`pillow >= 5.0.0, < 6`改为`pillow >= 5.2.0, < 6`__
+* __提供对Python3.7的支持，为此依赖项由`pillow >= 5.0.0, < 6`改为`pillow >= 5.2.0, < 6`。__
 
 ## v1.2.0 (2018-6-1)
-* __函数`handwrite`和`handwrite2`添加新可选参数`seed`，使得在设置了`seed`的情况下，结果具有可重复性__
-* docstring改为Google风格
-* 添加对Python3.4的支持
-* 取消Python版本必须小于3.7的限制（但目前尚不对Python3.7及以上版本做任何官方支持）
-* __提供对pydoc更好的支持__
-* 所有Python源文件显式标注为使用UTF-8编码
+* 函数`handwrite`和`handwrite2`添加新可选参数`seed`，使得在设置了`seed`的情况下，结果具有可重复性。
+* docstring改为Google风格。
+* 添加对Python3.4的支持。
+* 取消Python版本必须小于3.7的限制（但目前尚不对Python3.7及以上版本做任何官方支持）。
+* 提供对pydoc更好的支持。
+* 所有Python源文件显式标注为使用UTF-8编码。
 
 ## v1.1.4 (2018-5-14)
 * 添加安装依赖项`setuptools>=38.6.0`
@@ -154,7 +155,7 @@ __本次大更新重构了接口，但核心算法并未改变。__
 * 将所需Python版本由`>=3.5, <3.8`改为`>=3.5, <3.7`, 以解决PyLf依赖项Pillow无法在某些平台上安装的问题。
 
 ## v1.1.0 (2018-2-25)
-* __添加`pylf.handwrite2`，以使得满足背景图片需周期性变化的需求。详情请参阅 _Reference_。__
+* 添加`pylf.handwrite2`，以使得满足背景图片需周期性变化的需求。详情请参阅 _Reference_。
 * 改进下采样算法，使得在打开抗锯齿的情况下有更好的性能。注意：在同样的参数下(排除了随机性)，该新版本生成的图片与上一版本生成的图片并不会严格完全相同，但是人眼难以察觉出该区别。
 
 ## v1.0.0 (2018-1-25)
@@ -170,7 +171,7 @@ __本次大更新重构了接口，但核心算法并未改变。__
 
 ## v0.5.2 (2017-12-30)
 * 将`0`作为`word_spacing`的缺省值
-* __修复当生成图片数超过`worker`时文字出现大范围重叠的漏洞__
+* 修复当生成图片数超过`worker`时文字出现大范围重叠的漏洞。
 
 ## v0.5.1 (2017-12-14)
 * fix [#2](https://github.com/Gsllchb/PyLf/issues/2)

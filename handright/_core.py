@@ -116,7 +116,7 @@ def _draw_page(
             if (x > width - right_margin - font_size
                     and text[start] not in end_chars):
                 break
-            if tpl.get_layout() & Layout.GRID:
+            if Feature.GRID_LAYOUT in tpl.get_features():
                 x = _grid_layout(draw, x, y, text[start], tpl, rand)
             else:
                 x = _flow_layout(draw, x, y, text[start], tpl, rand)
