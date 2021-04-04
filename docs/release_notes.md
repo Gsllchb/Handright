@@ -1,7 +1,7 @@
 # Release Notes
 以下**粗体部分**标注不后向兼容的改动。
 
-## unreleased
+## v7.0.0 (2021-4-4)
 * __移除Template.font_size参数，字体大小改为使用Template.font.size承载。__
 * __依赖变更`pillow >= 8.1.1, < 9`__
 * 【试验特性】新增Template.features，支持额外特性配置，目前支持特性：网格布局。
