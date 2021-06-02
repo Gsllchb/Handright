@@ -23,6 +23,6 @@ six==1.15.0
 toml==0.10.1
 tqdm==4.50.2
 twine==3.2.0
-urllib3==1.25.10
+urllib3==1.26.5
 webencodings==0.5.1
 wheel==0.36.2
