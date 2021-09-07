@@ -8,7 +8,7 @@ idna==2.10
 iniconfig==1.0.1
 keyring==21.4.0
 packaging==20.4
-Pillow==8.2.0
+Pillow==8.3.2
 pkginfo==1.5.0.1
 pluggy==0.13.1
 py==1.10.0
