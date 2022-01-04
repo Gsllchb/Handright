@@ -1,7 +1,7 @@
 # Release Notes
 以下**粗体部分**标注不后向兼容的改动。
 
-## unrelated
+## unreleased
 * __Bump pillow from 8.1.1 to 8.2.0.__
 
 ## v7.0.0 (2021-4-4)
