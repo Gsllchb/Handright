@@ -1,7 +1,7 @@
 # Release Notes
 以下**粗体部分**标注不后向兼容的改动。
 
-## unreleased
+## v8.0.0 (2022-1-9)
 * __Bump pillow from `>= 8.1.1, < 9` to `>= 8.3.2, < 10`.__
 * __Drop Python3.6 support, add Python3.10 support.__
 
