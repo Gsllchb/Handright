@@ -14,21 +14,21 @@ def main():
         license="bsd-3-clause",
         author="Chenghui Li (Gsllchb)",
         author_email="Gsllchb@qq.com",
-        python_requires=">= 3.6",
+        python_requires=">= 3.7",
         keywords="simulating Chinese handwriting",
         url="https://github.com/Gsllchb/Handright",
         long_description_content_type="text/markdown",
         long_description=get_long_description(),
         zip_safe=True,
         packages=setuptools.find_packages(exclude=("*.tests", "tests")),
-        classifiers=(
-            "Programming Language :: Python :: 3.6",
+        classifiers=[
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: Implementation :: CPython",
-        ),
-        install_requires=("pillow >= 8.2.0, < 9",),
+        ],
+        install_requires=("pillow >= 8.3.2, < 10",),
         setup_requires=("setuptools>=38.6.0",),
     )
 

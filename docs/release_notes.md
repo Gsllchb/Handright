@@ -2,7 +2,8 @@
 以下**粗体部分**标注不后向兼容的改动。
 
 ## unreleased
-* __Bump pillow from 8.1.1 to 8.2.0.__
+* __Bump pillow from `>= 8.1.1, < 9` to `>= 8.3.2, < 10`.__
+* __Drop Python3.6 support, add Python3.10 support.__
 
 ## v7.0.0 (2021-4-4)
 * __移除Template.font_size参数，字体大小改为使用Template.font.size承载。__
