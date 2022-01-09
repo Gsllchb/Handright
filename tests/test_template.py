@@ -3,7 +3,6 @@ import pickle
 
 import PIL.Image
 import PIL.ImageFont
-import pytest
 
 from handright._template import *
 from tests.util import *
@@ -30,7 +29,5 @@ def test_copy_templates():
 
 def test_release_font_resource():
     template = build_template()
-    with pytest.raises(TypeError):
-        pickle.dumps(template)
     template.release_font_resource()
     pickle.dumps(template)
