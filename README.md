@@ -48,7 +48,7 @@ for im in images:
 
 
 ## Join Us
-扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入Handright社区：
+扫码或点击[链接](https://t.zsxq.com/zzZfMJq)加入Handright社区，关于Handright的使用问题请优先在社区中咨询：
 ![手右](docs/images/zsxq.png)
 
 
