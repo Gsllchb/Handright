@@ -1,4 +1,4 @@
-name: Test on Linux
+name: Test on supported Python versions
 
 on: [push, pull_request]
 
@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        pillow-version: ["8.3.2", "9.0.0"]
+        pillow-version: ["9.3.0"]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
