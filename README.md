@@ -5,10 +5,6 @@ ___A lightweight Python library for simulating Chinese handwriting___
 [![python version](https://img.shields.io/pypi/pyversions/Handright.svg)][pypi]
 [![license](https://img.shields.io/github/license/Gsllchb/Handright.svg)][license]
 
-![Test on Linux](https://github.com/Gsllchb/Handright/workflows/Test%20on%20Linux/badge.svg)
-![Test on Windows](https://github.com/Gsllchb/Handright/workflows/Test%20on%20Windows/badge.svg)
-![Test on MacOS](https://github.com/Gsllchb/Handright/workflows/Test%20on%20MacOS/badge.svg)
-
 [Tutorial][tutorial] |
 [Release Notes][release-notes] |
 [Contributing][contributing]
