@@ -28,6 +28,7 @@ template = Template(
     line_spacing_sigma=6,  # 行间距随机扰动
     font_size_sigma=20,  # 字体大小随机扰动
     word_spacing_sigma=3,  # 字间距随机扰动
+    start_chars="“（[<",  # 特定字符提前换行，防止出现在行尾
     end_chars="，。",  # 防止特定字符因排版算法的自动换行而出现在行首
     perturb_x_sigma=4,  # 笔画横向偏移随机扰动
     perturb_y_sigma=4,  # 笔画纵向偏移随机扰动
