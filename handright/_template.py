@@ -27,6 +27,7 @@ class Template(object):
         "_line_spacing_sigma",
         "_font_size_sigma",
         "_word_spacing_sigma",
+        "_start_chars",
         "_end_chars",
         "_perturb_x_sigma",
         "_perturb_y_sigma",
@@ -41,6 +42,7 @@ class Template(object):
     _DEFAULT_RIGHT_MARGIN = 0
     _DEFAULT_BOTTOM_MARGIN = 0
 
+    _DEFAULT_START_CHARS = ""
     _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
     _DEFAULT_PERTURB_THETA_SIGMA = 0.07
@@ -61,6 +63,7 @@ class Template(object):
             line_spacing_sigma: Optional[float] = None,
             font_size_sigma: Optional[float] = None,
             word_spacing_sigma: Optional[float] = None,
+            start_chars: str = _DEFAULT_START_CHARS,
             end_chars: str = _DEFAULT_END_CHARS,
             perturb_x_sigma: Optional[float] = None,
             perturb_y_sigma: Optional[float] = None,
@@ -86,8 +89,9 @@ class Template(object):
         sigmas of the gauss distributions of line spacing, font size and word
         spacing, respectively.
 
-        `end_chars` is the collection of Chars which cannot be placed in the
-        beginning of a line.
+        `start_chars` is the collection of Chars which should not be placed in
+        the end of a line. `end_chars`, by contrast, is the collection of Chars
+        which should not be placed in the beginning of a line.
 
         `perturb_x_sigma`, `perturb_y_sigma` and `perturb_theta_sigma` are the
         sigmas of the gauss distributions of the horizontal position, the
@@ -108,6 +112,7 @@ class Template(object):
         self.set_line_spacing_sigma(line_spacing_sigma)
         self.set_font_size_sigma(font_size_sigma)
         self.set_word_spacing_sigma(word_spacing_sigma)
+        self.set_start_chars(start_chars)
         self.set_end_chars(end_chars)
         self.set_perturb_x_sigma(perturb_x_sigma)
         self.set_perturb_y_sigma(perturb_y_sigma)
@@ -129,6 +134,7 @@ class Template(object):
                 and self._word_spacing == other._word_spacing
                 and self._features == other._features
                 and self._word_spacing_sigma == other._word_spacing_sigma
+                and self._start_chars == other._start_chars
                 and self._end_chars == other._end_chars
                 and self._perturb_x_sigma == other._perturb_x_sigma
                 and self._perturb_y_sigma == other._perturb_y_sigma
@@ -204,6 +210,9 @@ class Template(object):
         else:
             self._word_spacing_sigma = word_spacing_sigma
 
+    def set_start_chars(self, start_chars: str = _DEFAULT_START_CHARS) -> None:
+        self._start_chars = start_chars
+
     def set_end_chars(self, end_chars: str = _DEFAULT_END_CHARS) -> None:
         self._end_chars = end_chars
 
@@ -267,6 +276,9 @@ class Template(object):
     def get_word_spacing_sigma(self) -> float:
         return self._word_spacing_sigma
 
+    def get_start_chars(self) -> str:
+        return self._start_chars
+
     def get_end_chars(self) -> str:
         return self._end_chars
 
@@ -304,6 +316,7 @@ class Template(object):
                 "line_spacing_sigma={self._line_spacing_sigma}, "
                 "font_size_sigma={self._font_size_sigma}, "
                 "word_spacing_sigma={self._word_spacing_sigma}, "
+                "start_chars={self._start_chars}, "
                 "end_chars={self._end_chars}, "
                 "perturb_x_sigma={self._perturb_x_sigma}, "
                 "perturb_y_sigma={self._perturb_y_sigma}, "

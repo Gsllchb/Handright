@@ -3,6 +3,7 @@
 
 ## unreleased
 * 新增对Python3.11的官方支持。
+* 类`Template`新增参数`start_chars`，以支持设置"不宜出现在行尾的字符"。
 
 ## v8.0.0 (2022-1-9)
 * __Bump pillow from `>= 8.1.1, < 9` to `>= 8.3.2, < 10`.__

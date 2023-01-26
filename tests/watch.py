@@ -62,6 +62,7 @@ def _watch_gird_layout():
         line_spacing=56,
         word_spacing=4,
         font=get_default_font(37),
+        start_chars="“",
         font_size_sigma=0.3,
         word_spacing_sigma=0.8,
         line_spacing_sigma=1,
@@ -75,7 +76,7 @@ def _watch_gird_layout():
 
 
 def _like_it() -> None:
-    assert input("Like it? [Y/N] ").upper() == "Y"
+    assert input("Like it? [Y/N] ").upper() == "Y", "I don't like it."
 
 
 if __name__ == "__main__":

@@ -101,6 +101,7 @@ def _draw_page(
     right_margin = tpl.get_right_margin()
     line_spacing = tpl.get_line_spacing()
     font_size = tpl.get_font().size
+    start_chars = tpl.get_start_chars()
     end_chars = tpl.get_end_chars()
 
     draw = page.draw()
@@ -112,6 +113,9 @@ def _draw_page(
                 start += 1
                 if start == len(text):
                     return start
+                break
+            if (x > width - right_margin - 2 * font_size
+                    and text[start] in start_chars):
                 break
             if (x > width - right_margin - font_size
                     and text[start] not in end_chars):
