@@ -1,6 +1,10 @@
 # Release Notes
 以下**粗体部分**标注不后向兼容的改动。
 
+## v8.2.0 (unreleased)
+* __Drop Python3.7 support.__
+* Add Pillow10 support.
+
 ## v8.1.0 (2023-1-26)
 * 类`Template`新增参数`start_chars`，以支持设置"不宜出现在行尾的字符"。
 * 新增对Python3.11的官方支持。

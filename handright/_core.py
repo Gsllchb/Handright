@@ -170,7 +170,8 @@ def _draw_char(draw, char: str, xy: Tuple[int, int], font) -> int:
     """Draws a single char with the parameters and white color, and returns the
     offset."""
     draw.text(xy, char, fill=_WHITE, font=font)
-    return font.getsize(char)[0]
+    left, top, right, bottom = font.getbbox(char)
+    return right - left
 
 
 class _Renderer(object):
