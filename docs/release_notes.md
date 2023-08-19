@@ -1,7 +1,7 @@
 # Release Notes
 以下**粗体部分**标注不后向兼容的改动。
 
-## v8.2.0 (unreleased)
+## v8.2.0 (2023-8-19)
 * __Drop Python3.7 support.__
 * Add Pillow10 support.
 
