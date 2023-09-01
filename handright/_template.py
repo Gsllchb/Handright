@@ -32,6 +32,9 @@ class Template(object):
         "_perturb_x_sigma",
         "_perturb_y_sigma",
         "_perturb_theta_sigma",
+        "_strikethrough_length_sigma",
+        "_strikethrough_angle_sigma",
+        "_strikethrough_width_sigma",
         "_features",
     )
 
@@ -46,6 +49,7 @@ class Template(object):
     _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
     _DEFAULT_PERTURB_THETA_SIGMA = 0.07
+    
 
     _DEFAULT_FEATURES = frozenset()
 
@@ -68,6 +72,9 @@ class Template(object):
             perturb_x_sigma: Optional[float] = None,
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
+            strikethrough_length_sigma: Optional[float]=2, 
+            strikethrough_angle_sigma: Optional[float]=2,
+            strikethrough_width_sigma: Optional[float]=2,
             features: Set = _DEFAULT_FEATURES,
     ):
         """Note that, all the Integer parameters are in pixels.
@@ -117,6 +124,9 @@ class Template(object):
         self.set_perturb_x_sigma(perturb_x_sigma)
         self.set_perturb_y_sigma(perturb_y_sigma)
         self.set_perturb_theta_sigma(perturb_theta_sigma)
+        self._strikethrough_length_sigma = strikethrough_length_sigma
+        self._strikethrough_angle_sigma = strikethrough_angle_sigma
+        self._strikethrough_width_sigma = strikethrough_width_sigma
         self.set_features(features)
 
     def __eq__(self, other) -> bool:
@@ -290,6 +300,15 @@ class Template(object):
 
     def get_perturb_theta_sigma(self) -> float:
         return self._perturb_theta_sigma
+    
+    def get_strikethrough_length_sigma(self):
+        return self._strikethrough_length_sigma
+    
+    def get_strikethrough_angle_sigma(self):
+        return self._strikethrough_angle_sigma
+    
+    def get_strikethrough_width_sigma(self):
+        return self._strikethrough_width_sigma
 
     def get_size(self) -> Tuple[int, int]:
         return self.get_background().size
