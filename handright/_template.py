@@ -35,6 +35,8 @@ class Template(object):
         "_strikethrough_length_sigma",
         "_strikethrough_angle_sigma",
         "_strikethrough_width_sigma",
+        "_strikethrough_probability",
+        "_strikethrough_width",
         "_features",
     )
 
@@ -49,6 +51,10 @@ class Template(object):
     _DEFAULT_END_CHARS = "，。》？；：’”】｝、！％）,.>?;:]}!%)′″℃℉"
 
     _DEFAULT_PERTURB_THETA_SIGMA = 0.07
+    
+    _DEFAULT_strikethrough_width_sigma = 2
+    _DEFAULT_strikethrough_angle_sigma = 2
+    _DEFAULT_strikethrough_probability = 0.03
     
 
     _DEFAULT_FEATURES = frozenset()
@@ -72,9 +78,11 @@ class Template(object):
             perturb_x_sigma: Optional[float] = None,
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
-            strikethrough_length_sigma: Optional[float]=2, 
-            strikethrough_angle_sigma: Optional[float]=2,
-            strikethrough_width_sigma: Optional[float]=2,
+            strikethrough_length_sigma: Optional[float]=None, 
+            strikethrough_angle_sigma: float=_DEFAULT_strikethrough_angle_sigma,
+            strikethrough_width_sigma: Optional[float]=None,
+            strikethrough_probability: float=_DEFAULT_strikethrough_probability,
+            strikethrough_width: Optional[float]=None,
             features: Set = _DEFAULT_FEATURES,
     ):
         """Note that, all the Integer parameters are in pixels.
@@ -124,9 +132,11 @@ class Template(object):
         self.set_perturb_x_sigma(perturb_x_sigma)
         self.set_perturb_y_sigma(perturb_y_sigma)
         self.set_perturb_theta_sigma(perturb_theta_sigma)
-        self._strikethrough_length_sigma = strikethrough_length_sigma
-        self._strikethrough_angle_sigma = strikethrough_angle_sigma
-        self._strikethrough_width_sigma = strikethrough_width_sigma
+        self.set_strikethrough_length_sigma(strikethrough_length_sigma)
+        self.set_strikethrough_angle_sigma(strikethrough_angle_sigma)
+        self.set_strikethrough_width_sigma(strikethrough_width_sigma)
+        self.set_strikethrough_probability(strikethrough_probability)
+        self.set_strikethrough_width(strikethrough_width)
         self.set_features(features)
 
     def __eq__(self, other) -> bool:
@@ -148,7 +158,12 @@ class Template(object):
                 and self._end_chars == other._end_chars
                 and self._perturb_x_sigma == other._perturb_x_sigma
                 and self._perturb_y_sigma == other._perturb_y_sigma
-                and self._perturb_theta_sigma == other._perturb_theta_sigma)
+                and self._perturb_theta_sigma == other._perturb_theta_sigma
+                and self._strikethrough_length_sigma == other._strikethrough_length_sigma
+                and self._strikethrough_angle_sigma == other._strikethrough_angle_sigma
+                and self._strikethrough_width_sigma == other._strikethrough_width_sigma
+                and self._strikethrough_probability == other._strikethrough_probability
+                and self._strikethrough_width == other._strikethrough_width)
 
     def set_background(self, background: PIL.Image.Image) -> None:
         self._background = background
@@ -247,6 +262,40 @@ class Template(object):
     ) -> None:
         self._perturb_theta_sigma = perturb_theta_sigma
 
+    def set_strikethrough_length_sigma(
+        self, strikethrough_length_sigma: Optional[float] = None
+    ) -> None:
+        if strikethrough_length_sigma is None:
+            self._strikethrough_length_sigma = self._font.size / 32
+        else:
+            self._strikethrough_length_sigma = strikethrough_length_sigma
+            
+    def set_strikethrough_width_sigma(
+        self, strikethrough_width_sigma: Optional[float] = None
+    ) -> None:
+        if strikethrough_width_sigma is None:
+            self._strikethrough_width_sigma = self._font.size / 32
+        else:
+            self._strikethrough_width_sigma = strikethrough_width_sigma
+            
+    def set_strikethrough_probability(
+        self, strikethrough_probability: float = _DEFAULT_strikethrough_probability
+    ) -> None:
+        self._strikethrough_probability = strikethrough_probability
+        
+    def set_strikethrough_width(
+        self, strikethrough_width: Optional[float] = None
+    ) -> None:
+        if strikethrough_width is None:
+            self._strikethrough_width = self._font.size / 32
+        else:
+            self._strikethrough_width = strikethrough_width
+    
+    def set_strikethrough_angle_sigma(
+        self, strikethrough_angle_sigma: float = _DEFAULT_strikethrough_angle_sigma
+    )-> None:
+        self._strikethrough_angle_sigma = strikethrough_angle_sigma
+        
     def get_background(self) -> PIL.Image.Image:
         return self._background
 
@@ -309,6 +358,12 @@ class Template(object):
     
     def get_strikethrough_width_sigma(self):
         return self._strikethrough_width_sigma
+    
+    def get_strikethrough_probability(self):
+        return self._strikethrough_probability
+    
+    def get_strikethrough_width(self):
+        return self._strikethrough_width
 
     def get_size(self) -> Tuple[int, int]:
         return self.get_background().size
@@ -339,7 +394,12 @@ class Template(object):
                 "end_chars={self._end_chars}, "
                 "perturb_x_sigma={self._perturb_x_sigma}, "
                 "perturb_y_sigma={self._perturb_y_sigma}, "
-                "perturb_theta_sigma={self._perturb_theta_sigma})"
+                "perturb_theta_sigma={self._perturb_theta_sigma},"
+                "strikethrough_length_sigma == {self._strikethrough_length_sigma},"
+                "strikethrough_angle_sigma == {self._strikethrough_angle_sigma},"
+                "strikethrough_width_sigma == {self._strikethrough_width_sigma},"
+                "strikethrough_probability == {self._strikethrough_probability},"
+                "strikethrough_width == {self._strikethrough_width})"
                 ).format(class_name=class_name, self=self)
 
 
