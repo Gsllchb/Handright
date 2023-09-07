@@ -54,7 +54,7 @@ class Template(object):
     
     _DEFAULT_strikethrough_width_sigma = 2
     _DEFAULT_strikethrough_angle_sigma = 2
-    _DEFAULT_strikethrough_probability = 0.03
+    _DEFAULT_strikethrough_probability = 0
     
 
     _DEFAULT_FEATURES = frozenset()
@@ -79,9 +79,9 @@ class Template(object):
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
             strikethrough_length_sigma: Optional[float]=None, 
-            strikethrough_angle_sigma: float=_DEFAULT_strikethrough_angle_sigma,
+            strikethrough_angle_sigma: float = _DEFAULT_strikethrough_angle_sigma,
             strikethrough_width_sigma: Optional[float]=None,
-            strikethrough_probability: float=_DEFAULT_strikethrough_probability,
+            strikethrough_probability: float = _DEFAULT_strikethrough_probability,
             strikethrough_width: Optional[float]=None,
             features: Set = _DEFAULT_FEATURES,
     ):
