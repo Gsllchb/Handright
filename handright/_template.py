@@ -306,7 +306,7 @@ class Template(object):
         return self._ink_depth_sigma
     
     def get_size(self) -> Tuple[int, int]:
-        return self.get_background().size 
+        return self.get_background().size
 
     def release_font_resource(self) -> None:
         """This method should be called before pickling corresponding instances.
