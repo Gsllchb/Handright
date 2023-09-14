@@ -295,13 +295,21 @@ def _draw_stroke(
     dx = gauss(rand, 0, tpl.get_perturb_x_sigma())
     dy = gauss(rand, 0, tpl.get_perturb_y_sigma())
     theta = gauss(rand, 0, tpl.get_perturb_theta_sigma())
+    
+    ink_depth_sigma = tpl.get_ink_depth_sigma()
+    original_fill = tpl.get_fill()
+    # 添加随机扰动
+    ink_depth_rand = gauss(rand, 0, ink_depth_sigma)
+    rand_fill = tuple(max(0, min(255, int(channel + ink_depth_rand))) for channel in original_fill)
+    # print('rand_fill',rand_fill)
+            
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
         new_x = round(new_x + dx)
         new_y = round(new_y + dy)
         width, height = tpl.get_size()
         if 0 <= new_x < width and 0 <= new_y < height:
-            bitmap[new_x, new_y] = tpl.get_fill()
+            bitmap[new_x, new_y] = rand_fill
 
 
 def _rotate(

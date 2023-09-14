@@ -32,6 +32,7 @@ class Template(object):
         "_perturb_x_sigma",
         "_perturb_y_sigma",
         "_perturb_theta_sigma",
+        '_ink_depth_sigma',
         "_features",
     )
 
@@ -68,6 +69,7 @@ class Template(object):
             perturb_x_sigma: Optional[float] = None,
             perturb_y_sigma: Optional[float] = None,
             perturb_theta_sigma: float = _DEFAULT_PERTURB_THETA_SIGMA,
+            ink_depth_sigma: Optional[float]=None,
             features: Set = _DEFAULT_FEATURES,
     ):
         """Note that, all the Integer parameters are in pixels.
@@ -117,6 +119,7 @@ class Template(object):
         self.set_perturb_x_sigma(perturb_x_sigma)
         self.set_perturb_y_sigma(perturb_y_sigma)
         self.set_perturb_theta_sigma(perturb_theta_sigma)
+        self.set_ink_depth_sigma(ink_depth_sigma)
         self.set_features(features)
 
     def __eq__(self, other) -> bool:
@@ -237,6 +240,14 @@ class Template(object):
     ) -> None:
         self._perturb_theta_sigma = perturb_theta_sigma
 
+    def set_ink_depth_sigma(
+        self, ink_depth_sigma: Optional[float] = None
+    ) -> None:
+        if ink_depth_sigma is None:
+            self._ink_depth_sigma = self._font.size / 1.5
+        else:
+            self._ink_depth_sigma = ink_depth_sigma
+        
     def get_background(self) -> PIL.Image.Image:
         return self._background
 
@@ -291,8 +302,11 @@ class Template(object):
     def get_perturb_theta_sigma(self) -> float:
         return self._perturb_theta_sigma
 
+    def get_ink_depth_sigma(self):
+        return self._ink_depth_sigma
+    
     def get_size(self) -> Tuple[int, int]:
-        return self.get_background().size
+        return self.get_background().size 
 
     def release_font_resource(self) -> None:
         """This method should be called before pickling corresponding instances.
