@@ -300,7 +300,12 @@ def _draw_stroke(
     original_fill = tpl.get_fill()
     # 添加随机扰动
     ink_depth_rand = gauss(rand, 0, ink_depth_sigma)
-    rand_fill = tuple(max(0, min(255, int(channel + ink_depth_rand))) for channel in original_fill)
+    if isinstance(original_fill, int):
+        # 如果 original_fill 是一个整数
+        rand_fill = max(0, min(100, int(original_fill + ink_depth_rand)))
+    elif isinstance(original_fill, tuple):
+        # 如果 original_fill 是一个三元组（假设是 RGB 值）
+        rand_fill = tuple(max(0, min(100, int(channel + ink_depth_rand))) for channel in original_fill)
     # print('rand_fill',rand_fill)
             
     for x, y in stroke:
