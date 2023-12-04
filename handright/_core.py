@@ -1,6 +1,7 @@
 # coding: utf-8
 import itertools
 import math
+import io
 
 from handright._exceptions import *
 from handright._template import *
@@ -22,11 +23,14 @@ _STROKE_END = 0xFFFFFFFF
 
 
 def handwrite(
-        text: str,
-        template: Union[Template, Sequence[Template]],
-        seed: Hashable = None,
-        mapper: Callable[[Callable, Iterable], Iterable] = map,
-) -> Iterable[PIL.Image.Image]:
+    text: str,
+    template: Union[Template, Sequence[Template]],
+    seed: Hashable = None,
+    mapper: Callable[[Callable, Iterable], Iterable] = map,
+    export_pdf: bool = False,
+    save_to_file: bool = False,
+    file_path: str = "output.pdf",
+) -> Union[Iterable[PIL.Image.Image], io.BytesIO, None]:
     """Handwrite `text` with the configurations in `template`, and return an
     Iterable of Pillow's Images.
 
@@ -51,7 +55,31 @@ def handwrite(
         templates = template
     pages = _draft(text, templates, seed)
     renderer = _Renderer(templates, seed)
-    return mapper(renderer, pages)
+    images = mapper(renderer, pages)
+    if export_pdf:
+        # 如果 export_pdf 为 True，则保存为 PDF
+        images_list = list(images)  # 转换为列表以保存为 PDF
+        pdf_bytes = io.BytesIO()
+        first_image = images_list[0]
+        remaining_images = images_list[1:]
+        first_image.save(
+            pdf_bytes,
+            format="PDF",
+            save_all=True,
+            append_images=remaining_images
+        )
+        
+        if save_to_file:
+            # 如果 save_to_file 为 True，则保存到文件
+            pdf_bytes.seek(0)  # 将指针移动到流的开头
+            with open(file_path, "wb") as f:
+                f.write(pdf_bytes.read())
+            return None  # 保存到文件后，返回 None
+        else:
+            pdf_bytes.seek(0)
+            return pdf_bytes  # 返回 PDF 的字节流
+        
+    return images 
 
 
 def _draft(text, templates, seed=None) -> Iterator[Page]:
