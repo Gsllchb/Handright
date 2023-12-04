@@ -109,7 +109,7 @@ def _draw_page(
     while y <= height - bottom_margin - font_size:
         x = left_margin
         while True:
-            if text[start] == _LF:
+            if text[start] == _LF: #跳过换行符自己处理
                 start += 1
                 if start == len(text):
                     return start
@@ -120,6 +120,26 @@ def _draw_page(
             if (x > width - right_margin - font_size
                     and text[start] not in end_chars):
                 break
+            
+             # 随机选择一个字符进行替换 9.1
+            if rand.random() < tpl.get_strikethrough_probability():
+                wrong_char_index = random.randint(0, len(text) - 1)
+                wrong_end_chars = end_chars + ' '
+                # 检查字符是否在排除列表中
+                while text[wrong_char_index] in wrong_end_chars:
+                    wrong_char_index = random.randint(0, len(text) - 1)
+                wrong_char = text[wrong_char_index]
+                
+                origin_x =x
+                # 绘制错误的字（被划掉的字）
+                if Feature.GRID_LAYOUT in tpl.get_features():
+                    x = _grid_layout(draw, x, y, wrong_char, tpl, rand)
+                else:
+                    x = _flow_layout(draw, x, y, wrong_char, tpl, rand)
+                # 添加涂改标记（斜线）
+                _draw_strikethrough(draw, origin_x, y, tpl, rand)
+                
+            # 绘制正确的字            
             if Feature.GRID_LAYOUT in tpl.get_features():
                 x = _grid_layout(draw, x, y, text[start], tpl, rand)
             else:
@@ -130,6 +150,24 @@ def _draw_page(
         y += line_spacing
     return start
 
+def _draw_strikethrough(draw, x, y, tpl, rand):
+    line_length = tpl.get_font().size * math.sqrt(2)
+    length_sigma = tpl.get_strikethrough_length_sigma()
+    angle_sigma = tpl.get_strikethrough_angle_sigma()
+    width_sigma = tpl.get_strikethrough_width_sigma()
+    line_width = tpl.get_strikethrough_width()
+    
+    start_x = x + 1/7*line_length
+    start_y = y + 1/7*line_length
+    # 添加扰动
+    actual_length = line_length + gauss(rand, 0, length_sigma)
+    initial_angle = 45  # 初始角度设置为45度
+    actual_angle = initial_angle + gauss(rand, 0, angle_sigma)
+    actual_width = line_width + gauss(rand, 0, width_sigma)  # 假设基础宽度为5
+    
+    end_x = start_x + actual_length * math.cos(math.radians(actual_angle))*5/7
+    end_y = start_y + actual_length * math.sin(math.radians(actual_angle))*5/7
+    draw.line((start_x, start_y, end_x, end_y), fill=_WHITE, width=int(actual_width))
 
 def _flow_layout(
         draw, x, y, char, tpl: Template, rand: random.Random
@@ -152,7 +190,7 @@ def _grid_layout(
           round(gauss(rand, y, tpl.get_line_spacing_sigma())))
     font = _get_font(tpl, rand)
     _ = _draw_char(draw, char, xy, font)
-    x += tpl.get_word_spacing() + tpl.get_font().size
+    x += tpl.get_word_spacing() + tpl.get_font().size#主要的区别在于这里的X它是固定的
     return x
 
 
@@ -246,10 +284,10 @@ def _extract_stroke(
         bitmap, start: Tuple[int, int], strokes, bbox: Tuple[int, int, int, int]
 ) -> None:
     """Helper function of _extract_strokes() which uses depth first search to
-    find the pixels of a glyph."""
+    find the pixels of a glyph. 修改了传入的 strokes 参数"""
     left, upper, right, lower = bbox
     stack = [start, ]
-    while stack:
+    while stack:#白色是1，為true
         x, y = stack.pop()
         if y - 1 >= upper and bitmap[x, y - 1] and strokes.add(_xy(x, y - 1)):
             stack.append((x, y - 1))
