@@ -22,10 +22,10 @@ _STROKE_END = 0xFFFFFFFF
 
 
 def handwrite(
-        text: str,
-        template: Union[Template, Sequence[Template]],
-        seed: Hashable = None,
-        mapper: Callable[[Callable, Iterable], Iterable] = map,
+    text: str,
+    template: Union[Template, Sequence[Template]],
+    seed: Hashable = None,
+    mapper: Callable[[Callable, Iterable], Iterable] = map,
 ) -> Iterable[PIL.Image.Image]:
     """Handwrite `text` with the configurations in `template`, and return an
     Iterable of Pillow's Images.
@@ -72,15 +72,17 @@ def _preprocess_text(text: str) -> str:
 
 
 def _check_template(page, tpl) -> None:
-    if page.height() < (tpl.get_top_margin() + tpl.get_line_spacing()
-                        + tpl.get_bottom_margin()):
+    if page.height() < (
+        tpl.get_top_margin() + tpl.get_line_spacing() + tpl.get_bottom_margin()
+    ):
         msg = "for (height < top_margin + line_spacing + bottom_margin)"
         raise LayoutError(msg)
     if tpl.get_font().size > tpl.get_line_spacing():
         msg = "for (font.size > line_spacing)"
         raise LayoutError(msg)
-    if page.width() < (tpl.get_left_margin() + tpl.get_font().size
-                       + tpl.get_right_margin()):
+    if page.width() < (
+        tpl.get_left_margin() + tpl.get_font().size + tpl.get_right_margin()
+    ):
         msg = "for (width < left_margin + font.size + right_margin)"
         raise LayoutError(msg)
     if tpl.get_word_spacing() <= -tpl.get_font().size // 2:
@@ -88,9 +90,7 @@ def _check_template(page, tpl) -> None:
         raise LayoutError(msg)
 
 
-def _draw_page(
-        page, text, start: int, tpl: Template, rand: random.Random
-) -> int:
+def _draw_page(page, text, start: int, tpl: Template, rand: random.Random) -> int:
     _check_template(page, tpl)
 
     width = page.width()
@@ -114,11 +114,9 @@ def _draw_page(
                 if start == len(text):
                     return start
                 break
-            if (x > width - right_margin - 2 * font_size
-                    and text[start] in start_chars):
+            if x > width - right_margin - 2 * font_size and text[start] in start_chars:
                 break
-            if (x > width - right_margin - font_size
-                    and text[start] not in end_chars):
+            if x > width - right_margin - font_size and text[start] not in end_chars:
                 break
             if Feature.GRID_LAYOUT in tpl.get_features():
                 x = _grid_layout(draw, x, y, text[start], tpl, rand)
@@ -131,25 +129,19 @@ def _draw_page(
     return start
 
 
-def _flow_layout(
-        draw, x, y, char, tpl: Template, rand: random.Random
-) -> float:
+def _flow_layout(draw, x, y, char, tpl: Template, rand: random.Random) -> float:
     xy = (round(x), round(gauss(rand, y, tpl.get_line_spacing_sigma())))
     font = _get_font(tpl, rand)
     offset = _draw_char(draw, char, xy, font)
-    x += gauss(
-        rand,
-        tpl.get_word_spacing() + offset,
-        tpl.get_word_spacing_sigma()
-    )
+    x += gauss(rand, tpl.get_word_spacing() + offset, tpl.get_word_spacing_sigma())
     return x
 
 
-def _grid_layout(
-        draw, x, y, char, tpl: Template, rand: random.Random
-) -> float:
-    xy = (round(gauss(rand, x, tpl.get_word_spacing_sigma())),
-          round(gauss(rand, y, tpl.get_line_spacing_sigma())))
+def _grid_layout(draw, x, y, char, tpl: Template, rand: random.Random) -> float:
+    xy = (
+        round(gauss(rand, x, tpl.get_word_spacing_sigma())),
+        round(gauss(rand, y, tpl.get_line_spacing_sigma())),
+    )
     font = _get_font(tpl, rand)
     _ = _draw_char(draw, char, xy, font)
     x += tpl.get_word_spacing() + tpl.get_font().size
@@ -158,9 +150,7 @@ def _grid_layout(
 
 def _get_font(tpl: Template, rand: random.Random):
     font = tpl.get_font()
-    actual_font_size = max(round(
-        gauss(rand, font.size, tpl.get_font_size_sigma())
-    ), 0)
+    actual_font_size = max(round(gauss(rand, font.size, tpl.get_font_size_sigma())), 0)
     if actual_font_size != font.size:
         return font.font_variant(size=actual_font_size)
     return font
@@ -230,10 +220,7 @@ def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]):
             _MAX_INT16_VALUE - 1
         )
         raise BackgroundTooLargeError(msg)
-    strokes = NumericOrderedSet(
-        _UNSIGNED_INT32_TYPECODE,
-        privileged=_STROKE_END
-    )
+    strokes = NumericOrderedSet(_UNSIGNED_INT32_TYPECODE, privileged=_STROKE_END)
     for y in range(upper, lower):
         for x in range(left, right):
             if bitmap[x, y] and strokes.add(_xy(x, y)):
@@ -243,12 +230,14 @@ def _extract_strokes(bitmap, bbox: Tuple[int, int, int, int]):
 
 
 def _extract_stroke(
-        bitmap, start: Tuple[int, int], strokes, bbox: Tuple[int, int, int, int]
+    bitmap, start: Tuple[int, int], strokes, bbox: Tuple[int, int, int, int]
 ) -> None:
     """Helper function of _extract_strokes() which uses depth first search to
     find the pixels of a glyph."""
     left, upper, right, lower = bbox
-    stack = [start, ]
+    stack = [
+        start,
+    ]
     while stack:
         x, y = stack.pop()
         if y - 1 >= upper and bitmap[x, y - 1] and strokes.add(_xy(x, y - 1)):
@@ -286,16 +275,16 @@ def _draw_strokes(bitmap, strokes, tpl, rand) -> None:
 
 
 def _draw_stroke(
-        bitmap,
-        stroke: Sequence[Tuple[int, int]],
-        tpl: Template,
-        center: Tuple[float, float],
-        rand
+    bitmap,
+    stroke: Sequence[Tuple[int, int]],
+    tpl: Template,
+    center: Tuple[float, float],
+    rand,
 ) -> None:
     dx = gauss(rand, 0, tpl.get_perturb_x_sigma())
     dy = gauss(rand, 0, tpl.get_perturb_y_sigma())
     theta = gauss(rand, 0, tpl.get_perturb_theta_sigma())
-    
+
     ink_depth_sigma = tpl.get_ink_depth_sigma()
     original_fill = tpl.get_fill()
     # 添加随机扰动
@@ -304,10 +293,26 @@ def _draw_stroke(
         # 如果 original_fill 是一个整数
         rand_fill = max(0, min(100, int(original_fill + ink_depth_rand)))
     elif isinstance(original_fill, tuple):
-        # 如果 original_fill 是一个三元组（假设是 RGB 值）
-        rand_fill = tuple(max(0, min(100, int(channel + ink_depth_rand))) for channel in original_fill)
-    # print('rand_fill',rand_fill)
-            
+        if len(original_fill) == 3:
+            # 如果 original_fill 是一个三元组（假设是 RGB 值）
+            rand_fill = tuple(
+                max(0, min(255, int(channel + ink_depth_rand)))
+                for channel in original_fill
+            )
+        elif len(original_fill) == 4:
+            # 如果 original_fill 是一个四元组（假设是 RGBA 值）
+            # 保持 Alpha 通道不变
+            rand_fill = tuple(
+                (
+                    max(0, min(255, int(channel + ink_depth_rand)))
+                    if i < 3
+                    else original_fill[3]
+                )
+                for i, channel in enumerate(original_fill)
+            )
+
+    # 打印结果以验证
+    # print('rand_fill', rand_fill)
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
         new_x = round(new_x + dx)
@@ -318,16 +323,20 @@ def _draw_stroke(
 
 
 def _rotate(
-        center: Tuple[float, float], x: float, y: float, theta: float
+    center: Tuple[float, float], x: float, y: float, theta: float
 ) -> Tuple[float, float]:
     if theta == 0:
         return x, y
-    new_x = ((x - center[0]) * math.cos(theta)
-             + (y - center[1]) * math.sin(theta)
-             + center[0])
-    new_y = ((y - center[1]) * math.cos(theta)
-             - (x - center[0]) * math.sin(theta)
-             + center[1])
+    new_x = (
+        (x - center[0]) * math.cos(theta)
+        + (y - center[1]) * math.sin(theta)
+        + center[0]
+    )
+    new_y = (
+        (y - center[1]) * math.cos(theta)
+        - (x - center[0]) * math.sin(theta)
+        + center[1]
+    )
     return new_x, new_y
 
 
