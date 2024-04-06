@@ -11,17 +11,17 @@ SEED = "Handright"
 
 def main():
     print("Test by naked eyes:")
-    _watch_gird_layout()
-    _like_it()
+    # _watch_gird_layout()
+    # _like_it()
     _watch_flow_layout()
-    _like_it()
+    # _like_it()
 
 
 def _watch_flow_layout():
     path = "backgrounds/even-odd-letter/"
-    image1 = PIL.Image.open(abs_path(path + "村庄信笺纸.jpg"))
+    image1 = PIL.Image.open(abs_path(path + "icon.png"))
     image2 = PIL.Image.open(abs_path(path + "树信笺纸.jpg"))
-    assert image1.mode == "RGB"
+    # assert image1.mode == "RGB"
     assert image2.mode == "RGB"
 
     template1 = Template(
