@@ -49,12 +49,31 @@ def handwrite(
         templates = (template,)
     else:
         templates = template
-    pages = _draft(text, templates, seed)
-    renderer = _Renderer(templates, seed)
+    
+    total_pages = None
+    if any(t.get_all_text_sigma_sigma() > 1 for t in templates):
+        total_pages = _count_pages(text, templates, seed)
+
+    pages = _draft(text, templates, seed, total_pages)
+    renderer = _Renderer(templates, seed, total_pages)
     return mapper(renderer, pages)
 
 
-def _draft(text, templates, seed=None) -> Iterator[Page]:
+def _count_pages(text, templates, seed=None) -> int:
+    text = _preprocess_text(text)
+    template_iter = itertools.cycle(templates)
+    rand = random.Random(x=seed)
+    start = 0
+    count = 0
+    while start < len(text):
+        template = next(template_iter)
+        page = DummyPage(template.get_size())
+        start = _draw_page(page, text, start, template, rand)
+        count += 1
+    return count
+
+
+def _draft(text, templates, seed=None, total_pages=None) -> Iterator[Page]:
     text = _preprocess_text(text)
     template_iter = itertools.cycle(templates)
     num_iter = itertools.count()
@@ -62,9 +81,25 @@ def _draft(text, templates, seed=None) -> Iterator[Page]:
     start = 0
     while start < len(text):
         template = next(template_iter)
-        page = Page(_INTERNAL_MODE, template.get_size(), _BLACK, next(num_iter))
-        start = _draw_page(page, text, start, template, rand)
+        num = next(num_iter)
+        page = Page(_INTERNAL_MODE, template.get_size(), _BLACK, num)
+        multiplier = _get_multiplier(num, total_pages, template.get_all_text_sigma_sigma())
+        start = _draw_page(page, text, start, template, rand, multiplier)
         yield page
+
+
+def _get_multiplier(page_num, total_pages, sigma_sigma):
+    if total_pages is None or total_pages <= 1 or sigma_sigma <= 1:
+        return 1.0
+    
+    center = (total_pages - 1) / 2
+    sigma_curve = (total_pages - 1) / 6
+    if sigma_curve == 0:
+        return 1.0
+        
+    delta = page_num - center
+    factor = math.exp(-(delta ** 2) / (2 * sigma_curve ** 2))
+    return 1 + (sigma_sigma - 1) * factor
 
 
 def _preprocess_text(text: str) -> str:
@@ -89,7 +124,7 @@ def _check_template(page, tpl) -> None:
 
 
 def _draw_page(
-        page, text, start: int, tpl: Template, rand: random.Random
+        page, text, start: int, tpl: Template, rand: random.Random, multiplier: float = 1.0
 ) -> int:
     _check_template(page, tpl)
 
@@ -107,7 +142,7 @@ def _draw_page(
     draw = page.draw()
     y = top_margin + line_spacing - font_size
     while y <= height - bottom_margin - font_size:
-        x = left_margin
+        x = gauss(rand, left_margin, tpl.get_left_margin_sigma() * multiplier)
         while True:
             if text[start] == _LF:
                 start += 1
@@ -121,9 +156,9 @@ def _draw_page(
                     and text[start] not in end_chars):
                 break
             if Feature.GRID_LAYOUT in tpl.get_features():
-                x = _grid_layout(draw, x, y, text[start], tpl, rand)
+                x = _grid_layout(draw, x, y, text[start], tpl, rand, multiplier)
             else:
-                x = _flow_layout(draw, x, y, text[start], tpl, rand)
+                x = _flow_layout(draw, x, y, text[start], tpl, rand, multiplier)
             start += 1
             if start == len(text):
                 return start
@@ -132,34 +167,34 @@ def _draw_page(
 
 
 def _flow_layout(
-        draw, x, y, char, tpl: Template, rand: random.Random
+        draw, x, y, char, tpl: Template, rand: random.Random, multiplier: float = 1.0
 ) -> float:
-    xy = (round(x), round(gauss(rand, y, tpl.get_line_spacing_sigma())))
-    font = _get_font(tpl, rand)
+    xy = (round(x), round(gauss(rand, y, tpl.get_line_spacing_sigma() * multiplier)))
+    font = _get_font(tpl, rand, multiplier)
     offset = _draw_char(draw, char, xy, font)
     x += gauss(
         rand,
         tpl.get_word_spacing() + offset,
-        tpl.get_word_spacing_sigma()
+        tpl.get_word_spacing_sigma() * multiplier
     )
     return x
 
 
 def _grid_layout(
-        draw, x, y, char, tpl: Template, rand: random.Random
+        draw, x, y, char, tpl: Template, rand: random.Random, multiplier: float = 1.0
 ) -> float:
-    xy = (round(gauss(rand, x, tpl.get_word_spacing_sigma())),
-          round(gauss(rand, y, tpl.get_line_spacing_sigma())))
-    font = _get_font(tpl, rand)
+    xy = (round(gauss(rand, x, tpl.get_word_spacing_sigma() * multiplier)),
+          round(gauss(rand, y, tpl.get_line_spacing_sigma() * multiplier)))
+    font = _get_font(tpl, rand, multiplier)
     _ = _draw_char(draw, char, xy, font)
     x += tpl.get_word_spacing() + tpl.get_font().size
     return x
 
 
-def _get_font(tpl: Template, rand: random.Random):
+def _get_font(tpl: Template, rand: random.Random, multiplier: float = 1.0):
     font = tpl.get_font()
     actual_font_size = max(round(
-        gauss(rand, font.size, tpl.get_font_size_sigma())
+        gauss(rand, font.size, tpl.get_font_size_sigma() * multiplier)
     ), 0)
     if actual_font_size != font.size:
         return font.font_variant(size=actual_font_size)
@@ -182,14 +217,16 @@ class _Renderer(object):
         "_templates",
         "_rand",
         "_hashed_seed",
+        "_total_pages",
     )
 
-    def __init__(self, templates, seed=None) -> None:
+    def __init__(self, templates, seed=None, total_pages=None) -> None:
         self._templates = _to_picklable(templates)
         self._rand = random.Random()
         self._hashed_seed = None
         if seed is not None:
             self._hashed_seed = hash(seed)
+        self._total_pages = total_pages
 
     def __call__(self, page) -> PIL.Image.Image:
         if self._hashed_seed is None:
@@ -206,7 +243,8 @@ class _Renderer(object):
         if bbox is None:
             return canvas
         strokes = _extract_strokes(page.matrix(), bbox)
-        _draw_strokes(canvas.load(), strokes, template, self._rand)
+        multiplier = _get_multiplier(page.num, self._total_pages, template.get_all_text_sigma_sigma())
+        _draw_strokes(canvas.load(), strokes, template, self._rand, multiplier)
         return canvas
 
 
@@ -261,7 +299,7 @@ def _extract_stroke(
             stack.append((x + 1, y))
 
 
-def _draw_strokes(bitmap, strokes, tpl, rand) -> None:
+def _draw_strokes(bitmap, strokes, tpl, rand, multiplier=1.0) -> None:
     stroke = []
     min_x = _MAX_INT16_VALUE
     min_y = _MAX_INT16_VALUE
@@ -270,7 +308,7 @@ def _draw_strokes(bitmap, strokes, tpl, rand) -> None:
     for xy in strokes:
         if xy == _STROKE_END:
             center = ((min_x + max_x) / 2, (min_y + max_y) / 2)
-            _draw_stroke(bitmap, stroke, tpl, center, rand)
+            _draw_stroke(bitmap, stroke, tpl, center, rand, multiplier)
             min_x = _MAX_INT16_VALUE
             min_y = _MAX_INT16_VALUE
             max_x = 0
@@ -290,11 +328,12 @@ def _draw_stroke(
         stroke: Sequence[Tuple[int, int]],
         tpl: Template,
         center: Tuple[float, float],
-        rand
+        rand,
+        multiplier: float = 1.0
 ) -> None:
-    dx = gauss(rand, 0, tpl.get_perturb_x_sigma())
-    dy = gauss(rand, 0, tpl.get_perturb_y_sigma())
-    theta = gauss(rand, 0, tpl.get_perturb_theta_sigma())
+    dx = gauss(rand, 0, tpl.get_perturb_x_sigma() * multiplier)
+    dy = gauss(rand, 0, tpl.get_perturb_y_sigma() * multiplier)
+    theta = gauss(rand, 0, tpl.get_perturb_theta_sigma() * multiplier)
     for x, y in stroke:
         new_x, new_y = _rotate(center, x, y, theta)
         new_x = round(new_x + dx)
@@ -324,3 +363,22 @@ def _xy(x: int, y: int) -> int:
 
 def _x_y(xy: int) -> Tuple[int, int]:
     return xy >> 16, xy & 0xFFFF
+
+
+class DummyDraw(object):
+    def text(self, xy, text, fill=None, font=None, anchor=None, *args, **kwargs):
+        pass
+
+
+class DummyPage(object):
+    def __init__(self, size):
+        self._size = size
+
+    def width(self):
+        return self._size[0]
+
+    def height(self):
+        return self._size[1]
+
+    def draw(self):
+        return DummyDraw()
